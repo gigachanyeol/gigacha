@@ -9,11 +9,11 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+    
 </head>
 
 <body>
-    
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="teal">
                 <button class="" onclick="sidebar()">
