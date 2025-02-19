@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<%@ include file="./layout/header.jsp" %>
 </head>
 <body>
-<%@ include file="./layout/header.jsp" %>
 
 <%@ include file="./layout/sidebar.jsp" %>
 </body>
