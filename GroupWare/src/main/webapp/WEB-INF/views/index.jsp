@@ -1,22 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<%@ include file="./layout/header.jsp" %>
+<%@ include file="./layout/header.jsp"%>
 <style type="text/css">
-	#content{
-	    margin-right: 30px;
-    	margin-left: 230px;
-    }
-    .content_title{
-    	margin-top:10px;
-    	padding-bottom:5px;
-    	border-bottom:1px solid #ccc;
-    }
+#content {
+	margin-right: 30px;
+	margin-left: 230px;
+}
+
+.content_title {
+	margin-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+}
 </style>
 </head>
 <body>
@@ -27,12 +28,12 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>asd</th>
+					<th>라이브러리</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>asd</td>
+					<td>sdasd</td>
 				</tr>
 			</tbody>
 		</table>
