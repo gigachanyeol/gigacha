@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
-    
+  
 </head>
 
 <body>
@@ -27,6 +27,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
+                 	<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./">홈</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">인사관리</a>
                     </li>
@@ -34,7 +37,7 @@
                         <a class="nav-link" href="#">근태관리</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">캘린더</a>
+                        <a class="nav-link" href="./calendar.do">캘린더</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
