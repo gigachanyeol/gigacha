@@ -11,4 +11,12 @@ public class HomeController {
 		return "index";
 	}
 
+	@GetMapping("/editor.do")
+	public String editor() {
+		return "editor";
+	}
+	@GetMapping("/tree.do")
+	public String tree() {
+		return "tree";
+	}
 }
