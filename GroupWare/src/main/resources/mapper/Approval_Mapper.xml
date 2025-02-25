@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.ApprovalDaoImpl">
+  <!-- 부서 목록 가져오기 -->
+    <select id="getDepartments" resultType="map">
+ 	SELECT DEPTNO AS "id", DEPTNAME AS "text", NVL(PARENT_DEPTNO,'#') AS "parent"
+        FROM DEPARTMENTS
+        WHERE USE_YN = 'Y'
+    </select>
+
+    <!-- 부서별 사원 목록 가져오기 -->
+    <select id="getEmployeesByDepartment" resultType="map">
+        SELECT EMPNO AS "id", NAME AS "text", DEPTNO AS "parent"
+        FROM EMPLOYEES
+        ORDER BY DEPTNO ASC
+    </select>
+    <select id="getOrganizationTree" resultType="map">
+   SELECT DEPTNO AS "id", DEPTNAME AS "text", NVL(PARENT_DEPTNO,'#') AS "parent", 'https://cdn2.iconfinder.com/data/icons/business-1407/32/office_team_teamwork_business_partnership-01-16.png' AS "icon"
+        FROM DEPARTMENTS
+        WHERE USE_YN = 'Y'
+	UNION ALL	
+	SELECT TO_CHAR(EMPNO) AS "id", NAME || '('|| JOB_TITLE ||')' AS "text", DEPTNO AS "parent", 'https://cdn2.iconfinder.com/data/icons/web-line-2/32/user-16.png' AS "icon"
+		FROM EMPLOYEES t1 
+		LEFT JOIN (SELECT JOB_ID, JOB_TITLE FROM JOBS) t2
+		ON t1.JOB_ID = t2.JOB_ID
+		ORDER BY "parent" ,"id"
+    </select>	
+    
+    <insert id="editorSave">
+    	INSERT INTO APPROVAL
+    	VALUES ('APP005','HR01','2501001','테스트',#{content},CURRENT_DATE,'1','ST01','N',SYSDATE,'2025-05-01','N','N')
+    </insert>
+    <select id="editorRead" resultType="String">
+    	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'APP005'
+    </select>
+</mapper>

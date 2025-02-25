@@ -3,5 +3,7 @@
 <configuration>
 	<mappers>
 		<mapper resource="mapper/Employee_Mapper.xml"/>
+		<mapper resource="mapper/Approval_Mapper.xml"/>
+		<mapper resource="mapper/Department_Mapper.xml"/>
 	</mappers>
 </configuration>

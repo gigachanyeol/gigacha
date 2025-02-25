@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper/Employee_Mapper.xml">
-  
+<mapper namespace="com.giga.gw.repository.EmployeeDaoImpl">
+	<insert id="saveSignature">
+		INSERT INTO EMP_SIGNATURE
+		VALUES((SELECT NVL(MAX(SIGNATURE_ID),'0')+1 FROM
+		EMP_SIGNATURE),'2501002',#{img},'','1')
+	</insert>
+	
+	<resultMap type="java.util.Map" id="clob">
+	<result property="EMPNO" column="EMPNO" javaType="java.lang.String"/>
+		<result property="FILE_DATA" column="FILE_DATA" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<select id="readSignature" resultMap="clob">
+		SELECT EMPNO, FILE_DATA FROM EMP_SIGNATURE
+		WHERE EMPNO IN
+		<foreach collection="list" item="empno" open="(" separator="," close=")">
+			#{empno}
+		</foreach>
+	</select>
 </mapper>
