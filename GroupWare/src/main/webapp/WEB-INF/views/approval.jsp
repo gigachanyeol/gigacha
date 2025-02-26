@@ -128,7 +128,8 @@
             height: '500px',
             initialEditType: 'wysiwyg',
             previewStyle:"vertical",
-            hideModeSwitch:"true"
+            hideModeSwitch:"true",
+            
         });
         // 에디터 DB에서 불러오기
         document.querySelector("#editorViewBtn").addEventListener('click',()=>{

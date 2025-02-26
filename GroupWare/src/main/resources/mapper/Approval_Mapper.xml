@@ -28,8 +28,8 @@
     </select>	
     <!-- 에디터 저장 -->
     <insert id="editorSave">
-    	INSERT INTO APPROVAL
-    	VALUES ('APP005','HR01','2501001','테스트',#{content},CURRENT_DATE,'1','ST01','N',SYSDATE,'2025-05-01','N','N')
+    	INSERT INTO APPROVAL(APPROVAL_ID, FORM_ID, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT, CREATE_DATE, APPROVAL_STATUS)
+    	VALUES ('APP005','HR001','2501001','테스트',#{content},CURRENT_DATE,'ST01')
     </insert>
     <!-- 에디터 불러오기 -->
     <select id="editorRead" resultType="String">
