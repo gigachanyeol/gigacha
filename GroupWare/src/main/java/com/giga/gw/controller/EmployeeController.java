@@ -16,7 +16,12 @@ public class EmployeeController {
 		return "grid";
 	}
 	
+	@GetMapping("/droppable.do")
+	public String droppable(){
+		return "droppable";
+	}
 	
-		
+	
 
+	
 }
