@@ -35,6 +35,11 @@ public class ApprovalServiceImpl implements IApprovalService {
         treeData.addAll(departmentList); // 부서 추가
 		return treeData;
 	}
+
+	@Override
+	public int countApproval(String form_id) {
+		return approvalDao.countApproval(form_id);
+	}
 	
 	
 	

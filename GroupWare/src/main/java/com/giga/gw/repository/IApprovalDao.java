@@ -9,4 +9,6 @@ public interface IApprovalDao {
     List<Map<String, Object>> getOrganizationTree();
     int editorSave(String content);
     String editorRead();
+    
+    int countApproval(String form_id);
 }

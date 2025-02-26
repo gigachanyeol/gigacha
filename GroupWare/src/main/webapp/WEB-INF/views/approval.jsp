@@ -193,7 +193,7 @@
 			console.log(data);
 			data.forEach(d => {
 				let img = document.createElement("img");
-                img.src=d.FILE_DATA;
+                img.src=d.FILE_BASE;
                 document.querySelector("#sigImg").appendChild(img);
 			})
 		})
