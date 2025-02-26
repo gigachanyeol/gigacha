@@ -21,14 +21,14 @@ public class ApprovalCategory_JUnitTest {
 	private IApprovalCategoryDao approvalCategoryDao;
 
 	// 문서양식카테고리 insert
-//	@Test
+	@Test
 	public void categoryInsert_Test() {
 		ApprovalCategoryDto dto = ApprovalCategoryDto.builder().category_name("인사").category_yname("HR").build();
 		assertNotEquals(0, approvalCategoryDao.categoryInsert(dto));
 	}
 
 	// 문서양식 조회 List  select
-//	@Test
+	@Test
 	public void categorytSelect_Test() {
 		List<ApprovalCategoryDto> lists = approvalCategoryDao.categorySelect();
 		assertNotEquals(0, lists.size());
