@@ -19,7 +19,7 @@
 	border-bottom: 1px solid #ccc;
 }
 </style>
-</head>
+</head> 
 <body>
 <%@ include file="./layout/nav.jsp" %>
 <%@ include file="./layout/sidebar.jsp" %>
@@ -31,6 +31,7 @@
 					<th>라이브러리</th>
 				</tr>
 			</thead>
+			
 			<tbody>
 				<tr>
 					<td>sdasd</td>
