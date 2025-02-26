@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.giga.gw.dto.ApprovalDto;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -44,6 +46,26 @@ public class ApprovalDaoImpl implements IApprovalDao {
 	@Override
 	public int countApproval(String form_id) {
 		return sql.selectOne(NS+"countApproval",form_id);
+	}
+
+	@Override
+	public int insertApproval(ApprovalDto approvalDto) {
+		return sql.insert(NS+"insertApproval",approvalDto);
+	}
+
+	@Override
+	public int updateApproval(ApprovalDto approvalDto) {
+		return sql.update(NS+"updateApproval",approvalDto);
+	}
+
+	@Override
+	public ApprovalDto selectApprovalById(String approval_id) {
+		return sql.selectOne(NS+"selectApprovalById",approval_id);
+	}
+
+	@Override
+	public int recallApproval(String approval_id) {
+		return sql.update(NS+"recallApproval",approval_id);
 	}
 
 }

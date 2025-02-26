@@ -36,8 +36,51 @@
     	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'APP005'
     </select>
     
-    
+    <!-- 양식별 사용중인 결재문서 갯수 -->
     <select id="countApproval" resultType="Integer">
     	SELECT COUNT(*) FROM APPROVAL WHERE FORM_ID = #{form_id}
     </select>
+	
+	<select id="selectApprovalById" resultType="approvalDto" parameterType="String">
+		SELECT APPROVAL_ID, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, UPDATE_DATE, UPDATE_EMPNO 
+			FROM APPROVAL
+			WHERE APPROVAL_ID = #{approval_id}
+	</select>
+	    
+    <!-- 결재문서 작성 -->
+    <insert id="insertApproval" parameterType="approvalDto">
+    	<selectKey keyProperty="approval_id" resultType="String" order="BEFORE">
+	    	SELECT (#{form_id}) ||
+			            ('DOC' || LPAD(NVL(MAX(SUBSTR(APPROVAL_ID, 9)), '0') + 1, 4, '0')) 
+		     FROM APPROVAL
+    	</selectKey>
+    	INSERT INTO APPROVAL ( APPROVAL_ID, FORM_ID, EMPNO,
+	    	APPROVAL_TITLE, APPROVAL_CONTENT,  APPROVAL_STATUS, 
+	    	APPROVAL_DEADLINE)
+    	VALUES (
+		    #{approval_id},
+		    #{form_id}, 
+		    #{empno}, 
+		    #{approval_title}, 
+		    #{approval_content}, 
+		    'ST02', 
+		    #{approval_deadline})
+    </insert>
+    
+    <!-- 결재문서 업데이트 -->
+    <update id="updateApproval" parameterType="approvalDto">
+    	UPDATE APPROVAL 
+		SET APPROVAL_TITLE = #{approval_title} , APPROVAL_CONTENT= #{approval_content} , APPROVAL_STATUS = 'ST02',
+		APPROVAL_DEADLINE = #{approval_deadline} , UPDATE_DATE = TO_DATE(CURRENT_DATE,'YY-MM-DD') , UPDATE_EMPNO = #{update_empno}
+		WHERE APPROVAL_ID = #{approval_id} AND APPROVAL_STATUS IN ('ST01', 'ST02')
+    </update>
+    
+    <!-- 결재문서 회수 -->
+    <update id="recallApproval">
+    	UPDATE APPROVAL 
+		SET TEMP_SAVE_YN = 'Y', APPROVAL_STATUS = 'ST01'
+		WHERE APPROVAL_ID = #{approval_id} AND (SELECT COUNT(*) FROM APPROVAL_LINE WHERE APPROVAL_ID = #{approval_id} AND STATUS_ID IN ('ST05','ST02','ST04')) = 0
+	</update>
+    
+    
 </mapper>

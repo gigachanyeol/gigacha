@@ -22,6 +22,7 @@ public class ApprovalForm_JUnitTest {
 	@Autowired
 	private IApprovalFormService approvalFormService;
 	
+	// 결재양식 INSERT 
 //	@Test
 	public void insertTest() {
 		ApprovalFormDto dto = ApprovalFormDto
@@ -33,6 +34,7 @@ public class ApprovalForm_JUnitTest {
 		approvalFormDao.formInsert(dto);
 	}
 	
+	// 결재양식 UPDATE
 //	@Test
 	public void updateTest() {
 		ApprovalFormDto approvalFormDto = ApprovalFormDto.builder()
@@ -42,7 +44,7 @@ public class ApprovalForm_JUnitTest {
 				.build();
 		assertNotEquals(0, approvalFormService.formUpdate(approvalFormDto));
 	}
-	
+	// 결재양식 DELETE
 	@Test
 	public void deleteTest() {
 		assertNotEquals(0, approvalFormDao.formDelete("HR021"));
