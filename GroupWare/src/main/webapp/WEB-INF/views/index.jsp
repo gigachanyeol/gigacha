@@ -39,6 +39,10 @@
 				<tr>
 					<td><a href="./grid.do">그리드페이지</a></td>
 				</tr>
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/calendar/calendar.do">캘린더</a></td>
+				</tr>
+				
 			</tbody>
 		</table>
 	</div>

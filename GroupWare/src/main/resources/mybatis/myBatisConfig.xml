@@ -13,6 +13,7 @@
 		<mapper resource="mapper/Department_Mapper.xml"/>
 		<mapper resource="mapper/ApprovalCategory_Mapper.xml"/>
 		<mapper resource="mapper/ApprovalForm_Mapper.xml"/>
+		<mapper resource="mapper/Calendar_Mapper.xml"/>
 		<mapper resource="mapper/ApprovalLine_Mapper.xml"/>
 	</mappers>
 </configuration>
