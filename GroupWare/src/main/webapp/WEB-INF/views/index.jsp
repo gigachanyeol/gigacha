@@ -43,7 +43,10 @@
 					<td><a href="./droppable.do">드래그앤드롭</a></td>
 				</tr>
 					<td><a href="${pageContext.request.contextPath}/calendar/calendar.do">캘린더</a></td>
-      </tr>
+      			</tr>
+      			<tr>
+					<td><a href="./reservation.do">달력</a></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
