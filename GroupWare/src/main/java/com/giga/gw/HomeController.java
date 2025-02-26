@@ -19,4 +19,9 @@ public class HomeController {
 	public String tree() {
 		return "tree";
 	}
+	
+	@GetMapping("/reservation.do")
+	public String reservation() {
+		return "reservation";
+	}
 }
