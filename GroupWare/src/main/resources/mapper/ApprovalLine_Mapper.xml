@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.ApprovalLineDaoImpl">
+	<insert id="insertApprovalLines">
+		INSERT INTO APPROVAL_LINE(LINE_ID, APPROVAL_ID, "SEQUENCE", STATUS_ID,
+		APPROVER_EMPNO)
+		SELECT APPROVALLINE_SEQ.NEXTVAL, A.* FROM (
+		<choose>
+			<when test="list != null and list.size() > 0">
+				<foreach collection="list" item="item" index="i" separator="UNION ALL ">
+					SELECT #{item.approval_id} , #{i} ,'ST02' , #{item.approver_empno} FROM DUAL
+				</foreach>
+			</when>
+			<otherwise>
+				SELECT #{approval_id} , '1' ,'ST02' , #{approver_empno} FROM DUAL
+			</otherwise>
+		</choose>
+		) A
+	</insert>
+	
+	<insert id="insertApprovalLine">
+		INSERT INTO APPROVAL_LINE(LINE_ID, APPROVAL_ID, "SEQUENCE", STATUS_ID,
+		APPROVER_EMPNO)
+		SELECT APPROVALLINE_SEQ.NEXTVAL, A.* FROM (
+				SELECT #{approval_id} , '1' ,'ST02' , #{approver_empno} FROM DUAL
+		) A
+	</insert>
+</mapper>

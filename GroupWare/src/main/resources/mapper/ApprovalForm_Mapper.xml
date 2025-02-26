@@ -21,5 +21,11 @@
 			SET FORM_NAME = #{form_name}, FORM_CONTENT=#{form_content}
 			WHERE FORM_ID = #{form_id}
 	</update>
+	
+	<update id="formDelete" parameterType="String">
+		UPDATE APPROVAL_FORM 
+			SET USE_YN = 'N'
+			WHERE FORM_ID = #{form_id}
+	</update>
 
 </mapper>

@@ -70,7 +70,7 @@
                 let empNo = selectedNode.id;
                 let empName = selectedNode.text;
 				
-                if (!empNo.startsWith("D")) { // 부서가 아닌 사원만 추가
+                if (!empNo.startsWith("D") && !empNo.startWith("HQ")) { // 부서가 아닌 사원만 추가
                     addToApprovalLine(empNo, empName);
                 }
             }); // organizationTree end

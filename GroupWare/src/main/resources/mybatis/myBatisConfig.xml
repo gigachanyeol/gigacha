@@ -4,6 +4,8 @@
 	<typeAliases>
 		<typeAlias type="com.giga.gw.dto.ApprovalCategoryDto" alias="approvalCategoryDto"/>
 		<typeAlias type="com.giga.gw.dto.ApprovalFormDto" alias="approvalFormDto"/>
+		<typeAlias type="com.giga.gw.dto.ApprovalDto" alias="approvalDto"/>
+		<typeAlias type="com.giga.gw.dto.ApprovalLineDto" alias="approvalLineDto"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mapper/Employee_Mapper.xml"/>
@@ -11,5 +13,7 @@
 		<mapper resource="mapper/Department_Mapper.xml"/>
 		<mapper resource="mapper/ApprovalCategory_Mapper.xml"/>
 		<mapper resource="mapper/ApprovalForm_Mapper.xml"/>
+		<mapper resource="mapper/Calendar_Mapper.xml"/>
+		<mapper resource="mapper/ApprovalLine_Mapper.xml"/>
 	</mappers>
 </configuration>

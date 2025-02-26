@@ -4,7 +4,7 @@
 	<insert id="saveSignature">
 		INSERT INTO EMP_IMAGES (SIGNATURE_ID,EMPNO,FILE_BASE,GUBUN)
 		VALUES((SELECT NVL(MAX(SIGNATURE_ID),'0')+1 FROM
-		EMP_IMAGES),'2501002',#{img},'1')
+		EMP_IMAGES),'2501002', #{img},'1')
 	</insert>
 	
 	<resultMap type="java.util.Map" id="clob">
