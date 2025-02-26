@@ -35,8 +35,14 @@
 				<tr>
 					<td>sdasd</td>
 				</tr>
+				<tr>
+					<td><a href="./grid.do">그리드페이지</a></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
+
+	
+	
 </body>
 </html>
