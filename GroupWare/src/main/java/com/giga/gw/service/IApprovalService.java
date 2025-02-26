@@ -5,4 +5,5 @@ import java.util.Map;
 
 public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
+	int countApproval(String form_id);
 }

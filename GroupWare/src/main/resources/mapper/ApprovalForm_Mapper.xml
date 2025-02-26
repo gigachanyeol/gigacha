@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.ApprovalFormDaoImpl">
+	<insert id="formInsert" parameterType="approvalFormDto">
+		<selectKey keyProperty="form_id" resultType="String"
+			order="BEFORE">
+			SELECT
+			(SELECT CATEGORY_YNAME FROM APPROVAL_CATEGORY WHERE CATEGORY_ID =
+			#{category_id}) ||
+			LPAD(APPROVALFORM_SEQ.NEXTVAL, 3, '0')
+			FROM DUAL
+		</selectKey>
+
+		INSERT INTO APPROVAL_FORM (FORM_ID, CATEGORY_ID, FORM_NAME,
+		FORM_CONTENT)
+		VALUES (#{form_id}, #{category_id}, #{form_name}, #{form_content})
+	</insert>
+
+	<update id="formUpdate" parameterType="approvalFormDto">
+		UPDATE APPROVAL_FORM 
+			SET FORM_NAME = #{form_name}, FORM_CONTENT=#{form_content}
+			WHERE FORM_ID = #{form_id}
+	</update>
+
+</mapper>

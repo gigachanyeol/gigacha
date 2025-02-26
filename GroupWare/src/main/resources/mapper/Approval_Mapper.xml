@@ -14,6 +14,7 @@
         FROM EMPLOYEES
         ORDER BY DEPTNO ASC
     </select>
+    <!-- JSTREE 쿼리  -->
     <select id="getOrganizationTree" resultType="map">
    SELECT DEPTNO AS "id", DEPTNAME AS "text", NVL(PARENT_DEPTNO,'#') AS "parent", 'https://cdn2.iconfinder.com/data/icons/business-1407/32/office_team_teamwork_business_partnership-01-16.png' AS "icon"
         FROM DEPARTMENTS
@@ -25,12 +26,18 @@
 		ON t1.JOB_ID = t2.JOB_ID
 		ORDER BY "parent" ,"id"
     </select>	
-    
+    <!-- 에디터 저장 -->
     <insert id="editorSave">
     	INSERT INTO APPROVAL
     	VALUES ('APP005','HR01','2501001','테스트',#{content},CURRENT_DATE,'1','ST01','N',SYSDATE,'2025-05-01','N','N')
     </insert>
+    <!-- 에디터 불러오기 -->
     <select id="editorRead" resultType="String">
     	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'APP005'
+    </select>
+    
+    
+    <select id="countApproval" resultType="int">
+    	SELECT COUNT(*) FROM APPROVAL WHERE FORM_ID = #{form_id}
     </select>
 </mapper>

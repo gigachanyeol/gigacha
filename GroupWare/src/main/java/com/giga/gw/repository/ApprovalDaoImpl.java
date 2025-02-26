@@ -41,4 +41,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.selectOne(NS+"editorRead");
 	}
 
+	@Override
+	public int countApproval(String form_id) {
+		return sql.selectOne(NS+"countApproval",form_id);
+	}
+
 }
