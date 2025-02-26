@@ -37,7 +37,7 @@
     </select>
     
     
-    <select id="countApproval" resultType="int">
+    <select id="countApproval" resultType="Integer">
     	SELECT COUNT(*) FROM APPROVAL WHERE FORM_ID = #{form_id}
     </select>
 </mapper>

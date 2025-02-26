@@ -20,7 +20,12 @@ public class ApprovalFormDaoImpl implements IApprovalFormDao {
 
 	@Override
 	public int formUpdate(ApprovalFormDto approvalFormDto) {
-		return 0;
+		return sql.update(NS+"formUpdate",approvalFormDto);
+	}
+
+	@Override
+	public int formDelete(String form_id) {
+		return sql.update(NS+"formDelete",form_id);
 	}
 
 }

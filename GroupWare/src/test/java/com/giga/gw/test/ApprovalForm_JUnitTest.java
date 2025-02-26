@@ -1,5 +1,7 @@
 package com.giga.gw.test;
 
+import static org.junit.Assert.assertNotEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.giga.gw.dto.ApprovalFormDto;
 import com.giga.gw.repository.IApprovalFormDao;
+import com.giga.gw.service.IApprovalFormService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/*.xml" })
@@ -15,8 +18,12 @@ public class ApprovalForm_JUnitTest {
 	
 	@Autowired
 	private IApprovalFormDao approvalFormDao;
-	@Test
-	public void test() {
+	
+	@Autowired
+	private IApprovalFormService approvalFormService;
+	
+//	@Test
+	public void insertTest() {
 		ApprovalFormDto dto = ApprovalFormDto
 				.builder()
 				.category_id("CATE03")
@@ -24,6 +31,21 @@ public class ApprovalForm_JUnitTest {
 				.form_content("컨텐츠~~~~")
 				.build();		
 		approvalFormDao.formInsert(dto);
+	}
+	
+//	@Test
+	public void updateTest() {
+		ApprovalFormDto approvalFormDto = ApprovalFormDto.builder()
+				.form_id("HR021")
+				.form_name("JUnit 수정")
+				.form_content("JUnit 수정 테스트 ~~~~~ ")
+				.build();
+		assertNotEquals(0, approvalFormService.formUpdate(approvalFormDto));
+	}
+	
+	@Test
+	public void deleteTest() {
+		assertNotEquals(0, approvalFormDao.formDelete("HR021"));
 	}
 
 }

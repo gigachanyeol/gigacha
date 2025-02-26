@@ -13,45 +13,45 @@
 <script
 	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 	<style type="text/css">
-#content {
-	margin-top:65px;
-	margin-right: 30px;
-	margin-left: 230px;
-}
+	#content {
+		margin-top:65px;
+		margin-right: 30px;
+		margin-left: 230px;
+	}
 
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
+	.content_title {
+		margin-top: 10px;
+		padding-bottom: 5px;
+		border-bottom: 1px solid #ccc;
+	}
 
-.wrapper {
-	position: relative;
-	width: 400px;
-	height: 200px;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
+	.wrapper {
+		position: relative;
+		width: 400px;
+		height: 200px;
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.signature-pad {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 400px;
+		height: 200px;
+		border: 1px solid black;
+	}
 
-.signature-pad {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 400px;
-	height: 200px;
-	border: 1px solid black;
-}
-
-#viewer table {
-	margin: 0 auto;
-	width: 80%;
-}
-.toastui-editor-contents table {
-	margin: 0 auto;
-	width:80%;
-}
+	#viewer table {
+		margin: 0 auto;
+		width: 80%;
+	}
+	.toastui-editor-contents table {
+		margin: 0 auto;
+		width:80%;
+	}
 	.toastui-editor-contents table th{
 	
 	background-color:#fff;
