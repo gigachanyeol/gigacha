@@ -24,6 +24,7 @@
 <%@ include file="./layout/nav.jsp" %>
 <%@ include file="./layout/sidebar.jsp" %>
 	<div id="content">
+	${sessionScope.loginDto}
 		<h3 class="content_title">제목</h3>
 		<table class="table table-hover">
 			<thead>
@@ -49,6 +50,8 @@
 				</tr>
 			</tbody>
 		</table>
+		<a href="./login.do" class="btn btn-info">로그인</a><br>
+		<a href="./logout.do" class="btn btn-danger">로그아웃</a>
 	</div>
 
 	
