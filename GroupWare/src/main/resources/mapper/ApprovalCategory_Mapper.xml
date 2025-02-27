@@ -11,4 +11,7 @@
   <select id="categorySelectById" resultType="approvalCategoryDto">
   	SELECT CATEGORY_ID, CATEGORY_NAME, CATEGORY_YNAME, CREATE_DATE FROM APPROVAL_CATEGORY WHERE CATEGORY_ID = #{category_id}
   </select>
+  <select id="categoryCheck" resultType="int">
+  	SELECT COUNT(*) FROM APPROVAL_CATEGORY WHERE CATEGORY_YNAME = #{category_yname}
+  </select>
 </mapper>

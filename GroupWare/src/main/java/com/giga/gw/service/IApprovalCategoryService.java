@@ -8,4 +8,5 @@ public interface IApprovalCategoryService {
 	int categoryInsert(ApprovalCategoryDto categoryDto);
 	List<ApprovalCategoryDto> categorySelect();
 	ApprovalCategoryDto categorySelectById(String category_id);
+	int categoryCheck(String category_yname);
 }

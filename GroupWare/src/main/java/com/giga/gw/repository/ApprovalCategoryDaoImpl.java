@@ -30,5 +30,10 @@ public class ApprovalCategoryDaoImpl implements IApprovalCategoryDao {
 	public ApprovalCategoryDto categorySelectById(String category_id) {
 		return sql.selectOne(NS+"categorySelectById",category_id);
 	}
+
+	@Override
+	public int categoryCheck(String category_yname) {
+		return sql.selectOne(NS+"categoryCheck",category_yname);
+	}
 	
 }
