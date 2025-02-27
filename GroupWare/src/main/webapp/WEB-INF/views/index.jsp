@@ -25,7 +25,7 @@
 <%@ include file="./layout/sidebar.jsp" %>
 	<div id="content">
 	${sessionScope.loginDto}
-		<h3 class="content_title">제목</h3>
+		<h3 class="content_title">제목trestest</h3>
 		<table class="table table-hover">
 			<thead>
 				<tr>
