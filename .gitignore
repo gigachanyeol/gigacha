@@ -19,7 +19,7 @@ local.properties
 .recommenders
 
 # ignore properties file
-config.properties
+db.properties
 
 # External tool builders
 .externalToolBuilders/
