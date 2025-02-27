@@ -5,13 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>항상 보이는 Datepicker</title>
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <%@ include file="./layout/header.jsp"%>
 <!-- jQuery UI CSS -->
 <link rel="stylesheet"
@@ -24,7 +17,6 @@
 #content {
 	margin-right: 30px;
 	margin-left: 230px;
-	
 }
 
 .content_title {
@@ -34,8 +26,9 @@
 }
 
 .btn-container { /* 추가: 부모 요소 클래스 */
-    display: flex;
+	display: flex;
 }
+
 .btn_bg {
 	align-items: center;
 	justify-content: center;
@@ -66,15 +59,14 @@
 /* 캘린더 스타일 조정 */
 #datepicker {
 	position: absolute;
-	top: 35px;
+	top: 90px;
 }
 </style>
 </head>
 <body>
 	<%@ include file="./layout/nav.jsp"%>
 	<%@ include file="./layout/sidebar.jsp"%>
-	<div class="container mt-5">
-	</div>
+	<div class="container mt-5"></div>
 	<!-- 항상 보이는 달력 -->
 	<div id="content">
 
@@ -85,40 +77,50 @@
 					<th class="text-center">회의실명</th>
 					<th class="text-center">예약상태</th>
 					<td rowspan="5" style="position: relative;" width="270">
-						<div id="datepicker"></div> 
+						<div id="datepicker"></div>
 					</td>
 				</tr>
 			</thead>
 			<tbody>
-			<%
+				<%
 				for (int j = 1; j <= 4; j++) {
-			%>
+				%>
 				<tr>
-					<td>
-						회의실<%=j %>
+					<td>회의실<%=j%>
 					</td>
 					<td class="text-center">
-					
-						<div class="btn-container"> 
-							<%
-					        for (int i = 1; i <= 4; i++) {
-					        %>
-					        <div class="btn_bg nocheck text-center" onclick="toggleCheck(this)">
-					            <%=i%>
-					        </div>
-					        <%
-					        }
-					        %>
-					    </div>
+						<div class="btn-container">
+							<div style="display: flex; flex-direction: column;">
+								<span>08:00-10:00</span>
+								<div class="btn_bg nocheck text-center"
+									onclick="toggleCheck(this)">1</div>
+							</div>
+							<div style="display: flex; flex-direction: column;">
+								<span>10:00-12:00</span>
+								<div class="btn_bg nocheck text-center"
+									onclick="toggleCheck(this)">2</div>
+							</div>
+							<div style="display: flex; flex-direction: column;">
+								<span>13:00-15:00</span>
+								<div class="btn_bg nocheck text-center"
+									onclick="toggleCheck(this)">3</div>
+							</div>
+							<div style="display: flex; flex-direction: column;">
+								<span>15:00-17:00</span>
+								<div class="btn_bg nocheck text-center"
+									onclick="toggleCheck(this)">4</div>
+							</div>
+						</div>
+
 					</td>
-					
+
 				</tr>
 				<%
 				}
 				%>
 			</tbody>
 		</table>
-		
+
 	</div>
 
 	<script>
@@ -135,12 +137,12 @@
 				}
 			});
 		});
-		
-		 function toggleCheck(element) {
-	            $(element).toggleClass("check nocheck");
-	        }
+
+		function toggleCheck(element) {
+			$(element).toggleClass("check nocheck");
+		}
 	</script>
-	
+
 
 </body>
 </html>

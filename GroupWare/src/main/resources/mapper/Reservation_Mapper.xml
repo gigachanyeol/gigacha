@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.ReservationDaoImpl">
+	<!-- 예약 생성 -->
+	<insert id="createreservation">
+	INSERT INTO RESERVATION (RESERVATION_ID, ROOM_ID,
+		RESERVATION_DATE,
+		RESERVATION_TIME, RESERVER, MEMBER, PURPOSE)
+	VALUES
+		(SEQ_RESERVATION_ID.NEXTVAL,#{room_id},  TO_DATE('2025-01-20', 'YYYY-MM-DD'),
+		 		'10:00-12:00', 1505001, '김인사, 최지원', #{content});
+	</insert>
+
+	<!-- 예약 조회 -->
+	<select id="getReservation" resultType="map">
+	SELECT
+		r2.RESERVATION_ID,
+		r.ROOM_NAME,
+		r2.RESERVATION_DATE,
+		r2.RESERVATION_TIME,
+		r2.RESERVER,
+		r2.MEMBER,
+		r2.PURPOSE
+	FROM
+		RESERVATION r2
+	JOIN
+		ROOMS r ON r2.ROOM_ID = r.ROOM_ID
+	WHERE
+		r2.RESERVATION_ID = #{reservation_id};
+	</select>
+
+	<!-- 예약 수정 -->
+	<update id="updateReservation" parameterType="reservationDto">
+	UPDATE RESERVATION
+		SET RESERVATION_TIME = '15:00-17:00',
+			PURPOSE = #{content}, RESERVER = 2001005
+		WHERE RESERVATION_ID = #{reservation_id};
+	</update>
+
+	<!-- 예약 삭제 -->
+	<delete id="delReservation">
+		DELETE FROM RESERVATION WHERE RESERVATION_ID =
+		#{reservation_id};
+	</delete>
+
+	<!-- 예약 참여자 조회 -->
+	<select id="getMemer" resultType="map">
+	SELECT
+		e.NAME AS RESERVER,
+		r.MEMBER
+	FROM
+		RESERVATION_PARTICIPANT rp
+	JOIN
+		RESERVATION r ON rp.RESERVATION_ID = r.RESERVATION_ID
+	LEFT JOIN
+		EMPLOYEES e ON rp.EMPNO = e.EMPNO 
+	WHERE
+		r.RESERVATION_ID = #{reservation_id};
+	</select>
+
+</mapper>
