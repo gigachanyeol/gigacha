@@ -128,6 +128,7 @@ style>body {
 
 .navbar-nav {
 	width: 80%;
+	
 }
 
 .teal>button {
@@ -139,6 +140,9 @@ style>body {
 }
 
 .navbar {
+	position: fixed;
+    width: 100%;
+    top: 0;
 	z-index: 200;
 }
 
