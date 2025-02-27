@@ -10,9 +10,7 @@
 			LPAD(APPROVALFORM_SEQ.NEXTVAL, 3, '0')
 			FROM DUAL
 		</selectKey>
-
-		INSERT INTO APPROVAL_FORM (FORM_ID, CATEGORY_ID, FORM_NAME,
-		FORM_CONTENT)
+		INSERT INTO APPROVAL_FORM (FORM_ID, CATEGORY_ID, FORM_NAME,	FORM_CONTENT)
 		VALUES (#{form_id}, #{category_id}, #{form_name}, #{form_content})
 	</insert>
 
@@ -27,5 +25,30 @@
 			SET USE_YN = 'N'
 			WHERE FORM_ID = #{form_id}
 	</update>
-
+	
+	<resultMap type="approvalFormDto" id="formJoinCategory">
+		<result property="category_id" column="CATEGORY_ID" />
+		<result property="form_content" column="CATEGORY_NAME" />
+		<result property="form_id" column="FORM_ID" />
+		<result property="form_name" column="FORM_NAME" />
+		<result property="create_date" column="CREATE_DATE" />
+	</resultMap>
+	
+	<select id="formSelectAll" resultMap="formJoinCategory">
+		SELECT CATEGORY_ID, CATEGORY_NAME , FORM_ID, FORM_NAME, t1.CREATE_DATE 
+		FROM APPROVAL_FORM t1 JOIN APPROVAL_CATEGORY t2
+		USING(CATEGORY_ID)
+		WHERE t2.USE_YN = 'Y' AND t1.USE_YN = 'Y'
+	</select>
+	
+	<select id="formSelectDetail" resultType="approvalFormDto">
+		SELECT FORM_ID, CATEGORY_ID, FORM_NAME, FORM_CONTENT, CREATE_DATE
+		FROM APPROVAL_FORM
+		WHERE FORM_ID = #{form_id}
+	</select>
+	
+	
+	
+	
+	
 </mapper>
