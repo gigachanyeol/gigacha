@@ -7,7 +7,6 @@
 	<name>GroupWare Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<!-- TODO 016 JUnit test가 실패하여 maven install이 안될 경우 설정  -->
 		<maven.test.skip>true</maven.test.skip>
 		<java-version>17</java-version>
 		<org.springframework-version>5.3.27</org.springframework-version>
@@ -168,7 +167,7 @@
 			<version>5.0.1</version>
 		</dependency>
 
-		<!-- TODO 001 추가 교육 라이브러리 -->
+	
 		<!-- JAVA 객체를 JSON으로 변경해주는 라이브러리 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

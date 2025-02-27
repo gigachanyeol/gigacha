@@ -30,5 +30,10 @@ public class ApprovalCategoryServiceImpl implements IApprovalCategoryService{
 	public ApprovalCategoryDto categorySelectById(String category_id) {
 		return approvalCategoryDao.categorySelectById(category_id);
 	}
+
+	@Override
+	public int categoryCheck(String category_yname) {
+		return approvalCategoryDao.categoryCheck(category_yname);
+	}
 	
 }

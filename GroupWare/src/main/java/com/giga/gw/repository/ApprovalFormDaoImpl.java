@@ -1,5 +1,7 @@
 package com.giga.gw.repository;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,16 @@ public class ApprovalFormDaoImpl implements IApprovalFormDao {
 	@Override
 	public int formDelete(String form_id) {
 		return sql.update(NS+"formDelete",form_id);
+	}
+
+	@Override
+	public List<ApprovalFormDto> formSelectAll() {
+		return sql.selectList(NS+"formSelectAll");
+	}
+
+	@Override
+	public ApprovalFormDto formSelectDetail(String form_id) {
+		return sql.selectOne(NS+"formSelectDetail",form_id);
 	}
 
 }

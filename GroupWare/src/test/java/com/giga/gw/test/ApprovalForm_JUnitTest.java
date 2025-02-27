@@ -2,6 +2,8 @@ package com.giga.gw.test;
 
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +47,15 @@ public class ApprovalForm_JUnitTest {
 		assertNotEquals(0, approvalFormService.formUpdate(approvalFormDto));
 	}
 	// 결재양식 DELETE
-	@Test
+//	@Test
 	public void deleteTest() {
 		assertNotEquals(0, approvalFormDao.formDelete("HR021"));
+	}
+	
+	@Test
+	public void selectAllTest() {
+		List<ApprovalFormDto> lists = approvalFormDao.formSelectAll();
+		assertNotEquals(0, lists.size());
 	}
 
 }

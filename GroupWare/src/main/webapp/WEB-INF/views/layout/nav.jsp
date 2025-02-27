@@ -38,10 +38,10 @@
                             전자결재
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">기안 작성</a></li>
-                            <li><a class="dropdown-item" href="#">결재목록</a></li>
-                            <li><a class="dropdown-item" href="#">나의 결재함</a></li>
-                            <li><a class="dropdown-item" href="#">문서양식관리(관리자)</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval">기안 작성</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval">결재목록</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval">나의 결재함</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval/approvalFormList.do">문서양식관리(관리자)</a></li>
                         </ul>
                     </li>
 

@@ -1,5 +1,7 @@
 package com.giga.gw.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.giga.gw.dto.ApprovalFormDto;
@@ -32,6 +34,16 @@ public class ApprovalFormServiceImpl implements IApprovalFormService {
 	@Override
 	public int formDelete(String form_id) {
 		return approvalFormDao.formDelete(form_id);
+	}
+
+	@Override
+	public List<ApprovalFormDto> formSelectAll() {
+		return approvalFormDao.formSelectAll();
+	}
+
+	@Override
+	public ApprovalFormDto formSelectDetail(String form_id) {
+		return approvalFormDao.formSelectDetail(form_id);
 	}
 
 }
