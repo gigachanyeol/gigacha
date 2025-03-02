@@ -19,5 +19,8 @@ public class HomeController {
 	public String tree() {
 		return "tree";
 	}
-	
+	@GetMapping("/ckeditor.do")
+	public String ckeditor() {
+		return "ckEditor";
+	}
 }

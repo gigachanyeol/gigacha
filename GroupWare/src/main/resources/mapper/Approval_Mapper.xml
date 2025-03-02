@@ -29,11 +29,11 @@
     <!-- 에디터 저장 -->
     <insert id="editorSave">
     	INSERT INTO APPROVAL(APPROVAL_ID, FORM_ID, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT, CREATE_DATE, APPROVAL_STATUS)
-    	VALUES ('APP005','HR001','2501001','테스트',#{content},CURRENT_DATE,'ST01')
+    	VALUES ('APP016','HR001','2501001','테스트',#{content},CURRENT_DATE,'ST01')
     </insert>
     <!-- 에디터 불러오기 -->
     <select id="editorRead" resultType="String">
-    	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'APP005'
+    	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'HR061DOC0010'
     </select>
     
     <!-- 양식별 사용중인 결재문서 갯수 -->
@@ -64,7 +64,7 @@
 		    #{approval_title}, 
 		    #{approval_content}, 
 		    'ST02', 
-		    #{approval_deadline})
+		    TO_DATE(#{approval_deadline},'YYYY-MM-DD'))
     </insert>
     
     <!-- 결재문서 업데이트 -->
@@ -81,6 +81,13 @@
 		SET TEMP_SAVE_YN = 'Y', APPROVAL_STATUS = 'ST01'
 		WHERE APPROVAL_ID = #{approval_id} AND (SELECT COUNT(*) FROM APPROVAL_LINE WHERE APPROVAL_ID = #{approval_id} AND STATUS_ID IN ('ST05','ST02','ST04')) = 0
 	</update>
-    
-    
+   
+   <!-- TODO 결재양식 트리 -->
+   <select id="formTree" resultType="map">
+   SELECT CATEGORY_ID AS "id" , CATEGORY_NAME AS "text", '#' AS "parent"  FROM APPROVAL_CATEGORY
+	WHERE USE_YN = 'Y'
+	UNION ALL 
+	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent" FROM APPROVAL_FORM
+	WHERE USE_YN = 'Y'
+   </select>    
 </mapper>

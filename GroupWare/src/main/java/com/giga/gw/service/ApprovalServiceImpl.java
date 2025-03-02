@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.giga.gw.dto.ApprovalDto;
+import com.giga.gw.dto.ApprovalLineDto;
 import com.giga.gw.repository.IApprovalDao;
+import com.giga.gw.repository.IApprovalLineDao;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ApprovalServiceImpl implements IApprovalService {
-	
+
 	private final IApprovalDao approvalDao;
-	
+	private final IApprovalLineDao approvalLineDao;
+
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
 //		List<Map<String, Object>> departmentList = approvalDao.getDepartments();
 //        List<Map<String, Object>> employeeList = approvalDao.getEmployeesByDepartment();
 //        List<Map<String, Object>> tree = ;
 //        List<Map<String, Object>> treeData = new ArrayList<>();
-     // 직원 데이터 변환
+		// 직원 데이터 변환
 //        for (Map<String, Object> emp : employeeList) {
 //            emp.put("id", String.valueOf(emp.get("id"))); // 직원 ID 변환
 //            emp.put("text", emp.get("text")); // 직원 이름
@@ -35,7 +40,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 //        treeData.addAll(employeeList);
 //        treeData.addAll(departmentList); // 부서 추가
 //		return treeData;
-        return approvalDao.getOrganizationTree();
+		return approvalDao.getOrganizationTree();
 	}
 
 	@Override
@@ -43,9 +48,23 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.countApproval(form_id);
 	}
 
+	@Transactional
 	@Override
-	public int insertApproval(ApprovalDto approvalDto) {
-		return approvalDao.insertApproval(approvalDto);
+	public boolean insertApproval(ApprovalDto approvalDto) {
+		int n = approvalDao.insertApproval(approvalDto);
+		int m = 0;
+		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
+		if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
+			for (ApprovalLineDto line : lineDtos) {
+				line.setApproval_id(approvalDto.getApproval_id());
+				System.out.println(line.getApprover_empno());
+			}
+			Map<String, Object> map = new HashedMap<String, Object>();
+			map.put("approval_id", approvalDto.getApproval_id());
+			map.put("approvalLineDtos", lineDtos);
+			m = approvalLineDao.insertApprovalLine(map);
+		}
+		return n == 1 && m >= 1 ? true : false;
 	}
 
 	@Override
@@ -62,9 +81,10 @@ public class ApprovalServiceImpl implements IApprovalService {
 	public int recallApproval(String approval_id) {
 		return approvalDao.recallApproval(approval_id);
 	}
-	
-	
-	
-	
+
+	@Override
+	public List<Map<String, Object>> formTree() {
+		return approvalDao.formTree();
+	}
 
 }

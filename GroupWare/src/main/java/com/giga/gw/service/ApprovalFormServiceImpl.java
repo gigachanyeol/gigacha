@@ -1,6 +1,7 @@
 package com.giga.gw.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,11 @@ public class ApprovalFormServiceImpl implements IApprovalFormService {
 	@Override
 	public ApprovalFormDto formSelectDetail(String form_id) {
 		return approvalFormDao.formSelectDetail(form_id);
+	}
+
+	@Override
+	public Map<String, Object> formSelectById(String form_id) {
+		return approvalFormDao.formSelectById(form_id);
 	}
 
 }

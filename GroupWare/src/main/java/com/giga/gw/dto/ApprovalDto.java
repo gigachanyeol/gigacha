@@ -1,5 +1,7 @@
 package com.giga.gw.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +29,5 @@ public class ApprovalDto {
 	temp_save_yn;
 	int empno,
 	update_empno;
+	List<ApprovalLineDto> approvalLineDtos;
 }

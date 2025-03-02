@@ -1,6 +1,7 @@
 package com.giga.gw.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.giga.gw.dto.ApprovalFormDto;
 
@@ -10,4 +11,5 @@ public interface IApprovalFormDao {
 	int formDelete(String form_id);
 	List<ApprovalFormDto> formSelectAll();
 	ApprovalFormDto formSelectDetail(String form_id);
+	Map<String, Object> formSelectById(String form_id);
 }

@@ -18,4 +18,6 @@ public interface IApprovalDao {
     
     ApprovalDto selectApprovalById(String approval_id);
     int recallApproval(String approval_id);
+    
+    List<Map<String, Object>> formTree();
 }

@@ -25,7 +25,6 @@
 	<%@ include file="./layout/nav.jsp"%>
 	<%@ include file="./layout/sidebar.jsp"%>
 	<div id="content">
-		필수 값 CATEGORY_NAME (유니크),CATEGORY_YNAME (유니크)
 		<h3 class="content_title">문서양식 카테고리 등록</h3>
 		<div class="row">
 			<div class="col-6">
@@ -48,6 +47,7 @@
 							<div class="text-center">
 								<button type="submit" class="btn btn-primary">Submit</button>
 								<button type="reset" class="btn btn-secondary">Reset</button>
+								<button type="button" class="btn btn-info" onclick="javascript:history.back()">cancel</button>
 							</div>
 						</form>
 

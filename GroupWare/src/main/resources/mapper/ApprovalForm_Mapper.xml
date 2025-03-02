@@ -16,7 +16,7 @@
 
 	<update id="formUpdate" parameterType="approvalFormDto">
 		UPDATE APPROVAL_FORM 
-			SET FORM_NAME = #{form_name}, FORM_CONTENT=#{form_content}
+			SET FORM_NAME = #{form_name}, FORM_CONTENT= #{form_content}
 			WHERE FORM_ID = #{form_id}
 	</update>
 	
@@ -48,6 +48,15 @@
 	</select>
 	
 	
+	 <resultMap type="java.util.Map" id="formSelectId">
+		<result property="FORM_ID" column="FORM_ID" javaType="java.lang.String"/>
+		<result property="FORM_NAME" column="FORM_NAME" javaType="java.lang.String"/>
+		<result property="FORM_CONTENT" column="FORM_CONTENT" javaType="java.lang.String"/>
+   </resultMap>
+	<select id="formSelectById" resultMap="formSelectId">
+		SELECT FORM_ID,FORM_NAME, FORM_CONTENT FROM APPROVAL_FORM
+		WHERE FORM_ID = #{form_id}	
+	</select>
 	
 	
 	

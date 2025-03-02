@@ -68,4 +68,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.update(NS+"recallApproval",approval_id);
 	}
 
+	@Override
+	public List<Map<String, Object>> formTree() {
+		return sql.selectList(NS+"formTree");
+	}
+
 }

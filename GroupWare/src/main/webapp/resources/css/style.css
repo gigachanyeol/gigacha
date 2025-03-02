@@ -155,3 +155,10 @@ style>body {
 	left: 163px;
 	transition: left 0.35s ease-in-out;
 }
+
+#content {
+	min-width:800px;
+	width:800px;
+	margin: 0 auto;
+	margin-top:65px;
+}
