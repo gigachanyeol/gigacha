@@ -101,7 +101,7 @@
 	</div>
 	
 </body>
-<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script type="text/javascript">
 		function categoryPick(category_id,category_name) {

@@ -16,8 +16,8 @@
 
 	<update id="formUpdate" parameterType="approvalFormDto">
 		UPDATE APPROVAL_FORM 
-			SET FORM_NAME = #{form_name}, FORM_CONTENT= #{form_content}
-			WHERE FORM_ID = #{form_id}
+		SET FORM_NAME = #{form_name}, FORM_CONTENT= #{form_content}
+		WHERE FORM_ID = #{form_id}
 	</update>
 	
 	<update id="formDelete" parameterType="String">
@@ -54,7 +54,7 @@
 		<result property="FORM_CONTENT" column="FORM_CONTENT" javaType="java.lang.String"/>
    </resultMap>
 	<select id="formSelectById" resultMap="formSelectId">
-		SELECT FORM_ID,FORM_NAME, FORM_CONTENT FROM APPROVAL_FORM
+		SELECT FORM_ID, FORM_NAME, FORM_CONTENT FROM APPROVAL_FORM
 		WHERE FORM_ID = #{form_id}	
 	</select>
 	

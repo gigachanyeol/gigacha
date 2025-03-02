@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -50,7 +51,8 @@ public class ApprovalController {
 	}
 
 	@GetMapping("/tre.do")
-	public String tre() {
+	public String tre(Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		return "tree";
 	}
 
@@ -136,8 +138,8 @@ public class ApprovalController {
 		return "approvalFormList";
 	}
 
-	@GetMapping("/approvalFormDetail/{id}.do")
-	public String approvalFormDetail(@PathVariable String id, Model model) {
+	@GetMapping("/approvalFormDetail.do")
+	public String approvalFormDetail(@RequestParam String id, Model model) {
 		System.out.println(id);
 		ApprovalFormDto form = approvalFormService.formSelectDetail(id);
 		model.addAttribute("form", form);
@@ -178,6 +180,27 @@ public class ApprovalController {
 	public Map<String, Object> selectFormContent(@RequestBody String form_id) {
 		System.out.println(form_id);
 		return approvalFormService.formSelectById(form_id);
+	}
+	
+	// 문서양식 수정페이지 이동
+	@GetMapping("/approvalFormUpdate.do")
+	public String approvalFormUpdate(@RequestParam String id, Model model, HttpSession session) {
+		ApprovalFormDto dto = approvalFormService.formSelectDetail(id);
+		model.addAttribute("form",dto);
+		return "approvalFormUpdate";
+	}
+	
+	// 문서양식 수정
+	@PostMapping("/approvalFormUpdate.do")
+	@ResponseBody
+	public boolean formUpdate(@RequestBody ApprovalFormDto approvalFormDto) {
+		return approvalFormService.formUpdate(approvalFormDto) == 1?true:false;
+	}
+	
+	@GetMapping("/approvalFormDelete.do")
+	@ResponseBody
+	public boolean formDelete(@RequestParam String id) {
+		return approvalFormService.formDelete(id) == 1 ? true : false;
 	}
 	
 	// TODO 00102 전자결재 문서
