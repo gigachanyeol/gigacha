@@ -258,6 +258,7 @@ public class ApprovalController {
 		model.addAttribute("loginDto",loginDto);
 		return "approvalDocumentUpdateForm";
 	}
+	
 	// 문서 수정
 	@PostMapping("/approvalUpdateForm.do")
 	@ResponseBody
@@ -267,6 +268,7 @@ public class ApprovalController {
 		approvalDto.setUpdate_empno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.updateApproval(approvalDto) == 1 ? true : false;
 	}
+	
 	// 문서 회수
 	@PostMapping("/approvalRecall.do")
 	@ResponseBody
@@ -283,4 +285,9 @@ public class ApprovalController {
 		return approvalService.approvalRequest(approval_id) == 1 ? true : false;
 	}
 	
+	// 내가 결재할 목록으로 이동
+	@GetMapping("/approvalRequestList.do")
+	public String approvalRequestList(HttpSession session, Model model) {
+		return "approvalRequestList";
+	}
 }
