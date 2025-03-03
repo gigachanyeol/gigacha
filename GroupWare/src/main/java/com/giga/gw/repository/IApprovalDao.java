@@ -14,10 +14,12 @@ public interface IApprovalDao {
     
     int countApproval(String form_id);
     int insertApproval(ApprovalDto approvalDto);
+    int insertApprovalTemp(ApprovalDto approvalDto);
     int updateApproval(ApprovalDto approvalDto);
     
     ApprovalDto selectApprovalById(String approval_id);
     int recallApproval(String approval_id);
     
     List<Map<String, Object>> formTree();
+    
 }

@@ -224,6 +224,42 @@
 				}
 			})
 			.catch(err => console.log(err))
+		});
+		document.querySelector("#tempBtn").addEventListener('click', () => {
+			let formData = new FormData(document.forms[0]);
+			let jsonData = {};
+			formData.forEach((value, key) => {
+				jsonData[key] = value;
+			});
+// 			jsonData["approval_content"] = editor.getHTML();
+			if(editor.getData() == '') {
+				Swal.fire("문서양식을 선택해주세요");
+				return;
+			}
+			jsonData["approval_content"] = editor.getData();
+			
+			if(typeof initApprovalLine != 'undefined'){
+				let d = initApprovalLine.map(item => ({approver_empno:item.id}));
+			    jsonData["approvalLineDtos"] = d; 
+			}		
+	
+		    console.log(jsonData);
+			fetch('./approvalDocumentSaveTemp.do',{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify(jsonData)
+			})
+			.then(resp => resp.json())
+			.then(data => {
+				if(data == true) {
+					Swal.fire("작성성공");
+				} else{
+					Swal.fire("작성실패");
+				}
+			})
+			.catch(err => console.log(err))
 		})
 	</script>
 </body>

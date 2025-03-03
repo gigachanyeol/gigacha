@@ -9,6 +9,8 @@ public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
 	int countApproval(String form_id);
 	boolean insertApproval(ApprovalDto approvalDto);
+	boolean insertApprovalTemp(ApprovalDto approvalDto);
+	
     int updateApproval(ApprovalDto approvalDto);
     
     ApprovalDto selectApprovalById(String approval_id);

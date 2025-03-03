@@ -64,9 +64,30 @@
 		    #{approval_title}, 
 		    #{approval_content}, 
 		    'ST02', 
-		    TO_DATE(#{approval_deadline},'YYYY-MM-DD'))
+		    TO_DATE(#{approval_deadline},'YYYY-MM-DD')
+		)
     </insert>
-    
+    <!-- 결재문서 임시저장  -->
+    <insert id="insertApprvalTemp" parameterType="approvalDto">
+    	<selectKey keyProperty="approval_id" resultType="String" order="BEFORE">
+	    	SELECT (#{form_id}) ||
+			            ('DOC' || LPAD(NVL(MAX(SUBSTR(APPROVAL_ID, 9)), '0') + 1, 4, '0')) 
+		     FROM APPROVAL
+    	</selectKey>
+    	INSERT INTO APPROVAL ( APPROVAL_ID, FORM_ID, EMPNO,
+	    	APPROVAL_TITLE, APPROVAL_CONTENT,  APPROVAL_STATUS, 
+	    	APPROVAL_DEADLINE,TEMP_SAVE_YN)
+    	VALUES (
+		    #{approval_id},
+		    #{form_id}, 
+		    #{empno}, 
+		    #{approval_title}, 
+		    #{approval_content}, 
+		    'ST01', 
+		    TO_DATE(#{approval_deadline},'YYYY-MM-DD'),
+		    'Y'
+		)
+    </insert>
     <!-- 결재문서 업데이트 -->
     <update id="updateApproval" parameterType="approvalDto">
     	UPDATE APPROVAL 

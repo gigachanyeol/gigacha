@@ -73,4 +73,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.selectList(NS+"formTree");
 	}
 
+	@Override
+	public int insertApprovalTemp(ApprovalDto approvalDto) {
+		return sql.insert(NS+"insertApprvalTemp", approvalDto);
+	}
+
 }

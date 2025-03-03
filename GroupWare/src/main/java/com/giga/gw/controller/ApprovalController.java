@@ -219,4 +219,13 @@ public class ApprovalController {
 		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.insertApproval(approvalDto);
 	}
+	
+	@PostMapping("/approvalDocumentSaveTemp.do")
+	@ResponseBody
+	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+		System.out.println(approvalDto);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
+		return approvalService.insertApprovalTemp(approvalDto);
+	}
 }

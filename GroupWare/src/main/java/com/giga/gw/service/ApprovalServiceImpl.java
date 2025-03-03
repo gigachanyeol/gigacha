@@ -87,4 +87,24 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.formTree();
 	}
 
+	@Override
+	public boolean insertApprovalTemp(ApprovalDto approvalDto) {
+		int n = approvalDao.insertApprovalTemp(approvalDto);
+		int m = 0;
+		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
+		if(lineDtos != null) {
+			if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
+				for (ApprovalLineDto line : lineDtos) {
+					line.setApproval_id(approvalDto.getApproval_id());
+					System.out.println(line.getApprover_empno());
+				}
+				Map<String, Object> map = new HashedMap<String, Object>();
+				map.put("approval_id", approvalDto.getApproval_id());
+				map.put("approvalLineDtos", lineDtos);
+				m = approvalLineDao.insertApprovalLine(map);
+			}
+		}
+		return n == 1 ? true : false;
+	}
+
 }
