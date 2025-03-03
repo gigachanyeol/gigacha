@@ -16,4 +16,7 @@ public interface IApprovalService {
     ApprovalDto selectApprovalById(String approval_id);
     int recallApproval(String approval_id);
     List<Map<String, Object>> formTree();
+    
+    List<ApprovalDto> selectApproval(int empno);
+    int approvalRequest(String approval_id);
 }

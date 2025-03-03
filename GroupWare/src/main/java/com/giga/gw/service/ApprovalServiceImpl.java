@@ -107,4 +107,14 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return n == 1 ? true : false;
 	}
 
+	@Override
+	public List<ApprovalDto> selectApproval(int empno) {
+		return approvalDao.selectApproval(empno);
+	}
+
+	@Override
+	public int approvalRequest(String approval_id) {
+		return approvalDao.approvalRequest(approval_id);
+	}
+
 }

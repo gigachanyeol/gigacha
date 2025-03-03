@@ -42,7 +42,8 @@
     </select>
 	
 	<select id="selectApprovalById" resultType="approvalDto" parameterType="String">
-		SELECT APPROVAL_ID, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, UPDATE_DATE, UPDATE_EMPNO 
+		SELECT APPROVAL_ID, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, 
+		UPDATE_DATE, UPDATE_EMPNO , CREATE_DATE, APPROVAL_STATUS
 			FROM APPROVAL
 			WHERE APPROVAL_ID = #{approval_id}
 	</select>
@@ -88,6 +89,14 @@
 		    'Y'
 		)
     </insert>
+    
+    <!-- 임시저장 상태에서 결재요청 -->
+    <update id="approvalRequest">
+    	UPDATE APPROVAL
+    	SET APPROVAL_STATUS = 'ST02'
+    	WHERE APPROVAL_ID = #{approval_id}
+    </update>
+    
     <!-- 결재문서 업데이트 -->
     <update id="updateApproval" parameterType="approvalDto">
     	UPDATE APPROVAL 
@@ -110,5 +119,15 @@
 	UNION ALL 
 	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent" FROM APPROVAL_FORM
 	WHERE USE_YN = 'Y'
-   </select>    
+   </select> 
+   
+   <!-- TODO 결재요청함 selectApproval -->
+   <select id="selectApproval" resultType="approvalDto">
+   		SELECT APPROVAL_ID, FORM_ID, EMPNO, 
+   			APPROVAL_TITLE, APPROVAL_STATUS, CREATE_DATE, 
+   			APPROVAL_DEADLINE, TEMP_SAVE_YN
+   		FROM APPROVAL
+   		WHERE EMPNO = #{empno} AND USE_YN = 'Y'
+   </select>
+   
 </mapper>

@@ -228,4 +228,59 @@ public class ApprovalController {
 		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.insertApprovalTemp(approvalDto);
 	}
+	
+	// 내가 작성한 모든 문서보기
+	@GetMapping("/approvalList.do")
+	public String approvalList(Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		
+		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
+		model.addAttribute("approvalList",approvalList);
+		return "approvalList";
+	}
+	
+	// 문서 상세
+	@GetMapping("/approvalDetail.do")
+	public String approvalDetail(@RequestParam String id,Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		ApprovalDto approval = approvalService.selectApprovalById(id);
+		model.addAttribute("approval",approval);
+		model.addAttribute("loginDto",loginDto);
+		return "approvalDetail";
+	}
+	
+	// 문서 수정 FORM 이동
+	@GetMapping("/approvalUpdateForm.do")
+	public String approvalUpdateForm(@RequestParam String id,Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		ApprovalDto approval = approvalService.selectApprovalById(id);
+		model.addAttribute("approval",approval);
+		model.addAttribute("loginDto",loginDto);
+		return "approvalDocumentUpdateForm";
+	}
+	// 문서 수정
+	@PostMapping("/approvalUpdateForm.do")
+	@ResponseBody
+	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+		System.out.println(approvalDto);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		approvalDto.setUpdate_empno(Integer.parseInt(loginDto.getEmpno()));
+		return approvalService.updateApproval(approvalDto) == 1 ? true : false;
+	}
+	// 문서 회수
+	@PostMapping("/approvalRecall.do")
+	@ResponseBody
+	public boolean approvalRecall(@RequestBody String approval_id, HttpSession session) {
+		
+		return approvalService.recallApproval(approval_id) == 1 ? true : false;
+	}
+	
+	// 임시저장상태에서 결재요청
+	@PostMapping("/approvalRequest.do")
+	@ResponseBody
+	public boolean approvalRequest(@RequestBody String approval_id, HttpSession session) {
+		
+		return approvalService.approvalRequest(approval_id) == 1 ? true : false;
+	}
+	
 }
