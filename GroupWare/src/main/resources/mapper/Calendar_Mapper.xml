@@ -9,9 +9,16 @@ INSERT INTO SCHEDULE (
     SCH_ID_SEQ.NEXTVAL, #{empno}, #{sch_title}, #{sch_startdate}, #{sch_enddate}, #{sch_color}
 )
 
-
-
 </insert>
 
+
+<select id="loadSchedule" resultType="map">
+    SELECT 
+        SCH_TITLE AS sch_title,
+        SCH_STARTDATE AS sch_startdate,
+        SCH_ENDDATE AS sch_enddate,
+        SCH_COLOR AS sch_color
+    FROM SCHEDULE
+</select>
 
 </mapper>

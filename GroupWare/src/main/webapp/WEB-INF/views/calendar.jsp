@@ -15,6 +15,8 @@
 <!-- jQuery 및 jQuery UI -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <!-- 구글캘린더 -->
 
 <style type="text/css">
@@ -264,25 +266,44 @@ eventClick : function(info) {
         //데이터 가져오는 이벤트
         eventSources:[
           {
-            events: async function (info, successCallback, failureCallback) {
-          const eventResult = await axios({
-            method: "POST",
-            url: "/eventData",
-          });
-          const eventData = eventResult.data;
-          //이벤트에 넣을 배열 선언하기
-          const eventArray = [];
-          eventData.forEach((res) => {
-            eventArray.push({
-              title: res.title,
-              start: res.start,
-              end: res.end,
-              backgroundColor: res.backgroundColor,
-            });
-          });
-          successCallback(eventArray);
-        
-        },
+
+        	  events: async function (info, successCallback, failureCallback) {
+        		  try {
+//         			    const response = await fetch("./loadSchedule.do");
+						const response = await fetch("${pageContext.request.contextPath}/calendar/loadSchedule.do");
+
+        			    if (!response.ok) {
+        			        throw new Error(`HTTP error! Status: ${response.status}`);
+        			    }
+
+        			    const eventData = await response.json();
+        			    console.log("📢 서버에서 받아온 데이터:", eventData); // 🔍 데이터 구조 확인
+
+        			    if (!Array.isArray(eventData)) {
+        			        console.error("⚠️ 서버 응답이 배열이 아닙니다:", eventData);
+        			        throw new Error("⚠️ 서버 응답이 배열이 아닙니다.");
+        			    }
+
+        			    const eventArray = eventData.map((res) => ({
+        		            title: res.SCH_TITLE,  // ✅ 일정 제목
+        		            start: new Date(res.SCH_STARTDATE).toISOString(), // ✅ 밀리초 → ISO 형식
+        		            end: new Date(res.SCH_ENDDATE).toISOString(), // ✅ 밀리초 → ISO 형식
+        		            backgroundColor: res.SCH_COLOR || "#3788d8",  // ✅ 색상 지정 (기본값)
+        		        }));
+        			    
+        			    
+        			    console.log("📌 변환된 이벤트 데이터:", eventArray);
+        			    
+        			    //이벤트 추가
+        			    successCallback(eventArray);
+        			} catch (error) {
+        			    console.error("❌ 일정 불러오기 실패:", error);
+        			    failureCallback(error);
+        			}
+
+        	  },
+
+
           },
             {
               googleCalendarId : 'ko.south_korea.official#holiday@group.v.calendar.google.com',
