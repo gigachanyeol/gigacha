@@ -117,4 +117,9 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.approvalRequest(approval_id);
 	}
 
+	@Override
+	public List<ApprovalDto> selectPendingApprovalDocuments(String empno) {
+		return approvalDao.selectPendingApprovalDocuments(empno);
+	}
+
 }

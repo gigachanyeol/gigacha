@@ -88,4 +88,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.update(NS+"approvalRequest",approval_id);
 	}
 
+	@Override
+	public List<ApprovalDto> selectPendingApprovalDocuments(String empno) {
+		return sql.selectList(NS+"selectPendingApprovalDocuments",empno);
+	}
+
 }

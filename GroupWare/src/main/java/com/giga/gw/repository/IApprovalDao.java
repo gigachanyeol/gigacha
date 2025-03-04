@@ -23,5 +23,6 @@ public interface IApprovalDao {
     List<Map<String, Object>> formTree();
     List<ApprovalDto> selectApproval(int empno);
     int approvalRequest(String approval_id);
+    List<ApprovalDto> selectPendingApprovalDocuments(String empno);
     
 }

@@ -29,11 +29,11 @@
     <!-- 에디터 저장 -->
     <insert id="editorSave">
     	INSERT INTO APPROVAL(APPROVAL_ID, FORM_ID, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT, CREATE_DATE, APPROVAL_STATUS)
-    	VALUES ('APP016','HR001','2501001','테스트',#{content},CURRENT_DATE,'ST01')
+    	VALUES ('APP005','HR001','2501001','테스트',#{content},CURRENT_DATE,'ST01')
     </insert>
     <!-- 에디터 불러오기 -->
     <select id="editorRead" resultType="String">
-    	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'HR061DOC0010'
+    	SELECT APPROVAL_CONTENT FROM APPROVAL WHERE APPROVAL_ID = 'APP005'
     </select>
     
     <!-- 양식별 사용중인 결재문서 갯수 -->
@@ -42,8 +42,7 @@
     </select>
 	
 	<select id="selectApprovalById" resultType="approvalDto" parameterType="String">
-		SELECT APPROVAL_ID, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, 
-		UPDATE_DATE, UPDATE_EMPNO , CREATE_DATE, APPROVAL_STATUS
+		SELECT APPROVAL_ID, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, UPDATE_DATE, UPDATE_EMPNO 
 			FROM APPROVAL
 			WHERE APPROVAL_ID = #{approval_id}
 	</select>
@@ -65,37 +64,8 @@
 		    #{approval_title}, 
 		    #{approval_content}, 
 		    'ST02', 
-		    TO_DATE(#{approval_deadline},'YYYY-MM-DD')
-		)
+		    #{approval_deadline})
     </insert>
-    <!-- 결재문서 임시저장  -->
-    <insert id="insertApprvalTemp" parameterType="approvalDto">
-    	<selectKey keyProperty="approval_id" resultType="String" order="BEFORE">
-	    	SELECT (#{form_id}) ||
-			            ('DOC' || LPAD(NVL(MAX(SUBSTR(APPROVAL_ID, 9)), '0') + 1, 4, '0')) 
-		     FROM APPROVAL
-    	</selectKey>
-    	INSERT INTO APPROVAL ( APPROVAL_ID, FORM_ID, EMPNO,
-	    	APPROVAL_TITLE, APPROVAL_CONTENT,  APPROVAL_STATUS, 
-	    	APPROVAL_DEADLINE,TEMP_SAVE_YN)
-    	VALUES (
-		    #{approval_id},
-		    #{form_id}, 
-		    #{empno}, 
-		    #{approval_title}, 
-		    #{approval_content}, 
-		    'ST01', 
-		    TO_DATE(#{approval_deadline},'YYYY-MM-DD'),
-		    'Y'
-		)
-    </insert>
-    
-    <!-- 임시저장 상태에서 결재요청 -->
-    <update id="approvalRequest">
-    	UPDATE APPROVAL
-    	SET APPROVAL_STATUS = 'ST02'
-    	WHERE APPROVAL_ID = #{approval_id}
-    </update>
     
     <!-- 결재문서 업데이트 -->
     <update id="updateApproval" parameterType="approvalDto">
@@ -111,8 +81,7 @@
 		SET TEMP_SAVE_YN = 'Y', APPROVAL_STATUS = 'ST01'
 		WHERE APPROVAL_ID = #{approval_id} AND (SELECT COUNT(*) FROM APPROVAL_LINE WHERE APPROVAL_ID = #{approval_id} AND STATUS_ID IN ('ST05','ST02','ST04')) = 0
 	</update>
-   
-   <!-- TODO 결재양식 트리 -->
+     <!-- TODO 결재양식 트리 -->
    <select id="formTree" resultType="map">
    SELECT CATEGORY_ID AS "id" , CATEGORY_NAME AS "text", '#' AS "parent"  FROM APPROVAL_CATEGORY
 	WHERE USE_YN = 'Y'
@@ -120,8 +89,7 @@
 	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent" FROM APPROVAL_FORM
 	WHERE USE_YN = 'Y'
    </select> 
-   
-   <!-- TODO 결재요청함 selectApproval -->
+    <!-- TODO 결재요청함 selectApproval -->
    <select id="selectApproval" resultType="approvalDto">
    		SELECT APPROVAL_ID, FORM_ID, EMPNO, 
    			APPROVAL_TITLE, APPROVAL_STATUS, CREATE_DATE, 
@@ -129,5 +97,16 @@
    		FROM APPROVAL
    		WHERE EMPNO = #{empno} AND USE_YN = 'Y'
    </select>
-   
+    <!-- 결재 대기 문서 리스트 -->
+    <select id="selectPendingApprovalDocuments" resultType="approvalDto">
+    	SELECT APPROVAL_ID, EMPNO , APPROVAL_TITLE, 
+    		TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE , APPROVAL_STATUS, TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD') AS APPROVAL_DEADLINE
+			FROM APPROVAL
+			WHERE APPROVAL_ID IN (SELECT APPROVAL_ID 
+				FROM APPROVAL_LINE
+				WHERE APPROVER_EMPNO  = #{empno}
+				AND STATUS_ID ='ST02') 
+			AND APPROVAL_STATUS != 'ST05'
+    </select>
+    
 </mapper>

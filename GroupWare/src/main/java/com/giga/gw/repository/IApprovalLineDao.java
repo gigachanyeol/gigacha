@@ -8,4 +8,6 @@ import com.giga.gw.dto.ApprovalLineDto;
 public interface IApprovalLineDao {
 	int insertApprovalLine(Map<String, Object> map);
 	int insertApprovalLine(ApprovalLineDto line);
+	int acceptApprovalLine(Map<String, Object> map);
+	int rejectApprovalLine(Map<String, Object> map);
 }

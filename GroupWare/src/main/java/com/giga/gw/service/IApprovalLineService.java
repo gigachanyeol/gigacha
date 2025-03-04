@@ -1,5 +1,8 @@
 package com.giga.gw.service;
 
-public interface IApprovalLineService {
+import java.util.Map;
 
+public interface IApprovalLineService {
+	boolean acceptApprovalLine(Map<String, Object> map);
+	boolean rejectApprovalLine(Map<String, Object> map);
 }

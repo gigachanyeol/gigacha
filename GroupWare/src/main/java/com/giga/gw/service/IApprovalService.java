@@ -19,4 +19,5 @@ public interface IApprovalService {
     
     List<ApprovalDto> selectApproval(int empno);
     int approvalRequest(String approval_id);
+    List<ApprovalDto> selectPendingApprovalDocuments(String empno);
 }

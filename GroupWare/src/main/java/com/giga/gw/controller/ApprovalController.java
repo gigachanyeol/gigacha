@@ -1,6 +1,7 @@
 package com.giga.gw.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,23 +28,30 @@ import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IEmployeeDao;
 import com.giga.gw.service.IApprovalCategoryService;
 import com.giga.gw.service.IApprovalFormService;
+import com.giga.gw.service.IApprovalLineService;
 import com.giga.gw.service.IApprovalService;
+import com.giga.gw.service.ILoginService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/approval")
 @RequiredArgsConstructor
 @Slf4j
 public class ApprovalController {
+	// 테스트용 로ㅓ그인
+	private final ILoginService loginService;
+	
 	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
 	private final IApprovalCategoryService approvalCategoryService;
 	private final IApprovalFormService approvalFormService;
 	private final IApprovalService approvalService;
+	private final IApprovalLineService approvalLineService;
 	
 	@GetMapping("/index.do")
 	public String apprIndex() {
@@ -288,6 +296,42 @@ public class ApprovalController {
 	// 내가 결재할 목록으로 이동
 	@GetMapping("/approvalRequestList.do")
 	public String approvalRequestList(HttpSession session, Model model) {
+//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empno", "1505001");
+		map.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(map);
+		
+		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
+		model.addAttribute("approvalList",approvalList);
 		return "approvalRequestList";
+	}
+	
+	// 결재승인
+	@PostMapping("/acceptApprovalLine.do")
+	@ResponseBody
+	public boolean acceptApprovalLine(@RequestBody Map<String, Object> map) {
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+		loginMap.put("empno", "1505001");
+		loginMap.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(loginMap);
+		map.put("empno", loginDto.getEmpno());
+		System.out.println(map);
+		return approvalLineService.acceptApprovalLine(map);
+	}
+	// 결재 반려
+	@PostMapping("/rejectApprovalLine.do")
+	@ResponseBody
+	public boolean rejectApprovalLine(@RequestBody Map<String, Object> map) {
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+		loginMap.put("empno", "1505001");
+		loginMap.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(loginMap);
+		map.put("empno", loginDto.getEmpno());
+		
+		System.out.println("\n\n"+map+"\n\n");
+		
+		return approvalLineService.rejectApprovalLine(map);
+//		return false;
 	}
 }
