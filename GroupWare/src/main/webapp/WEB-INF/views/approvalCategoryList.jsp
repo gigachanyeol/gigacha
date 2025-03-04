@@ -10,22 +10,11 @@
 <title>Insert title here</title>
 
 <%@ include file="./layout/header.jsp"%>
-<style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-</style>
 </head> 
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp" %>
+<%@ include file="./layout/newNav.jsp" %>
+<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">카테고리 목록</h3>
 		<table class="table table-hover">
@@ -47,6 +36,6 @@
 			</tbody>
 		</table>
 	</div>
-
+</div>
 </body>
 </html>

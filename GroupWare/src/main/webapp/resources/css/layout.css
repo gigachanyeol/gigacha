@@ -15,7 +15,8 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
+  background: #fff;
+	
   color: #444444;
 }
 
@@ -609,6 +610,7 @@ h6 {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
+  scrollbar-gutter: stable;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
 }
@@ -1240,10 +1242,14 @@ h6 {
 	margin-right: 30px;
 	margin-left: 230px;
 	min-width:800px;
+	max-width:1280px;
 }
 
 .content_title {
 	margin-top: 10px;
 	padding-bottom: 5px;
 	border-bottom: 1px solid #ccc;
+}
+.row {
+	margin-top: 65px;
 }

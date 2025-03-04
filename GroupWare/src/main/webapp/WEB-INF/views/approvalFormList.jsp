@@ -10,22 +10,11 @@
 <title>문서양식관리</title>
 
 <%@ include file="./layout/header.jsp"%>
-<style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-</style>
 </head> 
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp" %>
+	<%@ include file="./layout/newNav.jsp" %>
+	<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">문서양식추가</h3>
 		<button type="button" class="btn btn-primary" onclick="location.href='./approvalFormCreate.do'">문서양식등록</button>
@@ -54,9 +43,9 @@
                  </c:forEach>
                 </tbody>
               </table>
-              <!-- End Default Table Example -->
             </div>
-          </div>
+         </div>
 	</div>
+</div>
 </body>
 </html>

@@ -7,23 +7,12 @@
 <title>Insert title here</title>
 
 <%@ include file="./layout/header.jsp"%>
-<style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-</style>
 </head> 
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp" %>
-	<div id="content">
+<%@ include file="./layout/newNav.jsp" %>
+<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
+	<div id="content" class="col-10">
 	${sessionScope.loginDto}
 		<h3 class="content_title">제목trestest</h3>
 		<table class="table table-hover">
@@ -56,8 +45,7 @@
 		<a href="./login.do" class="btn btn-info">로그인</a><br>
 		<a href="./logout.do" class="btn btn-danger">로그아웃</a>
 	</div>
-
-	
+</div>
 	
 </body>
 </html>

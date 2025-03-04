@@ -93,4 +93,24 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.selectList(NS+"selectPendingApprovalDocuments",empno);
 	}
 
+	@Override
+	public List<ApprovalDto> selectApprovalTemp(String empno) {
+		return sql.selectList(NS+"selectApprovalTemp",empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalInProgress(String empno) {
+		return sql.selectList(NS+"selectApprovalInProgress",empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalCompleted(String empno) {
+		return sql.selectList(NS+"selectApprovalCompleted",empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalRejected(String empno) {
+		return sql.selectList(NS+"selectApprovalRejected",empno);
+	}
+
 }

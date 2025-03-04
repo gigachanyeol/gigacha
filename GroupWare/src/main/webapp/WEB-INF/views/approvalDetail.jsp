@@ -8,22 +8,11 @@
 <title>결재문서 상세</title>
 
 <%@ include file="./layout/header.jsp"%>
-<style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-</style>
 </head> 
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp" %>
+<%@ include file="./layout/newNav.jsp" %>
+<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">${approval.approval_id}</h3>
 		<c:if test="${approval.empno eq loginDto.empno}"><button id="updateFormBtn">문서수정</button></c:if>
@@ -36,6 +25,7 @@
 			${approval.approval_content}
 		</div>
 	</div>
+</div>
 </body>
 <script type="text/javascript">
 	document.querySelector("#updateFormBtn").addEventListener('click', () => {

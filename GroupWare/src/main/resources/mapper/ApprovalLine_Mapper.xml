@@ -27,24 +27,24 @@
 	</insert>
 	
 	<update id="acceptApprovalLine">
-	UPDATE APPROVAL_LINE 
-	SET STATUS_ID = 'ST04', APPROVAL_TIME = CURRENT_DATE
-	WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
-			WHERE a.APPROVAL_ID = #{approval_id} 
-			AND APPROVAL_STATUS = 'ST02')
-	AND APPROVER_EMPNO = #{empno}
+		UPDATE APPROVAL_LINE 
+		SET STATUS_ID = 'ST04', APPROVAL_TIME = CURRENT_DATE
+		WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
+				WHERE a.APPROVAL_ID = #{approval_id} 
+				AND APPROVAL_STATUS = 'ST02')
+		AND APPROVER_EMPNO = #{empno}
 	</update>
 	
 	<update id="rejectApprovalLine">
-	UPDATE APPROVAL_LINE 
-	SET STATUS_ID = 'ST05', APPROVAL_TIME = CURRENT_DATE
-	<if test="#{reject_reason} != null">
-	,REJECT_REASON = #{reject_reason}
-	</if>
-	WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
-			WHERE a.APPROVAL_ID = #{approval_id} 
-			AND APPROVAL_STATUS = 'ST02')
-	AND APPROVER_EMPNO = #{empno}
+		UPDATE APPROVAL_LINE 
+		SET STATUS_ID = 'ST05', APPROVAL_TIME = CURRENT_DATE
+		<if test="#{reject_reason} != null">
+		,REJECT_REASON = #{reject_reason}
+		</if>
+		WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
+				WHERE a.APPROVAL_ID = #{approval_id} 
+				AND APPROVAL_STATUS = 'ST02')
+		AND APPROVER_EMPNO = #{empno}
 	</update>
 	
 </mapper>

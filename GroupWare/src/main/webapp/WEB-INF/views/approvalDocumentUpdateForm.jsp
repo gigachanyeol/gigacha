@@ -15,18 +15,6 @@
 <script
 	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <style type="text/css">
-#content {
-	margin-top: 65px;
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-
 #approvalLine {
 	
 }
@@ -42,20 +30,8 @@
 	display: inline-block;
 }
 
-.toastui-editor-toolbar {
-	display: none;
-}
-
-.toastui-editor-defaultUI {
-	border: none;
-}
-
 #form {
 	clear: both;
-}
-
-.toastui-editor-contents table {
-	margin: 0 auto;
 }
 
 #fileForm {
@@ -69,8 +45,9 @@
 	href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+	<%@ include file="./layout/newNav.jsp" %>
+	<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">기안문작성</h3>
 		<div class="content_nav">
@@ -121,8 +98,8 @@
 			<input class="btn" type="file" multiple id="formFile">
 			<div id="fileForm">파일업로드목록</div>
 		</form>
-
 	</div>
+</div>
 	<script
 		src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>

@@ -122,4 +122,24 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.selectPendingApprovalDocuments(empno);
 	}
 
+	@Override
+	public List<ApprovalDto> selectApprovalTemp(String empno) {
+		return approvalDao.selectApprovalTemp(empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalInProgress(String empno) {
+		return approvalDao.selectApprovalInProgress(empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalCompleted(String empno) {
+		return approvalDao.selectApprovalCompleted(empno);
+	}
+
+	@Override
+	public List<ApprovalDto> selectApprovalRejected(String empno) {
+		return approvalDao.selectApprovalRejected(empno);
+	}
+	
 }

@@ -139,7 +139,7 @@ public class ApprovalController {
 
 	// TODO 00101 전자결재 문서양식 Controller
 	// 문서양식 리스트 조회
-	@GetMapping(" /approvalFormList.do")
+	@GetMapping("/approvalFormList.do")
 	public String approvalForm(Model model) {
 		List<ApprovalFormDto> formList = approvalFormService.formSelectAll();
 		model.addAttribute("formList", formList);
@@ -205,6 +205,7 @@ public class ApprovalController {
 		return approvalFormService.formUpdate(approvalFormDto) == 1?true:false;
 	}
 	
+	// 문서양식 삭제
 	@GetMapping("/approvalFormDelete.do")
 	@ResponseBody
 	public boolean formDelete(@RequestParam String id) {
@@ -237,16 +238,39 @@ public class ApprovalController {
 		return approvalService.insertApprovalTemp(approvalDto);
 	}
 	
-	// 내가 작성한 모든 문서보기
+	// 결재요청함
 	@GetMapping("/approvalList.do")
 	public String approvalList(Model model, HttpSession session) {
-		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		
-		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
-		model.addAttribute("approvalList",approvalList);
+//		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
+//		model.addAttribute("approvalList",approvalList);
 		return "approvalList";
 	}
+	@GetMapping("/approvalListAjax.do")
+	@ResponseBody
+	public String approvalListAjax(HttpSession session) {
+//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalDao.selectApproval(1505001);
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
+	}
 	
+	// 임시저장함
+	@GetMapping("/approvalListTemp.do")
+	public String approvalListTemp() {
+		return "approvalListTemp";
+	}
+	
+	@GetMapping("/approvalListTempAjax.do")
+	@ResponseBody
+	public String approvalListTempAjax(HttpSession session) {
+//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalDao.selectApprovalTemp("1505001");
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
+	}
+
 	// 문서 상세
 	@GetMapping("/approvalDetail.do")
 	public String approvalDetail(@RequestParam String id,Model model, HttpSession session) {
@@ -307,6 +331,47 @@ public class ApprovalController {
 		return "approvalRequestList";
 	}
 	
+	// 결재진행함
+	@GetMapping("/selectApprovalInProgress.do")
+	public String selectApprovalInProgress(HttpSession session, Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empno", "1505001");
+		map.put("password", "password123");
+		
+		EmployeeDto loginDto = loginService.login(map);
+		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
+		model.addAttribute("approvalList",approvalList);
+		return "selectApprovalInProgress";
+	}
+	
+	// 결재완료함 selectApprovalCompleted
+	@GetMapping("/selectApprovalCompleted.do")
+	public String selectApprovalCompleted(HttpSession session, Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empno", "1505001");
+		map.put("password", "password123");
+		
+		EmployeeDto loginDto = loginService.login(map);
+		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
+		model.addAttribute("approvalList",approvalList);
+		return "selectApprovalCompleted";
+	}
+	
+	// 반려문서함
+	@GetMapping("/selectApprovalRejected.do")
+	public String selectApprovalRejected(HttpSession session, Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empno", "1505001");
+		map.put("password", "password123");
+		
+		EmployeeDto loginDto = loginService.login(map);
+		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
+		model.addAttribute("approvalList",approvalList);
+		return "selectApprovalRejected";
+	}
+	
+	
+	
 	// 결재승인
 	@PostMapping("/acceptApprovalLine.do")
 	@ResponseBody
@@ -334,4 +399,6 @@ public class ApprovalController {
 		return approvalLineService.rejectApprovalLine(map);
 //		return false;
 	}
+	
+	
 }

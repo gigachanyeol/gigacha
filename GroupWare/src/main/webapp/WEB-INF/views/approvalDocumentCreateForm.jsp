@@ -8,25 +8,9 @@
 
 <%@ include file="./layout/header.jsp"%>
 
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/@toast-ui/editor@3.2.2/dist/toastui-editor.min.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-<script
-	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <style type="text/css">
-#content {
-	margin-top: 65px;
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-
 #approvalLine {
 	
 }
@@ -41,13 +25,6 @@
 	display: inline-block;
 }
 
-.toastui-editor-toolbar {
-	display: none;
-}
-
-.toastui-editor-defaultUI {
-	border: none;
-}
 #form {
 	clear:both;
 }
@@ -64,8 +41,9 @@
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+	<%@ include file="./layout/newNav.jsp" %>
+	<%@ include file="./layout/newSide.jsp" %>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">기안문작성</h3>
 		<div class="content_nav">
@@ -130,9 +108,9 @@
 			파일업로드목록
 			</div>
 		</form>
-		
 	</div>
-<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
+</div>
+	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 
 	<script type="text/javascript">

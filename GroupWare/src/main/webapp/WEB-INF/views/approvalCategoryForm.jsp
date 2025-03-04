@@ -7,38 +7,25 @@
 <title>문서양식 카테고리 등록</title>
 
 <%@ include file="./layout/header.jsp"%>
-<style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-	min-width:800px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-</style>
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+	<%@ include file="./layout/newNav.jsp"%>
+	<%@ include file="./layout/newSide.jsp"%>
+<div class="row">
 	<div id="content">
 		<h3 class="content_title">문서양식 카테고리 등록</h3>
-		<div class="row">
-			<div class="col-6">
+			<div class="col-10">
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">카테고리 등록</h5>
 						<form>
-							<div class="row mb-3">
+							<div class="mb-3">
 								<label for="inputEmail3" class="col-form-label">카테고리이름</label>
 								<div>
 									<input type="text" class="form-control" name="category_name" placeholder="이름을 입력하세요">
 								</div>
 							</div>
-							<div class="row mb-3">
+							<div class="mb-3">
 								<label for="inputEmail3" class="col-form-label">카테고리약어</label>
 								<div>
 									<input type="text" class="form-control" name="category_yname" placeholder="ex) HR">
@@ -47,7 +34,7 @@
 							<div class="text-center">
 								<button type="submit" class="btn btn-primary">Submit</button>
 								<button type="reset" class="btn btn-secondary">Reset</button>
-								<button type="button" class="btn btn-info" onclick="javascript:history.back()">cancel</button>
+								<button type="button" class="btn btn-info" onclick="history.back()">cancle</button>
 							</div>
 						</form>
 
