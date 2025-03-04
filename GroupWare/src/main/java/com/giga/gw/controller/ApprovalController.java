@@ -129,7 +129,7 @@ public class ApprovalController {
 
 	// TODO 00101 전자결재 문서양식 Controller
 	// 문서양식 리스트 조회
-	@GetMapping("/approvalFormList.do")
+	@GetMapping(" /approvalFormList.do")
 	public String approvalForm(Model model) {
 		List<ApprovalFormDto> formList = approvalFormService.formSelectAll();
 		model.addAttribute("formList", formList);

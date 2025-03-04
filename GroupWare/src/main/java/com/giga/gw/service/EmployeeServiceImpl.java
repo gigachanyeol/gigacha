@@ -8,6 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EmployeeService implements IEmployeeService{
+public class EmployeeServiceImpl implements IEmployeeService{
 
 }

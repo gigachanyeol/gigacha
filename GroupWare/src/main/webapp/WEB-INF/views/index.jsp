@@ -46,7 +46,10 @@
 					<td><a href="${pageContext.request.contextPath}/calendar/calendar.do">캘린더</a></td>
       			</tr>
       			<tr>
-					<td><a href="./reservation.do">달력</a></td>
+					<td><a href="./rooms/reservation.do">예약</a></td>
+				</tr>
+				<tr>
+					<td><a href="./rooms/roomList.do">회의실 리스트(등록,수정,삭제)[관리자]</a></td>
 				</tr>
 			</tbody>
 		</table>

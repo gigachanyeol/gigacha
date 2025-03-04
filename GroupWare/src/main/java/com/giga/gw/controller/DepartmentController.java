@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/department")
 @RequiredArgsConstructor
-@Slf4j
 public class DepartmentController {
 	
 	private final IDepartmentService departmentService;

@@ -1,14 +1,30 @@
 package com.giga.gw.dto;
 
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
 public class RoomDto {
 
-//	room_id
-//	room_name
-//	capacity
-//	open_hours
-//	close_hours
-//	created_at
-//	updated_at
-//	use_yn
-//	image_url;
+	
+	private String room_id,
+	room_name,
+	open_hours,
+	close_hours,
+	image_url,
+	created_at,
+	updated_at,
+	use_yn;
+	int capacity;
 }
