@@ -1,6 +1,7 @@
 package com.giga.gw.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -26,23 +28,30 @@ import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IEmployeeDao;
 import com.giga.gw.service.IApprovalCategoryService;
 import com.giga.gw.service.IApprovalFormService;
+import com.giga.gw.service.IApprovalLineService;
 import com.giga.gw.service.IApprovalService;
+import com.giga.gw.service.ILoginService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/approval")
 @RequiredArgsConstructor
 @Slf4j
 public class ApprovalController {
+	// 테스트용 로ㅓ그인
+	private final ILoginService loginService;
+	
 	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
 	private final IApprovalCategoryService approvalCategoryService;
 	private final IApprovalFormService approvalFormService;
 	private final IApprovalService approvalService;
+	private final IApprovalLineService approvalLineService;
 	
 	@GetMapping("/index.do")
 	public String apprIndex() {
@@ -50,7 +59,8 @@ public class ApprovalController {
 	}
 
 	@GetMapping("/tre.do")
-	public String tre() {
+	public String tre(Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		return "tree";
 	}
 
@@ -136,8 +146,8 @@ public class ApprovalController {
 		return "approvalFormList";
 	}
 
-	@GetMapping("/approvalFormDetail/{id}.do")
-	public String approvalFormDetail(@PathVariable String id, Model model) {
+	@GetMapping("/approvalFormDetail.do")
+	public String approvalFormDetail(@RequestParam String id, Model model) {
 		System.out.println(id);
 		ApprovalFormDto form = approvalFormService.formSelectDetail(id);
 		model.addAttribute("form", form);
@@ -180,6 +190,27 @@ public class ApprovalController {
 		return approvalFormService.formSelectById(form_id);
 	}
 	
+	// 문서양식 수정페이지 이동
+	@GetMapping("/approvalFormUpdate.do")
+	public String approvalFormUpdate(@RequestParam String id, Model model, HttpSession session) {
+		ApprovalFormDto dto = approvalFormService.formSelectDetail(id);
+		model.addAttribute("form",dto);
+		return "approvalFormUpdate";
+	}
+	
+	// 문서양식 수정
+	@PostMapping("/approvalFormUpdate.do")
+	@ResponseBody
+	public boolean formUpdate(@RequestBody ApprovalFormDto approvalFormDto) {
+		return approvalFormService.formUpdate(approvalFormDto) == 1?true:false;
+	}
+	
+	@GetMapping("/approvalFormDelete.do")
+	@ResponseBody
+	public boolean formDelete(@RequestParam String id) {
+		return approvalFormService.formDelete(id) == 1 ? true : false;
+	}
+	
 	// TODO 00102 전자결재 문서
 	// 전자결재 문서 작성 페이지 이동
 	@GetMapping("/approvalDocument.do")
@@ -195,5 +226,112 @@ public class ApprovalController {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.insertApproval(approvalDto);
+	}
+	
+	@PostMapping("/approvalDocumentSaveTemp.do")
+	@ResponseBody
+	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+		System.out.println(approvalDto);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
+		return approvalService.insertApprovalTemp(approvalDto);
+	}
+	
+	// 내가 작성한 모든 문서보기
+	@GetMapping("/approvalList.do")
+	public String approvalList(Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		
+		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
+		model.addAttribute("approvalList",approvalList);
+		return "approvalList";
+	}
+	
+	// 문서 상세
+	@GetMapping("/approvalDetail.do")
+	public String approvalDetail(@RequestParam String id,Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		ApprovalDto approval = approvalService.selectApprovalById(id);
+		model.addAttribute("approval",approval);
+		model.addAttribute("loginDto",loginDto);
+		return "approvalDetail";
+	}
+	
+	// 문서 수정 FORM 이동
+	@GetMapping("/approvalUpdateForm.do")
+	public String approvalUpdateForm(@RequestParam String id,Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		ApprovalDto approval = approvalService.selectApprovalById(id);
+		model.addAttribute("approval",approval);
+		model.addAttribute("loginDto",loginDto);
+		return "approvalDocumentUpdateForm";
+	}
+	
+	// 문서 수정
+	@PostMapping("/approvalUpdateForm.do")
+	@ResponseBody
+	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+		System.out.println(approvalDto);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		approvalDto.setUpdate_empno(Integer.parseInt(loginDto.getEmpno()));
+		return approvalService.updateApproval(approvalDto) == 1 ? true : false;
+	}
+	
+	// 문서 회수
+	@PostMapping("/approvalRecall.do")
+	@ResponseBody
+	public boolean approvalRecall(@RequestBody String approval_id, HttpSession session) {
+		
+		return approvalService.recallApproval(approval_id) == 1 ? true : false;
+	}
+	
+	// 임시저장상태에서 결재요청
+	@PostMapping("/approvalRequest.do")
+	@ResponseBody
+	public boolean approvalRequest(@RequestBody String approval_id, HttpSession session) {
+		
+		return approvalService.approvalRequest(approval_id) == 1 ? true : false;
+	}
+	
+	// 내가 결재할 목록으로 이동
+	@GetMapping("/approvalRequestList.do")
+	public String approvalRequestList(HttpSession session, Model model) {
+//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empno", "1505001");
+		map.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(map);
+		
+		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
+		model.addAttribute("approvalList",approvalList);
+		return "approvalRequestList";
+	}
+	
+	// 결재승인
+	@PostMapping("/acceptApprovalLine.do")
+	@ResponseBody
+	public boolean acceptApprovalLine(@RequestBody Map<String, Object> map) {
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+		loginMap.put("empno", "1505001");
+		loginMap.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(loginMap);
+		map.put("empno", loginDto.getEmpno());
+		System.out.println(map);
+		return approvalLineService.acceptApprovalLine(map);
+	}
+	// 결재 반려
+	@PostMapping("/rejectApprovalLine.do")
+	@ResponseBody
+	public boolean rejectApprovalLine(@RequestBody Map<String, Object> map) {
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+		loginMap.put("empno", "1505001");
+		loginMap.put("password", "password123");
+		EmployeeDto loginDto = loginService.login(loginMap);
+		map.put("empno", loginDto.getEmpno());
+		
+		System.out.println("\n\n"+map+"\n\n");
+		
+		return approvalLineService.rejectApprovalLine(map);
+//		return false;
 	}
 }

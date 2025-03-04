@@ -48,7 +48,7 @@
 	                    <td scope="col">#</td>
 	                    <td scope="col">${frm.form_id}</td>
 	                    <td scope="col">${frm.form_content}</td>
-	                    <td scope="col"><a href="./approvalFormDetail/${frm.form_id}.do">${frm.form_name}</a></td>
+	                    <td scope="col"><a href="./approvalFormDetail.do?id=${frm.form_id}">${frm.form_name}</a></td>
 	                    <td scope="col">${frm.create_date}</td>
 	                  </tr>
                  </c:forEach>

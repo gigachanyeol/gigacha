@@ -9,9 +9,15 @@ public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
 	int countApproval(String form_id);
 	boolean insertApproval(ApprovalDto approvalDto);
+	boolean insertApprovalTemp(ApprovalDto approvalDto);
+	
     int updateApproval(ApprovalDto approvalDto);
     
     ApprovalDto selectApprovalById(String approval_id);
     int recallApproval(String approval_id);
     List<Map<String, Object>> formTree();
+    
+    List<ApprovalDto> selectApproval(int empno);
+    int approvalRequest(String approval_id);
+    List<ApprovalDto> selectPendingApprovalDocuments(String empno);
 }

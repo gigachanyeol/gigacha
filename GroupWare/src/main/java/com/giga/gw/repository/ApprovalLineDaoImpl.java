@@ -3,6 +3,7 @@ package com.giga.gw.repository;
 import java.util.List;
 import java.util.Map;
 
+import org.checkerframework.checker.units.qual.m;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,16 @@ public class ApprovalLineDaoImpl implements IApprovalLineDao{
 	@Override
 	public int insertApprovalLine(ApprovalLineDto line) {
 		return sql.insert(NS+"insertApprovalLine",line);
+	}
+
+	@Override
+	public int acceptApprovalLine(Map<String, Object> map) {
+		return sql.update(NS+"acceptApprovalLine",map);
+	}
+
+	@Override
+	public int rejectApprovalLine(Map<String, Object> map) {
+		return sql.update(NS+"rejectApprovalLine",map);
 	}
 	
 	

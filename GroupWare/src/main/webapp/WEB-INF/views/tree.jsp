@@ -126,6 +126,7 @@
             let approvalJson = JSON.stringify(approvalLine);
             console.log("결재선 저장:", approvalJson);
             alert("결재선이 저장되었습니다.");
+           	
         }
         
         function ok() {

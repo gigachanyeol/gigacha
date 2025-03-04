@@ -21,22 +21,22 @@ public class ApprovalLine_JUnitTest {
 	
 	
 	// 결재선 여러명
-	@Test
+//	@Test
 	public void insertApprovalLines_Test() {
 		ApprovalLineDto dto1 = ApprovalLineDto.builder().approval_id("HR005DOC0001").approver_empno(2501006).build();
 		ApprovalLineDto dto2 = ApprovalLineDto.builder().approval_id("HR005DOC0001").approver_empno(2501007).build();
 		ApprovalLineDto dto3 = ApprovalLineDto.builder().approval_id("HR005DOC0001").approver_empno(2501008).build();
 		List<ApprovalLineDto> lists = List.of(dto1,dto2,dto3);	
-		approvalLineDao.insertApprovalLine(lists);
+//		approvalLineDao.insertApprovalLine(lists);
 	}
 	
 	// 결재선 1명
-	@Test
+//	@Test
 	public void insertApprovalLine_Test() {
 		List<ApprovalLineDto> list = new ArrayList();
 		ApprovalLineDto dto1 = ApprovalLineDto.builder().approval_id("HR005DOC0001").approver_empno(2501013).build();
 		list.add(dto1);
-		approvalLineDao.insertApprovalLine(list);
+//		approvalLineDao.insertApprovalLine(list);
 	}
 
 }

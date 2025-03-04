@@ -39,8 +39,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval/approvalDocument.do">기안 작성</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval">결재목록</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval">나의 결재함</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval/approvalRequestList.do">결재목록</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval/approvalList.do">결재요청함</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/approval/approvalFormList.do">문서양식관리(관리자)</a></li>
                         </ul>
                     </li>

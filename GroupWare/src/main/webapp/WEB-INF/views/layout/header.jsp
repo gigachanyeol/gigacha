@@ -9,7 +9,9 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+<%--     <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet"> --%>
+    <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" rel="stylesheet">
   
