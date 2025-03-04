@@ -15,6 +15,7 @@ public class LoginDaoImpl implements ILoginDao {
 
 	private final SqlSessionTemplate sessionTemplate;
 	private final String NS = "com.giga.gw.repository.LoginDaoImpl.";
+	
 	@Override
 	public EmployeeDto login(Map<String, Object> map) {
 		return sessionTemplate.selectOne(NS+"login",map);

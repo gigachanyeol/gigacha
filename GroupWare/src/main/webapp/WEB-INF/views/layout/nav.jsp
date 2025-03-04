@@ -54,6 +54,9 @@
                         	<li><a class="dropdown-item" href="#">회의실 예약</a></li>
                         	<li><a class="dropdown-item" href="#">회의실 취소</a></li>
                         	<li><a class="dropdown-item" href="#">회의실 예약내역</a></li>
+                        	<li><a class="dropdown-item" href="#">회의실 등록(관리자)</a></li>
+                        	<li><a class="dropdown-item" href="#">회의실 정보 수정 및 삭제(관리자)</a></li>
+                        	<li><a class="dropdown-item" href="#">회의실 예약내역 조회(관리자)</a></li>
                         </ul>
                     </li>
                     
