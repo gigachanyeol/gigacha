@@ -27,53 +27,55 @@
 <body>
 	<%@ include file="./layout/newNav.jsp" %>
 	<%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content" class="col-9">
-		<h3 class="content_title">문서양식추가</h3>
-		<div class="card">
-			<div class="card-body">
-				<form>
-					<div class="mb-3">
-						<label for="inputText" class="col-form-label">양식이름</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="form_name">
+<main id="main" class="main">
+	<div class="row">
+		<div id="content" class="col-9">
+			<h3 class="content_title">문서양식추가</h3>
+			<div class="card">
+				<div class="card-body">
+					<form>
+						<div class="mb-3">
+							<label for="inputText" class="col-form-label">양식이름</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="form_name">
+							</div>
 						</div>
-					</div>
-					<div class="mb-3">
-						<label class="col-sm-2 col-form-label">카테고리</label>
-						<div class="col-sm-10">
-							<input type="hidden" value="" name="category_id" readonly="readonly">
-							<div class="form-control">
-								<span id="category_id" ></span>
-								<button class="btn" id="cateBtn">카테고리 선택</button>
-							</div>						
-							
+						<div class="mb-3">
+							<label class="col-sm-2 col-form-label">카테고리</label>
+							<div class="col-sm-10">
+								<input type="hidden" value="" name="category_id" readonly="readonly">
+								<div class="form-control">
+									<span id="category_id" ></span>
+									<button class="btn" id="cateBtn">카테고리 선택</button>
+								</div>						
+								
+							</div>
 						</div>
-					</div>
-					<div class="mb-3">
-						<label class="col-form-label">양식</label>
-						<div class="col-sm-10">
-							<div id="editor"></div>
-							<input type="hidden" name="form_content">
-<!-- 							<button id="editorViewBtn">에디터 뷰 DB에서 가져오기 버튼</button> -->
-<!-- 							<button id="editorSaveBtn">에디터 내용 저장</button> -->
-<!-- 							<div id="viewer" class="toastui-editor-contents"></div> -->
+						<div class="mb-3">
+							<label class="col-form-label">양식</label>
+							<div class="col-sm-10">
+								<div id="editor"></div>
+								<input type="hidden" name="form_content">
+	<!-- 							<button id="editorViewBtn">에디터 뷰 DB에서 가져오기 버튼</button> -->
+	<!-- 							<button id="editorSaveBtn">에디터 내용 저장</button> -->
+	<!-- 							<div id="viewer" class="toastui-editor-contents"></div> -->
+							</div>
 						</div>
-					</div>
-					<div class="mb-3">
-						<label class="col-form-label">Submit Button</label>
-						<div class="col-sm-10">
-							<button type="submit" class="btn btn-primary">저장</button>
-							<button type="reset" class="btn btn-light">리셋</button>
-							<button type="button" class="btn btn-info" onclick="history.back()">뒤로가기</button>
+						<div class="mb-3">
+							<label class="col-form-label">Submit Button</label>
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary">저장</button>
+								<button type="reset" class="btn btn-light">리셋</button>
+								<button type="button" class="btn btn-info" onclick="history.back()">뒤로가기</button>
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
+	
 		</div>
-
-	</div>
-</div>	
+	</div>	
+</main>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script type="text/javascript">

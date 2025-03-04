@@ -400,5 +400,19 @@ public class ApprovalController {
 //		return false;
 	}
 	
+	// 나의 결재함
+	@GetMapping("/myApproval.do")
+	public String myApproval() {
+		return "myApproval";
+	}
+	
+	@PostMapping("/myApprovalData.do")
+	@ResponseBody
+	 public Map<String, Object> myDocumentsData() {
+        List<Map<String, Object>> documents = approvalService.selectApprovalMyDocuments("1505001");
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", documents);
+        return response;
+    }
 	
 }

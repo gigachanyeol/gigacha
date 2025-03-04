@@ -141,5 +141,10 @@ public class ApprovalServiceImpl implements IApprovalService {
 	public List<ApprovalDto> selectApprovalRejected(String empno) {
 		return approvalDao.selectApprovalRejected(empno);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectApprovalMyDocuments(String empno) {
+		return approvalDao.selectApprovalMyDocuments(empno);
+	}
 	
 }

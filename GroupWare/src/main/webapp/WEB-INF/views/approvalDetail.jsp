@@ -12,20 +12,22 @@
 <body>
 <%@ include file="./layout/newNav.jsp" %>
 <%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content">
-		<h3 class="content_title">${approval.approval_id}</h3>
-		<c:if test="${approval.empno eq loginDto.empno}"><button id="updateFormBtn">문서수정</button></c:if>
-		<c:if test='${approval.empno eq loginDto.empno and approval.approval_status eq "ST02"}'><button id="recallBtn">문서회수</button></c:if>
-		<c:if test='${approval.approval_status eq "ST01"}'>
-			<button id="approvalBtn">결재 요청</button>	
-		</c:if>
-		
-		<div>
-			${approval.approval_content}
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">${approval.approval_id}</h3>
+			<c:if test='${approval.empno eq loginDto.empno and approval.approval_status eq "ST02" or approval.approval_status eq "ST01"}'><button id="updateFormBtn">문서수정</button></c:if>
+			<c:if test='${approval.empno eq loginDto.empno and approval.approval_status eq "ST02"}'><button id="recallBtn">문서회수</button></c:if>
+			<c:if test='${approval.approval_status eq "ST01"}'>
+				<button id="approvalBtn">결재 요청</button>	
+			</c:if>
+			
+			<div class="col-lg-8">
+				${approval.approval_content}
+			</div>
 		</div>
 	</div>
-</div>
+</main>
 </body>
 <script type="text/javascript">
 	document.querySelector("#updateFormBtn").addEventListener('click', () => {

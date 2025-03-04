@@ -208,4 +208,29 @@
 					FROM APPROVAL_LINE 
 					WHERE APPROVER_EMPNO = '1505001' AND t3.STATUS_ID = 'ST05')
     </select>
+    <select id="selectApprovalMyDocuments" resultType="map">
+    	SELECT 
+		    t1.APPROVAL_ID, 
+		    t2.FORM_NAME AS FORM_ID, 
+		    t1.EMPNO, 
+		    NVL(APPROVAL_TITLE,'-') AS APPROVAL_TITLE,
+		    t3.CATEGORY_NAME ,
+		    CASE t1.APPROVAL_STATUS 
+		        WHEN 'ST01' THEN '임시저장'
+		        WHEN 'ST02' THEN '결재대기'
+		        WHEN 'ST03' THEN '진행중'
+		        WHEN 'ST04' THEN '결재완료'
+		        WHEN 'ST05' THEN '결재반려'
+		    END AS APPROVAL_STATUS, 
+		    TO_CHAR(t1.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE, 
+		    COALESCE(TO_CHAR(t1.APPROVAL_DEADLINE, 'YYYY-MM-DD'), '-') AS APPROVAL_DEADLINE
+		FROM 
+		    APPROVAL t1 
+		JOIN 
+		    APPROVAL_FORM t2 ON t1.FORM_ID = t2.FORM_ID 
+		JOIN 
+			APPROVAL_CATEGORY t3 ON t2.CATEGORY_ID = t3.CATEGORY_ID 
+		WHERE 
+		    t1.EMPNO = '1505001'
+    </select>
 </mapper>

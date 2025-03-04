@@ -14,28 +14,30 @@
 <body>
 <%@ include file="./layout/newNav.jsp" %>
 <%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content">
-		<h3 class="content_title">카테고리 목록</h3>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>이름</th>
-					<th>약어</th>
-					<th>생성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${categoryList}" var="cate">
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">카테고리 목록</h3>
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td>${cate.category_name}</td>
-						<td>${cate.category_yname}</td>
-						<td>${cate.create_date}</td>
+						<th>이름</th>
+						<th>약어</th>
+						<th>생성일</th>
 					</tr>
-				</c:forEach>				
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<c:forEach items="${categoryList}" var="cate">
+						<tr>
+							<td>${cate.category_name}</td>
+							<td>${cate.category_yname}</td>
+							<td>${cate.create_date}</td>
+						</tr>
+					</c:forEach>				
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
+</main>
 </body>
 </html>

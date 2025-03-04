@@ -12,6 +12,7 @@
 <body>
 	<%@ include file="./layout/newNav.jsp"%>
 	<%@ include file="./layout/newSide.jsp"%>
+<main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col-10 mt-3">
 			<h3 class="content_title">반려문서함</h3>
@@ -38,5 +39,6 @@
 			</table>
 		</div>
 	</div>
+</main>
 </body>
 </html>

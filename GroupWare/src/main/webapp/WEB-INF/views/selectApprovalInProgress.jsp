@@ -10,10 +10,9 @@
 <%@ include file="./layout/header.jsp"%>
 </head>
 <body>
-	<%-- <%@ include file="./layout/nav.jsp" %> --%>
 	<%@ include file="./layout/newNav.jsp"%>
-	<%-- <%@ include file="./layout/sidebar.jsp" %> --%>
 	<%@ include file="./layout/newSide.jsp"%>
+<main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col-10 mt-3">
 			<h3 class="content_title">결재진행함</h3>
@@ -45,5 +44,6 @@
 			</table>
 		</div>
 	</div>
+</main>
 </body>
 </html>

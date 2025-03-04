@@ -16,23 +16,25 @@
 <body>
 	<%@ include file="./layout/newNav.jsp" %>
 	<%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content">
-		<h3 class="content_title">${form.form_name}</h3>
-		<form>
-			<label for="inputText" class="col-sm-2 col-form-label">양식이름</label>
-			<div class="col-sm-10">
-				<input type="hidden" class="form-control" name="form_id" value="${form.form_id}">
-				<input type="text" class="form-control" name="form_name" value="${form.form_name}">
-			</div>
-			<div>양식</div>
-			<div id="editor" class="toastui-editor-contents">${form.form_content}</div>
-			<input type="hidden" value="" name="form_content">
-			<button id="saveBtn" type="submit" class="btn btn-info">수정</button>
-			<button type="button" class="btn btn-danger" onclick="history.back()">뒤로가기</button>
-		</form>
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">${form.form_name}</h3>
+			<form>
+				<label for="inputText" class="col-sm-2 col-form-label">양식이름</label>
+				<div class="col-sm-10">
+					<input type="hidden" class="form-control" name="form_id" value="${form.form_id}">
+					<input type="text" class="form-control" name="form_name" value="${form.form_name}">
+				</div>
+				<div>양식</div>
+				<div id="editor" class="toastui-editor-contents">${form.form_content}</div>
+				<input type="hidden" value="" name="form_content">
+				<button id="saveBtn" type="submit" class="btn btn-info">수정</button>
+				<button type="button" class="btn btn-danger" onclick="history.back()">뒤로가기</button>
+			</form>
+		</div>
 	</div>
-</div>
+</main>
 </body>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>

@@ -15,61 +15,29 @@
 <body>
 <%@ include file="./layout/newNav.jsp" %>
 <%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content" class="col-lg-10">
-		<h3 class="content_title">결재요청함</h3>
-		<div id="wrapper" class="list">
-            <table id="example" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>문서번호</th>
-                        <th>양식번호</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>상태</th>
-                        <th>작성일</th> 
-                        <th>마감기한</th> 
-                        <th>임시저장</th> 
-                    </tr>
-                </thead>
-            </table>
-        </div>
-<!-- 		<table class="table table-hover"> -->
-<!-- 			<tr> -->
-<!-- 				<th>문서번호</th> -->
-<!-- 				<th>양식번호</th> -->
-<!-- 				<th>작성자</th> -->
-<!-- 				<th>제목</th> -->
-<!-- 				<th>상태</th> -->
-<!-- 				<th>작성일</th> -->
-<!-- 				<th>마감기한</th> -->
-<!-- 				<th>임시저장여부</th> -->
-<!-- 			</tr> -->
-<%-- 			<c:forEach items="${approvalList}" var="dto"> --%>
-<!-- 				<tr> -->
-<!-- 					<td> -->
-<%-- 						<a href="./approvalDetail.do?id=${dto.approval_id}"> --%>
-<%-- 							${dto.approval_id} --%>
-<!-- 						</a> -->
-<!-- 					</td> -->
-<%-- 					<td>${dto.form_id}</td> --%>
-<%-- 					<td>${dto.empno}</td> --%>
-<%-- 					<td>${dto.approval_title}</td> --%>
-<!-- 					<td> -->
-<%-- 						<c:if test='${dto.approval_status eq "ST01"}'>임시저장</c:if> --%>
-<%-- 						<c:if test='${dto.approval_status eq "ST02"}'>결재대기</c:if> --%>
-<%-- 						<c:if test='${dto.approval_status eq "ST03"}'>결재진행중</c:if> --%>
-<%-- 						<c:if test='${dto.approval_status eq "ST04"}'>결재완료</c:if> --%>
-<%-- 						<c:if test='${dto.approval_status eq "ST05"}'>반려</c:if> --%>
-<!-- 					</td> -->
-<%-- 					<td>${dto.create_date}</td> --%>
-<%-- 					<td>${dto.approval_deadline}</td> --%>
-<%-- 					<td>${dto.temp_save_yn}</td> --%>
-<!-- 				</tr> -->
-<%-- 			</c:forEach> --%>
-<!-- 		</table> -->
+<main id="main" class="main">
+	<div class="row">
+		<div id="content" class="col-lg-10">
+			<h3 class="content_title">결재요청함</h3>
+			<div id="wrapper" class="list">
+	            <table id="example" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;">
+	                <thead>
+	                    <tr>
+	                        <th>문서번호</th>
+	                        <th>양식번호</th>
+	                        <th>작성자</th>
+	                        <th>제목</th>
+	                        <th>상태</th>
+	                        <th>작성일</th> 
+	                        <th>마감기한</th> 
+	                        <th>임시저장</th> 
+	                    </tr>
+	                </thead>
+	            </table>
+	        </div>
+		</div>
 	</div>
-</div>
+</main>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	    $('#example').DataTable({
@@ -97,6 +65,11 @@
 	        lengthMenu: [10, 20, 30],
 	        search: {
 	            return: true
+	        },
+	        rowCallback: function(row, data) {
+	            $(row).find('td:first').on('click', function() {
+	                window.location.href = './approvalDetail.do?id='+data.approval_id;
+	            }).css('cursor', 'pointer'); // 클릭 가능하게 포인터 변경
 	        }
 	    });
 	});

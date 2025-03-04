@@ -36,6 +36,53 @@
    height: 100px;
    border: 1px solid #ccc;
 }
+@media print {
+    /* A4 크기 설정 (가로: 210mm, 세로: 297mm) */
+    @page {
+        size: A4;
+        margin: 20mm;  /* 인쇄 시 여백 설정 */
+    }
+
+    /* 기본적으로 모든 요소 숨기기 */
+    body * {
+        visibility: hidden;
+    }
+	
+    /* #content 부분만 출력 */
+    #content, #content * {
+        visibility: visible;
+    }
+    
+    #content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm;  /* A4 가로 크기 */
+        min-height: 297mm; /* A4 세로 크기 */
+        margin: auto;
+        background: white;
+        padding: 20mm;
+        box-sizing: border-box;
+    }
+
+    /* 페이지 나누기 */
+    .page-break {
+        page-break-before: always; /* 새로운 페이지에서 시작 */
+    }
+
+    /* 테이블 스타일 조정 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: left;
+    }
+}
+
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/editorStyle.css">
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
@@ -43,73 +90,75 @@
 <body>
 	<%@ include file="./layout/newNav.jsp" %>
 	<%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content">
-		<h3 class="content_title">기안문작성</h3>
-		<div class="content_nav">
-			<button id="formBtn">문서양식</button>
-			<button id="lineBtn">결재선</button>
-			<button id="saveBtn">결재요청</button>
-			<button id="tempBtn">임시저장</button>
-			<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
-		</div>
-		<div id="approvalLine"></div>
-		<form action="">
-			<table border="1">
-				<tbody>
-					<tr>
-						<th>문서번호</th>
-						<td>자동입력</td>
-						<th>기안일자</th>
-						<td>자동입력</td>
-					</tr>
-					
-					<tr>
-						<th>기안자</th>
-						<td>
-						${loginDto.name}
-						</td>
-						<th>부서</th>
-						<td>${loginDto.deptno}</td>
-					</tr>
-					<tr>
-						<th>참조자</th>
-						<td><span>참조자선택버튼</span></td>
-						<th>마감기한</th>
-						<td>
-							<input type="date" name="approval_deadline">
-						</td>
-					</tr>
-					<tr>
-						<th>긴급여부</th>
-						<td>
-							긴급 <input type="radio" name="urgency" value="Y">
-							일반 <input type="radio" name="urgency" value="N" checked>
-						</td>
-						<th>서명/도장</th>
-						<td>
-							서명 <input type="radio" value="1" name="signature" checked>
-							도장 <input type="radio" value="2" name="signature">
-						</td>
-					</tr>
-					<tr>
-						<th>문서제목</th>
-						<td colspan="3">
-							<input type="text" class="form-control" name="approval_title">
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-			<input type="hidden" name="form_id">
-			<div id="editor"></div>
-			<input class="btn" type="file" multiple id="formFile">
-			<div id="fileForm">
-			파일업로드목록
+<main id="main" class="main">
+	<div class="row">
+		<div id="content" class="col">
+			<h3 class="content_title">기안문작성</h3>
+			<div class="content_nav">
+				<button id="formBtn">문서양식</button>
+				<button id="lineBtn">결재선</button>
+				<button id="saveBtn">결재요청</button>
+				<button id="tempBtn">임시저장</button>
+				<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
 			</div>
-		</form>
+			<div id="approvalLine" class="mb-3"></div>
+			<form class="mt-3">
+				<table border="1" class="table">
+					<tbody>
+						<tr>
+							<th>문서번호</th>
+							<td>자동입력</td>
+							<th>기안일자</th>
+							<td>자동입력</td>
+						</tr>
+						
+						<tr>
+							<th>기안자</th>
+							<td>
+							${loginDto.name}
+							</td>
+							<th>부서</th>
+							<td>${loginDto.deptno}</td>
+						</tr>
+						<tr>
+							<th>참조자</th>
+							<td><span>참조자선택버튼</span></td>
+							<th>마감기한</th>
+							<td>
+								<input type="date" name="approval_deadline">
+							</td>
+						</tr>
+						<tr>
+							<th>긴급여부</th>
+							<td>
+								긴급 <input type="radio" name="urgency" value="Y">
+								일반 <input type="radio" name="urgency" value="N" checked>
+							</td>
+							<th>서명/도장</th>
+							<td>
+								서명 <input type="radio" value="1" name="signature" checked>
+								도장 <input type="radio" value="2" name="signature">
+							</td>
+						</tr>
+						<tr>
+							<th>문서제목</th>
+							<td colspan="3">
+								<input type="text" class="form-control" name="approval_title">
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+				<input type="hidden" name="form_id">
+				<div id="editor"></div>
+				<input class="btn" type="file" multiple id="formFile">
+				<div id="fileForm">
+				파일업로드목록
+				</div>
+			</form>
+		</div>
 	</div>
-</div>
+</main>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 
@@ -239,6 +288,7 @@
 			})
 			.catch(err => console.log(err))
 		})
+	
 	</script>
 </body>
 </html>

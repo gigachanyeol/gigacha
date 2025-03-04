@@ -47,59 +47,61 @@
 <body>
 	<%@ include file="./layout/newNav.jsp" %>
 	<%@ include file="./layout/newSide.jsp" %>
-<div class="row">
-	<div id="content">
-		<h3 class="content_title">기안문작성</h3>
-		<div class="content_nav">
-			<button id="formBtn">문서양식</button>
-			<button id="lineBtn">결재선</button>
-			<button id="saveBtn">문서수정</button>
-			<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">기안문작성</h3>
+			<div class="content_nav">
+				<button id="formBtn">문서양식</button>
+				<button id="lineBtn">결재선</button>
+				<button id="saveBtn">문서수정</button>
+				<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+			</div>
+			<div id="approvalLine"></div>
+			<form action="">
+				<table border="1">
+					<tbody>
+						<tr>
+							<th>문서번호</th>
+							<td>
+								<input type="hidden" value="${approval.approval_id}" name="approval_id">
+								${approval.approval_id}
+							</td>
+							<th>기안일자</th>
+							<td>${approval.create_date}</td>
+						</tr>
+						<tr>
+							<th>참조자</th>
+							<td><span>참조자선택버튼</span></td>
+							<th>마감기한</th>
+							<td><input type="date" name="approval_deadline"></td>
+						</tr>
+						<tr>
+							<th>긴급여부</th>
+							<td>긴급 <input type="radio" name="urgency" value="Y">
+								일반 <input type="radio" name="urgency" value="N" checked>
+							</td>
+							<th>서명/도장</th>
+							<td>서명 <input type="radio" value="1" name="signature" checked>
+								도장 <input type="radio" value="2" name="signature">
+							</td>
+						</tr>
+						<tr>
+							<th>문서제목</th>
+							<td colspan="3"><input type="text" class="form-control"
+								name="approval_title"></td>
+						</tr>
+	
+					</tbody>
+				</table>
+				<input type="hidden" name="form_id">
+				<div id="editor">${approval.approval_content}</div>
+				<input class="btn" type="file" multiple id="formFile">
+				<div id="fileForm">파일업로드목록</div>
+			</form>
 		</div>
-		<div id="approvalLine"></div>
-		<form action="">
-			<table border="1">
-				<tbody>
-					<tr>
-						<th>문서번호</th>
-						<td>
-							<input type="hidden" value="${approval.approval_id}" name="approval_id">
-							${approval.approval_id}
-						</td>
-						<th>기안일자</th>
-						<td>${approval.create_date}</td>
-					</tr>
-					<tr>
-						<th>참조자</th>
-						<td><span>참조자선택버튼</span></td>
-						<th>마감기한</th>
-						<td><input type="date" name="approval_deadline"></td>
-					</tr>
-					<tr>
-						<th>긴급여부</th>
-						<td>긴급 <input type="radio" name="urgency" value="Y">
-							일반 <input type="radio" name="urgency" value="N" checked>
-						</td>
-						<th>서명/도장</th>
-						<td>서명 <input type="radio" value="1" name="signature" checked>
-							도장 <input type="radio" value="2" name="signature">
-						</td>
-					</tr>
-					<tr>
-						<th>문서제목</th>
-						<td colspan="3"><input type="text" class="form-control"
-							name="approval_title"></td>
-					</tr>
-
-				</tbody>
-			</table>
-			<input type="hidden" name="form_id">
-			<div id="editor">${approval.approval_content}</div>
-			<input class="btn" type="file" multiple id="formFile">
-			<div id="fileForm">파일업로드목록</div>
-		</form>
 	</div>
-</div>
+</main>
 	<script
 		src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>

@@ -75,7 +75,7 @@
           </li>
           <li class="nav-heading">개인</li>
           <li>
-            <a href="${pageContext.request.contextPath}/approval/approvalList.do">
+            <a href="${pageContext.request.contextPath}/approval/myApproval.do">
               <span>나의결재목록</span>
             </a>
           </li>
