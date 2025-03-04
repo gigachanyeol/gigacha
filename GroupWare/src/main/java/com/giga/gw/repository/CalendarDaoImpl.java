@@ -2,6 +2,7 @@ package com.giga.gw.repository;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +24,14 @@ public class CalendarDaoImpl implements ICalendarDao {
 	}
 	
 	@Override
-	public List<Map<String, Object>> loadSchedule() {
+	public List<Map<String, Object>> loadSchedule(String start, String end) {
 	    
-	    List<Map<String, Object>> schedules = sessionTemplate.selectList(NS + "loadSchedule");
+	    // 🟢 특정 기간의 일정만 조회하도록 변경
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("start", start);
+	    params.put("end", end);
+	    
+	    List<Map<String, Object>> schedules = sessionTemplate.selectList(NS + "loadSchedule", params);
 
 	    // 날짜 형식 변환
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -34,14 +40,14 @@ public class CalendarDaoImpl implements ICalendarDao {
 	        Timestamp startTimestamp = (Timestamp) schedule.get("sch_startdate");
 	        Timestamp endTimestamp = (Timestamp) schedule.get("sch_enddate");
 
-	        // 🛑 NULL 체크 추가 → NULL이면 기본값 설정!
+	        // 🛑 NULL 체크 → NULL이면 기본값 설정 가능
 	        String startDate = (startTimestamp != null) 
 	            ? startTimestamp.toLocalDateTime().format(formatter) 
-	            : null;  // 또는 LocalDateTime.now().format(formatter);
+	            : null;
 	        
 	        String endDate = (endTimestamp != null) 
 	            ? endTimestamp.toLocalDateTime().format(formatter) 
-	            : null;  // 또는 LocalDateTime.now().format(formatter);
+	            : null;
 
 	        schedule.put("start", startDate);
 	        schedule.put("end", endDate);
@@ -53,5 +59,6 @@ public class CalendarDaoImpl implements ICalendarDao {
 
 	    return schedules;
 	}
+
 
 }

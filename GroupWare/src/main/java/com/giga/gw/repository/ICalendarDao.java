@@ -9,5 +9,5 @@ public interface ICalendarDao {
 
     int scheduleSave(Map<String, Object> schedule);
     
-    List<Map<String, Object>> loadSchedule();
+    List<Map<String, Object>> loadSchedule(String start, String end);
 }

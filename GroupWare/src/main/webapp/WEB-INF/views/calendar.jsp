@@ -268,40 +268,43 @@ eventClick : function(info) {
           {
 
         	  events: async function (info, successCallback, failureCallback) {
-        		  try {
-//         			    const response = await fetch("./loadSchedule.do");
-						const response = await fetch("${pageContext.request.contextPath}/calendar/loadSchedule.do");
+        		    try {
+        		        console.log("📢 요청할 날짜 범위:", info.startStr, " ~ ", info.endStr);
 
-        			    if (!response.ok) {
-        			        throw new Error(`HTTP error! Status: ${response.status}`);
-        			    }
+        		        // ✅ FullCalendar가 요청하는 기간을 서버에 전달
+        		        const response = await fetch(`/GroupWare/calendar/loadSchedule.do?start=${info.startStr}&end=${info.endStr}`);
 
-        			    const eventData = await response.json();
-        			    console.log("📢 서버에서 받아온 데이터:", eventData); // 🔍 데이터 구조 확인
+        		        if (!response.ok) {
+        		            throw new Error(`HTTP error! Status: ${response.status}`);
+        		        }
 
-        			    if (!Array.isArray(eventData)) {
-        			        console.error("⚠️ 서버 응답이 배열이 아닙니다:", eventData);
-        			        throw new Error("⚠️ 서버 응답이 배열이 아닙니다.");
-        			    }
+        		        const eventData = await response.json();
+        		        console.log("📢 서버에서 받아온 데이터:", eventData);
 
-        			    const eventArray = eventData.map((res) => ({
-        		            title: res.SCH_TITLE,  // ✅ 일정 제목
-        		            start: new Date(res.SCH_STARTDATE).toISOString(), // ✅ 밀리초 → ISO 형식
-        		            end: new Date(res.SCH_ENDDATE).toISOString(), // ✅ 밀리초 → ISO 형식
-        		            backgroundColor: res.SCH_COLOR || "#3788d8",  // ✅ 색상 지정 (기본값)
+        		        if (!Array.isArray(eventData)) {
+        		            console.error("⚠️ 서버 응답이 배열이 아닙니다:", eventData);
+        		            throw new Error("⚠️ 서버 응답이 배열이 아닙니다.");
+        		        }
+
+        		        // ✅ FullCalendar 형식으로 변환
+        		        const eventArray = eventData.map((res) => ({
+        		            title: res.SCH_TITLE,
+        		            start: new Date(res.SCH_STARTDATE).toISOString(),
+        		            end: new Date(res.SCH_ENDDATE).toISOString(),
+        		            backgroundColor: res.SCH_COLOR || "#3788d8",
         		        }));
-        			    
-        			    
-        			    console.log("📌 변환된 이벤트 데이터:", eventArray);
-        			    
-        			    //이벤트 추가
-        			    successCallback(eventArray);
-        			} catch (error) {
-        			    console.error("❌ 일정 불러오기 실패:", error);
-        			    failureCallback(error);
-        			}
 
-        	  },
+        		        console.log("📌 변환된 이벤트 데이터:", eventArray);
+        		        
+        		        //성공시 데이터 추가
+        		        successCallback(eventArray);
+
+        		    } catch (error) {
+        		        console.error("❌ 일정 불러오기 실패:", error);
+        		        failureCallback(error);
+        		    }
+        		}
+
 
 
           },

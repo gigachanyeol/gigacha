@@ -11,8 +11,7 @@ INSERT INTO SCHEDULE (
 
 </insert>
 
-
-<select id="loadSchedule" resultType="map">
+<select id="loadSchedule" parameterType="map" resultType="map">
     SELECT 
         SCH_TITLE AS sch_title,
         SCH_STARTDATE AS sch_startdate,
@@ -20,5 +19,7 @@ INSERT INTO SCHEDULE (
         SCH_COLOR AS sch_color
     FROM SCHEDULE
 </select>
+
+
 
 </mapper>

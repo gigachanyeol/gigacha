@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.giga.gw.repository.ICalendarDao;
-import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,13 +74,13 @@ public class CalendarController {
         return Timestamp.valueOf(OffsetDateTime.parse(isoDate).toLocalDateTime());
     }
 
-    // 일정 로드
     @GetMapping("/loadSchedule.do")
-    @ResponseBody  // ✅ JSON 데이터 반환 명시
-    public List<Map<String, Object>> loadSchedule() {
-        log.info("📢 일정 데이터 로드 요청 수신됨");
+    @ResponseBody
+    public List<Map<String, Object>> loadSchedule(@RequestParam("start") String start, 
+                                                  @RequestParam("end") String end) {
+        log.info("📢 일정 데이터 요청: {} ~ {}", start, end);
 
-        List<Map<String, Object>> schedules = calendarDao.loadSchedule();
+        List<Map<String, Object>> schedules = calendarDao.loadSchedule(start, end);
 
         if (schedules == null || schedules.isEmpty()) {
             log.warn("⚠️ 반환할 일정 데이터가 없습니다!");
@@ -90,4 +90,5 @@ public class CalendarController {
         log.info("📌 FullCalendar로 보낼 데이터: {}", schedules);
         return schedules;
     }
+
 }
