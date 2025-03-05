@@ -20,7 +20,7 @@
         FROM DEPARTMENTS
         WHERE USE_YN = 'Y'
 	UNION ALL	
-	SELECT TO_CHAR(EMPNO) AS "id", NAME || '('|| JOB_TITLE ||')' AS "text", DEPTNO AS "parent", 'https://cdn2.iconfinder.com/data/icons/web-line-2/32/user-16.png' AS "icon"
+	SELECT TO_CHAR(EMPNO) AS "id", NAME || '('|| JOB_TITLE ||')' AS "text", NVL(DEPTNO,'#') AS "parent", 'https://cdn2.iconfinder.com/data/icons/web-line-2/32/user-16.png' AS "icon"
 		FROM EMPLOYEES t1 
 		LEFT JOIN (SELECT JOB_ID, JOB_TITLE FROM JOBS) t2
 		ON t1.JOB_ID = t2.JOB_ID
@@ -89,15 +89,50 @@
 	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent" FROM APPROVAL_FORM
 	WHERE USE_YN = 'Y'
    </select> 
+   
     <!-- TODO 결재요청함 selectApproval -->
    <select id="selectApproval" resultType="approvalDto">
    		SELECT APPROVAL_ID, FORM_ID, EMPNO, 
-   			APPROVAL_TITLE, APPROVAL_STATUS, CREATE_DATE, 
-   			APPROVAL_DEADLINE, TEMP_SAVE_YN
+   			CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '[임시저장]'
+					WHEN 'ST02' THEN '[결재대기]'
+					WHEN 'ST03' THEN '[진행중]'
+					WHEN 'ST04' THEN '[결재완료]'
+					WHEN 'ST05' THEN '[결재반려]'
+					END || NVL(APPROVAL_TITLE,' ') AS APPROVAL_TITLE , CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '임시저장'
+					WHEN 'ST02' THEN '결재대기'
+					WHEN 'ST03' THEN '진행중'
+					WHEN 'ST04' THEN '결재완료'
+					WHEN 'ST05' THEN '결재반려'
+					END AS APPROVAL_STATUS,
+   			CREATE_DATE, 
+   			NVL(APPROVAL_DEADLINE,CURRENT_TIMESTAMP) AS APPROVAL_DEADLINE,TEMP_SAVE_YN 
    		FROM APPROVAL
-   		WHERE EMPNO = #{empno} AND USE_YN = 'Y'
+   		WHERE EMPNO = #{empno} AND USE_YN = 'Y' AND TEMP_SAVE_YN = 'N' AND APPROVAL_STATUS IN ('ST02','ST03')
    </select>
-    <!-- 결재 대기 문서 리스트 -->
+   <select id="selectApprovalTemp" resultType="approvalDto">
+   		SELECT APPROVAL_ID, FORM_ID, EMPNO, 
+   			CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '[임시저장]'
+					WHEN 'ST02' THEN '[결재대기]'
+					WHEN 'ST03' THEN '[진행중]'
+					WHEN 'ST04' THEN '[결재완료]'
+					WHEN 'ST05' THEN '[결재반려]'
+					END || NVL(APPROVAL_TITLE,' ') AS APPROVAL_TITLE , 
+   					CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '[임시저장]'
+					WHEN 'ST02' THEN '[결재대기]'
+					WHEN 'ST03' THEN '[진행중]'
+					WHEN 'ST04' THEN '[결재완료]'
+					WHEN 'ST05' THEN '[결재반려]'
+					END AS APPROVAL_STATUS,
+   			CREATE_DATE, 
+   			NVL(APPROVAL_DEADLINE,CURRENT_TIMESTAMP) AS APPROVAL_DEADLINE,TEMP_SAVE_YN 
+   		FROM APPROVAL
+   		WHERE EMPNO = #{empno} AND USE_YN = 'Y' AND TEMP_SAVE_YN = 'Y' AND APPROVAL_STATUS = 'ST01'
+   </select>
+    <!-- 결재 대기함 -->
     <select id="selectPendingApprovalDocuments" resultType="approvalDto">
     	SELECT APPROVAL_ID, EMPNO , APPROVAL_TITLE, 
     		TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE , APPROVAL_STATUS, TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD') AS APPROVAL_DEADLINE
@@ -108,5 +143,110 @@
 				AND STATUS_ID ='ST02') 
 			AND APPROVAL_STATUS != 'ST05'
     </select>
-    
+    <!-- 결재 진행함 -->
+    <select id="selectApprovalInProgress" resultType="approvalDto">
+    SELECT APPROVAL_ID , t2.NAME AS APPROVAL_CONTENT , APPROVAL_TITLE,
+				CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '[임시저장]'
+					WHEN 'ST02' THEN '[결재대기]'
+					WHEN 'ST03' THEN '[진행중]'
+					WHEN 'ST04' THEN '[결재완료]'
+					WHEN 'ST05' THEN '[결재반려]'
+				END AS APPROVAL_STATUS,
+				t1.CREATE_DATE,
+				NVL(APPROVAL_DEADLINE, CURRENT_TIMESTAMP) AS APPROVAL_DEADLINE
+			FROM APPROVAL t1 JOIN EMPLOYEES t2 
+			ON t1.EMPNO = t2.EMPNO 
+			WHERE APPROVAL_ID IN (SELECT APPROVAL_ID
+					FROM APPROVAL_LINE 
+					WHERE APPROVER_EMPNO = #{empno}
+					AND STATUS_ID = 'ST04')
+			AND APPROVAL_STATUS = 'ST03'
+    </select>
+    <!-- 완료문서함 -->
+    <select id="selectApprovalCompleted" resultType="approvalDto">
+   		SELECT APPROVAL_ID, NVL(APPROVAL_TITLE,' ') AS APPROVAL_TITLE, NAME AS APPROVAL_CONTENT,
+				CASE APPROVAL_STATUS 
+					WHEN 'ST01' THEN '[임시저장]'
+					WHEN 'ST02' THEN '[결재대기]'
+					WHEN 'ST03' THEN '[진행중]'
+					WHEN 'ST04' THEN '[결재완료]'
+					WHEN 'ST05' THEN '[결재반려]'
+				END AS APPROVAL_STATUS,
+				t1.CREATE_DATE,
+				NVL(APPROVAL_DEADLINE, CURRENT_TIMESTAMP) AS APPROVAL_DEADLINE
+		FROM APPROVAL t1 JOIN EMPLOYEES t2
+		ON t1.EMPNO = t2.EMPNO
+		WHERE APPROVAL_STATUS = 'ST04'
+    </select>
+    <!-- 반려문서함 -->
+    <select id="selectApprovalRejected" resultType="approvalDto">
+    	SELECT 
+	    t1.APPROVAL_ID, 
+	    CASE t1.APPROVAL_STATUS 
+	        WHEN 'ST01' THEN '[임시저장] '
+	        WHEN 'ST02' THEN '[결재대기] '
+	        WHEN 'ST03' THEN '[진행중] '
+	        WHEN 'ST04' THEN '[결재완료] '
+	        WHEN 'ST05' THEN '[결재반려] '
+	        ELSE ''
+	    END || NVL(t1.APPROVAL_TITLE, ' ') AS APPROVAL_TITLE,
+	    t2.NAME AS APPROVAL_CONTENT,
+	    CASE t1.APPROVAL_STATUS 
+	        WHEN 'ST01' THEN '[임시저장]'
+	        WHEN 'ST02' THEN '[결재대기]'
+	        WHEN 'ST03' THEN '[진행중]'
+	        WHEN 'ST04' THEN '[결재완료]'
+	        WHEN 'ST05' THEN '[결재반려]'
+	        ELSE ''
+	    END AS APPROVAL_STATUS,
+	    t3.REJECT_REASON AS "APPROVAL_DEADLINE", (SELECT NAME FROM EMPLOYEES WHERE EMPNO = t3.APPROVER_EMPNO) AS "CREATE_DATE"
+	    FROM APPROVAL t1
+			JOIN EMPLOYEES t2 ON t1.EMPNO = t2.EMPNO
+			JOIN APPROVAL_LINE t3 ON t1.APPROVAL_ID = t3.APPROVAL_ID
+			WHERE t1.APPROVAL_STATUS = 'ST05' 
+			AND t1.APPROVAL_ID IN (SELECT APPROVAL_ID
+					FROM APPROVAL_LINE 
+					WHERE APPROVER_EMPNO = '1505001' AND t3.STATUS_ID = 'ST05')
+    </select>
+    <!-- 내문서함 -->
+    <select id="selectApprovalMyDocuments" resultType="map">
+    	SELECT 
+		    t1.APPROVAL_ID, 
+		    t2.FORM_NAME AS FORM_ID, 
+		    t1.EMPNO, 
+		    NVL(APPROVAL_TITLE,'-') AS APPROVAL_TITLE,
+		    t3.CATEGORY_NAME ,
+		    CASE t1.APPROVAL_STATUS 
+		        WHEN 'ST01' THEN '임시저장'
+		        WHEN 'ST02' THEN '결재대기'
+		        WHEN 'ST03' THEN '진행중'
+		        WHEN 'ST04' THEN '결재완료'
+		        WHEN 'ST05' THEN '결재반려'
+		    END AS APPROVAL_STATUS, 
+		    TO_CHAR(t1.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE, 
+		    COALESCE(TO_CHAR(t1.APPROVAL_DEADLINE, 'YYYY-MM-DD'), '-') AS APPROVAL_DEADLINE
+		FROM 
+		    APPROVAL t1 
+		JOIN 
+		    APPROVAL_FORM t2 ON t1.FORM_ID = t2.FORM_ID 
+		JOIN 
+			APPROVAL_CATEGORY t3 ON t2.CATEGORY_ID = t3.CATEGORY_ID 
+		WHERE 
+		    t1.EMPNO = '1505001'
+    </select>
+    <!-- 참조문서함 -->
+    <select id="selectApprovalReference" resultType="map">
+   	 SELECT t1.APPROVAL_ID, (SELECT NAME FROM EMPLOYEES WHERE EMPNO = t1.EMPNO) AS NAME ,APPROVAL_TITLE, 
+					CASE t1.APPROVAL_STATUS 
+				        WHEN 'ST01' THEN '임시저장'
+				        WHEN 'ST02' THEN '결재대기'
+				        WHEN 'ST03' THEN '진행중'
+				        WHEN 'ST04' THEN '결재완료'
+				        WHEN 'ST05' THEN '결재반려'
+				    END AS APPROVAL_STATUS,
+				    t1.CREATE_DATE, t1.APPROVAL_DEADLINE
+			FROM APPROVAL t1 
+			WHERE t1.APPROVAL_ID IN (SELECT APPROVAL_ID FROM APPROVAL_REF WHERE EMPNO='1505001')
+    </select>
 </mapper>

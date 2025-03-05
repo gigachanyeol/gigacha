@@ -15,7 +15,8 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
+  background: #fff;
+	
   color: #444444;
 }
 
@@ -602,13 +603,14 @@ h6 {
   top: 60px;
   left: 0;
   bottom: 0;
-  width: 200px;
+  width: 300px;
   z-index: 996;
   transition: all 0.3s;
   padding: 20px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
+  scrollbar-gutter: stable;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
 }
@@ -639,7 +641,7 @@ h6 {
 
 @media (max-width: 1199px) {
   .toggle-sidebar .sidebar {
-    left: 0;
+    left: -300px;
   }
 }
 
@@ -1237,13 +1239,32 @@ h6 {
 --------------------------------------------------------------*/
 
 #content {
-	margin-right: 30px;
-	margin-left: 230px;
+/* 	margin-right: 30px; */
+/* 	margin-left: 230px; */
 	min-width:800px;
+/* 	max-width:1280px; */
 }
 
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
+/* .content_title { */
+/* 	margin-top: 10px; */
+/* 	padding-bottom: 5px; */
+/* 	border-bottom: 1px solid #ccc; */
+/* } */
+/* .row { */
+/* 	margin-top: 65px; */
+/* } */
+
+.approval-item {
+	display : inline-block;
+	float: right;
+	width: 80px;
+	height: 100px;
+	background: yellow;
+	border: 1px solid black;
+	font-size: 0.8em;
+	display: inline-block;
+}
+
+#form {
+	clear:both;
 }

@@ -47,7 +47,7 @@
                 'core': {
                     'data': function (node, cb) {
                         $.ajax({
-                            url: "./tree.do",
+                            url: "./tree.json",
                             type: "GET",
                             dataType: "json",
                             success: function (data) {

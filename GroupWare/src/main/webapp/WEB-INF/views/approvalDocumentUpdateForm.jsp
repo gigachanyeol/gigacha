@@ -15,18 +15,6 @@
 <script
 	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <style type="text/css">
-#content {
-	margin-top: 65px;
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-
 #approvalLine {
 	
 }
@@ -42,20 +30,8 @@
 	display: inline-block;
 }
 
-.toastui-editor-toolbar {
-	display: none;
-}
-
-.toastui-editor-defaultUI {
-	border: none;
-}
-
 #form {
 	clear: both;
-}
-
-.toastui-editor-contents table {
-	margin: 0 auto;
 }
 
 #fileForm {
@@ -69,60 +45,63 @@
 	href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
-	<div id="content">
-		<h3 class="content_title">기안문작성</h3>
-		<div class="content_nav">
-			<button id="formBtn">문서양식</button>
-			<button id="lineBtn">결재선</button>
-			<button id="saveBtn">문서수정</button>
-			<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+	<%@ include file="./layout/newNav.jsp" %>
+	<%@ include file="./layout/newSide.jsp" %>
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">기안문작성</h3>
+			<div class="content_nav">
+				<button id="formBtn">문서양식</button>
+				<button id="lineBtn">결재선</button>
+				<button id="saveBtn">문서수정</button>
+				<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+			</div>
+			<div id="approvalLine"></div>
+			<form action="">
+				<table border="1">
+					<tbody>
+						<tr>
+							<th>문서번호</th>
+							<td>
+								<input type="hidden" value="${approval.approval_id}" name="approval_id">
+								${approval.approval_id}
+							</td>
+							<th>기안일자</th>
+							<td>${approval.create_date}</td>
+						</tr>
+						<tr>
+							<th>참조자</th>
+							<td><span>참조자선택버튼</span></td>
+							<th>마감기한</th>
+							<td><input type="date" name="approval_deadline"></td>
+						</tr>
+						<tr>
+							<th>긴급여부</th>
+							<td>긴급 <input type="radio" name="urgency" value="Y">
+								일반 <input type="radio" name="urgency" value="N" checked>
+							</td>
+							<th>서명/도장</th>
+							<td>서명 <input type="radio" value="1" name="signature" checked>
+								도장 <input type="radio" value="2" name="signature">
+							</td>
+						</tr>
+						<tr>
+							<th>문서제목</th>
+							<td colspan="3"><input type="text" class="form-control"
+								name="approval_title"></td>
+						</tr>
+	
+					</tbody>
+				</table>
+				<input type="hidden" name="form_id">
+				<div id="editor">${approval.approval_content}</div>
+				<input class="btn" type="file" multiple id="formFile">
+				<div id="fileForm">파일업로드목록</div>
+			</form>
 		</div>
-		<div id="approvalLine"></div>
-		<form action="">
-			<table border="1">
-				<tbody>
-					<tr>
-						<th>문서번호</th>
-						<td>
-							<input type="hidden" value="${approval.approval_id}" name="approval_id">
-							${approval.approval_id}
-						</td>
-						<th>기안일자</th>
-						<td>${approval.create_date}</td>
-					</tr>
-					<tr>
-						<th>참조자</th>
-						<td><span>참조자선택버튼</span></td>
-						<th>마감기한</th>
-						<td><input type="date" name="approval_deadline"></td>
-					</tr>
-					<tr>
-						<th>긴급여부</th>
-						<td>긴급 <input type="radio" name="urgency" value="Y">
-							일반 <input type="radio" name="urgency" value="N" checked>
-						</td>
-						<th>서명/도장</th>
-						<td>서명 <input type="radio" value="1" name="signature" checked>
-							도장 <input type="radio" value="2" name="signature">
-						</td>
-					</tr>
-					<tr>
-						<th>문서제목</th>
-						<td colspan="3"><input type="text" class="form-control"
-							name="approval_title"></td>
-					</tr>
-
-				</tbody>
-			</table>
-			<input type="hidden" name="form_id">
-			<div id="editor">${approval.approval_content}</div>
-			<input class="btn" type="file" multiple id="formFile">
-			<div id="fileForm">파일업로드목록</div>
-		</form>
-
 	</div>
+</main>
 	<script
 		src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
@@ -136,7 +115,7 @@
 
 		function form(form_id) {
 			console.log("팝업에서 보낸값", form_id[0].id);
-			fetch("./selectForm.do", {
+			fetch("./selectForm.json", {
 				method:'post',
 				headers:{
 					'Content-Type':'text/plain'
@@ -201,7 +180,7 @@
 // 			    jsonData["approvalLineDtos"] = d; 
 		
 			    console.log(jsonData);
-				fetch('./approvalUpdateForm.do',{
+				fetch('./approvalUpdateForm.json',{
 					method:'POST',
 					headers:{
 						'Content-Type':'application/json'

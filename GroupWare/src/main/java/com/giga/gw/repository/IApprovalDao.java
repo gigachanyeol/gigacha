@@ -22,7 +22,14 @@ public interface IApprovalDao {
     
     List<Map<String, Object>> formTree();
     List<ApprovalDto> selectApproval(int empno);
+    List<ApprovalDto> selectApprovalTemp(String empno);
     int approvalRequest(String approval_id);
     List<ApprovalDto> selectPendingApprovalDocuments(String empno);
+    List<ApprovalDto> selectApprovalInProgress(String empno);
+    List<ApprovalDto> selectApprovalCompleted(String empno);
+    List<ApprovalDto> selectApprovalRejected(String empno);
+    List<Map<String, Object>> selectApprovalMyDocuments(String empno);
+    List<Map<String, Object>> selectApprovalReference(String empno);
+    
     
 }

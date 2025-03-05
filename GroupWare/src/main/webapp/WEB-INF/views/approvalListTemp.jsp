@@ -20,7 +20,7 @@
 		<div id="content" class="col-lg-10">
 			<h3 class="content_title">결재요청함</h3>
 			<div id="wrapper" class="list">
-	            <table id="example" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;">
+	            <table id="example" class="display nowrap dataTable dtr-inline collapsed">
 	                <thead>
 	                    <tr>
 	                        <th>문서번호</th>
@@ -43,7 +43,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalList.json',
+	            url: './approvalListTemp.json',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {

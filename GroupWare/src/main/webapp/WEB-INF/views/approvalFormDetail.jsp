@@ -13,51 +13,24 @@
 	src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <script
 	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-	<style type="text/css">
-	#content {
-		margin-top:65px;
-		margin-right: 30px;
-		margin-left: 230px;
-	}
-
-	.content_title {
-		margin-top: 10px;
-		padding-bottom: 5px;
-		border-bottom: 1px solid #ccc;
-	}
-
-	#viewer table {
-		margin: 0 auto;
-		width: 80%;
-	}
-	.toastui-editor-contents table {
-		margin: 0 auto;
-		width:80%;
-	}
-	.toastui-editor-contents table th{
-	
-	background-color:#fff;
-		color:black;
-	}
-	.toastui-editor-contents th p {
-	background-color:#fff;
-		color:black;
-	}
-</style>
 </head> 
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp" %>
-	<div id="content">
-		<h3 class="content_title">${form.form_name}</h3>
-		<button class="btn btn-info" onclick="location.href='./approvalFormUpdate.do?id=${form.form_id}'">수정</button>
-		<button class="btn btn-danger" id="deleteBtn">삭제</button>
-		<div id="viewer" class="toastui-editor-contents">${form.form_content}</div>
+	<%@ include file="./layout/newNav.jsp" %>
+	<%@ include file="./layout/newSide.jsp" %>
+<main id="main" class="main">
+	<div class="row">
+		<div id="content">
+			<h3 class="content_title">${form.form_name}</h3>
+			<button class="btn btn-info" onclick="location.href='./approvalFormUpdate.do?id=${form.form_id}'">수정</button>
+			<button class="btn btn-danger" id="deleteBtn">삭제</button>
+			<div id="viewer" class="toastui-editor-contents">${form.form_content}</div>
+		</div>
 	</div>
+</main>
 </body>
 	<script type="text/javascript">
 		document.querySelector("#deleteBtn").addEventListener('click', () => {
-			fetch("./approvalFormDelete.do?id=${form.form_id}")
+			fetch("./approvalFormDelete.json?id=${form.form_id}")
 			.then(resp => resp.json())
 			.then(data => {
 				if(data == true) {

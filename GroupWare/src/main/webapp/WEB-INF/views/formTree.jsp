@@ -44,7 +44,7 @@
                 'core': {
                     'data': function (node, cb) {
                         $.ajax({
-                            url: "./formTree.do", // 데이터를 JSON 형태로 가져오는 API
+                            url: "./formTree.json", // 데이터를 JSON 형태로 가져오는 API
                             type: "GET",
                             dataType: "json",
                             success: function (data) {

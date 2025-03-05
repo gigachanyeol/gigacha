@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>결재요청함/임시저장요청함</title>
+<title>참조문서함</title>
 
 <%@ include file="./layout/header.jsp"%>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -18,19 +18,17 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col-lg-10">
-			<h3 class="content_title">결재요청함</h3>
+			<h3 class="content_title">참조문서함</h3>
 			<div id="wrapper" class="list">
 	            <table id="example" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;">
 	                <thead>
 	                    <tr>
 	                        <th>문서번호</th>
-	                        <th>양식번호</th>
 	                        <th>작성자</th>
 	                        <th>제목</th>
 	                        <th>상태</th>
 	                        <th>작성일</th> 
 	                        <th>마감기한</th> 
-	                        <th>임시저장</th> 
 	                    </tr>
 	                </thead>
 	            </table>
@@ -43,7 +41,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalList.json',
+	            url: './selectApprovalReference.json',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {
@@ -52,14 +50,12 @@
 	            }
 	        },
 	        columns: [
-	            { data: 'approval_id' },
-	            { data: 'form_id' },
-	            { data: 'empno' },
-	            { data: 'approval_title' },
-	            { data: 'approval_status' },
-	            { data: 'create_date' },
-	            { data: 'approval_deadline' },
-	            { data: 'temp_save_yn' }
+	            { data: 'APPROVAL_ID' },
+	            { data: 'NAME' },
+	            { data: 'APPROVAL_TITLE' },
+	            { data: 'APPROVAL_STATUS' },
+	            { data: 'CREATE_DATE' },
+	            { data: 'APPROVAL_DEADLINE' },
 	        ],
 	        // 행 선택
 	        lengthMenu: [10, 20, 30],
@@ -68,7 +64,7 @@
 	        },
 	        rowCallback: function(row, data) {
 	            $(row).find('td:first').on('click', function() {
-	                window.location.href = './approvalDetail.do?id='+data.approval_id;
+	                window.location.href = './approvalDetail.do?id='+data.APPROVAL_ID;
 	            }).css('cursor', 'pointer'); // 클릭 가능하게 포인터 변경
 	        }
 	    });

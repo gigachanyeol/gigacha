@@ -71,6 +71,7 @@
 <body>
 <%@ include file="./layout/nav.jsp" %>
 <%@ include file="./layout/sidebar.jsp"%>
+<main id="main" class="main">
 	<div id="content">
 		<h3 class="content_title">기안문 작성</h3>
 		<button id="line">결재선</button>
@@ -97,7 +98,7 @@
 		</div>
 		<div id="sigImg"></div>
 	</div>
-	
+</main>
 	<%-- 	<%@ include file="./layout/newSide.jsp"%> --%>
 	
 </body>
@@ -173,7 +174,7 @@
 		console.log(btoa(data));
 		console.log(data)
 	  //window.open(data);
-		fetch('./signatureSave.do',{
+		fetch('./signatureSave.json',{
 			method:'post',
 			headers:{
 				'Content-Type':'application/json'
@@ -188,7 +189,7 @@
 	});
 	
 	readButton.addEventListener('click',()=>{
-		fetch('./signatureRead.do')
+		fetch('./signatureRead.json')
 		.then(res => res.json())
 		.then(data => {
 			console.log(data);

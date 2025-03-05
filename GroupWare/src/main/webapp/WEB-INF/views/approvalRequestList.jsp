@@ -14,6 +14,7 @@
 <%@ include file="./layout/newNav.jsp" %>
 <%-- <%@ include file="./layout/sidebar.jsp" %> --%>
 <%@ include file="./layout/newSide.jsp" %>
+<main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col-10 mt-3">
 			<h3 class="content_title">결재목록함</h3>
@@ -52,6 +53,7 @@
 			</table>
 		</div>
 	</div>
+</main>
 	<!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -88,7 +90,7 @@
 		let jsonData={};
 		jsonData["approval_id"] = approval_id;
 		console.log(jsonData);
-		fetch("./acceptApprovalLine.do",{
+		fetch("./acceptApprovalLine.json",{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"
@@ -123,7 +125,7 @@
 		
 		if(typeof reject_reason != 'undefined') {
 			console.log("dddd");
-			fetch("./rejectApprovalLine.do",{
+			fetch("./rejectApprovalLine.json",{
 				method:"POST",
 				headers:{
 					'Content-Type':'application/json'

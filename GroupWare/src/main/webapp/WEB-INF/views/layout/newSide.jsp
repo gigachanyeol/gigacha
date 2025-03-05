@@ -30,52 +30,52 @@
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
           <span>전자결재</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="charts-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li class="nav-heading">기안</li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/approvalDocument.do">
               <span>기안문작성</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/approvalList.do">
               <span>결재요청함</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/approvalListTemp.do">
               <span>임시저장함</span>
             </a>
           </li>
           <li class="nav-heading">결재</li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/approvalRequestList.do">
               <span>결재대기함</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/selectApprovalInProgress.do">
               <span>결재진행함</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/selectApprovalCompleted.do">
               <span>완료문서함</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/selectApprovalRejected.do">
               <span>반려문서함</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/selectApprovalReference.do">
               <span>참조문서함</span>
             </a>
           </li>
           <li class="nav-heading">개인</li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/approval/myApproval.do">
               <span>나의결재목록</span>
             </a>
           </li>
