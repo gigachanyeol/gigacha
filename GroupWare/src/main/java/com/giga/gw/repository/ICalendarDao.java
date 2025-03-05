@@ -9,5 +9,15 @@ public interface ICalendarDao {
 
     int scheduleSave(Map<String, Object> schedule);
     
+    //개인 스케줄
     List<Map<String, Object>> loadSchedule(String start, String end);
+    
+    //개인 스케줄2
+    List<Map<String, Object>> loadEmpSchedule(String empno);
+    
+    //부서 스케줄
+    List<Map<String, Object>> loadDeptSchedule(String deptno);
+    
+    //전사원 스케줄
+    List<Map<String, Object>> loadAllSchedule();
 }
