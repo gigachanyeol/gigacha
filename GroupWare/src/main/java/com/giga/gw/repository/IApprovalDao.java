@@ -29,6 +29,7 @@ public interface IApprovalDao {
     List<ApprovalDto> selectApprovalCompleted(String empno);
     List<ApprovalDto> selectApprovalRejected(String empno);
     List<Map<String, Object>> selectApprovalMyDocuments(String empno);
+    List<Map<String, Object>> selectApprovalReference(String empno);
     
     
 }

@@ -90,7 +90,7 @@
 		let jsonData={};
 		jsonData["approval_id"] = approval_id;
 		console.log(jsonData);
-		fetch("./acceptApprovalLine.do",{
+		fetch("./acceptApprovalLine.json",{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"
@@ -125,7 +125,7 @@
 		
 		if(typeof reject_reason != 'undefined') {
 			console.log("dddd");
-			fetch("./rejectApprovalLine.do",{
+			fetch("./rejectApprovalLine.json",{
 				method:"POST",
 				headers:{
 					'Content-Type':'application/json'

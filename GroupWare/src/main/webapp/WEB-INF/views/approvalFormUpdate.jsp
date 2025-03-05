@@ -51,7 +51,7 @@
 				});
 				jsonData["form_content"] = editor.getData();
 				console.log(jsonData);
-				fetch("./approvalFormUpdate.do",{
+				fetch("./approvalFormUpdate.json",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"

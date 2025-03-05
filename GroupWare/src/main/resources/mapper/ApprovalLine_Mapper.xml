@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.giga.gw.repository.ApprovalLineDaoImpl">
-	<insert id="insertApprovalLines">
+	<insert id="insertApprovalLines" parameterType="map">
 		INSERT INTO APPROVAL_LINE(LINE_ID, APPROVAL_ID, "SEQUENCE", STATUS_ID,
 		APPROVER_EMPNO)
 		SELECT APPROVALLINE_SEQ.NEXTVAL, A.* FROM (
 		<choose>
-			<when test="list != null and list.size() > 0">
-				<foreach collection="list" item="item" index="i" separator="UNION ALL ">
-					SELECT #{item.approval_id} , #{i} ,'ST02' , #{item.approver_empno} FROM DUAL
+			<when test="approvalLineDtos != null and approvalLineDtos.size() > 0">
+				<foreach collection="approvalLineDtos" item="item" index="i" separator=" UNION ALL ">
+					SELECT #{item.approval_id} , #{i} , 'ST02' , #{item.approver_empno, jdbcType=NUMERIC} FROM DUAL
 				</foreach>
 			</when>
 			<otherwise>

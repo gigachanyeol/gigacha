@@ -69,7 +69,7 @@
             </a>
           </li>
           <li>
-            <a href="${pageContext.request.contextPath}/approval">
+            <a href="${pageContext.request.contextPath}/approval/selectApprovalReference.do">
               <span>참조문서함</span>
             </a>
           </li>

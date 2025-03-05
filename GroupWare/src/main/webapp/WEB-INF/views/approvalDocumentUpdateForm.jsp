@@ -115,7 +115,7 @@
 
 		function form(form_id) {
 			console.log("팝업에서 보낸값", form_id[0].id);
-			fetch("./selectForm.do", {
+			fetch("./selectForm.json", {
 				method:'post',
 				headers:{
 					'Content-Type':'text/plain'
@@ -180,7 +180,7 @@
 // 			    jsonData["approvalLineDtos"] = d; 
 		
 			    console.log(jsonData);
-				fetch('./approvalUpdateForm.do',{
+				fetch('./approvalUpdateForm.json',{
 					method:'POST',
 					headers:{
 						'Content-Type':'application/json'

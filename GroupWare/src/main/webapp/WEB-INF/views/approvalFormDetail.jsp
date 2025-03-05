@@ -30,7 +30,7 @@
 </body>
 	<script type="text/javascript">
 		document.querySelector("#deleteBtn").addEventListener('click', () => {
-			fetch("./approvalFormDelete.do?id=${form.form_id}")
+			fetch("./approvalFormDelete.json?id=${form.form_id}")
 			.then(resp => resp.json())
 			.then(data => {
 				if(data == true) {

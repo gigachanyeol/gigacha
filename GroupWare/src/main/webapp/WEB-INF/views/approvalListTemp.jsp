@@ -43,7 +43,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalListTempAjax.do',
+	            url: './approvalListTemp.json',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {

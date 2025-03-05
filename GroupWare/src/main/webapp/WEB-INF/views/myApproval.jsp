@@ -60,7 +60,7 @@
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
         ajax: {
-            url: './myApprovalData.do',
+            url: './myApprovalData.json',
             type: 'POST',
 //             data: { empno: '1505001' }, // 사원번호를 동적으로 변경 가능
             dataType: 'json',

@@ -36,7 +36,7 @@
 	
 	document.querySelector("#recallBtn").addEventListener('click', () => {
 		let approval_id = document.querySelector(".content_title").textContent;
-		fetch("./approvalRecall.do",{
+		fetch("./approvalRecall.json",{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"
@@ -58,7 +58,7 @@
 	
 	document.querySelector("#approvalBtn").addEventListener('click', ()=> {
 		let approval_id = document.querySelector(".content_title").textContent;
-		fetch("./approvalRequest.do",{
+		fetch("./approvalRequest.json",{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"

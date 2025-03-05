@@ -118,4 +118,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.selectList(NS+"selectApprovalMyDocuments",empno);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectApprovalReference(String empno) {
+		return sql.selectList(NS+"selectApprovalReference",empno);
+	}
+
 }
