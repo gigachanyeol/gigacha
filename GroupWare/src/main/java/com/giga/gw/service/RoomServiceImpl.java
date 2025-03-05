@@ -1,5 +1,6 @@
 package com.giga.gw.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +39,6 @@ public class RoomServiceImpl implements IRoomService {
 		return roomDao.updateRoom(roomDto);
 	}
 
-	@Override
-	public int delRooms(List<String> room_id) {
-		return roomDao.delRooms(room_id);
-	}
 
 	
 

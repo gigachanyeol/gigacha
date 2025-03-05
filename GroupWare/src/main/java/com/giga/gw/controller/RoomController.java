@@ -81,44 +81,11 @@ public class RoomController {
 		int updateRoom = roomService.updateRoom(roomDto); // 회의실 정보 업데이트
 		
 		if (updateRoom > 0) {
-	        return ResponseEntity.ok("{\"isc\":\"true\"}");  // 성공 시 응답
+	        return ResponseEntity.ok(true);  // 성공 시 응답
 	    } else {
-	        return ResponseEntity.status(400).body("{\"isc\":\"false\", \"message\":\"Update failed\"}");  // 실패 시 응답
+	        return ResponseEntity.status(400).body(false);  // 실패 시 응답
 	    }
-//		return "redirect:/rooms/roomList"; // 수정 후 회의실 목록 페이지로
-//		return ResponseEntity.ok("{\"isc\":\"true\"}");
 	}
 	
-	
-	
-	//회의실 삭제
-//	@PostMapping("/deleteRooms") 
-//	@ResponseBody // AJAX 요청에 대한 응답 @ResponseBody,ResponseEntity: 코드와 메시지 함께 반환
-//	public ResponseEntity<String> deleteRooms(@RequestBody List<String> roomIds, HttpSession session) {
-//	    String employee = (String) session.getAttribute("employee");
-//
-//	    if (employee == null) {
-//	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-//	    }
-//
-//	    String auth = employeeService.getAuthByEmpno(employee);
-//
-//	    if (auth == null || !"admin".equals(auth)) {
-//	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
-//	    }
-//
-//	    try {
-//	        // 삭제할 회의실이 선택되지 않았을 경우 예외 처리
-//	        if (roomIds.isEmpty()) {
-//	            return ResponseEntity.badRequest().body("삭제할 회의실이 선택되지 않았습니다.");
-//	        }
-//
-//	        // 여러 개 삭제 처리 (단일 삭제도 여기서 포함됨)
-//	        int deletedCount = roomService.delRooms(roomIds);
-//
-//	        return ResponseEntity.ok("회의실이 삭제되었습니다.");
-//	    } catch (Exception e) {
-//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류가 발생했습니다.");
-//	    }
-//	}
+
 }

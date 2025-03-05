@@ -39,10 +39,5 @@ public class RoomDaoImpl implements IRoomDao {
 	}
 
 
-	@Override
-	public int delRooms(List<String> room_id) {
-		return sessionTemplate.delete(NS+"delRooms", room_id);
-	}
-
 
 }

@@ -6,18 +6,13 @@
 <meta charset="UTF-8">
 <title>회의실 등록 폼</title>
 <%@ include file="./layout/header.jsp"%>
+<!-- jQuery UI CSS -->
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- jQuery 및 jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-
 .container {
 	max-width: 960px;
 	margin: 0 auto;
@@ -108,8 +103,9 @@
 </style>
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+<%@ include file="./layout/newNav.jsp" %>
+<%@ include file="./layout/newSide.jsp" %>
+<main id="main" class="main">
 	<div id="content">
 		<h3 class="content_title">회의실 등록</h3>
 		<form id="roomform" action="/room/reservation.do" method="post">
@@ -142,7 +138,7 @@
 		</div>
 			</form>
 	</div>
-	
+	</main>
 	<script type="text/javascript">
 	 function registerRoom() {
          let formData = new FormData(document.forms[0]);
