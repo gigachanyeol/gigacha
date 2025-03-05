@@ -14,9 +14,9 @@ public interface IRoomService {
 	
 	int insertRoom(RoomDto roomDto);
 	List<RoomDto> selectAllRooms();
-	RoomDto selectRoomById(String roomId);
+	RoomDto selectRoomById(String room_id);
 	int updateRoom(RoomDto roomDto);
-	int delRooms(List<String> roomId);
+	int delRooms(List<String> room_id);
 	
 	
 

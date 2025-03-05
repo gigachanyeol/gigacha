@@ -10,154 +10,238 @@
 <title>회의실 리스트</title>
 <%@ include file="./layout/header.jsp"%>
 <style type="text/css">
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
+ .switch {
+            width: 50px;
+            height: 25px;
+            background-color: #ccc;
+            border-radius: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .switch .slider {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 3px;
+            transform: translateY(-50%);
+            transition: left 0.3s;
+        }
+        .switch.on {
+            background-color: #4caf50;
+        }
+        .switch.on .slider {
+            left: 27px;
+        }
 
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
 </style>
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
-	<div id="content">
+<%-- <%@ include file="./layout/nav.jsp" %> --%>
+<%@ include file="./layout/newNav.jsp" %>
+<%-- <%@ include file="./layout/sidebar.jsp" %> --%>
+<%@ include file="./layout/newSide.jsp" %>
+	<div class="row">
+	<div id="content" class="mt-3">
 		<h3 class="content_title">회의실 리스트</h3>
 		<div class="card">
 			<div class="card-body">
 				<table class="table">
+					<caption>
+						<button type="button" class="btn btn-success"
+										onclick="location.href='./roomform.do'">회의실 등록</button>
+					</caption>
 					<thead>
 						<tr>
-							<th scope="col">●</th>
 							<th scope="col">번호</th>
 							<th scope="col">회의실 이름</th>
 							<th scope="col">수용인원</th>
 							<th scope="col">등록일</th>
+							<th scope="col">수정일</th>
+							<th scope="col">사용여부</th>
+							<th scope="col">수정</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${roomList}" var="room">
 							<tr>
-								 <td><input type="checkbox" name="selectedRooms" value="${room.room_id}"></td>
 								<td scope="col">${room.room_id}</td>
 								<td scope="col">${room.room_name}</td>
 								<td scope="col">${room.capacity}</td>
 								<td scope="col">${room.created_at}</td>
+								<td scope="col">${room.updated_at}</td>
+								<td scope="col">
+									<div class="${room.use_yn eq 'Y' ? 'switch on':'switch'}">
+								        <div class="slider"></div>
+								    </div>
+								</td>
+								<td>
+									
+									<button type="button" name="modifyBtn" class="btn btn-warning">수정</button>
+<%-- 									<button type="button" class="btn btn-info"	onclick="deleteRooms('${room.room_id}')">회의실 삭제</button> --%>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<button type="button" class="btn btn-success"
-			onclick="location.href='./roomform.do'">회의실 등록</button>
-		<button type="button" class="btn btn-warning"
-			onclick="openUpdateModal('${room.room_id}', '${room.room_name}', ${room.room_capacity})">회의실 수정</button>
-		<button type="button" class="btn btn-info"
-			onclick="deleteRooms('${room.room_id}')">회의실 삭제</button>
+		
 	</div>
-	
+	</div>
 	<!-- 수정 모달 창 -->
 	<!-- tabindex="-1": 키보드를 통해 모달을 닫을 수 없도록 -->
-	<div class="modal" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-		<div class="modal-dalog"> 모달의 대화 상자 역할
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="updateModalLabel">회의실 수정</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	<!-- Modal -->
+		<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5" id="staticBackdropLabel">회의실 정보 수정</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<input type="hidden" id="room_id">
+		        <div class="mb-3">
+					<label for="room_name" class="form-label">회의실 이름</label>
+				    <input type="text" class="form-control" id="room_name" >
 				</div>
-				<div class="modal-body">
-					<form id="updateRoomForm" method="POST">
-						<div class="mb-3">
-							<label for="roomName" class="form-label">회의실 이름</label>
-							<input type="text" class="form-control" id="roomName" name="roomName" required="true"/>
-						</div>				
-						<div class="mb-3">	
-							<label for="roomCapacity" class="form-label">회의실 수용인원</label>
-							<input type="text" class="form-control" id="roomCapacity" name="roomCapacity" required="true"/>
-						</div>
-						<input type="hidden" id="roomId" name="roomId"/>
-						<button type="submit" class="btn btn-primary">수정</button>
-					</form>
+				<div class="mb-3">
+					<label for="capacity" class="form-label">수용인원</label>
+				    <input type="number" class="form-control" id="capacity"  min="1" max="15"  >
 				</div>
-			</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		        <button type="button" id="updateRoomForm" class="btn btn-primary">수정</button>
+		      </div>
+		    </div>
+		  </div>
 		</div>
-	</div>
 	<script>
-        function openUpdateModal(roomId, roomName, roomCapacity) {
-        	 document.getElementById('roomId').value = roomId;
-             document.getElementById('roomName').value = roomName;
-             document.getElementById('roomCapacity').value = roomCapacity;
              
-             //모달 띄우기
-             $('#updateModal').modal('show');
-         
-             // 수정 버튼을 클릭했을 때 모달에서 서버로 수정된 데이터를 전송
-             $('#updateRoomForm').submit(function(event) {
-            	    event.preventDefault();  // 폼 제출 이벤트 방지
+        window.onload = function(){
+        	var updateModal;
 
-            	    var roomDto = {
-            	        roomId: $('#roomId').val(),
-            	        roomName: $('#roomName').val(),
-            	        roomCapacity: $('#roomCapacity').val()
+        	var switchBtn =  document.querySelectorAll(".switch")
+        	console.log("스위치 버튼 갯수 : ", switchBtn.length)
+        	for(let i=0; i<switchBtn.length; i++ ){
+        		switchBtn[i].onclick=function(){
+        			this.classList.toggle("on");
+        			console.log(this.className)
+        			
+        			if (this.classList.contains("on")) {
+					    console.log("스위치가 켜져 있습니다.");
+					    //AJAX 작업으로 update use_yn 을 Y
+					    $.ajax({
+					        url: '/rooms/update',
+					        method: 'POST',
+					        contentType: 'application/json',
+					        data: JSON.stringify({
+					            roomId: 'ROOM024', // 실제 회의실 ID
+					            useYn: 'Y'
+					        }),
+					        success: function(response) {
+					            if(response.success) {
+					                console.log("사용 상태 업데이트 성공");
+					            } else {
+					                console.error("업데이트 실패");
+					            }
+					        },
+					        error: function(error) {
+					            console.error('Error:', error);
+					        }
+					    });
+					} else {
+					    console.log("스위치가 꺼져 있습니다.");
+					  //AJAX 작업으로 update use_yn 을 N
+					    $.ajax({
+					        url: '/rooms/update',
+					        method: 'POST',
+					        contentType: 'application/json',
+					        data: JSON.stringify({
+					            roomId: 'ROOM024', // 실제 회의실 ID
+					            useYn: 'N'
+					        }),
+					        success: function(response) {
+					            if(response.success) {
+					                console.log("사용 상태 업데이트 성공");
+					            } else {
+					                console.error("업데이트 실패");
+					            }
+					        },
+					        error: function(error) {
+					            console.error('Error:', error);
+					        }
+					    });
+					}
+        		};
+        	} // switch 버튼 이벤트
+        	
+        	var modifyBtn = document.getElementsByName("modifyBtn");
+        	console.log("수정버튼 갯수 :", modifyBtn.length);
+        	for(let i=0; i<modifyBtn.length; i++ ){
+        		modifyBtn[i].onclick =function(){
+        			var room_id =  document.getElementById("room_id");
+        			var room_name =  document.getElementById("room_name");
+        			var capacity=  document.getElementById("capacity");
+        			var parent = this.closest("tr");
+        			console.log(parent.innerHTML);
+        			var room_id_p = parent.children[0].textContent;
+        			var room_name_p = parent.children[1].textContent;
+        			var capacity_p = parent.children[2].textContent;
+        			console.log("현재정보 : " , room_id_p , room_name_p, capacity_p);
+        			room_id.value = room_id_p
+        			room_name.value = room_name_p;
+        			capacity.value = capacity_p;
+        			updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
+        	        updateModal.show();
+        		}
+        	}
+        	
+        	
+        	document.getElementById("updateRoomForm").onclick = function(event) {
+        	    event.preventDefault();  // 폼 제출 이벤트 방지
+        	    console.log(event.target) //  modal button 
+        	    var room_id = document.getElementById("room_id").value;
+        	    var room_name =  document.getElementById("room_name").value;
+    			var capacity=  document.getElementById("capacity").value;
+    			console.log("전송될 값 :", room_id,room_name, capacity);
+    			
+    			
+    			var roomDto = {
+    					room_id: room_id,
+    					room_name: room_name,
+    					capacity: capacity
             	    };
 
-            	    $.ajax({
-            	        url: "/rooms/update", // Controller의 @PostMapping 경로
-            	        method: "POST",
-            	        data: JSON.stringify(roomDto), // RoomDto 객체를 JSON 형식으로 전송
-            	        contentType: "application/json",  // JSON 형태로 요청 보냄
-            	        success: function(response) {
-            	            // 성공적으로 처리된 후, 모달을 닫고 페이지를 리로드하거나 갱신
-            	            $('#updateModal').modal('hide');
-            	            location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
-            	        },
-            	        error: function(error) {
-            	            console.log("Error updating room data:", error);
-            	        }
-            	    });
-            	});
+    			fetch("./update.do", {
+    			    method: "POST",
+    			    headers: {
+    			        "Content-Type": "application/json"
+    			    },
+    			    body: JSON.stringify(roomDto)
+    			})
+    			.then(response => {
+    			    if (!response.ok) {
+    			        throw new Error("서버 응답 오류: " + response.status);
+    			    }
+    			    return response.json(); // JSON 형식의 응답을 파싱
+    			})
+    			.then(data => {
+    			    console.log(data);
+    			    // 성공적으로 처리된 후, 모달을 닫고 페이지를 리로드하거나 갱신
 
+					updateModal.hide();
+    			    location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
+    			})
+    			.catch(error => {
+    			    console.error("Error updating room data:", error);
+    			});
 
-        }
-        
-        //삭제
-        function deleteRooms() {
-            let selectedRooms = getSelectedRooms();
-            if (selectedRooms.length === 0) {
-                alert("삭제할 회의실을 선택해주세요.");
-                return;
-            }
-            if (confirm("회의실을 삭제하시겠습니까?")) {
-                fetch('/rooms/deleteRooms', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(selectedRooms)  // JSON 배열로 변환
-                })
-                .then(resp => resp.text())
-                .then(data => {
-                    alert(data);
-                    selectedRooms.forEach(roomId => {
-                        document.querySelector("#roomRow_" + roomId).remove();
-                    });
-                })
-                .catch(err => console.error(err));
-            }
-        }
-        
-        function getSelectedRooms() { //삭제 할 회의실 리스트 가져옴
-            let selectedRooms = [];
-            let checkboxes = document.querySelectorAll("input[name=selectedRooms]:checked");
-            checkboxes.forEach(checkbox => {
-                selectedRooms.push(checkbox.value);
-            });
-            return selectedRooms;
+        	}
         }
     </script>
 </body>
