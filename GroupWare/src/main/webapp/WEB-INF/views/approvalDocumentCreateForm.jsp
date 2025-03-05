@@ -19,7 +19,7 @@
 }
 .modal-content{
 	width: 220mm;
-    height: 307mm;
+/*     height: 307mm; */
 }
 #dateRange{
 	display:none;
