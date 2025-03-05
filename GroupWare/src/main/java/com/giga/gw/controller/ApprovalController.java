@@ -250,6 +250,7 @@ public class ApprovalController {
 //		model.addAttribute("approvalList",approvalList);
 		return "approvalList";
 	}
+	
 	@GetMapping("/approvalList.json")
 	@ResponseBody
 	public String approvalListAjax(HttpSession session) {
@@ -283,6 +284,17 @@ public class ApprovalController {
 		model.addAttribute("loginDto",loginDto);
 		return "approvalDetail";
 	}
+	
+	// 문서 상세 api 요청
+	@GetMapping(value = "/approvalDetail.json", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String approvalDetailAjax(@RequestParam String id) {
+		System.out.println(id);
+		Gson gson = new Gson();
+		ApprovalDto dto = approvalService.selectApprovalById(id); 
+		return gson.toJson(dto);
+	}
+	
 	
 	// 문서 수정 FORM 이동
 	@GetMapping("/approvalUpdateForm.do")
@@ -324,14 +336,27 @@ public class ApprovalController {
 	@GetMapping("/approvalRequestList.do")
 	public String approvalRequestList(HttpSession session, Model model) {
 //		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("empno", "1505001");
+//		map.put("password", "password123");
+//		EmployeeDto loginDto = loginService.login(map);
+		
+//		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
+//		model.addAttribute("approvalList",approvalList);
+		return "approvalRequestList";
+	}
+	
+	@GetMapping("/approvalRequestList.json")
+	@ResponseBody
+	public String approvalRequestListAjax(){
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("empno", "1505001");
 		map.put("password", "password123");
 		EmployeeDto loginDto = loginService.login(map);
 		
 		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
-		model.addAttribute("approvalList",approvalList);
-		return "approvalRequestList";
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
 	}
 	
 	// 결재진행함
