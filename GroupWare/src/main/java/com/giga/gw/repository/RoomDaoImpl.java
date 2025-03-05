@@ -29,8 +29,8 @@ public class RoomDaoImpl implements IRoomDao {
 	}
 
 	@Override
-	public RoomDto selectRoomById(String roomId) {
-		return sessionTemplate.selectOne(NS+"selectRoomById",roomId);
+	public RoomDto selectRoomById(String room_id) {
+		return sessionTemplate.selectOne(NS+"selectRoomById",room_id);
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class RoomDaoImpl implements IRoomDao {
 
 
 	@Override
-	public int delRooms(List<String> roomId) {
-		return sessionTemplate.delete(NS+"delRooms", roomId);
+	public int delRooms(List<String> room_id) {
+		return sessionTemplate.delete(NS+"delRooms", room_id);
 	}
 
 

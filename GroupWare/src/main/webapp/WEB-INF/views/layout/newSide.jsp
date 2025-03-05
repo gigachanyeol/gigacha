@@ -81,8 +81,51 @@
           </li>
         </ul>
       </li>
+      
+     <li class="nav-item">
+        <a class="nav-link" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="true">
+          <span>예약</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="res-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav" style="">
+         <li>
+            <a href="#">
+              <span>회의실예약</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span>회의실예약취소</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span>회의실예약내역조회</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="true">
+          <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="admin-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav" style="">
+        	<li>
+            <a href="#">
+              <span>회의실등록</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span>회의실정보 수정 및 삭제</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span>회의실예약내역조회</span>
+            </a>
+          </li>
+        </ul>
     </ul>
-
   </aside>
 </body>
 </html>

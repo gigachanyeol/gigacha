@@ -64,6 +64,26 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="d-none d-md-block dropdown-toggle ps-2">예약</span>
           </a><!-- End Profile Iamge Icon -->
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do"> <i class="bi bi-person"></i>
+				<span>회의실 등록(관리자)</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> <i class="bi bi-person"></i>
+				<span>회의실정보 수정 및 삭제(관리자)</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+				<span>예약내역조회(관리자)</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+				<span>회의실 예약</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+				<span>회의실 취소</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+				<span>예약내역조회</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+          </ul>
         </li>
       </ul>
     </nav>

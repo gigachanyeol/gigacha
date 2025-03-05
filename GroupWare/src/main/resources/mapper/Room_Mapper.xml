@@ -26,16 +26,21 @@
     </select>
     
 	<!-- 회의실 정보 수정 -->
-	<update id="updateRoom" parameterType="RoomDto">
-	UPDATE ROOMS SET ROOM_NAME = '대회의실', CAPACITY = 15, UPDATED_AT = SYSDATE 
-		WHERE ROOM_ID = #{room_id}
-	</update>
+	<update id="updateRoom">
+    UPDATE ROOMS
+    <set>
+        <if test="room_name != null and room_name != ''">
+            ROOM_NAME = #{room_name},
+        </if>
+        <if test="capacity != null and capacity != ''">
+            CAPACITY = #{capacity},
+        </if>
+        <if test="use_yn != null and use_yn != ''">
+            USE_YN = #{use_yn},
+        </if>
+    </set>
+    WHERE ROOM_ID = #{room_id}
+</update>
 	
-	<!-- 회의실 정보 삭제 -->
-	<delete id="delRooms">
-	DELETE FROM ROOMS WHERE ROOM_ID IN
-	<foreach collection="roomIds" item="roomId" open="(" separator="," close=")">
-        #{roomId}
-    </foreach>
-	</delete>
+
 </mapper>

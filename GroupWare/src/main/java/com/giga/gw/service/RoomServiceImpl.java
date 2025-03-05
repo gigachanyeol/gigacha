@@ -29,8 +29,8 @@ public class RoomServiceImpl implements IRoomService {
 	}
 
 	@Override
-	public RoomDto selectRoomById(String roomId) {
-		return roomDao.selectRoomById(roomId);
+	public RoomDto selectRoomById(String room_id) {
+		return roomDao.selectRoomById(room_id);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class RoomServiceImpl implements IRoomService {
 	}
 
 	@Override
-	public int delRooms(List<String> roomId) {
-		return roomDao.delRooms(roomId);
+	public int delRooms(List<String> room_id) {
+		return roomDao.delRooms(room_id);
 	}
 
 	

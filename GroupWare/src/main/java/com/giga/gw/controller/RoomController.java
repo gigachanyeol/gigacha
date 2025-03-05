@@ -37,12 +37,6 @@ public class RoomController {
 		return "roomform"; //페이지 이동
 	}
 	
-	//회의실 리스트
-//    @PostMapping("/roomList.do")
-//    public String registerRoom(RoomDto roomDto) {
-//        roomService.insertRoom(roomDto);
-//        return "redirect:/room/roomform"; 
-//    }
 	//회의실 등록
 //	@PostMapping(value = "/insertRoom.do")
 //	@ResponseBody
@@ -69,6 +63,7 @@ public class RoomController {
 //	    return (result > 0) ? "success":"fail"; //성공여부 
 //	    }
 //	}
+	
 	//회의실 리스트 조회(관리자)
 	@GetMapping("/roomList.do")
 	public String roomList(Model model) {
@@ -77,20 +72,24 @@ public class RoomController {
 		return "roomList";	
 	}
 	
-	//회의실 수정
-	@GetMapping("/update/{roomId}")
+	
+	@PostMapping("/update.do")
 	@ResponseBody
-	public RoomDto showModalForm(@PathVariable("roomId") String roomId) { //RoomDto 객체를 반환
-		RoomDto roomDto = roomService.selectRoomById(roomId);
-		return roomDto;
+	public ResponseEntity updateRoom(@RequestBody RoomDto roomDto) {
+		System.out.println(roomDto);
+		
+		int updateRoom = roomService.updateRoom(roomDto); // 회의실 정보 업데이트
+		
+		if (updateRoom > 0) {
+	        return ResponseEntity.ok("{\"isc\":\"true\"}");  // 성공 시 응답
+	    } else {
+	        return ResponseEntity.status(400).body("{\"isc\":\"false\", \"message\":\"Update failed\"}");  // 실패 시 응답
+	    }
+//		return "redirect:/rooms/roomList"; // 수정 후 회의실 목록 페이지로
+//		return ResponseEntity.ok("{\"isc\":\"true\"}");
 	}
 	
-	@PostMapping("/update")
-	@ResponseBody
-	public String updateRoom(@ModelAttribute("roomDto") RoomDto roomDto) {
-		roomService.updateRoom(roomDto); // 회의실 정보 업데이트
-		return "redirect:/rooms/roomList"; // 수정 후 회의실 목록 페이지로
-	}
+	
 	
 	//회의실 삭제
 //	@PostMapping("/deleteRooms") 
