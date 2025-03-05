@@ -271,6 +271,10 @@
       });
         //모달창 이벤트
         $("#saveChanges").on("click", function() {
+        	
+        let modalButton = $("#modalActionButton");
+        modalButton.text("추가").removeClass("btn-danger").addClass("btn-primary");
+        	
           var eventData = {
             empno: ${loginDto.empno},
             title: $("#sch_title").val(),
