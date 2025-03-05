@@ -78,6 +78,12 @@ public class CalendarDaoImpl implements ICalendarDao {
 		return schedules;
 	}
 	
+	@Override
+	public boolean deleteSchedule(String schid) {
+		 int result = sessionTemplate.update(NS + "deleteSchedule", schid);
+		 return result > 0;
+	}
+	
 	
 
 

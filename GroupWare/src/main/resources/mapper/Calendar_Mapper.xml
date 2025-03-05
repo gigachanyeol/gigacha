@@ -23,8 +23,9 @@ INSERT INTO SCHEDULE (
     <!-- 개인 일정 조회 -->
     <select id="loadEmpSchedule" parameterType="string" resultType="map">
 SELECT
-    EMPNO,
+    s.EMPNO,
     e.NAME,
+    SCH_ID,
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
@@ -40,8 +41,9 @@ WHERE
     <!-- 부서 일정 조회 -->
     <select id="loadDeptSchedule" parameterType="string" resultType="map">
 SELECT
-    e.EMPNO,
+    s.EMPNO,
     e.NAME,
+    SCH_ID,
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
@@ -57,8 +59,9 @@ WHERE
     <!-- 전체 일정 조회 -->
     <select id="loadAllSchedule" resultType="map">
 SELECT
-    e.EMPNO,
+    s.EMPNO,
     e.NAME,
+    SCH_ID,
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
@@ -70,6 +73,14 @@ JOIN
 WHERE
 	s.USE_YN ='Y'
     </select>
+    
+    
+    <!-- 일정삭제 -->
+    <update id="deleteSchedule">
+    	UPDATE SCHEDULE
+		SET UPDATE_EMPNO=#{empno}, UPDATE_DATE=CURRENT_DATE, USE_YN='N' 
+		WHERE SCH_ID=#{sch_id}
+	</update>
 
 
 </mapper>
