@@ -33,8 +33,8 @@ FROM
     SCHEDULE s  
 JOIN
     EMPLOYEES e ON s.EMPNO = e.EMPNO 
-WHERE
-        WHERE EMPNO = #{empno} AND s.USE_YN ='Y'
+WHERE 
+	EMPNO = #{empno} AND s.USE_YN ='Y'
     </select>
 
     <!-- 부서 일정 조회 -->
@@ -51,7 +51,7 @@ FROM
 JOIN
     EMPLOYEES e ON s.EMPNO = e.EMPNO 
 WHERE
-        WHERE DEPTNO = #{deptno} s.USE_YN ='Y'
+     DEPTNO = #{deptno} s.USE_YN ='Y'
     </select>
 
     <!-- 전체 일정 조회 -->
