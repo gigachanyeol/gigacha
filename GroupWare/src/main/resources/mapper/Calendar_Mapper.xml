@@ -20,6 +20,56 @@ INSERT INTO SCHEDULE (
     FROM SCHEDULE
 </select>
 
+    <!-- 개인 일정 조회 -->
+    <select id="loadEmpSchedule" parameterType="string" resultType="map">
+SELECT
+    EMPNO,
+    e.NAME,
+    SCH_TITLE,
+    SCH_STARTDATE,
+    SCH_ENDDATE,
+    SCH_COLOR
+FROM
+    SCHEDULE s  
+JOIN
+    EMPLOYEES e ON s.EMPNO = e.EMPNO 
+WHERE 
+	EMPNO = #{empno} AND s.USE_YN ='Y'
+    </select>
+
+    <!-- 부서 일정 조회 -->
+    <select id="loadDeptSchedule" parameterType="string" resultType="map">
+SELECT
+    e.EMPNO,
+    e.NAME,
+    SCH_TITLE,
+    SCH_STARTDATE,
+    SCH_ENDDATE,
+    SCH_COLOR
+FROM
+    SCHEDULE s  
+JOIN
+    EMPLOYEES e ON s.EMPNO = e.EMPNO 
+WHERE
+     DEPTNO = #{deptno} s.USE_YN ='Y'
+    </select>
+
+    <!-- 전체 일정 조회 -->
+    <select id="loadAllSchedule" resultType="map">
+SELECT
+    e.EMPNO,
+    e.NAME,
+    SCH_TITLE,
+    SCH_STARTDATE,
+    SCH_ENDDATE,
+    SCH_COLOR
+FROM
+    SCHEDULE s  
+JOIN
+    EMPLOYEES e ON s.EMPNO = e.EMPNO 
+WHERE
+	s.USE_YN ='Y'
+    </select>
 
 
 </mapper>

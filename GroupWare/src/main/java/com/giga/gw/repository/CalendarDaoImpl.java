@@ -60,5 +60,25 @@ public class CalendarDaoImpl implements ICalendarDao {
 	    return schedules;
 	}
 
+	@Override
+	public List<Map<String, Object>> loadEmpSchedule(String empno) {
+		List<Map<String, Object>> schedules = sessionTemplate.selectList(NS + "loadEmpSchedule", empno);
+		return schedules;
+	}
+
+	@Override
+	public List<Map<String, Object>> loadDeptSchedule(String deptno) {
+		List<Map<String, Object>> schedules = sessionTemplate.selectList(NS + "loadDeptSchedule", deptno);
+		return schedules;
+	}
+
+	@Override
+	public List<Map<String, Object>> loadAllSchedule() {
+		List<Map<String, Object>> schedules = sessionTemplate.selectList(NS + "loadAllSchedule");
+		return schedules;
+	}
+	
+	
+
 
 }
