@@ -37,12 +37,6 @@ public class RoomController {
 		return "roomform"; //페이지 이동
 	}
 	
-	//회의실 리스트
-//    @PostMapping("/roomList.do")
-//    public String registerRoom(RoomDto roomDto) {
-//        roomService.insertRoom(roomDto);
-//        return "redirect:/room/roomform"; 
-//    }
 	//회의실 등록
 //	@PostMapping(value = "/insertRoom.do")
 //	@ResponseBody
@@ -69,6 +63,7 @@ public class RoomController {
 //	    return (result > 0) ? "success":"fail"; //성공여부 
 //	    }
 //	}
+	
 	//회의실 리스트 조회(관리자)
 	@GetMapping("/roomList.do")
 	public String roomList(Model model) {
