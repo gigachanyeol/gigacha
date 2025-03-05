@@ -14,17 +14,6 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
-#content {
-	margin-right: 30px;
-	margin-left: 230px;
-}
-
-.content_title {
-	margin-top: 10px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-}
-
 .btn-container { /* 추가: 부모 요소 클래스 */
 	display: flex;
 }
@@ -64,8 +53,9 @@
 </style>
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+<%@ include file="./layout/newNav.jsp" %>
+<%@ include file="./layout/newSide.jsp" %>
+	<main id="main" class="main">
 	<div class="container mt-5"></div>
 	<!-- 항상 보이는 달력 -->
 	<div id="content">
@@ -122,7 +112,7 @@
 		</table>
 
 	</div>
-
+</main>
 	<script>
 		$(document).ready(function() {
 			$("#datepicker").datepicker({
