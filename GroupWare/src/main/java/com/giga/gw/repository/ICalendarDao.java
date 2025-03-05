@@ -20,4 +20,7 @@ public interface ICalendarDao {
     
     //전사원 스케줄
     List<Map<String, Object>> loadAllSchedule();
+    
+    //스케줄 삭제
+    boolean deleteSchedule(String schid);
 }

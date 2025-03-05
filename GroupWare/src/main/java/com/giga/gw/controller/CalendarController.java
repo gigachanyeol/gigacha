@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -229,5 +230,28 @@ public class CalendarController {
 //        log.info("📌 FullCalendar로 보낼 데이터: {}", schedules);
 //        return schedules;
 //    }
+	
+	@DeleteMapping("/deleteSchedule.do") // DELETE 요청 처리
+	@ResponseBody
+	public ResponseEntity<Object> deleteSchedule(@RequestBody Map<String, String> requestBody) {
+		try {
+	        String id = requestBody.get("id");
+	        log.info("📢 일정 삭제 요청: {}", id);
+
+
+	        boolean success = calendarDao.deleteSchedule(id);  //삭제 성공여부
+
+	        if(success){
+	             return ResponseEntity.ok().build(); // 200 OK, 삭제 성공
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedule not found"); //404
+	        }
+
+
+	    } catch (Exception e) {
+	        log.error("일정 삭제 중 오류 발생", e);
+	        return ResponseEntity.internalServerError().build(); // 500 Internal Server Error
+	    }
+	}
 
 }
