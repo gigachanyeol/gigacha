@@ -164,6 +164,8 @@
       // full-calendar 생성하기
       var calendar = new FullCalendar.Calendar(calendarEl, {
         // ... (다른 설정들) ...
+        
+        events: './getSchedule.do',
         googleCalendarApiKey: 'AIzaSyCRs4PJQrTEOivYLaBKVB9lZVCbG64D7KE',
         height: '700px', // calendar 높이 설정
         expandRows: true, // 화면에 맞게 높이 재설정
@@ -218,7 +220,7 @@
 
       // 삭제 버튼 추가 (한 번만 추가됨)
       $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">삭제</button>`);
-      $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">저장</button>`);
+      $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="updateEvent">저장</button>`);
       
       // 등록자 , 사원번호, 부서명 출력
 //       $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">삭제</button>`);
@@ -254,7 +256,7 @@
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id: info.event.extendedProps.id })
+                body: JSON.stringify({ id: info.event.extendedProps.id || info.event.id })
               });
 
               if (!response.ok) {
@@ -368,23 +370,6 @@
       //모달창 이벤트
       $("#saveChanges").on("click", function() {
     	  
-//     	// loginDto가 null인지 확인
-//     	    if (!loginDto || loginDto.empno == null) {
-//     	        Swal.fire({
-//     	            icon: "error",
-//     	            title: "로그인 필요",
-//     	            text: "사용자 로그인이 필요합니다.",
-//     	            footer: '<a href="./login.do">사용자 로그인</a>',
-//     	            willClose: () => {
-//     	                // 로그인 페이지로 이동
-//     	                window.location.href = './login.do';
-//     	            }
-//     	        });
-//     	        failureCallback(new Error('로그인 필요'));
-//     	        return;
-//     	    }
-    	  
-    	  
         var eventData = {
           empno: ${loginDto.empno},
           sch_title: $("#sch_title").val(),
@@ -410,17 +395,10 @@
           Swal.fire("시작 시간이 종료 시간보다 늦을 수 없습니다.");
           return;
         }
-        
-//         $("#exampleModal").modal("hide");
 
-			calendar.addEvent(eventData);
+// 			calendar.addEvent(eventData);
             $("#exampleModal").modal("hide");
-//             $("#sch_title").val("");
-//             $("#sch_title").val("");
-//             $("#sch_startdate").val("");
-//             $("#sch_enddate").val("");
-//             $("#sch_color").val("");
-//             $("#sch_content").val("");
+
 
         console.log("저장할 이벤트:", eventData);
 
@@ -442,7 +420,7 @@
           .then(data => {
             console.log("저장 완료!", data);
             Swal.fire("저장 완료!", "일정이 추가되었습니다.", "success");
-            
+            calendar.refetchEvents();
   
           })
           .catch(err => {
@@ -514,6 +492,18 @@
       });
     }
   }
+  
+  // ㅇ연차 불러오기!!
+  fetch('${pageContext.request.contextPath}/approval/postLeaveToCalendar.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+  
+  
 
 </script>
 </html>

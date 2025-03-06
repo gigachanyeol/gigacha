@@ -42,7 +42,7 @@
 </head>
 <body>
 	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+<%-- 	<%@ include file="./layout/sidebar.jsp"%> --%>
 	<div id="content">
 		<h3 class="content_title">제목</h3>
 		<!-- 캘린더 영역 -->

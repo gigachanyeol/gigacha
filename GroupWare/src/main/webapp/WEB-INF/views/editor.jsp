@@ -23,7 +23,7 @@
 </style>
 </head>
 <body>
-	<%@ include file="./layout/sidebar.jsp"%>
+<%-- 	<%@ include file="./layout/sidebar.jsp"%> --%>
 	<div id="content">
 		<h3 class="content_title">에디터</h3>
 		<div id="editor"></div>
