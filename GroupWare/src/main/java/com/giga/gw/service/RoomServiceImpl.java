@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class RoomServiceImpl implements IRoomService {
 
 	private final IRoomDao roomDao;

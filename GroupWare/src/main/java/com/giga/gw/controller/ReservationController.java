@@ -22,6 +22,8 @@ public class ReservationController {
 		return "reservation";
 	}
 	
+	//예약 설정
 	
+
 
 }
