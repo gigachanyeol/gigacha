@@ -239,15 +239,16 @@ public class CalendarController {
 //        return schedules;
 //    }
 	
-	@DeleteMapping("/deleteSchedule.do") // DELETE 요청 처리
+	@PostMapping("/deleteSchedule.do") // DELETE 요청 처리
 	@ResponseBody
 	public ResponseEntity<Object> deleteSchedule(@RequestBody Map<String, String> requestBody) {
 		try {
 	        String id = requestBody.get("id");
-	        log.info("📢 일정 삭제 요청: {}", id);
+	        String empno = requestBody.get("empno");
+	        log.info("📢 일정 삭제 요청: {}{}", id,empno);
 
 
-	        boolean success = calendarDao.deleteSchedule(id);  //삭제 성공여부
+	        boolean success = calendarDao.deleteSchedule(id,empno);  //삭제 성공여부
 
 	        if(success){
 	             return ResponseEntity.ok().build(); // 200 OK, 삭제 성공
@@ -261,5 +262,32 @@ public class CalendarController {
 	        return ResponseEntity.internalServerError().build(); // 500 Internal Server Error
 	    }
 	}
+	
+	// 일정 저장
+		@PostMapping("/updateSchedule.do")
+		@ResponseBody
+		public boolean updateSchedule(@RequestBody Map<String, Object> schedule) {
+			log.info("📢 수정 데이터: {}", schedule);
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("empno", schedule.get("empno"));
+			paramMap.put("sch_title", schedule.get("sch_title"));
+
+			// 🛠️ ISO 8601 형식의 날짜 문자열을 Timestamp로 변환
+			paramMap.put("sch_startdate", convertToTimestamp((String) schedule.get("start")));
+			paramMap.put("sch_enddate", convertToTimestamp((String) schedule.get("end")));
+
+			paramMap.put("sch_color", schedule.get("color"));
+			
+			paramMap.put("sch_content", schedule.get("sch_content"));
+			paramMap.put("create_empno", schedule.get("empno"));
+			
+			paramMap.put("sch_id", schedule.get("id"));
+
+			log.info("📌 수정할 데이터: {}", paramMap);
+			calendarDao.updateSchedule(paramMap);
+			
+			
+			return true;
+		}
 
 }

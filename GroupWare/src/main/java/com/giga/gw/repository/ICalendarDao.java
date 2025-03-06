@@ -22,5 +22,8 @@ public interface ICalendarDao {
     List<Map<String, Object>> loadAllSchedule();
     
     //스케줄 삭제
-    boolean deleteSchedule(String schid);
+    boolean deleteSchedule(String schid,String empno);
+    
+    //스케줄 수정
+    boolean updateSchedule(Map<String, Object> schedule);
 }
