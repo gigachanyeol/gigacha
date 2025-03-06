@@ -128,4 +128,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.update(NS+"finalApprovalStatus", map);
 	}
 
+	@Override
+	public List<Map<String, Object>> postLeaveToCalendar(String empno) {
+		return sql.selectList(NS+"postLeaveToCalendar",empno);
+	}
+
 }

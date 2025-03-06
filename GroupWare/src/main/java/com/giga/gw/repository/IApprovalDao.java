@@ -33,4 +33,5 @@ public interface IApprovalDao {
     
     int finalApprovalStatus(Map<String, Object> map);
     
+    List<Map<String, Object>> postLeaveToCalendar(String empno);
 }
