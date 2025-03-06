@@ -25,7 +25,7 @@
 				SELECT #{approval_id} , '1' ,'ST02' , #{approver_empno} FROM DUAL
 		) A
 	</insert>
-	
+	<!-- 결재승인 -->
 	<update id="acceptApprovalLine">
 		UPDATE APPROVAL_LINE 
 		SET STATUS_ID = 'ST04', APPROVAL_TIME = CURRENT_DATE
@@ -38,7 +38,7 @@
 	<update id="rejectApprovalLine">
 		UPDATE APPROVAL_LINE 
 		SET STATUS_ID = 'ST05', APPROVAL_TIME = CURRENT_DATE
-		<if test="#{reject_reason} != null">
+		<if test="reject_reason != null">
 		,REJECT_REASON = #{reject_reason}
 		</if>
 		WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
@@ -47,4 +47,41 @@
 		AND APPROVER_EMPNO = #{empno}
 	</update>
 	
+	<select id="countApprovalLine" resultType="Integer">
+		SELECT COUNT(*) 
+			FROM APPROVAL_LINE 
+			WHERE APPROVAL_ID = #{approval_id}
+			<if test="status_id != null">
+				<choose>
+					<when test="status_id == 'ST04'">
+						AND STATUS_id = 'ST04'
+					</when>
+					<when test="status_id == 'ST05'">
+						AND STATUS_id = 'ST05'
+					</when>
+				</choose>
+			</if>
+	</select>
+	
+	<delete id="deleteApprovalLine">
+		DELETE FROM APPROVAL_LINE
+		WHERE APPROVAL_ID = #{approval_id}
+	</delete>
+	
+	<select id="countStatusApprovalLine" resultType="Integer">
+		SELECT COUNT(*) 
+			FROM APPROVAL_LINE 
+			WHERE APPROVAL_ID = #{approval_id}
+			<if test="status_id != null">
+				<choose>
+					<when test="status_id == 'ST04'">
+						AND STATUS_ID = 'ST04'
+					</when>
+					<when test="status_id == 'ST05'">
+						AND STATUS_ID = 'ST05'
+					</when>
+				</choose>
+			</if>
+	</select>
+		
 </mapper>

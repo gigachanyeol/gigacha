@@ -31,5 +31,7 @@ public interface IApprovalDao {
     List<Map<String, Object>> selectApprovalMyDocuments(String empno);
     List<Map<String, Object>> selectApprovalReference(String empno);
     
+    int finalApprovalStatus(Map<String, Object> map);
     
+    List<Map<String, Object>> postLeaveToCalendar(String empno);
 }

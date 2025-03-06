@@ -26,20 +26,6 @@ public class ApprovalServiceImpl implements IApprovalService {
 
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
-//		List<Map<String, Object>> departmentList = approvalDao.getDepartments();
-//        List<Map<String, Object>> employeeList = approvalDao.getEmployeesByDepartment();
-//        List<Map<String, Object>> tree = ;
-//        List<Map<String, Object>> treeData = new ArrayList<>();
-		// 직원 데이터 변환
-//        for (Map<String, Object> emp : employeeList) {
-//            emp.put("id", String.valueOf(emp.get("id"))); // 직원 ID 변환
-//            emp.put("text", emp.get("text")); // 직원 이름
-//            emp.put("parent", String.valueOf(emp.get("parent"))); // 부서 ID 그대로 사용
-//            treeData.add(emp);
-//        }
-//        treeData.addAll(employeeList);
-//        treeData.addAll(departmentList); // 부서 추가
-//		return treeData;
 		return approvalDao.getOrganizationTree();
 	}
 
@@ -67,9 +53,30 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return n == 1 && m >= 1 ? true : false;
 	}
 
+	@Transactional
 	@Override
 	public int updateApproval(ApprovalDto approvalDto) {
-		return approvalDao.updateApproval(approvalDto);
+		int n = approvalDao.updateApproval(approvalDto);
+		int m = 0;
+
+		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
+		if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
+			if (approvalLineDao.countApprovalLine(approvalDto.getApproval_id()) > 0) {
+				approvalLineDao.deleteApprovalLine(approvalDto.getApproval_id());
+			}
+			for (ApprovalLineDto line : lineDtos) {
+				line.setApproval_id(approvalDto.getApproval_id());
+				System.out.println(line.getApprover_empno());
+			}
+			Map<String, Object> map = new HashedMap<String, Object>();
+			map.put("approval_id", approvalDto.getApproval_id());
+			map.put("approvalLineDtos", lineDtos);
+			m = approvalLineDao.insertApprovalLine(map);
+			
+			return n == 1 && m >= 1 ? 1 : 0;
+		}
+
+		return n == 1 ? 1 : 0;
 	}
 
 	@Override
@@ -92,7 +99,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 		int n = approvalDao.insertApprovalTemp(approvalDto);
 		int m = 0;
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
-		if(lineDtos != null) {
+		if (lineDtos != null) {
 			if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
 				for (ApprovalLineDto line : lineDtos) {
 					line.setApproval_id(approvalDto.getApproval_id());
@@ -114,6 +121,9 @@ public class ApprovalServiceImpl implements IApprovalService {
 
 	@Override
 	public int approvalRequest(String approval_id) {
+		if(approvalLineDao.countApprovalLine(approval_id) == 0) {
+			return -1;
+		}
 		return approvalDao.approvalRequest(approval_id);
 	}
 
@@ -151,5 +161,5 @@ public class ApprovalServiceImpl implements IApprovalService {
 	public List<Map<String, Object>> selectApprovalReference(String empno) {
 		return approvalDao.selectApprovalReference(empno);
 	}
-	
+
 }

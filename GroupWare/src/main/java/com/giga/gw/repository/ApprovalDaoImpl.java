@@ -75,7 +75,7 @@ public class ApprovalDaoImpl implements IApprovalDao {
 
 	@Override
 	public int insertApprovalTemp(ApprovalDto approvalDto) {
-		return sql.insert(NS+"insertApprvalTemp", approvalDto);
+		return sql.insert(NS+"insertApprovalTemp", approvalDto);
 	}
 
 	@Override
@@ -121,6 +121,16 @@ public class ApprovalDaoImpl implements IApprovalDao {
 	@Override
 	public List<Map<String, Object>> selectApprovalReference(String empno) {
 		return sql.selectList(NS+"selectApprovalReference",empno);
+	}
+
+	@Override
+	public int finalApprovalStatus(Map<String, Object> map) {
+		return sql.update(NS+"finalApprovalStatus", map);
+	}
+
+	@Override
+	public List<Map<String, Object>> postLeaveToCalendar(String empno) {
+		return sql.selectList(NS+"postLeaveToCalendar",empno);
 	}
 
 }

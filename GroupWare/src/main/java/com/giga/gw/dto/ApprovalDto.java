@@ -26,7 +26,9 @@ public class ApprovalDto {
 	use_yn,
 	approval_deadline,
 	approval_urgency,
-	temp_save_yn;
+	temp_save_yn,
+	start_date,
+	end_date;
 	int empno,
 	update_empno;
 	List<ApprovalLineDto> approvalLineDtos;

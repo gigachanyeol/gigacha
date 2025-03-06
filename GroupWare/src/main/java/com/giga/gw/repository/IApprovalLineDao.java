@@ -10,4 +10,7 @@ public interface IApprovalLineDao {
 	int insertApprovalLine(ApprovalLineDto line);
 	int acceptApprovalLine(Map<String, Object> map);
 	int rejectApprovalLine(Map<String, Object> map);
+	int countApprovalLine(String approval_id);
+	int countApprovalLine(Map<String, Object> map);
+	int deleteApprovalLine(String approval_id);
 }

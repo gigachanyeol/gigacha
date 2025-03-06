@@ -37,6 +37,21 @@ public class ApprovalLineDaoImpl implements IApprovalLineDao{
 	public int rejectApprovalLine(Map<String, Object> map) {
 		return sql.update(NS+"rejectApprovalLine",map);
 	}
+
+	@Override
+	public int countApprovalLine(String approval_id) {
+		return sql.selectOne(NS+"countApprovalLine",approval_id);
+	}
+	@Override
+	public int countApprovalLine(Map<String, Object> map) {
+		return sql.selectOne(NS+"countApprovalLine",map);
+	}
+
+
+	@Override
+	public int deleteApprovalLine(String approval_id) {
+		return sql.delete(NS+"deleteApprovalLine",approval_id);
+	}
 	
 	
 }
