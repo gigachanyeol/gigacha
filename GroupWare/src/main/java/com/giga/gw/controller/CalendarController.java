@@ -62,13 +62,19 @@ public class CalendarController {
 		for (Map<String, Object> event : events) {
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.put("empno", event.get("empno"));
-			paramMap.put("sch_title", event.get("title"));
+			paramMap.put("sch_title", event.get("sch_title"));
 
 			// 🛠️ ISO 8601 형식의 날짜 문자열을 Timestamp로 변환
 			paramMap.put("sch_startdate", convertToTimestamp((String) event.get("start")));
 			paramMap.put("sch_enddate", convertToTimestamp((String) event.get("end")));
 
 			paramMap.put("sch_color", event.get("color"));
+			
+			paramMap.put("sch_content", event.get("sch_content"));
+			paramMap.put("create_empno", event.get("empno"));
+			
+			
+			
 
 			log.info("📌 저장할 데이터: {}", paramMap);
 			calendarDao.scheduleSave(paramMap);
@@ -127,13 +133,15 @@ public class CalendarController {
 	        };
 
 	        log.info("📢 요청 타입 결정: {}", requestType);
+	        log.info("📢 로그인한 사용자: {}", loginUser.getEmpno());
 	        // 일정 조회
-	        List<Map<String, Object>> schedules = switch (requestType) {
-	            case "personal" -> calendarDao.loadEmpSchedule(loginUser.getEmpno());
-	            case "department" -> calendarDao.loadDeptSchedule(loginUser.getDeptno());
-	            case "all" -> calendarDao.loadAllSchedule();
-	            default -> Collections.emptyList();
-	        };
+//	        List<Map<String, Object>> schedules = switch (requestType) {
+//	            case "personal" -> calendarDao.loadEmpSchedule(loginUser.getEmpno());
+//	            case "department" -> calendarDao.loadDeptSchedule(loginUser.getDeptno());
+//	            case "all" -> calendarDao.loadAllSchedule();
+//	            default -> Collections.emptyList();
+//	        };
+	        List<Map<String, Object>> schedules = calendarDao.loadEmpSchedule(loginUser.getEmpno());
 	        
 	        log.info("📢 일정 조회 성공");
 

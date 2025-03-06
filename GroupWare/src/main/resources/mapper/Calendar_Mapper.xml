@@ -4,11 +4,10 @@
     <!-- 캘린더 저장 -->
 <insert id="scheduleSave" parameterType="map">
 INSERT INTO SCHEDULE (
-    SCH_ID, EMPNO, SCH_TITLE, SCH_STARTDATE, SCH_ENDDATE, SCH_COLOR
+    SCH_ID, EMPNO, SCH_TITLE, SCH_STARTDATE, SCH_ENDDATE, SCH_COLOR, SCH_CONTENT, CREATE_EMPNO,CREATE_DATE
 ) VALUES (
-    SCH_ID_SEQ.NEXTVAL, #{empno}, #{sch_title}, #{sch_startdate}, #{sch_enddate}, #{sch_color}
+    SCH_ID_SEQ.NEXTVAL, #{empno}, #{sch_title}, #{sch_startdate}, #{sch_enddate}, #{sch_color}, #{sch_content}, #{empno}, CURRENT_DATE
 )
-
 </insert>
 
 <select id="loadSchedule" parameterType="map" resultType="map">
@@ -29,13 +28,14 @@ SELECT
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
-    SCH_COLOR
+    SCH_COLOR,
+    SCH_CONTENT
 FROM
     SCHEDULE s  
 JOIN
     EMPLOYEES e ON s.EMPNO = e.EMPNO 
 WHERE 
-	EMPNO = #{empno} AND s.USE_YN ='Y'
+	s.EMPNO = #{empno} AND s.USE_YN ='Y'
     </select>
 
     <!-- 부서 일정 조회 -->
@@ -47,7 +47,8 @@ SELECT
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
-    SCH_COLOR
+    SCH_COLOR,
+    SCH_CONTENT
 FROM
     SCHEDULE s  
 JOIN
@@ -65,7 +66,8 @@ SELECT
     SCH_TITLE,
     SCH_STARTDATE,
     SCH_ENDDATE,
-    SCH_COLOR
+    SCH_COLOR,
+    SCH_CONTENT
 FROM
     SCHEDULE s  
 JOIN
