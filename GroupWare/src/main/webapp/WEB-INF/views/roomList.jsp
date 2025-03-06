@@ -86,8 +86,7 @@
 											</div>
 										</td>
 										<td>
-											<button type="button" name="modifyBtn"
-												class="btn btn-warning">수정</button>
+											<button type="button" name="modifyBtn" class="btn btn-warning">수정</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -142,19 +141,29 @@
         	console.log("스위치 버튼 갯수 : ", switchBtn.length)
         	for(let i=0; i < switchBtn.length; i++ ){
         		switchBtn[i].onclick=function(){
-        			console.log(this.className)
         			this.classList.toggle("on");
-        			
+//         			console.log(this.className)
+        			var parent = this.closest("tr");  // 현재 행 찾기
+        			var room_id = parent.children[0].textContent; // 첫 번째 열에 room_id 있다고 가정
+					var use_yn = this.classList.contains("on") ? 'Y' : 'N'; // 스위치 상태 확인
+					    
+					console.log("room_id: ", room_id);
+					console.log("use_yn: ", use_yn);
+					
         			if (this.classList.contains("on")) {
 					    console.log("스위치가 켜져 있습니다.");
+					    
+// 					    var room_id = document.getElementById("room_id").value;
+// 	        			var room_name = document.getElementById("room_name").value;
+// 	        			var capacity = document.getElementById("capacity").value;
 					    //AJAX 작업으로 update use_yn 을 Y
 					    $.ajax({
 					        url: './update.do',
 					        method: 'POST',
 					        contentType: 'application/json',
 					        data: JSON.stringify({
-					            room_id: 'ROOM025', // 실제 회의실 ID
-					            use_yn: 'Y'
+					            room_id: room_id, // 실제 회의실 ID
+					            use_yn: use_yn
 					        }),
 					        success: function(response) {
 					        	console.log(response);
@@ -172,14 +181,26 @@
 					    });
 					} else {
 					    console.log("스위치가 꺼져 있습니다.");
+// 					    this.classList.toggle("on");
+					    
+					    var parent = this.closest("tr");  // 현재 행 찾기
+						var room_id = parent.children[0].textContent; // 첫 번째 열에 room_id 있다고 가정
+						var use_yn = this.classList.contains("on") ? 'Y' : 'N'; // 스위치 상태 확인
+						    
+						console.log("room_id: ", room_id);
+						console.log("use_yn: ", use_yn);
+						
+// 						var room_id = document.getElementById("room_id").value;
+// 	        			var room_name = document.getElementById("room_name").value;
+// 	        			var capacity = document.getElementById("capacity").value;
 					  //AJAX 작업으로 update use_yn 을 N
 					    $.ajax({
 					        url: './update.do',
 					        method: 'POST',
 					        contentType: 'application/json',
 					        data: JSON.stringify({
-					        	room_id: 'ROOM025', // 실제 회의실 ID
-					        	use_yn: 'N'
+					        	room_id: room_id, // 실제 회의실 ID
+					        	use_yn: use_yn
 					        }),
 					        success: function(response) {
 					            if(response) {
@@ -207,10 +228,10 @@
         			var created_at_p = parent.children[3].textContent;
         			var updated_at_p = parent.children[4].textContent;
         			
-        			var room_id =  document.getElementById("room_id");
-        			var room_name =  document.getElementById("room_name");
-        			var capacity=  document.getElementById("capacity");
-        			var created_at=  document.getElementById("created_at");       			
+        			var room_id = document.getElementById("room_id");
+        			var room_name = document.getElementById("room_name");
+        			var capacity = document.getElementById("capacity");
+//         			var created_a t= document.getElementById("created_at");       			
         			
         			
         			console.log("현재정보 : " , room_id_p , room_name_p, capacity_p, created_at_p, updated_at_p);

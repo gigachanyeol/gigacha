@@ -110,18 +110,13 @@
         </a>
         <ul id="admin-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav" style="">
         	<li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/rooms/roomform.do">
               <span>회의실등록</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/rooms/roomList.do">
               <span>회의실정보 수정 및 삭제</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span>회의실예약내역조회</span>
             </a>
           </li>
         </ul>
