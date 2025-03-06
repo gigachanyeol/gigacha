@@ -23,8 +23,8 @@
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp"%>
-	<%@ include file="./layout/sidebar.jsp"%>
+<%-- 	<%@ include file="./layout/nav.jsp"%> --%>
+<%-- 	<%@ include file="./layout/sidebar.jsp"%> --%>
 	<div id="content">
 		<div class="main-container">
 			<div class="editor-container editor-container_classic-editor" id="editor-container">

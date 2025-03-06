@@ -31,8 +31,8 @@
 	</style>
 </head>
 <body>
-	<%@ include file="./layout/nav.jsp" %>
-	<%@ include file="./layout/sidebar.jsp" %>
+<%-- 	<%@ include file="./layout/nav.jsp" %> --%>
+<%-- 	<%@ include file="./layout/sidebar.jsp" %> --%>
 
 	<div id="content" class="content">
 		<div id="draggable" class="ui-widget-content">

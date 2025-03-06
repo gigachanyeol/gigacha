@@ -52,6 +52,16 @@ public class ApprovalLineDaoImpl implements IApprovalLineDao{
 	public int deleteApprovalLine(String approval_id) {
 		return sql.delete(NS+"deleteApprovalLine",approval_id);
 	}
+
+	@Override
+	public int insertSaveLine(Map<String, Object> map) {
+		return sql.insert(NS+"insertSaveLine",map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectSaveLine(String empno) {
+		return sql.selectList(NS+"selectSaveLine",empno);
+	}
 	
 	
 }

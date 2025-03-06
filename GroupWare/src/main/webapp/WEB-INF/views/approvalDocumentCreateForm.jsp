@@ -126,27 +126,31 @@
   <div class="modal-dialog">
     <div class="modal-content">
     	
-      <div class="modal-header">
-      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button>
-      </div>
+<!--       <div class="modal-header"> -->
+<!--       	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button> -->
+<!--       </div> -->
       <div class="modal-body">
       	<div id="documentForm">
+      		<input type="text" id="searchInputDocumentTree" placeholder="검색">
 	      	<div id="documentTree"></div>
 	      	<h3>선택한 양식</h3>
 	    	<div id="approvalForm"></div>
     	</div>
     	<div id="organization">
 	    	<h2>조직도</h2>
-			<input type="text" id="searchInput" placeholder="검색">
-			<br>
-			<div id="organizationTree"></div>
+			<input type="text" id="searchInputOrganizationTree" placeholder="검색">
+			<div class="row">
+			<div id="organizationTree" class="col-6"></div>
+			<div id="saveLine" class="col-6"></div>
 			<hr>
-			<h3>결재순서</h3>
+			<h5>결재순서</h5>
 			<div id="approvalList"></div>
+			</div>
 		</div>
       </div>
 
       <div class="modal-footer">
+        <button type="button" class="btn btn-info" id="lineSaveBtn" onclick="saveApprovalLine()" data-bs-dismiss="modal">결재선 저장</button>
       	<button type="button" class="btn btn-success" id="formPickBtn" data-bs-dismiss="modal">선택</button>
       	<button type="button" class="btn btn-success" id="linePickBtn" data-bs-dismiss="modal">선택</button>
         <button type="button" class="btn btn-danger modalBtn" data-bs-dismiss="modal">닫기</button>
@@ -163,6 +167,7 @@
 	
 	$(".modalBtn").on('click',()=>{
 		$("#linePickBtn").hide();
+		$("#lineSaveBtn").hide();
 	    $("#formPickBtn").hide();
 	    $("#documentForm").hide();
 		$("#organization").hide();
@@ -197,7 +202,11 @@
             if (!formId.startsWith("CATE")) { // 카테고리가 아닌 경우만 추가
            	 addToApprovalForm(formId, formName);
             }
-        });
+       });
+	 $("#searchInputDocumentTree").keyup(function () {
+	        let searchText = $(this).val();
+	        $("#documentTree").jstree(true).search(searchText);
+	    }); // search end
 	 
 	// 양식 가져오기 
 	document.querySelector("#formBtn").addEventListener('click', () => {
@@ -298,7 +307,7 @@
         }
     });
     
-    $("#searchInput").keyup(function () {
+    $("#searchInputOrganizationTree").keyup(function () {
         let searchText = $(this).val();
         $("#organizationTree").jstree(true).search(searchText);
     }); // search end
@@ -361,14 +370,52 @@
             alert("결재선을 선택하세요.");
             return;
         }
-        let approvalJson = JSON.stringify(approvalLine);
-        console.log("결재선 저장:", approvalJson);
-        alert("결재선이 저장되었습니다.");
-       	
+        Swal.fire({
+			title: "이름을 입력하세요",
+	        input: "text",
+	        inputPlaceholder: "이름을 입력하세요",
+	        showCancelButton: true,
+	        confirmButtonText: "확인",
+	        cancelButtonText: "취소",
+	        inputValidator: (value) => {
+	            if (!value) {
+	                return "반려 사유를 입력해야 합니다!";
+	            }
+	        } 
+		}).then(result => {
+			console.log(result.value);
+			if(typeof result.value == 'undefined'){
+				return;
+			}
+			let d = approvalLine.map(item => ({approver_empno:item.id}));
+	        let approvalJson = {};
+	        approvalJson["line_name"] = result.value;
+	        approvalJson["line_data"] = d;
+	        console.log("결재선 저장:", approvalJson);
+	        
+			
+	        fetch("./insertSaveLine.json",{
+	        	method:"POST",
+	        	headers:{
+	        		'Content-Type':'application/json'
+	        	},
+	        	body:JSON.stringify(approvalJson)
+	        })
+	        .then(resp => resp.text())
+	        .then(data => console.log(data))
+	        .catch(err => console.log(err))
+		})
     }
 // 		var initApprovalLine;
 		document.getElementById("lineBtn").addEventListener('click', () => {
 // 			window.open('./tre.do',"popupWindow","width=400,height=600,top=150,left=300");
+			fetch("./selectSaveLine.json")
+			.then(resp => resp.json())
+			.then(data => {
+				$("#saveLine").text(data);
+			})
+			.catch(err => console.log(err))
+			
 			$("#linePickBtn").show();
 			$("#organization").show();
 			$("#myModal").show();

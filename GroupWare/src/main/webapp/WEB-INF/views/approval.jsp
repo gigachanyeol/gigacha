@@ -69,8 +69,8 @@
 
 </head>
 <body>
-<%@ include file="./layout/nav.jsp" %>
-<%@ include file="./layout/sidebar.jsp"%>
+<%-- <%@ include file="./layout/nav.jsp" %> --%>
+<%-- <%@ include file="./layout/sidebar.jsp"%> --%>
 <main id="main" class="main">
 	<div id="content">
 		<h3 class="content_title">기안문 작성</h3>
