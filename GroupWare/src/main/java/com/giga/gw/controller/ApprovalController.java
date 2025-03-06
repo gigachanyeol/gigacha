@@ -43,9 +43,6 @@ import oracle.jdbc.proxy.annotation.Post;
 @RequiredArgsConstructor
 @Slf4j
 public class ApprovalController {
-	// 테스트용 로ㅓ그인
-	private final ILoginService loginService;
-	
 	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
 	private final IApprovalCategoryService approvalCategoryService;
@@ -223,9 +220,6 @@ public class ApprovalController {
 	@PostMapping("/approvalDocumentSave.json")
 	@ResponseBody
 	public boolean approvalDocumentSave(@RequestBody ApprovalDto approvalDto, HttpSession session) {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("empno", "1505001");
-//		map.put("password", "password123");
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setEmpno(Integer.parseInt("1505001"));
@@ -244,18 +238,14 @@ public class ApprovalController {
 	// 결재요청함
 	@GetMapping("/approvalList.do")
 	public String approvalList(Model model, HttpSession session) {
-//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		
-//		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
-//		model.addAttribute("approvalList",approvalList);
 		return "approvalList";
 	}
 	
 	@GetMapping("/approvalList.json")
 	@ResponseBody
 	public String approvalListAjax(HttpSession session) {
-//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		List<ApprovalDto> approvalList = approvalDao.selectApproval(1505001);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalDao.selectApproval(Integer.parseInt(loginDto.getEmpno()));
 		Gson gson = new Gson();
 		return gson.toJson(approvalList);
 	}
@@ -269,8 +259,8 @@ public class ApprovalController {
 	@GetMapping("/approvalListTemp.json")
 	@ResponseBody
 	public String approvalListTempAjax(HttpSession session) {
-//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		List<ApprovalDto> approvalList = approvalDao.selectApprovalTemp("1505001");
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalDao.selectApprovalTemp(loginDto.getEmpno());
 		Gson gson = new Gson();
 		return gson.toJson(approvalList);
 	}
@@ -320,7 +310,6 @@ public class ApprovalController {
 	@PostMapping("/approvalRecall.json")
 	@ResponseBody
 	public boolean approvalRecall(@RequestBody String approval_id, HttpSession session) {
-		
 		return approvalService.recallApproval(approval_id) == 1 ? true : false;
 	}
 	
@@ -328,32 +317,19 @@ public class ApprovalController {
 	@PostMapping("/approvalRequest.json")
 	@ResponseBody
 	public boolean approvalRequest(@RequestBody String approval_id, HttpSession session) {
-		
 		return approvalService.approvalRequest(approval_id) == 1 ? true : false;
 	}
 	
 	// 내가 결재할 목록으로 이동
 	@GetMapping("/approvalRequestList.do")
 	public String approvalRequestList(HttpSession session, Model model) {
-//		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("empno", "1505001");
-//		map.put("password", "password123");
-//		EmployeeDto loginDto = loginService.login(map);
-		
-//		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
-//		model.addAttribute("approvalList",approvalList);
 		return "approvalRequestList";
 	}
 	
 	@GetMapping("/approvalRequestList.json")
 	@ResponseBody
-	public String approvalRequestListAjax(){
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empno", "1505001");
-		map.put("password", "password123");
-		EmployeeDto loginDto = loginService.login(map);
-		
+	public String approvalRequestListAjax(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		List<ApprovalDto> approvalList = approvalService.selectPendingApprovalDocuments(loginDto.getEmpno());
 		Gson gson = new Gson();
 		return gson.toJson(approvalList);
@@ -362,11 +338,7 @@ public class ApprovalController {
 	// 결재진행함
 	@GetMapping("/selectApprovalInProgress.do")
 	public String selectApprovalInProgress(HttpSession session, Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empno", "1505001");
-		map.put("password", "password123");
-		
-		EmployeeDto loginDto = loginService.login(map);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
 		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalInProgress";
@@ -375,11 +347,7 @@ public class ApprovalController {
 	// 결재완료함 selectApprovalCompleted
 	@GetMapping("/selectApprovalCompleted.do")
 	public String selectApprovalCompleted(HttpSession session, Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empno", "1505001");
-		map.put("password", "password123");
-		
-		EmployeeDto loginDto = loginService.login(map);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
 		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalCompleted";
@@ -388,11 +356,7 @@ public class ApprovalController {
 	// 반려문서함
 	@GetMapping("/selectApprovalRejected.do")
 	public String selectApprovalRejected(HttpSession session, Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empno", "1505001");
-		map.put("password", "password123");
-		
-		EmployeeDto loginDto = loginService.login(map);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
 		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalRejected";
@@ -403,11 +367,8 @@ public class ApprovalController {
 	// 결재승인
 	@PostMapping("/acceptApprovalLine.json")
 	@ResponseBody
-	public boolean acceptApprovalLine(@RequestBody Map<String, Object> map) {
-		Map<String, Object> loginMap = new HashMap<String, Object>();
-		loginMap.put("empno", "1505001");
-		loginMap.put("password", "password123");
-		EmployeeDto loginDto = loginService.login(loginMap);
+	public boolean acceptApprovalLine(@RequestBody Map<String, Object> map, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		map.put("empno", loginDto.getEmpno());
 		System.out.println(map);
 		return approvalLineService.acceptApprovalLine(map);
@@ -416,11 +377,8 @@ public class ApprovalController {
 	// 결재 반려
 	@PostMapping("/rejectApprovalLine.json")
 	@ResponseBody
-	public boolean rejectApprovalLine(@RequestBody Map<String, Object> map) {
-		Map<String, Object> loginMap = new HashMap<String, Object>();
-		loginMap.put("empno", "1505001");
-		loginMap.put("password", "password123");
-		EmployeeDto loginDto = loginService.login(loginMap);
+	public boolean rejectApprovalLine(@RequestBody Map<String, Object> map, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		map.put("empno", loginDto.getEmpno());
 		
 		System.out.println("\n\n"+map+"\n\n");
@@ -438,8 +396,9 @@ public class ApprovalController {
 	// 나의 결재함 api 요청주소  
 	@PostMapping("/myApprovalData.json")
 	@ResponseBody
-	 public Map<String, Object> myDocumentsData() {
-        List<Map<String, Object>> documents = approvalService.selectApprovalMyDocuments("1505001");
+	 public Map<String, Object> myDocumentsData(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+        List<Map<String, Object>> documents = approvalService.selectApprovalMyDocuments(loginDto.getEmpno());
         Map<String, Object> response = new HashMap<>();
         response.put("data", documents);
         return response;
@@ -454,8 +413,9 @@ public class ApprovalController {
 	// 참조문서함 api 요청주소  selectApprovalReference
 	@GetMapping("/selectApprovalReference.json")
 	@ResponseBody
-	 public Map<String, Object> selectApprovalReferenceAjax() {
-        List<Map<String, Object>> documents = approvalService.selectApprovalReference("1505001");
+	 public Map<String, Object> selectApprovalReferenceAjax(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+        List<Map<String, Object>> documents = approvalService.selectApprovalReference(loginDto.getEmpno());
         Map<String, Object> response = new HashMap<>();
         response.put("data", documents);
         return response;

@@ -1,13 +1,20 @@
 package com.giga.gw;
 
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class HomeController {
 
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class HomeController {
+	
 	@GetMapping("/")
-	public String index() {
+	public String index(HttpSession session) {
 		return "index";
 	}
 

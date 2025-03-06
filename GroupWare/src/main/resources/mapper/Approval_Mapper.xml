@@ -42,7 +42,7 @@
     </select>
 	
 	<select id="selectApprovalById" resultType="approvalDto" parameterType="String">
-		SELECT APPROVAL_ID, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, UPDATE_DATE, UPDATE_EMPNO 
+		SELECT APPROVAL_ID,FORM_ID, APPROVAL_STATUS, CREATE_DATE, EMPNO, APPROVAL_TITLE, APPROVAL_CONTENT , APPROVAL_DEADLINE, UPDATE_DATE, UPDATE_EMPNO 
 			FROM APPROVAL
 			WHERE APPROVAL_ID = #{approval_id}
 	</select>
@@ -56,7 +56,10 @@
     	</selectKey>
     	INSERT INTO APPROVAL ( APPROVAL_ID, FORM_ID, EMPNO,
 	    	APPROVAL_TITLE, APPROVAL_CONTENT,  APPROVAL_STATUS, 
-	    	APPROVAL_DEADLINE)
+	    	APPROVAL_DEADLINE
+	    	<if test="start_date != null"> , START_DATE </if>
+	    	<if test="end_date != null"> , END_DATE </if>
+	    	)
     	VALUES (
 		    #{approval_id},
 		    #{form_id}, 
@@ -64,14 +67,74 @@
 		    #{approval_title}, 
 		    #{approval_content}, 
 		    'ST02', 
-		    #{approval_deadline})
+		    #{approval_deadline}
+		    <if test="start_date != null"> , #{start_date} </if>
+		    <if test="end_date != null"> , #{end_date} </if>
+		    )
+    </insert>
+    
+    <insert id="insertApprovalTemp" parameterType="approvalDto">
+    	<selectKey keyProperty="approval_id" resultType="String" order="BEFORE">
+	    	SELECT (#{form_id}) ||
+			            ('DOC' || LPAD(NVL(MAX(SUBSTR(APPROVAL_ID, 9)), '0') + 1, 4, '0')) 
+		     FROM APPROVAL
+    	</selectKey>
+    	INSERT INTO APPROVAL ( APPROVAL_ID, FORM_ID, EMPNO,APPROVAL_STATUS, TEMP_SAVE_YN
+	 		<if test="approval_title != null and approval_title != '' ">
+	    	, APPROVAL_TITLE
+	    	</if>
+	    	<if test="approval_content != null and approval_content != '' ">
+	    	, APPROVAL_CONTENT  
+	    	</if>
+	    	<if test="approval_deadline != null and approval_deadline != '' ">
+	    	, APPROVAL_DEADLINE
+	    	</if>
+	    	<if test="start_date != null"> , START_DATE </if>
+	    	<if test="end_date != null"> , END_DATE </if>
+	    	)
+    	VALUES (
+		    #{approval_id},
+		    #{form_id}, 
+		    #{empno},
+		    'ST01',
+		    'Y'
+		    <if test="approval_title != null and approval_title != '' ">
+		    , #{approval_title} 
+		    </if>
+		    <if test="approval_content != null and approval_content != '' ">
+		    , #{approval_content} 
+		    </if>
+		    <if test="approval_deadline != null and approval_deadline != '' ">
+		    , #{approval_deadline}
+		    </if>
+		    <if test="start_date != null"> , #{start_date} </if>
+		    <if test="end_date != null"> , #{end_date} </if>
+		    )
     </insert>
     
     <!-- 결재문서 업데이트 -->
     <update id="updateApproval" parameterType="approvalDto">
     	UPDATE APPROVAL 
-		SET APPROVAL_TITLE = #{approval_title} , APPROVAL_CONTENT= #{approval_content} , APPROVAL_STATUS = 'ST02',
-		APPROVAL_DEADLINE = #{approval_deadline} , UPDATE_DATE = TO_DATE(CURRENT_DATE,'YY-MM-DD') , UPDATE_EMPNO = #{update_empno}
+		SET UPDATE_DATE = CURRENT_DATE ,
+			APPROVAL_STATUS = 'ST01' ,
+			TEMP_SAVE_YN = 'Y',
+			<if test="form_id != null and form_id != '' ">
+			, FORM_ID = #{form_id}
+			</if>
+			<if test="approval_title != null and approval_title != '' ">
+		    , APPROVAL_TITLE = #{approval_title} 
+		    </if>
+	        <if test="approval_content != null and approval_content != '' ">
+	            , APPROVAL_CONTENT = #{approval_content}
+	        </if>
+	        <if test="approval_deadline != null and approval_deadline != '' ">
+	            , APPROVAL_DEADLINE = #{approval_deadline}
+	        </if>
+	        <if test="update_empno != null and update_empno != '' ">
+	            , UPDATE_EMPNO = #{update_empno}
+	        </if>
+	        <if test="start_date != null"> , START_DATE =  #{start_date} </if>
+		    <if test="end_date != null"> , END_DATE = #{end_date} </if>
 		WHERE APPROVAL_ID = #{approval_id} AND APPROVAL_STATUS IN ('ST01', 'ST02')
     </update>
     
@@ -79,15 +142,28 @@
     <update id="recallApproval">
     	UPDATE APPROVAL 
 		SET TEMP_SAVE_YN = 'Y', APPROVAL_STATUS = 'ST01'
-		WHERE APPROVAL_ID = #{approval_id} AND (SELECT COUNT(*) FROM APPROVAL_LINE WHERE APPROVAL_ID = #{approval_id} AND STATUS_ID IN ('ST05','ST02','ST04')) = 0
+		WHERE APPROVAL_ID = #{approval_id} AND (SELECT COUNT(*) 
+					FROM APPROVAL_LINE 
+					WHERE APPROVAL_ID = #{approval_id} 
+					AND STATUS_ID IN ('ST05','ST03','ST04')) = 0
 	</update>
+	
+	<!-- 임시저장 상태에서 결재요청 -->
+	<update id="approvalRequest">
+		UPDATE APPROVAL
+		SET TEMP_SAVE_YN = 'N', APPROVAL_STATUS = 'ST02'
+		WHERE APPROVAL_ID = #{approval_id}
+	</update>
+	
      <!-- TODO 결재양식 트리 -->
    <select id="formTree" resultType="map">
-   SELECT CATEGORY_ID AS "id" , CATEGORY_NAME AS "text", '#' AS "parent"  FROM APPROVAL_CATEGORY
-	WHERE USE_YN = 'Y'
+   SELECT CATEGORY_ID AS "id" , CATEGORY_NAME AS "text", '#' AS "parent" 
+	    FROM APPROVAL_CATEGORY
+		WHERE USE_YN = 'Y'
 	UNION ALL 
-	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent" FROM APPROVAL_FORM
-	WHERE USE_YN = 'Y'
+	SELECT FORM_ID AS "id", FORM_NAME AS "text", CATEGORY_ID AS "parent"
+		FROM APPROVAL_FORM
+		WHERE USE_YN = 'Y'
    </select> 
    
     <!-- TODO 결재요청함 selectApproval -->
@@ -111,6 +187,7 @@
    		FROM APPROVAL
    		WHERE EMPNO = #{empno} AND USE_YN = 'Y' AND TEMP_SAVE_YN = 'N' AND APPROVAL_STATUS IN ('ST02','ST03')
    </select>
+   
    <select id="selectApprovalTemp" resultType="approvalDto">
    		SELECT APPROVAL_ID, FORM_ID, EMPNO, 
    			CASE APPROVAL_STATUS 
@@ -132,6 +209,7 @@
    		FROM APPROVAL
    		WHERE EMPNO = #{empno} AND USE_YN = 'Y' AND TEMP_SAVE_YN = 'Y' AND APPROVAL_STATUS = 'ST01'
    </select>
+   
     <!-- 결재 대기함 -->
     <select id="selectPendingApprovalDocuments" resultType="approvalDto">
     	SELECT APPROVAL_ID, EMPNO , APPROVAL_TITLE, 
@@ -143,14 +221,16 @@
 				WHEN 'ST04' THEN '[결재완료]'
 				WHEN 'ST05' THEN '[결재반려]'
 			END AS APPROVAL_STATUS,
-    		  TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD') AS APPROVAL_DEADLINE
+    		  COALESCE(TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD'),'-') AS APPROVAL_DEADLINE
 			FROM APPROVAL
 			WHERE APPROVAL_ID IN (SELECT APPROVAL_ID 
 				FROM APPROVAL_LINE
 				WHERE APPROVER_EMPNO  = #{empno}
 				AND STATUS_ID ='ST02') 
 			AND APPROVAL_STATUS != 'ST05'
+			AND TEMP_SAVE_YN = 'N'
     </select>
+    
     <!-- 결재 진행함 -->
     <select id="selectApprovalInProgress" resultType="approvalDto">
     SELECT APPROVAL_ID , t2.NAME AS APPROVAL_CONTENT , APPROVAL_TITLE,
@@ -171,6 +251,7 @@
 					AND STATUS_ID = 'ST04')
 			AND APPROVAL_STATUS = 'ST03'
     </select>
+    
     <!-- 완료문서함 -->
     <select id="selectApprovalCompleted" resultType="approvalDto">
    		SELECT APPROVAL_ID, NVL(APPROVAL_TITLE,' ') AS APPROVAL_TITLE, NAME AS APPROVAL_CONTENT,
@@ -187,6 +268,7 @@
 		ON t1.EMPNO = t2.EMPNO
 		WHERE APPROVAL_STATUS = 'ST04'
     </select>
+    
     <!-- 반려문서함 -->
     <select id="selectApprovalRejected" resultType="approvalDto">
     	SELECT 
@@ -215,8 +297,9 @@
 			WHERE t1.APPROVAL_STATUS = 'ST05' 
 			AND t1.APPROVAL_ID IN (SELECT APPROVAL_ID
 					FROM APPROVAL_LINE 
-					WHERE APPROVER_EMPNO = '1505001' AND t3.STATUS_ID = 'ST05')
+					WHERE APPROVER_EMPNO = #{empno} AND t3.STATUS_ID = 'ST05')
     </select>
+    
     <!-- 내문서함 -->
     <select id="selectApprovalMyDocuments" resultType="map">
     	SELECT 
@@ -241,8 +324,9 @@
 		JOIN 
 			APPROVAL_CATEGORY t3 ON t2.CATEGORY_ID = t3.CATEGORY_ID 
 		WHERE 
-		    t1.EMPNO = '1505001'
+		    t1.EMPNO = #{empno}
     </select>
+    
     <!-- 참조문서함 -->
     <select id="selectApprovalReference" resultType="map">
    	 SELECT t1.APPROVAL_ID, (SELECT NAME FROM EMPLOYEES WHERE EMPNO = t1.EMPNO) AS NAME ,APPROVAL_TITLE, 
@@ -255,6 +339,14 @@
 				    END AS APPROVAL_STATUS,
 				    t1.CREATE_DATE, t1.APPROVAL_DEADLINE
 			FROM APPROVAL t1 
-			WHERE t1.APPROVAL_ID IN (SELECT APPROVAL_ID FROM APPROVAL_REF WHERE EMPNO='1505001')
+			WHERE t1.APPROVAL_ID IN (SELECT APPROVAL_ID FROM APPROVAL_REF WHERE EMPNO = #{empno})
     </select>
+    
+    <!-- 모든 결재자가 결재승인 하거나, 한명이라도 반려했을때 실행될 update -->
+    <update id="finalApprovalStatus">
+    	UPDATE APPROVAL
+    	SET APPROVAL_STATUS = #{status_id} 
+    	WHERE APPROVAL_ID = #{approval_id}
+    </update>
+    
 </mapper>
