@@ -73,7 +73,7 @@
       <h1>Calendar</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
           <li class="breadcrumb-item active">Calendar</li>
         </ol>
       </nav>
