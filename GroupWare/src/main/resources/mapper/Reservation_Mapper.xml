@@ -7,8 +7,8 @@
 		RESERVATION_DATE,
 		RESERVATION_TIME, RESERVER, MEMBER, PURPOSE)
 	VALUES
-		(SEQ_RESERVATION_ID.NEXTVAL,#{room_id},  TO_DATE('2025-01-20', 'YYYY-MM-DD'),
-		 		'10:00-12:00', 1505001, '김인사, 최지원', #{content})
+		(TO_NUMBER(#{reservation_id}), #{room_id}, #{reservation_date},
+		 		#{reservation_time}, #{reserver}, #{member}, #{content})
 	</insert>
 
 	<!-- 예약 전체 조회 -->
