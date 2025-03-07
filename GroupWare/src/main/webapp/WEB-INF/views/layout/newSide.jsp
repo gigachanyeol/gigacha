@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
 	<aside id="sidebar" class="sidebar">
@@ -28,9 +28,10 @@
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+          <i class="bi bi-clipboard2-check"></i>
           <span>전자결재</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="charts-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+        <ul id="charts-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li class="nav-heading">기안</li>
           <li>
             <a href="${pageContext.request.contextPath}/approval/approvalDocument.do">
@@ -83,10 +84,11 @@
       </li>
       
      <li class="nav-item">
-        <a class="nav-link" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="true">
+        <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+          <i class="bi bi-calendar2-plus"></i>
           <span>예약</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="res-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav" style="">
+        <ul id="res-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
          <li>
             <a href="#">
               <span>회의실예약</span>
@@ -105,10 +107,11 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="true">
+        <a class="nav-link collapsed" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+         <i class="bi bi-incognito"></i>
           <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="admin-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav" style="">
+        <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
         	<li>
             <a href="${pageContext.request.contextPath}/rooms/roomform.do">
               <span>회의실등록</span>
@@ -120,7 +123,61 @@
             </a>
           </li>
         </ul>
+      </li>
+      
+      
+     <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#attendance-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+          <i class="bi bi-calendar2-week"></i>
+          <span>근태관리</span>
+          <i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="attendance-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li class="nav-heading">나의 근태 관리</li>
+          <li>
+            <a href="href="${pageContext.request.contextPath}/attendance/myattendance.do">
+              <span>나의 근태 현황</span>
+            </a>
+            <a href="href="#">
+              <span>나의 연차 내역</span>
+            </a>
+          </li>
+          <li class="nav-heading">부서 근태 관리</li>
+          <li>
+            <a href="href="#">
+              <span>부서 근태 현황</span>
+            </a>
+            <a href="href="#">
+              <span>부서 연차 내역</span>
+            </a>
+          </li>
+          <li class="nav-heading">전사 근태 관리</li>
+          <li>
+            <a href="href="#">
+              <span>전사 근태 현황</span>
+            </a>
+            <a href="href="#">
+              <span>전사 연차 현황</span>
+            </a>
+            <a href="href="#">
+              <span>전사 연차 사용내역</span>
+            </a>
+          </li>
+          <li class="nav-heading">통계</li>
+          <li>
+            <a href="href="#">
+              <span>전사 근태 통계</span>
+            </a>
+            <a href="href="#">
+              <span>전사 연차 통계</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      
     </ul>
   </aside>
 </body>
+
 </html>

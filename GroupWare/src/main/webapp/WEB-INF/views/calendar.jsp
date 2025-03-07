@@ -59,7 +59,7 @@
 	min-width: 800px;
 	margin: 10px auto;
 	height: auto;
-	max-width: 1200px;
+	max-width: 1200px auto;
 }
 </style>
 </head>
@@ -69,6 +69,15 @@
 	<%-- <%@ include file="./layout/sidebar.jsp" %> --%>
 	<%@ include file="./layout/newSide.jsp"%>
 	<main id="main" class="main">
+	<div class="pagetitle">
+      <h1>Calendar</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+          <li class="breadcrumb-item active">Calendar</li>
+        </ol>
+      </nav>
+    </div>
 		<div class="row">
 			<div id="content" class="col-6 mt-3">
 
@@ -86,7 +95,7 @@
 							<div class="card-body">
 								<h3 class="card-title" id="modal-title">일정 추가</h3>
 								<!-- General Form Elements -->
-								<form>
+								<form id="eventForm">
 									<div class="row mb-3">
 										<label for="empname" class="col-sm-2 col-form-label">등록자</label>
 										<div class="col-sm-10">
@@ -99,6 +108,7 @@
 										<div class="col-sm-10">
 											<input type="text" class="form-control" id="empno"
 												value="${loginDto.empno}" readonly>
+											<input type="hidden" id="event_id">
 										</div>
 									</div>
 									<div class="row mb-3">
@@ -126,18 +136,17 @@
 										<label for="sch_color" class="col-sm-2 col-form-label">색상</label>
 										<div class="col-sm-10">
 											<input type="color" class="form-control form-control-color"
-												id="sch_color" title="일정 배경색 선택">
-											<!-- 기본값 설정이 필요하다면 value 속성 추가 (예: value="#ff0000" - 빨간색) -->
+												id="sch_color" value="#3788d8" title="일정 배경색 선택">
 										</div>
 									</div>
 									<div class="row mb-3">
-                  						<label for="inputcontent" class="col-sm-2 col-form-label">내용</label>
+                  						<label for="sch_content" class="col-sm-2 col-form-label">내용</label>
                   						<div class="col-sm-10">
                     						<textarea class="form-control" id="sch_content" style="height: 100px"></textarea>
                   						</div>
                   					</div>
 									<div class="row mb-3">
-										<div class="col-sm-10 offset-sm-2">
+										<div class="col-sm-10 offset-sm-2" id="button-container">
 											<button type="button" class="btn btn-outline-secondary me-2"
 												data-bs-dismiss="modal">취소</button>
 											<button type="button" class="btn btn-outline-success"
@@ -157,26 +166,45 @@
 	</main>
 </body>
 <script>
-  (function() {
+   let calendar;
+ 
+    
     $(function() {
+      // DOM 요소 캐싱
+      const $calendar = $('#calendar');
+      const $modal = $('#exampleModal');
+      const $modalTitle = $('#modal-title');
+      const $eventForm = $('#eventForm');
+      const $buttonContainer = $('#button-container');
+      const $saveChanges = $('#saveChanges');
+      
+      // 폼 입력 요소 캐싱
+      const $eventId = $('#event_id');
+      const $empName = $('#empname');
+      const $empNo = $('#empno');
+      const $schTitle = $('#sch_title');
+      const $schStartDate = $('#sch_startdate');
+      const $schEndDate = $('#sch_enddate');
+      const $schColor = $('#sch_color');
+      const $schContent = $('#sch_content');
+      
       // calendar element 취득
-      var calendarEl = $('#calendar')[0];
-      // full-calendar 생성하기
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        // ... (다른 설정들) ...
-        googleCalendarApiKey: 'AIzaSyCRs4PJQrTEOivYLaBKVB9lZVCbG64D7KE',
-        height: '700px', // calendar 높이 설정
-        expandRows: true, // 화면에 맞게 높이 재설정
-        slotMinTime: '08:00', // Day 캘린더에서 시작 시간
-        slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
+      const calendarEl = $calendar[0];
+      
+      // FullCalendar 초기화
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        height: '700px',
+        expandRows: true,
+        slotMinTime: '08:00',
+        slotMaxTime: '20:00',
         customButtons: {
           addSchedule: {
             text: "일정 추가하기",
             click: function() {
-              //부트스트랩 모달 열기
-              $("#exampleModal").modal("show");
+              // 새 일정 모달 열기
+              openAddEventModal();
             }
-          },
+          }
         },
         headerToolbar: {
           start: "dayGridMonth,dayGridWeek,dayGridDay",
@@ -190,330 +218,476 @@
         nowIndicator: true,
         dayMaxEvents: true,
         locale: 'ko',
-        // select 콜백은 주석처리하거나, eventClick과 충돌하지 않도록 수정.
-        // select: function(info) {
-        //   $('#exampleModal').modal('show');
-        // },
         
-      eventClick: function(info) {
-      console.log(info);
-
-      $('#empname').val(info.event.extendedProps.empname);
-      $('#empno').val(info.event.extendedProps.empno);
-      $('#sch_title').val(info.event.title);
-
-      let startDate = info.event.start ? info.event.start.toISOString().slice(0, 16) : '';
-      let endDate = info.event.end ? info.event.end.toISOString().slice(0, 16) : '';
-
-      $('#sch_startdate').val(startDate);
-      $('#sch_enddate').val(endDate);
-      $('#sch_color').val(info.event.backgroundColor);
-      $('#sch_content').val(info.event.extendedProps.sch_content);
-
-      // 기존 삭제 버튼 제거 (여기서는 한 번만 실행되므로 안전)
-      $("#deleteEvent").remove();
-
-      // 이벤트 수정 모드로 변경
-      $("#saveChanges").hide();
-
-      // 삭제 버튼 추가 (한 번만 추가됨)
-      $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">삭제</button>`);
-      $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">저장</button>`);
-      
-      // 등록자 , 사원번호, 부서명 출력
-//       $(".col-sm-10.offset-sm-2").append(`<button type="button" class="btn btn-outline-danger me-2" id="deleteEvent">삭제</button>`);
-
-      // 모달 표시 전에 입력 필드 클래스 설정 (조회 모드)
-    	$('#sch_title').removeClass('is-invalid is-valid').addClass('form-control');
-    	//필요하다면 다른 input태그에도 적용
-      // 모달 표시
-      $('#exampleModal').modal('show');
-    
-    	// 모달이름 변경
-    	$('#modal-title').text('일정 조회');
-
-      // 삭제 버튼 이벤트 핸들러 (한 번만 바인딩됨)
-      $("#deleteEvent").off("click").on("click", async function() {  // off/on을 #deleteEvent에 직접
-          const result = await Swal.fire({
-            title: "정말 삭제하시겠습니까?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "삭제",
-            cancelButtonText: "취소"
-          });
-
-          if (result.isConfirmed) {
-            try {
-              info.event.remove(); // FullCalendar에서 먼저 삭제
-              $("#exampleModal").modal("hide"); //모달 먼저 닫음
-
-              const response = await fetch('./deleteSchedule.do', {
-                method: 'DELETE',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: info.event.extendedProps.id })
-              });
-
-              if (!response.ok) {
-                throw new Error("삭제 실패");
-              }
-
-              Swal.fire("삭제 완료!", "일정이 삭제되었습니다.", "success");
-            } catch (error) {
-              Swal.fire("오류 발생", "삭제하는 중 문제가 발생했습니다.", "error");
-              console.error(error);
-            }
-          }
-      });
-    },
+        // 이벤트 클릭 핸들러
+        eventClick: function(info) {
+          openViewEventModal(info.event);
+        },
         
-        // 모달이 닫힐 때 모든 입력값과 버튼 상태 초기화
-        eventAdd: function(obj) {
-          console.log(obj);
-        },
-        eventChange: function(obj) {
-          console.log(obj);
-        },
-        eventRemove: function(obj) {
-          console.log(obj);
-        },
-
-        // eventSources를 사용하여 서버에서 데이터 가져오기
+        // 서버 이벤트 소스
         eventSources: [
-        	  {
-        	    events: async function(info, successCallback, failureCallback) {
-        	      try {
-        	        console.log("📢 요청할 날짜 범위:", info.startStr, " ~ ", info.endStr);
-
-        	        const response = await fetch(`/GroupWare/calendar/loadSchedule.do?start=${info.startStr}&end=${info.endStr}`);
-
-        	        // 상태 코드별 처리 (기존 코드 유지)
-        	        if (response.status === 401) {
-        	          // ... (401 처리) ...
-        	          return;
-        	        } else if (response.status === 403) {
-        	          // ... (403 처리) ...
-        	          return;
-        	        } else if (response.status === 204) {
-        	          console.log('📌 조회된 일정이 없습니다.');
-        	          successCallback([]); // 빈 배열 전달
-        	          return;
-        	        } else if (!response.ok) {
-        	          throw new Error(`HTTP error! Status: ${response.status}`);
-        	        }
-        	          const eventData = await response.json(); // ✅ await 사용, 응답을 받음.
-        	          console.log("📢 서버에서 받아온 데이터:", eventData);
-
-//         	        loaddate(eventData); // loaddate함수 호출 위치 변경
-										const eventArray = eventData.map((res) => ({
-        id: res.SCH_ID,
-        title: res.SCH_TITLE,
-        start: res.SCH_STARTDATE,
-        end: res.SCH_ENDDATE,
-        backgroundColor: res.SCH_COLOR,
-        extendedProps: { 
-          empno: res.EMPNO,     
-          empname: res.NAME,   
-          sch_content: res.SCH_CONTENT,
-        },
-      }));
-
-      console.log("📌 변환된 이벤트 데이터:", eventArray);
-      successCallback(eventArray);
-
-
-
-        	      } catch (error) { // catch 블록 시작 위치 변경
-        	          console.error("❌ 데이터 처리 중 오류 발생:", error); // 에러 메시지 수정
-        	          Swal.fire({  //SweetAlert (오류)
-        	            icon: "error",
-        	            title: "Oops...",
-        	            text: "일정을 불러오는 중 오류가 발생했습니다.",
-        	          });
-        	          failureCallback(error);
-        	      }
-
-        	    },
-        	  },
-        	  {
-        	     googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
-        	     backgroundColor: 'red', // 필요에 따라 스타일 조정
-        	  }
-        	],
+          // 일정 데이터 소스
+          {
+            events: function(info, successCallback, failureCallback) {
+              fetchEvents(info.startStr, info.endStr, successCallback, failureCallback);
+            }
+          },
+          // 구글 캘린더 공휴일 데이터 소스
+          {
+            googleCalendarId: 'ko.south_korea.official#holiday@group.v.calendar.google.com',
+            googleCalendarApiKey: 'AIzaSyCRs4PJQrTEOivYLaBKVB9lZVCbG64D7KE', // 실제 운영에서는 서버에서 처리하도록 변경 권장
+            backgroundColor: 'red'
+          }
+        ]
       });
       
-      // 모달이 닫힐 때 모든 입력값과 버튼 상태 초기화
-      $('#exampleModal').on('hidden.bs.modal', function() {
-        // 입력 필드 초기화 (로그인 사용자 정보 제외)
-        $("#empname").val("${loginDto.name}");
-        $("#empno").val("${loginDto.empno}");
-        $("#sch_title").val("");
-        $("#sch_startdate").val("");
-        $("#sch_enddate").val("");
-        $("#sch_color").val("");
-        $("#sch_content").val("");
+      // 서버에서 이벤트 데이터 가져오기
+      function fetchEvents(startStr, endStr, successCallback, failureCallback) {
+        console.log("📢 요청할 날짜 범위:", startStr, " ~ ", endStr);
         
-        // 버튼 상태 초기화
-        $("#saveChanges").show();
-        $("#deleteEvent").remove();
-        
-    	$('#sch_title').removeClass('form-control').addClass('form-control is-invalid');
-    	
-    	$('#modal-title').text('일정 추가');
-      });
+        fetch(`${pageContext.request.contextPath}/calendar/loadSchedule.do?start=${startStr}&end=${endStr}`)
+          .then(response => {
+            if (response.status === 401) {
+            	Swal.fire({
+            		  icon: "error",
+            		  title: "인증 오류",
+            		  text: "로그인이 필요합니다",
+            		  footer: '<a href="${pageContext.request.contextPath}/login.do">로그인 하러가기</a>'
+            		});	
+            	 return Promise.reject("인증 오류");
+            } else if (response.status === 403) {
+              Swal.fire("권한 오류", "접근 권한이 없습니다.", "error");
+              return Promise.reject("권한 오류");
+            } else if (response.status === 204) {
+              console.log('📌 조회된 일정이 없습니다.');
+              successCallback([]); // 빈 배열 전달
+              return Promise.reject("일정 없음");
+            } else if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(eventData => {
+            console.log("📢 서버에서 받아온 데이터:", eventData);
+            
+            // 데이터 변환
+            const eventArray = eventData.map(res => ({
+              id: res.SCH_ID,
+              title: res.SCH_TITLE,
+              start: res.SCH_STARTDATE,
+              end: res.SCH_ENDDATE,
+              backgroundColor: res.SCH_COLOR || "#3788d8",
+              extendedProps: { 
+                empno: res.EMPNO,     
+                empname: res.NAME,   
+                sch_content: res.SCH_CONTENT,
+              }
+            }));
+            
+            console.log("📌 변환된 이벤트 데이터:", eventArray);
+            successCallback(eventArray);
+          })
+          .catch(error => {
+            if (error === "일정 없음") return; // 이미 처리됨
+            
+            console.error("❌ 데이터 처리 중 오류 발생:", error);
+//             Swal.fire({
+//               icon: "error",
+//               title: "Oops...",
+//               text: "일정을 불러오는 중 오류가 발생했습니다."
+//             });
+//             failureCallback(error);
+          });
+      }
       
-      //모달창 이벤트
-      $("#saveChanges").on("click", function() {
-    	  
-//     	// loginDto가 null인지 확인
-//     	    if (!loginDto || loginDto.empno == null) {
-//     	        Swal.fire({
-//     	            icon: "error",
-//     	            title: "로그인 필요",
-//     	            text: "사용자 로그인이 필요합니다.",
-//     	            footer: '<a href="./login.do">사용자 로그인</a>',
-//     	            willClose: () => {
-//     	                // 로그인 페이지로 이동
-//     	                window.location.href = './login.do';
-//     	            }
-//     	        });
-//     	        failureCallback(new Error('로그인 필요'));
-//     	        return;
-//     	    }
-    	  
-    	  
-        var eventData = {
-          empno: ${loginDto.empno},
-          sch_title: $("#sch_title").val(),
-          start: $("#sch_startdate").val(),
-          end: $("#sch_enddate").val(),
-          color: $("#sch_color").val(),
-          sch_content:$("#sch_content").val()
-        };
+      // 새 일정 추가 모달 열기
+      function openAddEventModal() {
+        resetForm();
+        $modalTitle.text('일정 추가');
+        $saveChanges.text('추가').show();
         
-        // 유효성 검사 추가
-        if (eventData.sch_title === "" ) {
+        // 삭제, 수정 버튼 제거
+        $('#updateEvent, #deleteEvent').remove();
+        
+        // 제목 필드에 유효성 검사 클래스 적용
+        $schTitle.removeClass('form-control').addClass('form-control is-invalid');
+        
+        $modal.modal('show');
+      }
+      
+      // 이벤트 조회 모달 열기
+      function openViewEventModal(event) {
+        resetForm();
+        $modalTitle.text('일정 조회');
+        
+        // 이벤트 데이터 설정
+        $eventId.val(event.extendedProps.id || event.id);
+        $empName.val(event.extendedProps.empname || '');
+        $empNo.val(event.extendedProps.empno || '');
+        $schTitle.val(event.title);
+        
+        // 날짜 포맷팅
+        let startDate = event.start ? event.start.toISOString().slice(0, 16) : '';
+        let endDate = event.end ? event.end.toISOString().slice(0, 16) : '';
+        
+        $schStartDate.val(startDate);
+        $schEndDate.val(endDate);
+        $schColor.val(event.backgroundColor || '#3788d8');
+        $schContent.val(event.extendedProps.sch_content || '');
+        
+        // 버튼 상태 변경
+        $saveChanges.hide();
+        
+        // 삭제 버튼 제거 후 다시 추가
+        $('#deleteEvent, #updateEvent').remove();
+        
+        // 버튼 추가
+        $buttonContainer.append(`
+          <button type="button" class="btn btn-outline-primary me-2" id="updateEvent">수정</button>
+          <button type="button" class="btn btn-outline-danger" id="deleteEvent">삭제</button>
+        `);
+        
+        // 제목 필드 유효성 검사 클래스 제거
+        $schTitle.removeClass('is-invalid is-valid').addClass('form-control');
+        
+        // 이벤트 핸들러 등록
+        setupEventHandlers(event);
+        
+        // 모달 표시
+        $modal.modal('show');
+      }
+      
+      // 이벤트 핸들러 설정
+      function setupEventHandlers(event) {
+        // 수정 버튼 클릭 핸들러
+        $('#updateEvent').off('click').on('click', function() {
+          // 유효성 검사
+          if (!validateForm()) return;
+          
+          const updatedData = {
+            id: $eventId.val(),
+            empno: $empNo.val(),
+            sch_title: $schTitle.val(),
+            start: $schStartDate.val(),
+            end: $schEndDate.val(),
+            color: $schColor.val(),
+            sch_content: $schContent.val()
+          };
+          
+          updateEvent(updatedData, event);
+        });
+        
+        // 삭제 버튼 클릭 핸들러
+        $('#deleteEvent').off('click').on('click', function() {
+          deleteEvent(event);
+        });
+      }
+      
+      
+      // 폼 초기화
+      function resetForm() {
+        $eventId.val('');
+        $empName.val('${loginDto.name}');
+        $empNo.val('${loginDto.empno}');
+        $schTitle.val('');
+        $schStartDate.val('');
+        $schEndDate.val('');
+        $schColor.val('#3788d8');
+        $schContent.val('');
+      }
+      
+      // 폼 유효성 검사
+      function validateForm() {
+        const title = $schTitle.val().trim();
+        const start = $schStartDate.val();
+        const end = $schEndDate.val();
+        
+        if (title === '') {
           Swal.fire("제목을 입력해주세요.");
-          return;
-        }else if (eventData.start === "" ) {
+          return false;
+        }
+        
+        if (start === '') {
           Swal.fire("시작 시간을 입력해주세요.");
-          return;
-        }else if (eventData.end === "") {
+          return false;
+        }
+        
+        if (end === '') {
           Swal.fire("종료 시간을 입력해주세요.");
-          return;
+          return false;
         }
         
-        if (eventData.start > eventData.end) {
+        if (start > end) {
           Swal.fire("시작 시간이 종료 시간보다 늦을 수 없습니다.");
-          return;
+          return false;
         }
         
-//         $("#exampleModal").modal("hide");
-
-			calendar.addEvent(eventData);
-            $("#exampleModal").modal("hide");
-//             $("#sch_title").val("");
-//             $("#sch_title").val("");
-//             $("#sch_startdate").val("");
-//             $("#sch_enddate").val("");
-//             $("#sch_color").val("");
-//             $("#sch_content").val("");
-
+        return true;
+      }
+      
+      // 이벤트 저장
+      function saveEvent(eventData) {
         console.log("저장할 이벤트:", eventData);
-
+        
         fetch('./saveSchedule.do', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+        	  events: Array.isArray(eventData) ? eventData : [eventData] // 배열이면 그대로, 단일 데이터면 배열로 변환
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log("저장 완료!", data);
+          Swal.fire("저장 완료!", "일정이 추가되었습니다.", "success");
+          
+          // 캘린더 새로고침
+          calendar.refetchEvents();
+        })
+        .catch(err => {
+          console.error("에러 발생:", err);
+          Swal.fire("오류 발생", "일정을 저장하는 중 문제가 발생했습니다.", "error");
+        });
+      }
+      
+      // 이벤트 업데이트
+      function updateEvent(eventData, originalEvent) {
+        console.log("업데이트할 이벤트:", eventData);
+        
+        fetch('./updateSchedule.do', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(eventData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log("업데이트 완료!", data);
+          Swal.fire("수정 완료!", "일정이 수정되었습니다.", "success");
+          
+          // 모달 닫기
+          $modal.modal('hide');
+          
+          // 캘린더 새로고침
+          calendar.refetchEvents();
+        })
+        .catch(err => {
+          console.error("에러 발생:", err);
+          Swal.fire("오류 발생", "일정을 수정하는 중 문제가 발생했습니다.", "error");
+        });
+      }
+      
+      // 이벤트 삭제
+      async function deleteEvent(event) {
+        const result = await Swal.fire({
+          title: "정말 삭제하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "삭제",
+          cancelButtonText: "취소"
+        });
+        
+        if (!result.isConfirmed) return;
+        
+        try {
+          // 모달 닫기
+          $modal.modal('hide');
+          
+          // 캘린더에서 이벤트 제거
+          event.remove();
+          
+          // 서버에서 삭제
+          const response = await fetch('./deleteSchedule.do', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-              events: Array.isArray(eventData) ? eventData : [eventData]
-            })
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.text();
-          })
-          .then(data => {
-            console.log("저장 완료!", data);
-            Swal.fire("저장 완료!", "일정이 추가되었습니다.", "success");
-            
-  
-          })
-          .catch(err => {
-            console.error("에러 발생:", err);
-            Swal.fire("오류 발생", "일정을 저장하는 중 문제가 발생했습니다.", "error");
+            body: JSON.stringify({ id: event.extendedProps.id || event.id, empno: event.extendedProps.empno || event.empno })
           });
+          
+          if (!response.ok) {
+            throw new Error("서버 응답 오류: " + response.status);
+          }
+          
+          // 성공 알림
+          Swal.fire("삭제 완료!", "일정이 삭제되었습니다.", "success");
+          
+          // 캘린더 새로고침 (이벤트가 실제로 삭제되었는지 확인)
+          calendar.refetchEvents();
+        } catch (error) {
+          console.error("삭제 오류:", error);
+          Swal.fire("오류 발생", "일정을 삭제하는 중 문제가 발생했습니다.", "error");
+          
+          // 오류 발생 시 캘린더 새로고침
+          calendar.refetchEvents();
+        }
+      }
+      
+      // 모달이 닫힐 때 처리
+      $modal.on('hidden.bs.modal', function() {
+        resetForm();
+        $('#updateEvent, #deleteEvent').remove();
+        $saveChanges.show();
+        $schTitle.removeClass('form-control').addClass('form-control is-invalid');
+        $modalTitle.text('일정 추가');
       });
       
-      // 캘린더 랜더링
-      calendar.render();
-    });
-  })();
-  
-  document.addEventListener('DOMContentLoaded', function() {
-	  const schTitleInput = document.getElementById('sch_title');
-
-	  schTitleInput.addEventListener('input', function() {
-	    if (this.value.trim() !== '') {
-	      this.classList.remove('is-invalid');
-	      this.classList.add('is-valid');
-	    } else {
-	      this.classList.remove('is-valid');
-	      this.classList.add('is-invalid');
-	    }
-	  });
-	    schTitleInput.addEventListener('blur', function() { //focusout도 가능
-	    if (this.value.trim() === '') {
-	      this.classList.add('is-invalid'); // 빈문자열일때 다시 invalid
-	    }
-	  });
-	});
-  
-  
-//📌 loaddate() 함수에서 받은 데이터 활용
- //📌 loaddate() 함수에서 받은 데이터 활용
-  async function loaddate(eventData) {
-    try {
-      if (!Array.isArray(eventData)) {
-        console.error("⚠️ 서버 응답이 배열이 아닙니다:", eventData);
-        throw new Error("⚠️ 서버 응답이 배열이 아닙니다.");
-      }
-
-      const eventArray = eventData.map((res) => ({
-        id: res.SCH_ID,
-        title: res.SCH_TITLE,
-        start: res.SCH_STARTDATE,
-        end: res.SCH_ENDDATE,
-        backgroundColor: res.SCH_COLOR || "#3788d8",
-        extendedProps: { 
-          empno: res.EMPNO,     
-          empname: res.NAME,   
-          sch_content: res.SCH_CONTENT,
-        },
-      }));
-
-      console.log("📌 변환된 이벤트 데이터:", eventArray);
-
-      // 🔹 FullCalendar에 이벤트 데이터 추가
-      calendar.removeAllEvents(); // 기존 이벤트 삭제
-      calendar.addEventSource(eventArray); // 새 데이터 추가
-      //calendar.render(); // 캘린더 새로고침  삭제
-
-    } catch (error) {
-      console.error("❌ 일정 불러오기 실패:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "일정을 불러오는 중 오류가 발생했습니다.",
+      // 제목 입력 필드 유효성 검사
+      $schTitle.on('input', function() {
+        if ($(this).val().trim() !== '') {
+          $(this).removeClass('is-invalid').addClass('is-valid');
+        } else {
+          $(this).removeClass('is-valid').addClass('is-invalid');
+        }
+      }).on('blur', function() {
+        if ($(this).val().trim() === '') {
+          $(this).addClass('is-invalid');
+        }
       });
-    }
+      
+      // 저장 버튼 클릭 핸들러
+      $saveChanges.on('click', function() {
+        // 유효성 검사
+        if (!validateForm()) return;
+        
+        // 이벤트 데이터 구성
+        const eventData = {
+          empno: $empNo.val(),
+          sch_title: $schTitle.val(),
+          start: $schStartDate.val(),
+          end: $schEndDate.val(),
+          color: $schColor.val(),
+          sch_content: $schContent.val()
+        };
+        
+        // 모달 닫기
+        $modal.modal('hide');
+        
+        // 이벤트 저장
+        saveEvent(eventData);
+      });
+      
+      // 캘린더 렌더링
+      calendar.render();
+      
+      // 연차 불러오기
+      loadLeaveData();
+
+      
+    });
+    
+    // 연차 데이터 불러오기
+//     function loadLeaveData() {
+//       fetch('${pageContext.request.contextPath}/approval/postLeaveToCalendar.json', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         }
+//       })
+//       .then(resp => resp.json())
+//       .then(data => {
+//         console.log("연차 데이터:", data);
+//         // 연차 데이터 처리 로직 추가
+//         if (data && Array.isArray(data) && data.length > 0) {
+//           const leaveEvents = data.map(leave => ({
+//             title: '연차: ' + leave.title || '연차',
+//             start: leave.start,
+//             end: leave.end,
+//             backgroundColor: '#FFD700', // 연차 색상 (금색)
+//             borderColor: '#FFA500',
+//             allDay: true,
+//             extendedProps: {
+//               isLeave: true,
+//               details: leave.details || ''
+//             }
+//           }));
+          
+//           calendar.addEventSource({
+//             events: leaveEvents,
+//             color: '#FFD700',
+//             textColor: 'black'
+//           });
+//         }
+//       })
+//       .catch(error => {
+//         console.error("연차 데이터 불러오기 오류:", error);
+//       });
+//     }
+    
+    
+ async function loadLeaveData() {
+  if (!calendar) {
+    console.error("calendar가 아직 초기화되지 않았습니다.");
+    return;
   }
 
+  try {
+    const response = await fetch('${pageContext.request.contextPath}/approval/postLeaveToCalendar.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("연차 데이터:", data);
+    
+    
+
+    if (data && Array.isArray(data) && data.length > 0) {
+      const leaveEvents = data.map(leave => ({
+        // empno: leave.empno, // extendedProps 안으로 이동
+        title: leave.title ? '연차: ' + leave.title : '연차', // sch_title -> title
+        start: leave.START_DATE,
+        end: leave.END_DATE, // 
+        backgroundColor: '#FFD700',  // color -> backgroundColor
+        //sch_content: leave.details || '', // extendedProps 안으로 이동
+        extendedProps: {  // extendedProps 객체 추가
+          isLeave: true,
+          empno: leave.EMPNO,
+          sch_content: leave.details || '',
+          empname : leave.NAME //이름도 추가
+        }
+      }));
+
+      console.log("🎆🎆연차 데이터:", leaveEvents);
+      // 기존 연차 이벤트 소스 제거 (v6 방식)
+      calendar.getEventSources().forEach(source => {
+          if (source.internalEventSource.meta.isLeaveSource) {
+              source.remove();
+          }
+      });
+
+
+      // 연차 이벤트 소스 추가
+      calendar.addEventSource({
+          events: leaveEvents,  // 이벤트 배열을 events 속성에 할당
+          id: 'leaveSource', // 고유한 ID (선택 사항이지만 권장)
+          isLeaveSource: true // 커스텀 속성 (선택 사항)
+      });
+    }
+  } catch (error) {
+    console.error("연차 데이터 불러오기 오류:", error);
+  }
+}
+
+  
 </script>
 </html>
