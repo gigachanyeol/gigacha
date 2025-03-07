@@ -90,7 +90,7 @@
         </a>
         <ul id="res-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
          <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/rooms/reservation.do">
               <span>회의실예약</span>
             </a>
           </li>
@@ -177,7 +177,7 @@
       
       
     </ul>
-  </aside>
+  </aside>    
 </body>
 
 </html>
