@@ -13,4 +13,6 @@ public interface IApprovalLineDao {
 	int countApprovalLine(String approval_id);
 	int countApprovalLine(Map<String, Object> map);
 	int deleteApprovalLine(String approval_id);
+	int insertSaveLine(Map<String, Object> map);
+	List<Map<String, Object>> selectSaveLine(String empno);
 }

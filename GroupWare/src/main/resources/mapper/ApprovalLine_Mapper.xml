@@ -83,5 +83,15 @@
 				</choose>
 			</if>
 	</select>
-		
+	
+	<insert id="insertSaveLine">
+	INSERT INTO SAVE_LINE (SAVE_LINE_ID, EMPNO, LINE_NAME, LINE_DATA)
+	VALUES (SAVELINE_SEQ.NEXTVAL,#{empno},#{line_name},#{line_data})
+	</insert>
+	
+	<select id="selectSaveLine" resultType="map">
+		SELECT LINE_NAME, LINE_DATA
+			FROM SAVE_LINE
+			WHERE EMPNO = #{empno}
+	</select>		
 </mapper>

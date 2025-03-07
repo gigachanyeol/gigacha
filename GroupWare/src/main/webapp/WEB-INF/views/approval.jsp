@@ -69,7 +69,7 @@
 
 </head>
 <body>
-<%@ include file="./layout/nav.jsp" %>
+<%-- <%@ include file="./layout/nav.jsp" %> --%>
 <%-- <%@ include file="./layout/sidebar.jsp"%> --%>
 <main id="main" class="main">
 	<div id="content">

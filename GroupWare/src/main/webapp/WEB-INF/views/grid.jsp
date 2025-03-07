@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <%@ include file="./layout/nav.jsp" %>
+<%--     <%@ include file="./layout/nav.jsp" %> --%>
 <%--     <%@ include file="./layout/sidebar.jsp" %> --%>
     <div id="content" class="content">
         <div class="hero-calout">

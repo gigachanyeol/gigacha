@@ -1,6 +1,7 @@
 package com.giga.gw.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -51,5 +52,18 @@ public class ApprovalLineServiceImpl implements IApprovalLineService{
 		return row == 1 ? true : false;
 //		return approvalLineDao.rejectApprovalLine(map) == 1 ? true:false;
 	}
+
+	@Override
+	public boolean insertSaveLine(Map<String, Object> map) {
+		
+		return approvalLineDao.insertSaveLine(map) == 1 ? true: false;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectSaveLine(String empno) {
+		return approvalLineDao.selectSaveLine(empno);
+	}
+
+	
 	
 }

@@ -222,7 +222,7 @@ public class ApprovalController {
 	public boolean approvalDocumentSave(@RequestBody ApprovalDto approvalDto, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		approvalDto.setEmpno(Integer.parseInt("1505001"));
+		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.insertApproval(approvalDto);
 	}
 	
@@ -431,5 +431,25 @@ public class ApprovalController {
 		Map<String, Object> response = new HashMap<>();
 		response.put("data", leaveList);
 		return leaveList;
+	}
+	
+	@PostMapping("/insertSaveLine.json")
+	@ResponseBody
+	public String insertSaveLine(@RequestBody Map<String, Object> map, HttpSession session) {
+		System.out.println(map);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("line_name", map.get("line_name"));
+		paramMap.put("line_data", map.get("line_data").toString());
+		paramMap.put("empno", loginDto.getEmpno());
+		approvalLineService.insertSaveLine(paramMap);
+		return "true";
+	}
+	
+	@GetMapping("/selectSaveLine.json")
+	@ResponseBody
+	public List<Map<String, Object>> selectSaveLine(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		return approvalLineService.selectSaveLine(loginDto.getEmpno());
 	}
 }

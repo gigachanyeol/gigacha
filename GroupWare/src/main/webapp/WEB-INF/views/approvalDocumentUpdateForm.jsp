@@ -140,273 +140,60 @@
 	<script
 		src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
+
 
 	<script type="text/javascript">
-	editor.setData(document.querySelector('#editor').innerHTML);
-	if(document.querySelector("input[name=form_id]").value.startsWith("BC")){
-		console.log("참");
-		$("#dateRange").show();
-	}
-	var approvalForm = [];
-	
-	$(".modalBtn").on('click',()=>{
-		$("#linePickBtn").hide();
-	    $("#formPickBtn").hide();
-	    $("#documentForm").hide();
-		$("#organization").hide();
-		$("#myModal").hide();
-	})
-	// -- 문서양식 트리 시작 ----------------------------
-	$('#documentTree').jstree({
-            'plugins': ["search"],
-            "search": {
-                "show_only_matches": true // 검색 결과만 표시
-            },
-            'core': {
-                'data': function (node, cb) {
-                    $.ajax({
-                        url: "./formTree.json", // 데이터를 JSON 형태로 가져오는 API
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            console.log(data);
-                            cb(data);
-                        }
-                    });
-                }
-            }
-        });
+		editor.setData(document.querySelector('#editor').innerHTML);
+		if(document.querySelector("input[name=form_id]").value.startsWith("BC")){
+			console.log("참");
+			$("#dateRange").show();
+		}
 		
-	 $('#documentTree').on("select_node.jstree", function (e, data) {
-            let selectedNode = data.node;
-            let formId = selectedNode.id;
-            let formName = selectedNode.text;
-
-            if (!formId.startsWith("CATE")) { // 카테고리가 아닌 경우만 추가
-           	 addToApprovalForm(formId, formName);
-            }
-        });
-	 
-	// 양식 가져오기 
-	document.querySelector("#formBtn").addEventListener('click', () => {
-		
-// 		window.open('./formTreeView.do',"popupWindow","width=400,height=600,top=150,left=300");
-		$("#documentForm").show();
-		$("#formPickBtn").show();
-		$("#myModal").show();
-		
-	});
-	
-	function addToApprovalForm(formId, formName) {
-		console.log("aaaa")
-        // 중복 방지
-        if (approvalForm.some(form => form.id === formId)) {
-        	Swal.fire("이미 추가된 문서입니다.");
-            return;
-        }
-
-        // 최대 3개까지만 추가 가능
-        if (approvalForm.length >= 1) {
-            Swal.fire("1개의 양식만 선택 가능합니다.");
-            return;
-        }
-		
-        // 리스트에 추가
-        approvalForm.push({ id: formId, name: formName });
-        updateApprovalForm();
-    }
-	
-	function updateApprovalForm() {
-        $("#approvalForm").empty();
-        let html = "";
-
-        approvalForm.forEach((form, i) => {
-            html += "<div>";
-            html += "<span id='" + form.id + "'>" + (i + 1) + ". " + form.name + " (" + form.id + ")</span>";
-            html += "<span class='remove-btn' onclick='removeFromApprovalForm(\"" + form.id + "\")'>✖</span>";
-            html += "</div>";
-        });
-
-        $("#approvalForm").html(html);
-    }
-	
-	// 선택한 문서 삭제
-    function removeFromApprovalForm(formId) {
-    	approvalForm = approvalForm.filter(form => form.id !== formId);
-        updateApprovalForm();
-    }
-	
-	$("#formPickBtn").on('click',()=>{
-		console.log(approvalForm[0].id);
-		fetch("./selectForm.json", {
-			method:'post',
-			headers:{
-				'Content-Type':'text/plain'
-			},
-			body:approvalForm[0].id
-		})
-		.then(resp => resp.json())
-		.then(data => {
-			console.log(data);
-			document.querySelector("input[name=form_id]").value = data.FORM_ID;
-			if(data.FORM_ID.startsWith("BC")){
-// 				document.querySelector("#dateRange").style.display = 'table-row';
-				$("#dateRange").show()
-			}
-// 			editor.setHTML(data.FORM_CONTENT);
-			editor.setData(data.FORM_CONTENT);
-			$("#myModal").hide();
-			$("#documentForm").hide();
-			$("#formPickBtn").hide();
-		})
-		.catch(err => console.log(err));
-	})
-	
-	// 문서양식 tree 끝 ---------------------------------------------------
-	// 결재선 tree 시작 ---------------------------------------------------
-	var approvalLine = [];
-
-    $('#organizationTree').jstree({
-    	'plugins' : ["search"],
-    	"search":{
-            "show_only_matches": true // 검색 결과만 표시
-    	},
-        'core': {
-            'data': function (node, cb) {
-                $.ajax({
-                    url: "./tree.json",
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                    	console.log(data);
-                        cb(data);
-                    }
-                });
-            }
-        }
-    });
-    
-    $("#searchInput").keyup(function () {
-        let searchText = $(this).val();
-        $("#organizationTree").jstree(true).search(searchText);
-    }); // search end
-
-    // 사원 선택 이벤트 (결재선 추가)
-    $('#organizationTree').on("select_node.jstree", function (e, data) {
-        let selectedNode = data.node;
-        let empNo = selectedNode.id;
-        let empName = selectedNode.text;
-		
-        if (!empNo.startsWith("D") && !empNo.startsWith("HQ")) { // 부서가 아닌 사원만 추가
-            addToApprovalLine(empNo, empName);
-        	return;
-        }
-    }); // organizationTree end
-	
- // 결재선 추가 함수
-    function addToApprovalLine(empNo, empName) {
-        // 중복 방지
-        if (approvalLine.some(emp => emp.id === empNo)) {
-            alert("이미 추가된 사원입니다.");
-            return;
-        }
-        // 3명 체크
-        if(approvalLine.length == 3) {
-        	alert("결재선은 3명까지 지정 가능합니다.");
-        	return;
-        }
-
-        // 결재선 목록에 추가
-        approvalLine.push({ id: empNo, name: empName});
-        updateApprovalList();
-    }
-
-    // 결재선 리스트 업데이트
-    function updateApprovalList() {
-        $("#approvalList").empty();
-		console.log(approvalLine);
-		let html = "";
-		approvalLine.forEach( (emp , i) => { 
-				console.log(emp.name,emp.id);
-				html += "<div>";
-				html += "<span id='"+emp.id+"'>"+(i+1)+"."+emp.name+" ("+emp.id+")</span>";
-				html += "<span class='remove-btn' onclick='removeFromApprovalLine(\""+emp.id+"\")'>✖</span>"
-				html += "</div>";
-				console.log(html);
-		})
-		$("#approvalList").html(html);
-    }
-
-    // 결재선에서 삭제
-    function removeFromApprovalLine(empNo) {
-        approvalLine = approvalLine.filter(emp => emp.id !== empNo);
-        updateApprovalList();
-    }
-
-    // 결재선 저장 (JSON 변환)
-    function saveApprovalLine() {
-        if (approvalLine.length === 0) {
-            alert("결재선을 선택하세요.");
-            return;
-        }
-        let approvalJson = JSON.stringify(approvalLine);
-        console.log("결재선 저장:", approvalJson);
-        alert("결재선이 저장되었습니다.");
-       	
-    }
-		document.getElementById("lineBtn").addEventListener('click', () => {
-			$("#linePickBtn").show();
-			$("#organization").show();
-			$("#myModal").show();
-		});
-		$("#linePickBtn").on('click',()=>{
-			console.log("선택한 결재선", approvalLine);
-			let html = "";
-			html += "<div class='approval-item'>";
-			html += "결<br>재";
-			html += "</div>";
-			approvalLine.forEach( (emp , i) => { 
-					console.log(emp.name,emp.id);
-					html += "<div class='approval-item'>";
-					html += "<div id='"+emp.id+"' class='text-center'>"+emp.name.substr(0,emp.name.lastIndexOf("("))+"</div>";
-					html += "</div>";
-					console.log(html);
-			});
-			document.getElementById("approvalLine").innerHTML = html;
+		editor.setData(document.querySelector('#editor').innerHTML);
+		if(document.querySelector("input[name=form_id]").value.startsWith("BC")){
+			console.log("참");
+			$("#dateRange").show();
+		}
+		$(".modalBtn").on('click',()=>{
+			$("#linePickBtn").hide();
+		    $("#formPickBtn").hide();
+		    $("#documentForm").hide();
+			$("#organization").hide();
 			$("#myModal").hide();
 		})
-			// 문서 작성
-			document.querySelector("#saveBtn").addEventListener('click', () => {
-				let formData = new FormData(document.forms[0]);
-				let jsonData = {};
-				formData.forEach((value, key) => {
-					jsonData[key] = value;
-				});
-				jsonData["approval_content"] = editor.getData();
-				let d = approvalLine.map(item => ({approver_empno:item.id}));
-			    
-			    jsonData["approvalLineDtos"] = d;  
-		
-			    console.log(jsonData);
-				fetch('./approvalUpdateForm.json',{
-					method:'POST',
-					headers:{
-						'Content-Type':'application/json'
-					},
-					body:JSON.stringify(jsonData)
-				})
-				.then(resp => resp.json())
-				.then(data => {
-					if(data == true) {
-						Swal.fire("작성성공").then(()=>{
-							location.href="./approvalDetail.do?id=${approval.approval_id}"
-						});
-					} else{
-						Swal.fire("작성실패");
-					}
-				})
-				.catch(err => console.log(err));
-			});
+				// 문서 작성
+	    document.querySelector("#saveBtn").addEventListener('click', () => {
+	        let formData = new FormData(document.forms[0]);
+	        let jsonData = {};
+	        formData.forEach((value, key) => {
+	            jsonData[key] = value;
+	        });
+	        jsonData["approval_content"] = editor.getData();
+	        let d = approvalLine.map(item => ({approver_empno:item.id}));
+	        
+	        jsonData["approvalLineDtos"] = d;  
+
+	        console.log(jsonData);
+	        fetch('./approvalUpdateForm.json',{
+	            method:'POST',
+	            headers:{
+	                'Content-Type':'application/json'
+	            },
+	            body:JSON.stringify(jsonData)
+	        })
+	        .then(resp => resp.json())
+	        .then(data => {
+	            if(data == true) {
+	                Swal.fire("작성성공").then(()=>{
+	                    location.href="./approvalDetail.do?id=${approval.approval_id}"
+	                });
+	            } else{
+	                Swal.fire("작성실패");
+	            }
+	        })
+	        .catch(err => console.log(err));
+	    });
 	</script>
 </body>
 </html>
