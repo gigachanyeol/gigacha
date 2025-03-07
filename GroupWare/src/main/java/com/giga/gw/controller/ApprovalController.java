@@ -222,7 +222,7 @@ public class ApprovalController {
 	public boolean approvalDocumentSave(@RequestBody ApprovalDto approvalDto, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		approvalDto.setEmpno(Integer.parseInt("1505001"));
+		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
 		return approvalService.insertApproval(approvalDto);
 	}
 	
