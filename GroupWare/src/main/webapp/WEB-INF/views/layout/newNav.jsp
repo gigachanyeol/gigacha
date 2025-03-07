@@ -35,10 +35,36 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="d-none d-md-block dropdown-toggle ps-2">근태관리</span>
           </a><!-- End Profile Iamge Icon -->
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> <i class="bi bi-person"></i>
+				<span>나의 근태 현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptattendance.do"> <i class="bi bi-person"></i>
+				<span>부서 근태 현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptannualleave.do"> <i class="bi bi-person"></i>
+				<span>부서 연차 현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/emplattendance.do"> <i class="bi bi-person"></i>
+				<span>전사 근태현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attstatistics.do"> <i class="bi bi-person"></i>
+				<span>전사 근태통계</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attannualleave.do"> <i class="bi bi-person"></i>
+				<span>전사 연차현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attuseannualleave.do"> <i class="bi bi-person"></i>
+				<span>전사 연차 사용 내역</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/annstatistics.do"> <i class="bi bi-person"></i>
+				<span>전사 연차 통계</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+          </ul>
         </li>
         <li class="nav-item pe-3">
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="d-none d-md-block dropdown-toggle ps-2">캘린더</span>
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="${pageContext.request.contextPath}/calendar/calendar.do" aria-expanded="false">
+            <span class="d-none d-md-block">캘린더</span>
           </a><!-- End Profile Iamge Icon -->
         </li>
         <li class="nav-item dropdown pe-3">
