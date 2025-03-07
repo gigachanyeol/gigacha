@@ -78,11 +78,19 @@ WHERE
     
     
     <!-- 일정삭제 -->
-    <update id="deleteSchedule">
+    <update id="deleteSchedule" parameterType="map">
     	UPDATE SCHEDULE
 		SET UPDATE_EMPNO=#{empno}, UPDATE_DATE=CURRENT_DATE, USE_YN='N' 
 		WHERE SCH_ID=#{sch_id}
 	</update>
-
+	
+	
+    <!-- 캘린더 수정 -->
+    <update id="updateSchedule" parameterType="map">
+    	UPDATE SCHEDULE
+		SET SCH_TITLE=#{sch_title}, SCH_STARTDATE=#{sch_startdate}, SCH_ENDDATE=#{sch_enddate}, SCH_COLOR=#{sch_color}, SCH_CONTENT=#{sch_content},
+		UPDATE_EMPNO=#{empno}, UPDATE_DATE=CURRENT_DATE, USE_YN='Y' 
+		WHERE SCH_ID=#{sch_id}
+	</update>
 
 </mapper>

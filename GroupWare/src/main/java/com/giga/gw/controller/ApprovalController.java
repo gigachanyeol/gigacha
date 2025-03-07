@@ -424,13 +424,13 @@ public class ApprovalController {
 	// 캘린더로 보낼 휴가 
 	@PostMapping("/postLeaveToCalendar.json")	
 	@ResponseBody
-	public Map<String, Object> postLeaveToCalendar(HttpSession session) {
+	public List<Map<String, Object>> postLeaveToCalendar(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		
 		List<Map<String, Object>> leaveList = approvalDao.postLeaveToCalendar("1505001");
 		Map<String, Object> response = new HashMap<>();
 		response.put("data", leaveList);
-		return response;
+		return leaveList;
 	}
 	
 	@PostMapping("/insertSaveLine.json")
