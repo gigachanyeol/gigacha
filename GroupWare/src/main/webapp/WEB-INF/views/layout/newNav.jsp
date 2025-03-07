@@ -26,7 +26,7 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">인사관리</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"> 
 				<span>My Profile</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
@@ -36,28 +36,28 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">근태관리</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> 
 				<span>나의 근태 현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptattendance.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptattendance.do"> 
 				<span>부서 근태 현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptannualleave.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptannualleave.do"> 
 				<span>부서 연차 현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/emplattendance.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/emplattendance.do"> 
 				<span>전사 근태현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attstatistics.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attstatistics.do"> 
 				<span>전사 근태통계</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attannualleave.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attannualleave.do"> 
 				<span>전사 연차현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attuseannualleave.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attuseannualleave.do"> 
 				<span>전사 연차 사용 내역</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/annstatistics.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/annstatistics.do"> 
 				<span>전사 연차 통계</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
@@ -72,16 +72,16 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">전자결재</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalDocument.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalDocument.do"> 
 				<span>기안 작성</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalRequestList.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalRequestList.do"> 
 				<span>결재목록</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalList.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalList.do"> 
 				<span>결재요청함</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalFormList.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalFormList.do"> 
 				<span>문서양식관리(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
@@ -91,19 +91,19 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">예약</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do"> 
 				<span>회의실 등록(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> 
 				<span>회의실정보 수정 및 삭제(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
 				<span>회의실 예약</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
 				<span>회의실 예약취소</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i>
+            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
 				<span>예약내역조회</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>

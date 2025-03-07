@@ -128,7 +128,7 @@
       
      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#attendance-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
-          <i class="bi bi-menu-button-wide"></i>
+          <i class="bi bi-calendar2-week"></i>
           <span>근태관리</span>
           <i class="bi bi-chevron-down ms-auto"></i>
         </a>
