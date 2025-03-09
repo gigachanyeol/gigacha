@@ -237,6 +237,8 @@ function removeFromApprovalLine(empNo) {
 	    }
 	}
 
+var selectSaveLines = [];
+var organizationData = [];
 	document.getElementById("lineBtn").addEventListener('click', async () => {
 		try {
 			$('#organizationTree').jstree({
@@ -252,6 +254,7 @@ function removeFromApprovalLine(empNo) {
 			                    dataType: "json",
 			                    success: function (data) {
 			                    	console.log(data);
+			                    	organizationData = data; 
 			                        cb(data);
 			                    }
 			                });
@@ -261,8 +264,50 @@ function removeFromApprovalLine(empNo) {
 				
 			let data = await selectSaveLine();
 			console.log("저장된 결재선 데이타 값 ",data);
-			$("#saveLine").html(data);
-
+			selectSaveLines = data;
+			console.log("selectSaveLines", selectSaveLines);
+			let lineHtml = '저장된 결재선 <ul>';
+			data.map((line,index) => {
+				console.log(line);
+				lineHtml += '<li class="line-item" data-index="'+index+'">'+line.LINE_NAME+"</li>"	
+//				lineHtml += line.LINE_DATA+"<br>"	
+			})		
+			lineHtml += '</ul>';
+			
+			$("#saveLine").html(lineHtml);
+			$(".line-item").on("click", function() {
+				approvalLine = [];
+			    let index = $(this).data("index"); // 클릭한 항목의 index 가져오기
+			    let selectedLine = selectSaveLines[index]; // 해당 index의 데이터 가져오기
+			    console.log(index);
+			    console.log(typeof selectedLine.LINE_DATA);  
+			   try {
+			        let lineDataStr = selectedLine.LINE_DATA
+			            .replace(/=/g, ":")  // `=`을 `:`로 변경
+			            .replace(/(\w+):/g, '"$1":') // 키를 따옴표로 감싸기 (`approver_empno:` → `"approver_empno":`)
+			            .replace(/'/g, '"'); // 작은따옴표를 큰따옴표로 변경
+			
+			        console.log("변환된 LINE_DATA 문자열:", lineDataStr); // 디버깅용
+			
+			        let lineData = JSON.parse(lineDataStr); // JSON 변환
+			        console.log("변환된 LINE_DATA (JSON):", lineData);
+			
+			       lineData.forEach(d => {
+			            let empInfo = organizationData.find(emp => emp.id == d.approver_empno);
+			            if (empInfo) {
+			                addToApprovalLine(empInfo.id, empInfo.text); // 사원명 포함
+			            } else {
+			                console.warn("해당 사원을 찾을 수 없음:", d.approver_empno);
+			            }
+			        });
+			        updateApprovalList();
+			
+			    } catch (error) {
+			        console.error("JSON 변환 오류:", error);
+			    }
+				
+			});
+			
 			$("#linePickBtn").show();
 			$("#organization").show();
 			$("#myModal").show();
@@ -272,6 +317,7 @@ function removeFromApprovalLine(empNo) {
 		
 	
 	});
+	
 	
 	async function selectSaveLine(){
 	    try {

@@ -7,14 +7,11 @@
 		formData.forEach((value, key) => {
 			jsonData[key] = value;
 		});
-//			jsonData["approval_content"] = editor.getHTML();
 		jsonData["approval_content"] = editor.getData();
 		let d = approvalLine.map(item => ({approver_empno:item.id}));
-	    
 	    jsonData["approvalLineDtos"] = d; 
-
 	    console.log(jsonData);
-
+//		let reviewImageFileInput = document.getElementById("files").files;
         let data = await approvalDocumentSave('./approvalDocumentSave.json',jsonData);
         if(data == true){
             Swal.fire("작성성공");
