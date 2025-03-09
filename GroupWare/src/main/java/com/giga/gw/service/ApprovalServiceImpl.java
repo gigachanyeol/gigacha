@@ -1,5 +1,6 @@
 package com.giga.gw.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +8,17 @@ import java.util.Map;
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.giga.gw.dto.ApprovalDto;
 import com.giga.gw.dto.ApprovalLineDto;
+import com.giga.gw.dto.FileDto;
 import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IApprovalLineDao;
+import com.giga.gw.repository.IFileDao;
+import com.giga.gw.util.FileUploadUtil;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +29,8 @@ public class ApprovalServiceImpl implements IApprovalService {
 
 	private final IApprovalDao approvalDao;
 	private final IApprovalLineDao approvalLineDao;
+	private final IFileDao fileDao;
+	private final FileUploadUtil fileUploadUtil;
 
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
@@ -34,11 +42,12 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.countApproval(form_id);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public boolean insertApproval(ApprovalDto approvalDto) {
+	public boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.insertApproval(approvalDto);
 		int m = 0;
+		int f = 0;
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
 		if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
 			for (ApprovalLineDto line : lineDtos) {
@@ -50,12 +59,43 @@ public class ApprovalServiceImpl implements IApprovalService {
 			map.put("approvalLineDtos", lineDtos);
 			m = approvalLineDao.insertApprovalLine(map);
 		}
-		return n == 1 && m >= 1 ? true : false;
+		
+		// 파일업로드 로직
+		List<FileDto> fileDtos = new ArrayList<>();
+		if(files != null && files.size() != 0 &&  !fileDtos.isEmpty()) {
+			try {
+				List<String> savedFileNames = fileUploadUtil.saveFiles(files);
+				if (savedFileNames == null || savedFileNames.isEmpty()) return false;
+				for(int i=0; i<files.size(); i++) {
+					MultipartFile file = files.get(i);
+					String saveFileName = savedFileNames.get(i);
+					
+					FileDto fileDto = FileDto
+							.builder()
+							.approval_id(approvalDto.getApproval_id())
+							.origin_name(file.getOriginalFilename())
+							.file_name(saveFileName)
+							.create_emp(Integer.toString(approvalDto.getEmpno()))
+							.code("FILE01")
+							.build();
+					fileDtos.add(fileDto);
+				}
+				if(!fileDtos.isEmpty()) {
+					f = fileDao.insertFile(fileDtos);
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		return n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size());
 	}
 
 	@Transactional
 	@Override
-	public int updateApproval(ApprovalDto approvalDto) {
+	public int updateApproval(ApprovalDto approvalDto , List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.updateApproval(approvalDto);
 		int m = 0;
 
@@ -95,7 +135,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 	}
 
 	@Override
-	public boolean insertApprovalTemp(ApprovalDto approvalDto) {
+	public boolean insertApprovalTemp(ApprovalDto approvalDto, List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.insertApprovalTemp(approvalDto);
 		int m = 0;
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.FileDaoImpl">
+	<insert id="insertFile">
+		INSERT INTO TBL_FILE(FILE_ID,ORIGIN_NAME,FILE_NAME,CREATE_EMP
+			<if test="fileDtos[0].approval_id != null">, APPROVAL_ID</if>
+			<if test="fileDtos[0].code != null">, CODE</if>
+		)
+		VALUES
+			<foreach collection="fileDtos" item="file" separator=",">
+		        (SEQ_FILE_ID.NEXTVAL, #{origin_name}, #{file_name}, #{create_emp}
+				<if test="approval_id != null">, #{file.approval_id}</if>
+				<if test="code != null">, #{file.code}</if>)
+		    </foreach>
+	</insert>
+</mapper>

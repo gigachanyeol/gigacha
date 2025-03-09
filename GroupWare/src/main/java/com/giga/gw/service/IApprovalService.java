@@ -3,14 +3,16 @@ package com.giga.gw.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.giga.gw.dto.ApprovalDto;
 
 public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
 	int countApproval(String form_id);
-	boolean insertApproval(ApprovalDto approvalDto);
-	boolean insertApprovalTemp(ApprovalDto approvalDto);
-    int updateApproval(ApprovalDto approvalDto);
+	boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files);
+	boolean insertApprovalTemp(ApprovalDto approvalDto, List<MultipartFile> files);
+    int updateApproval(ApprovalDto approvalDto, List<MultipartFile> files);
     ApprovalDto selectApprovalById(String approval_id);
     int recallApproval(String approval_id);
     List<Map<String, Object>> formTree();

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.giga.gw.dto.ApprovalCategoryDto;
@@ -219,20 +222,24 @@ public class ApprovalController {
 	
 	@PostMapping("/approvalDocumentSave.json")
 	@ResponseBody
-	public boolean approvalDocumentSave(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+	public boolean approvalDocumentSave(
+			@RequestPart ApprovalDto approvalDto,
+			@RequestParam(value = "files", required = false) List<MultipartFile> files, 
+			HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
-		return approvalService.insertApproval(approvalDto);
+//		return approvalService.insertApproval(approvalDto, files);
+		return false;
 	}
 	
 	@PostMapping("/approvalDocumentSaveTemp.json")
 	@ResponseBody
-	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto,List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
-		return approvalService.insertApprovalTemp(approvalDto);
+		return approvalService.insertApprovalTemp(approvalDto, files);
 	}
 	
 	// 결재요청함
@@ -299,11 +306,11 @@ public class ApprovalController {
 	// 문서 수정
 	@PostMapping("/approvalUpdateForm.json")
 	@ResponseBody
-	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto, HttpSession session) {
+	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto,List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setUpdate_empno(Integer.parseInt(loginDto.getEmpno()));
-		return approvalService.updateApproval(approvalDto) == 1 ? true : false;
+		return approvalService.updateApproval(approvalDto, files) == 1 ? true : false;
 	}
 	
 	// 문서 회수

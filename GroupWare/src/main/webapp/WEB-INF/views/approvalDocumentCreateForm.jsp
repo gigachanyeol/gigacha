@@ -47,12 +47,12 @@
 			<div id="content" class="col">
 				<h3 class="content_title">기안문작성</h3>
 				<div class="content_nav">
-					<button id="formBtn">문서양식</button>
-					<button id="lineBtn">결재선</button>
-					<button id="saveBtn">결재요청</button>
-					<button id="tempBtn">임시저장</button>
-					<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
-					<button id="getContent" data-bs-toggle="modal"
+					<button class="btn btn-secondary btn-sm" id="formBtn">문서양식</button>
+					<button class="btn btn-secondary btn-sm" id="lineBtn">결재선</button>
+					<button class="btn btn-secondary btn-sm" id="saveBtn">결재요청</button>
+					<button class="btn btn-secondary btn-sm" id="tempBtn">임시저장</button>
+					<button class="btn btn-secondary btn-sm" id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+					<button class="btn btn-secondary btn-sm" id="getContent" data-bs-toggle="modal"
 						data-bs-target="#myModal">컨텐츠만 얻기</button>
 				</div>
 				<div class="row" id="contentHtml">
@@ -85,9 +85,8 @@
 										일반 <input type="radio" name="urgency" value="N" checked>
 									</td>
 									<th>서명/도장</th>
-									<td>서명 <input type="radio" value="1" name="signature"
-										checked> 도장 <input type="radio" value="2"
-										name="signature">
+									<td>서명 <input type="radio" value="1" name="signature" checked> 
+										도장 <input type="radio" value="2" name="signature">
 									</td>
 								</tr>
 								<tr id="dateRange">
@@ -107,7 +106,7 @@
 						<input type="hidden" name="form_id">
 						<div id="editor"></div>
 						<div id="fileDiv">
-							<input class="btn" type="file" multiple id="formFile">
+							<input class="btn" type="file" name="files" multiple id="formFile">
 							<div id="fileForm">파일업로드목록</div>
 						</div>
 					</form>
@@ -136,7 +135,7 @@
 							placeholder="검색">
 						<div class="row">
 							<div id="organizationTree" class="col-6"></div>
-							<div id="saveLine" class="col-6"></div>
+							<div id="saveLine" class="col-6">asd</div>
 							<hr>
 							<h5>결재순서</h5>
 							<div id="approvalList"></div>

@@ -85,8 +85,9 @@
 	         <button type="button" class="btn btn-success" id="rejectBtn">반려</button>
 	      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button>
 	      </div>
-	      <div class="modal-body">
-	      	
+	      <div class="modal-body row">
+	      	<div id="approvalLine" class="mt-3 col-4"></div>
+	      	<div id="modal-content"></div>
 	      </div>
 	
 	      <div class="modal-footer">
@@ -164,7 +165,16 @@
 			.then(resp => resp.json())
 			.then(data => {
 				console.log(data);
-				$(".modal-body").html(data.approval_content);
+				 let html = "<div class='approval-item'>결<br>재</div>";
+		            data.approvalLineDtos.forEach((emp, i) => {
+		                console.log(emp.name, emp.approver_empno);
+		                html += "<div class='approval-item'>";
+		                html += "<div id='" + emp.approver_empno + "' class='text-center'></div>";
+		                html += "</div>";
+		            });
+
+	            document.getElementById("approvalLine").innerHTML = html;
+				$("#modal-content").html(data.approval_content);
 				$("#acceptBtn").val(data.approval_id);
 				$("#rejectBtn").val(data.approval_id);						
 				$("#myModal").show();
