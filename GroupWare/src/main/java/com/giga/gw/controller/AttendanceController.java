@@ -16,25 +16,24 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AttendanceController {
-
 	
-//	나의 근태 현황             
+//	나의 근무 현황             
 //	/myattendance.do"> <
 	@GetMapping("/myattendance.do")
 	public String fullcalendar(HttpSession session) {
 		return "attendance";
 	}
 //	                    
-//	부서 근태 현황                    
+//	부서 근무 현황                    
 //	/deptattendance.do">
 //	                    
 //	부서 연차 현황                    
 //	/deptannualleave.do"
 //	                    
-//	전사 근태현황                    
+//	전사 근무현황                    
 //	/emplattendance.do">
 //	                    
-//	전사 근태통계                    
+//	전사 근무통계                    
 //	/attstatistics.do"> 
 //	                    
 //	전사 연차현황                    
@@ -46,5 +45,6 @@ public class AttendanceController {
 //	전사 연차 통계                    
 //	/annstatistics.do"> 
 	
+
 	
 }
