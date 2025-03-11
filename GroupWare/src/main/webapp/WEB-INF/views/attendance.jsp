@@ -222,6 +222,8 @@
 			</div>
 		</div>
 	</main>
-
+<script>
+    var pageContext = '${pageContext.request.contextPath}';
+</script>
 </body>
 </html>

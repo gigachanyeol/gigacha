@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// 로그로 선택된 년도 확인
-	console.log(yearSelect);
+//	console.log(yearSelect);
 
 	// 월 셀렉트 박스 채우기
 	function populateMonths(startMonth = 0) {
@@ -384,25 +384,26 @@ document.addEventListener('DOMContentLoaded', function() {
 			//clickedRow.classList.toggle('highlight'); // 예: 클릭한 행에 하이라이트 클래스 추가
 		}
 	});
-
-	//	fetch('/loadleave.do')
-	//    .then(response => response.json())  // 응답을 JSON 형식으로 파싱
-	//    .then(data => {
-	//        console.log(data);  // 서버에서 받은 데이터를 출력
-	//        // 예: 테이블에 데이터 추가
-	//        data.forEach(item => {
-	//            document.getElementById('leaveTable').innerHTML += `
-	//                <tr>
-	//                    <td>${item.leaveDate}</td>
-	//                    <td>${item.employeeName}</td>
-	//                    <td>${item.leaveType}</td>
-	//                </tr>
-	//            `;
-	//        });
-	//    })
-	//    .catch(error => {
-	//        console.error('Error:', error);
-	//    });
+	
+		fetch(`${pageContext}/attendance/loadleave.do`)
+	    .then(response => response.json())  // 응답을 JSON 형식으로 파싱
+	    .then(data => {
+		       console.log("📌  서버에서 받은 데이터를 출력:", data);
+	       
+//	        // 예: 테이블에 데이터 추가
+//	        data.forEach(item => {
+//	            document.getElementById('leaveTable').innerHTML += `
+//	                <tr>
+//	                    <td>${item.leaveDate}</td>
+//	                    <td>${item.employeeName}</td>
+//	                    <td>${item.leaveType}</td>
+//	                </tr>
+//	            `;
+//	        });
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
 
 
 });
