@@ -158,6 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	function initAttendanceTable() {
 		// 실제로는 서버에서 데이터를 불러오는 작업
 		// 예시: fetchAttendanceRecords(year, month);
+		
+		
 	}
 
 	// 이벤트 리스너 설정
@@ -357,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			for (let i = 0; i < 6; i++) {
 				const emptyCell = document.createElement('td');
 				//각 td마다 id 지정~!
-				
+
 				emptyCell.id = `${formattedDate}-${i}`;
 				row.appendChild(emptyCell);
 
@@ -366,6 +368,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			// 생성된 행을 tbody에 추가
 			tbody.appendChild(row);
 		}
+		
+			fetchLeaveData();
 	}
 
 	// 모든 yearSelect 요소에 변경 이벤트 추가(이미 위에서 추가했음)
@@ -375,6 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const selectedYear = getCurrentYearValue();
 		const selectedMonth = parseInt(this.value) - 1;
 		populateDates(selectedYear, selectedMonth);
+		
 	});
 
 	// 기본 값으로 현재 월에 맞는 일자 채우기
@@ -401,31 +406,32 @@ document.addEventListener('DOMContentLoaded', function() {
 		return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
 	}
 
-	fetch(`${pageContext}/attendance/loadleave.do`)
-		.then(response => response.json()) // 응답을 JSON 형식으로 파싱
-		.then(data => {
-			console.log("📌 서버에서 받은 데이터를 출력:", data);
+	function fetchLeaveData(){
+		fetch(`${pageContext}/attendance/loadleave.do`)
+			.then(response => response.json()) // 응답을 JSON 형식으로 파싱
+			.then(data => {
+				console.log("📌 서버에서 받은 데이터를 출력:", data);
 
-			data.forEach(item => {
-				const START_DATE = formatDate(item.START_DATE);
-				const END_DATE = formatDate(item.END_DATE);
+				data.forEach(item => {
+					const START_DATE = formatDate(item.START_DATE);
+					const END_DATE = formatDate(item.END_DATE);
 
-//				console.log("📌 START_DATE:", START_DATE);
-				//            console.log("📌 END_DATE:", END_DATE);
+					//				console.log("📌 START_DATE:", START_DATE);
+					//            console.log("📌 END_DATE:", END_DATE);
 
-				// 날짜에 해당하는 요소 ID를 생성
-				var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
-//				console.log("📌 searchtd:", searchtd);
-				// 해당 날짜의 셀에 '연차' 추가
-				const targetElement = document.getElementById(searchtd);
-				console.log("📌 targetElement:", targetElement);
+					// 날짜에 해당하는 요소 ID를 생성
+					var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
+					//				console.log("📌 searchtd:", searchtd);
+					// 해당 날짜의 셀에 '연차' 추가
+					const targetElement = document.getElementById(searchtd);
+					console.log("📌 targetElement:", targetElement);
 
-				if (targetElement) {
-					targetElement.innerHTML += `연차`;
-				}
-			});
-		})
-		.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
-
+					if (targetElement) {
+						targetElement.innerHTML += `연차`;
+					}
+				});
+			})
+			.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
+	}
 
 });
