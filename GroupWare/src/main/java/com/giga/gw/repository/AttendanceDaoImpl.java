@@ -1,10 +1,20 @@
 package com.giga.gw.repository;
 
-import javax.servlet.http.HttpSession;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.RequiredArgsConstructor;
 
+@Repository
+@RequiredArgsConstructor
 public class AttendanceDaoImpl implements IAttendanceDao {
 
+	private final SqlSessionTemplate sessionTemplate;
+	private final String NS = "com.giga.gw.repository.AttendanceDaoImpl.";
 	
+	@Override
+	public void createattendacetable() {
+		System.out.println("스케쥴러 동작 φ(゜▽゜*)♪φ(゜▽゜*)♪ φ(゜▽゜*)♪φ(゜▽゜*)♪");
+		sessionTemplate.insert(NS+"createattendacetable");
+	}
 }

@@ -22,6 +22,7 @@
 		<mapper resource="mapper/Reservation_Mapper.xml"/>
 		<mapper resource="mapper/Room_Mapper.xml"/>
 		<mapper resource="mapper/Login_Mapper.xml"/>
+		<mapper resource="mapper/Attendance_Mapper.xml"/>
 		
 		
 	</mappers>

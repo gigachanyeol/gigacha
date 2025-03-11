@@ -193,7 +193,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	const currentDate = new Date();
 
 	// 년도 셀렉트 박스 채우기
-	const yearSelect = document.getElementById('yearSelect');
+	const yearSelect = document.getElementsByName('yearSelect');
+	var selectyear = [];
+	
 	for (let year = hireDate.getFullYear(); year <= currentDate.getFullYear(); year++) {
 		const option = document.createElement('option');
 		option.value = year;
@@ -203,16 +205,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (year == currentDate.getFullYear()) {
 			option.selected = true;
 		}
-
-		yearSelect.appendChild(option);
+		selectyear.push(option);
 	}
+	
+	// 모든 yearSelect 요소에 옵션을 추가
+	for (var i = 0; i < yearSelect.length; i++) {
+		for (var j = 0; j < selectyear.length; j++) {
+			yearSelect[i].appendChild(selectyear[j].cloneNode(true));
+		}
+	}
+	
+	console.log(yearSelect);
 
 	// 월 셀렉트 박스 채우기
 	function populateMonths(startMonth = 0) {
 		// 기존 옵션 삭제
 		monthSelect.innerHTML = '';
 
-		const endMonth = (yearSelect.value == currentDate.getFullYear())
+		const endMonth = (getCurrentYearValue() == currentDate.getFullYear())
 			? currentDate.getMonth()
 			: 11;
 
@@ -223,30 +233,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// 현재 월을 기본 선택
 			if (month == currentDate.getMonth() &&
-				yearSelect.value == currentDate.getFullYear()) {
+				getCurrentYearValue() == currentDate.getFullYear()) {
 				option.selected = true;
 			}
 
 			monthSelect.appendChild(option);
 		}
 	}
-
-
-	// 년도 변경 시 월 옵션 업데이트
-	yearSelect.addEventListener('change', function() {
-		const selectedYear = parseInt(this.value);
-
-		if (selectedYear == hireDate.getFullYear()) {
-			// 입사 년도면 입사 월부터 시작
-			populateMonths(hireDate.getMonth());
-		} else {
-			// 다른 년도면 1월부터 시작
-			populateMonths();
+	
+	// yearSelect에서 현재 선택된 값을 가져오는 함수
+	function getCurrentYearValue() {
+		for (var i = 0; i < yearSelect.length; i++) {
+			if (yearSelect[i].selectedIndex != -1) {
+				return parseInt(yearSelect[i].options[yearSelect[i].selectedIndex].value);
+			}
 		}
-	});
+		return currentDate.getFullYear(); // 기본값으로 현재 년도 반환
+	}
+
+	// 모든 yearSelect 요소에 change 이벤트 리스너 추가
+	for (var i = 0; i < yearSelect.length; i++) {
+		yearSelect[i].addEventListener('change', function() {
+			const selectedYear = parseInt(this.value);
+
+			if (selectedYear == hireDate.getFullYear()) {
+				// 입사 년도면 입사 월부터 시작
+				populateMonths(hireDate.getMonth());
+			} else {
+				// 다른 년도면 1월부터 시작
+				populateMonths();
+			}
+			
+			// 테이블 업데이트
+			const selectedMonth = parseInt(monthSelect.value) - 1;
+			populateDates(selectedYear, selectedMonth);
+		});
+	}
 
 	// 초기 월 옵션 설정
-	if (parseInt(yearSelect.value) == hireDate.getFullYear()) {
+	if (getCurrentYearValue() == hireDate.getFullYear()) {
 		populateMonths(hireDate.getMonth());
 	} else {
 		populateMonths();
@@ -275,18 +300,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 결과 생성
 	var tenureText = yearDiff + "년 " + monthDiff + "개월";
 
-	// 결과 표시 (예: 텍스트를 보여줄 요소의 ID가 'tenure'라고 가정)
-	//    document.getElementById('tenure').textContent = tenureText;
-
 	// 콘솔에도 표시 (디버깅용)
 	console.log("근무 기간: " + tenureText);
 	document.getElementById('hiredate').innerHTML = year + "-" + month + "-" + date;
 	document.getElementById('hiredateText').innerHTML = "(" + tenureText + ")";
 
 	// 표 미리 만들어두기
-	const tbody = document.querySelector('.table tbody'); // 테이블의 tbody 부분
+	const tbody = document.getElementById('attendanceTable').querySelector('tbody');
 
-	// 월에 맞는 일자를 채우는 함수
+	/// 월에 맞는 일자를 채우는 함수
 	function populateDates(year, month) {
 		tbody.innerHTML = ''; // 기존의 테이블 데이터 삭제
 
@@ -296,12 +318,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		const todayMonth = today.getMonth();
 		const todayDate = today.getDate();
 
+		// 요일 배열 (일, 월, 화, 수, 목, 금, 토)
+		const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
 		for (let day = 1; day <= daysInMonth; day++) {
 			const row = document.createElement('tr');
 
 			// 일자 셀 생성
 			const dateCell = document.createElement('td');
-			dateCell.textContent = `${month + 1}월 ${day}일`; // 예: 3월 1일
+
+			// 날짜와 요일 표시
+			const date = new Date(year, month, day);
+			const dayOfWeek = date.getDay(); // 0: 일요일, 6: 토요일
+			dateCell.textContent = `${month + 1}월 ${day}일 (${weekdays[dayOfWeek]})`; // 예: 3월 1일(화)
 
 			// 오늘 날짜일 경우 색상 추가
 			if (year === todayYear && month === todayMonth && day === todayDate) {
@@ -309,8 +338,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				row.classList.add('table-warning', 'text-white'); // 오늘 날짜에 배경색 추가
 			}
 
-			row.appendChild(dateCell);
+			// 주말 체크 (토요일=6, 일요일=0)
+			if (dayOfWeek === 6) {
+				dateCell.style.color = 'blue'; // 토요일은 파란색
+			} else if (dayOfWeek === 0) {
+				dateCell.style.color = 'red'; // 일요일은 빨간색
+			}
 
+			row.appendChild(dateCell);
 			// 출근, 퇴근, 연장, 야간, 합계, 상태 셀을 추가 (빈 셀로)
 			for (let i = 0; i < 6; i++) {
 				const emptyCell = document.createElement('td');
@@ -322,16 +357,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
-
+	// 모든 yearSelect 요소에 변경 이벤트 추가(이미 위에서 추가했음)
+	
 	// 월 셀렉트 박스 변경 시 테이블 업데이트
-	yearSelect.addEventListener('change', function() {
-		const selectedYear = parseInt(this.value);
-		const selectedMonth = parseInt(monthSelect.value) - 1; // monthSelect의 값은 1부터 시작하므로 -1을 해줌
-		populateDates(selectedYear, selectedMonth);
-	});
-
 	monthSelect.addEventListener('change', function() {
-		const selectedYear = parseInt(yearSelect.value);
+		const selectedYear = getCurrentYearValue();
 		const selectedMonth = parseInt(this.value) - 1;
 		populateDates(selectedYear, selectedMonth);
 	});
@@ -340,9 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const currentYear = new Date().getFullYear();
 	const currentMonth = new Date().getMonth();
 	populateDates(currentYear, currentMonth);
-	
-	
-	
+
 	//클릭한 행 가져오기 
 	tbody.addEventListener('click', function(event) {
 		// 클릭된 요소가 'tr'인 경우에만 처리
@@ -350,12 +378,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			const clickedRow = event.target.closest('tr'); // 클릭한 행 (tr 요소)
 
 			// 클릭된 행에 대한 처리 (예: 행 색상 변경, 데이터 출력 등)
-			console.log('클릭한 행:', clickedRow.children[0].textContent ,clickedRow);
+			console.log('클릭한 행:', clickedRow.children[0].textContent, clickedRow);
 
 			// 원하는 처리 추가 (예: 스타일 변경, 데이터 가져오기 등)
-//			clickedRow.classList.toggle('highlight'); // 예: 클릭한 행에 하이라이트 클래스 추가
+			//clickedRow.classList.toggle('highlight'); // 예: 클릭한 행에 하이라이트 클래스 추가
 		}
 	});
 });
-
-

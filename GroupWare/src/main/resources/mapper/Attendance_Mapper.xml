@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.giga.gw.repository.AttendanceDaoImpl">
+    <!-- 근무 테이블 만들기  -->
+<insert id="createattendacetable">
+	INSERT INTO ATTENDANCERECORD (
+    ATTNO, EMPNO, WORK_DATE, WORKIN_TIME, WORKOUT_TIME, WORK_TIME, WORK_STATUS, USE_YN
+)
+SELECT 
+    TO_CHAR(CURRENT_DATE , 'YYMMDD') || LPAD(ATTNO_SEQ.NEXTVAL, 3, '0'), -- SEQUENCE 사용
+    E.EMPNO,
+    TRUNC(CURRENT_DATE),
+    '',
+    '',
+    '',
+    '',
+    'Y'
+FROM EMPLOYEES E
+LEFT JOIN ATTENDANCERECORD A 
+    ON E.EMPNO = A.EMPNO 
+    AND A.WORK_DATE = TRUNC(CURRENT_DATE)
+WHERE A.EMPNO IS NULL
+</insert>
+
+
+
+</mapper>
