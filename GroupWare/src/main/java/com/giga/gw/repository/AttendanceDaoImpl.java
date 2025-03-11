@@ -23,12 +23,9 @@ public class AttendanceDaoImpl implements IAttendanceDao {
 	
 	@Override
 	public List<Map<String, Object>> leaveList() {
-		
-		List<Map<String,Object>> list = sessionTemplate.selectList(NS+"leaveList");
+		List<Map<String,Object>> list = sessionTemplate.selectList(NS+"leaveListByEmpno","1505001");
 		System.out.println(list);
-		
 		return list;
-		
 		
 	}
 }

@@ -41,6 +41,10 @@ public class AttendanceController {
 		
 		 List<Map<String, Object>> leavelist = attendanceDao.leaveList();
 		 
+		 for (Map<String, Object> map : leavelist) {
+			System.out.println("o(*^＠^*)oo(*^＠^*)"+map);
+		}
+//		 
 		 return ResponseEntity.ok(leavelist);
 	}
 //	                    

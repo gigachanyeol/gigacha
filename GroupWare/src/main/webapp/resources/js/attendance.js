@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// 로그로 선택된 년도 확인
-//	console.log(yearSelect);
+	//	console.log(yearSelect);
 
 	// 월 셀렉트 박스 채우기
 	function populateMonths(startMonth = 0) {
@@ -326,6 +326,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// 일자 셀 생성
 			const dateCell = document.createElement('td');
+			// 날짜 값을 YYYYMMDD 형식으로 변환
+			const formattedDate = `${year}${String(month + 1).padStart(2, '0')}${String(day).padStart(2, '0')}`;
+
+			// 고유한 id를 날짜 형식에 '-5'를 추가하여 설정
+			dateCell.id = `${formattedDate}`;
+
+			//			console.log(dateCell.id);
 
 			// 날짜와 요일 표시
 			const date = new Date(year, month, day);
@@ -349,7 +356,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			// 출근, 퇴근, 연장, 야간, 합계, 상태 셀을 추가 (빈 셀로)
 			for (let i = 0; i < 6; i++) {
 				const emptyCell = document.createElement('td');
+				//각 td마다 id 지정~!
+				
+				emptyCell.id = `${formattedDate}-${i}`;
 				row.appendChild(emptyCell);
+
 			}
 
 			// 생성된 행을 tbody에 추가
@@ -384,26 +395,37 @@ document.addEventListener('DOMContentLoaded', function() {
 			//clickedRow.classList.toggle('highlight'); // 예: 클릭한 행에 하이라이트 클래스 추가
 		}
 	});
-	
-		fetch(`${pageContext}/attendance/loadleave.do`)
-	    .then(response => response.json())  // 응답을 JSON 형식으로 파싱
-	    .then(data => {
-		       console.log("📌  서버에서 받은 데이터를 출력:", data);
-	       
-//	        // 예: 테이블에 데이터 추가
-//	        data.forEach(item => {
-//	            document.getElementById('leaveTable').innerHTML += `
-//	                <tr>
-//	                    <td>${item.leaveDate}</td>
-//	                    <td>${item.employeeName}</td>
-//	                    <td>${item.leaveType}</td>
-//	                </tr>
-//	            `;
-//	        });
-	    })
-	    .catch(error => {
-	        console.error('Error:', error);
-	    });
+
+	function formatDate(timestamp) {
+		const date = new Date(timestamp);
+		return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
+	}
+
+	fetch(`${pageContext}/attendance/loadleave.do`)
+		.then(response => response.json()) // 응답을 JSON 형식으로 파싱
+		.then(data => {
+			console.log("📌 서버에서 받은 데이터를 출력:", data);
+
+			data.forEach(item => {
+				const START_DATE = formatDate(item.START_DATE);
+				const END_DATE = formatDate(item.END_DATE);
+
+//				console.log("📌 START_DATE:", START_DATE);
+				//            console.log("📌 END_DATE:", END_DATE);
+
+				// 날짜에 해당하는 요소 ID를 생성
+				var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
+//				console.log("📌 searchtd:", searchtd);
+				// 해당 날짜의 셀에 '연차' 추가
+				const targetElement = document.getElementById(searchtd);
+				console.log("📌 targetElement:", targetElement);
+
+				if (targetElement) {
+					targetElement.innerHTML += `연차`;
+				}
+			});
+		})
+		.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
 
 
 });
