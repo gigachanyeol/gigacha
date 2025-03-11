@@ -22,6 +22,17 @@ LEFT JOIN ATTENDANCERECORD A
 WHERE A.EMPNO IS NULL
 </insert>
 
+<!--연차 가져오기-->
+<select id="leaveList" resultType="map">
+   		SELECT t1.EMPNO, t2.NAME,
+    		START_DATE ,  END_DATE  
+			FROM APPROVAL t1
+			JOIN EMPLOYEES t2 ON t1.EMPNO = t2.EMPNO
+			WHERE CURRENT_DATE BETWEEN START_DATE AND END_DATE 
+			AND APPROVAL_STATUS = 'ST04'
+			AND FORM_ID LIKE 'BC%'
+</select>
+
 
 
 </mapper>

@@ -195,26 +195,26 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 년도 셀렉트 박스 채우기
 	const yearSelect = document.getElementsByName('yearSelect');
 	var selectyear = [];
-	
+
+	// 년도 옵션 생성
 	for (let year = hireDate.getFullYear(); year <= currentDate.getFullYear(); year++) {
 		const option = document.createElement('option');
 		option.value = year;
 		option.textContent = year + '년';
-
-		// 현재 년도를 기본 선택
-		if (year == currentDate.getFullYear()) {
-			option.selected = true;
-		}
 		selectyear.push(option);
 	}
-	
+
 	// 모든 yearSelect 요소에 옵션을 추가
 	for (var i = 0; i < yearSelect.length; i++) {
 		for (var j = 0; j < selectyear.length; j++) {
 			yearSelect[i].appendChild(selectyear[j].cloneNode(true));
 		}
+
+		// 현재 년도 기본 선택
+		yearSelect[i].value = currentDate.getFullYear();  // 현재 년도로 선택
 	}
-	
+
+	// 로그로 선택된 년도 확인
 	console.log(yearSelect);
 
 	// 월 셀렉트 박스 채우기
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			monthSelect.appendChild(option);
 		}
 	}
-	
+
 	// yearSelect에서 현재 선택된 값을 가져오는 함수
 	function getCurrentYearValue() {
 		for (var i = 0; i < yearSelect.length; i++) {
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// 다른 년도면 1월부터 시작
 				populateMonths();
 			}
-			
+
 			// 테이블 업데이트
 			const selectedMonth = parseInt(monthSelect.value) - 1;
 			populateDates(selectedYear, selectedMonth);
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// 모든 yearSelect 요소에 변경 이벤트 추가(이미 위에서 추가했음)
-	
+
 	// 월 셀렉트 박스 변경 시 테이블 업데이트
 	monthSelect.addEventListener('change', function() {
 		const selectedYear = getCurrentYearValue();
@@ -384,4 +384,25 @@ document.addEventListener('DOMContentLoaded', function() {
 			//clickedRow.classList.toggle('highlight'); // 예: 클릭한 행에 하이라이트 클래스 추가
 		}
 	});
+
+	//	fetch('/loadleave.do')
+	//    .then(response => response.json())  // 응답을 JSON 형식으로 파싱
+	//    .then(data => {
+	//        console.log(data);  // 서버에서 받은 데이터를 출력
+	//        // 예: 테이블에 데이터 추가
+	//        data.forEach(item => {
+	//            document.getElementById('leaveTable').innerHTML += `
+	//                <tr>
+	//                    <td>${item.leaveDate}</td>
+	//                    <td>${item.employeeName}</td>
+	//                    <td>${item.leaveType}</td>
+	//                </tr>
+	//            `;
+	//        });
+	//    })
+	//    .catch(error => {
+	//        console.error('Error:', error);
+	//    });
+
+
 });

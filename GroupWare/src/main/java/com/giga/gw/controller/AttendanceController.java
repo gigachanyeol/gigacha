@@ -1,11 +1,17 @@
 package com.giga.gw.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.giga.gw.repository.IAttendanceDao;
 import com.giga.gw.repository.ICalendarDao;
 
 import lombok.RequiredArgsConstructor;
@@ -17,11 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AttendanceController {
 	
+	private IAttendanceDao attendanceDao;
+	
 //	나의 근무 현황             
 //	/myattendance.do"> <
 	@GetMapping("/myattendance.do")
 	public String fullcalendar(HttpSession session) {
 		return "attendance";
+	}
+	
+	
+	@GetMapping("/loadleave.do")
+	@ResponseBody
+	public ResponseEntity<List<Map<String, Object>>> loadleave(HttpSession session) {
+		
+		 List<Map<String, Object>> leavelist = attendanceDao.leaveList();
+		 
+		 return ResponseEntity.ok(leavelist);
 	}
 //	                    
 //	부서 근무 현황                    
