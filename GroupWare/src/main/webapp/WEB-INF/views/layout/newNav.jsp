@@ -23,11 +23,15 @@
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="d-none d-md-block dropdown-toggle ps-2">인사관리</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">인사관리</span> 
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"> 
-				<span>My Profile</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/deptManagement/deptManagement.do"> 
+				<span>부서 관리</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/notice/notice.do"> 
+				<span>공지사항</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeRegistration.do"> 
+				<span>인사등록</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
         </li>

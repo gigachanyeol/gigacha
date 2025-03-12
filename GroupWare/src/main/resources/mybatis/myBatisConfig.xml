@@ -9,6 +9,7 @@
 		<typeAlias type="com.giga.gw.dto.ReservationDto" alias="reservationDto"/>
 		<typeAlias type="com.giga.gw.dto.RoomDto" alias="roomDto"/>
 		<typeAlias type="com.giga.gw.dto.EmployeeDto" alias="employeeDto"/>
+		<typeAlias type="com.giga.gw.dto.DepartmentDto" alias="departmentDto"/>
 		
 	</typeAliases>
 	<mappers>
@@ -22,6 +23,7 @@
 		<mapper resource="mapper/Reservation_Mapper.xml"/>
 		<mapper resource="mapper/Room_Mapper.xml"/>
 		<mapper resource="mapper/Login_Mapper.xml"/>
+		<mapper resource="mapper/DeptManagement_Mapper.xml"/>
 		
 		
 	</mappers>
