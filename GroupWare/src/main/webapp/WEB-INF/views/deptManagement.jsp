@@ -31,6 +31,15 @@ td {
     border: 1px solid black;
 }
 
+.modal {
+	display: none;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	height: 80%;
+}
+
 </style>
 
 </head> 
@@ -46,7 +55,43 @@ td {
         <div class="col-3">
           <div class="card">
             <div>
-          		<h5>조직도</h5>
+            	<div>
+            		<h5 class="card-title">조직도</h5>
+          			<button id="addDept">부서 추가</button>
+            	</div>
+            	<!-- 모달 -->
+            	<div id="deptAddModal" class="modal">
+            		<div class="modal-content">
+            			<span class="close" onclick="closeModal()">&times;</span>
+			            <h2>부서 추가</h2>
+			            <div>
+			            	<select id="deptType">
+			            		<option>본부</option>
+			            		<option>부서</option>
+			            	</select>
+			            		<div>
+				            		<label for="deptName">부서 번호:</label>
+					                <input type="text" id="deptName" name="deptName" required>
+					            	<form id="departmentForm" onsubmit="submitForm(event)">
+						                <label for="deptName">부서 이름:</label>
+						                <input type="text" id="deptName" name="deptName" required>
+						                <button type="button">중복검사</button>
+					            	</form>
+					            	<form id="departmentForm" onsubmit="submitForm(event)">
+						                <label for="deptName">상위 부서:</label>
+						                <input type="text" id="deptName" name="deptName" required>
+						                <button type="button">선택하기</button>
+					            	</form>
+			            		</div>
+			            </div>
+			            <div>
+			                <button type="submit">임시저장</button>
+			                <button type="submit">등록</button>
+			                <button type="button" class="close" onclick="closeModal()">닫기</button>
+			            </div>
+            		</div>
+            	</div>
+            	
 				<input type="text" id="searchInput" placeholder="검색">
 				<br>
 				<div id="organizationTree"></div>
@@ -88,38 +133,8 @@ td {
                  		</tr>
                   	</table>
                   </div>
-                  
-                  <h5 class="card-title">Profile Details</h5>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Company</div>
-                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Job</div>
-                    <div class="col-lg-9 col-md-8">Web Designer</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Country</div>
-                    <div class="col-lg-9 col-md-8">USA</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
-                  </div>
-                </div>
 
+                </div>
               </div>
 
             </div>
@@ -128,9 +143,7 @@ td {
         </div>
       </div>
 
-
         </div>
-			
 			
 		</div>
 </main>
@@ -240,6 +253,33 @@ td {
         	window.opener.line(approvalLine);
         	window.close();
         }
+        
+        function saveDept(){
+        	deptType: document.getElementById("deptType").value,
+            deptName: document.getElementById("deptName").value,
+            parentDeptno: document.getElementById("parentDeptno").value
+        }
+        
+       
+    </script>
+    
+    <script type="text/javascript">
+    // 모달 열기
+    document.getElementById("addDept").onclick = function() {
+        document.getElementById("deptAddModal").style.display = "block";
+        console.log("모달");
+    }
+    
+	 // 모달 닫기
+    document.querySelectorAll(".close").forEach(function(button) {
+        button.onclick = function() {
+            document.getElementById("deptAddModal").style.display = "none";
+        };
+    });
+    
+    
+    
+    
     </script>
 
 

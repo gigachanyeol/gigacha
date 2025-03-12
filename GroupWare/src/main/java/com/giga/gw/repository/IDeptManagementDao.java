@@ -9,6 +9,8 @@ public interface IDeptManagementDao {
 	
 	// 부서 등록
 	public int insertDepartment(DepartmentDto dto);
+	// 상위 부서 등록
+	public int insertHQDepartment(DepartmentDto dto);
 	// 부서 수정
 	public int updateDept(DepartmentDto dto);
 	// 부서 삭제

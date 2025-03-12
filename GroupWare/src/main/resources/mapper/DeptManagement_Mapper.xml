@@ -2,14 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.giga.gw.repository.DeptManagementImpl">
   
-  <!-- 부서 등록 -->
+    
+  <!-- 부서 등록
   <insert id="insertDepartment">
+  <![CDATA[
 	INSERT INTO DEPARTMENTS
 	(DEPTNO, DEPTNAME, PARENT_DEPTNO,
 	USE_YN, CREATE_DATE, CREATE_EMP)
-		VALUES(#{deptno}, #{DEPTNAME}, #{PARENT_DEPTNO}, 'Y',
+		VALUES('D' || LPAD(DEPT_SEQ.NEXTVAL, 2, '0'), #{DEPTNAME}, #{PARENT_DEPTNO}, 'Y',
 		TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), #{create_emp})
+		]]>
   </insert>
+   -->
+  
+  <!-- 상위 부서 등록 
+  <insert id="insertHQDepartment">
+  <![CDATA[
+	INSERT INTO DEPARTMENTS
+	(DEPTNO, DEPTNAME, USE_YN,
+	CREATE_DATE, CREATE_EMP)
+		VALUES('HQ' || LPAD(DEPT_SEQ.NEXTVAL, 2, '0'), #{DEPTNAME}, 'Y',
+		TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), #{create_emp})
+		]]>
+  </insert>
+  -->
+  <insert id="insertDepartment">
+  <![CDATA[
+    INSERT INTO DEPARTMENTS
+    (DEPTNO, DEPTNAME, PARENT_DEPTNO, USE_YN, CREATE_DATE, CREATE_EMP)
+    VALUES(
+        CASE 
+            WHEN #{deptType} = '본부' THEN 'HQ' || LPAD(DEPTHQ_SEQ.NEXTVAL, 2, '0')
+            WHEN #{deptType} = '부서' THEN 'D' || LPAD(DEPT_SEQ.NEXTVAL, 2, '0')
+        END,
+      	#{deptName}, #{parentDeptno}, 'Y', 
+        TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), #{createEmp})
+   ]]>
+</insert>
+  
   
   <!-- 부서 수정 -->
   <update id="updateDepartment">

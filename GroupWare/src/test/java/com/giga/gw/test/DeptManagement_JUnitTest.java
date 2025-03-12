@@ -23,6 +23,14 @@ public class DeptManagement_JUnitTest {
 	@Test
 	public void test() {
 		
+		DepartmentDto addDept = DepartmentDto
+				.builder()
+				.deptno("D91")
+				.deptname("영업기획팀")
+				.parent_deptno("HQ04")
+				.build();		
+		dao.insertDepartment(addDept);
+	
 		List<DepartmentDto> list = dao.getAllDept();
 		assertNotEquals(0, list.size());
 		
