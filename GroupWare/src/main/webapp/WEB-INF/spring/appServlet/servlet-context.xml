@@ -34,6 +34,6 @@
     	<!--<task:scheduled ref="AttendanceServiceImpl" method="createtable" cron="0 */10 * * * *"/>-->
 	<!--</task:scheduled-tasks>-->
     
-	<!-- transaction 설정  -->
-<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
+<!-- 	transaction 설정  -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

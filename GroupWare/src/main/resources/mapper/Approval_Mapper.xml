@@ -418,7 +418,7 @@
 			AND APPROVAL_STATUS = 'ST04'
 			AND FORM_ID LIKE 'BC%'
     </select>
-	
+	<!-- 참조자 등록 -->
 	<insert id="insertApprovalReferences" parameterType="map">
 		INSERT INTO APPROVAL_REF(ref_id, approval_id, empno)
 		SELECT APPROVALREFERENCE_SEQ.NEXTVAL, A.* FROM (
