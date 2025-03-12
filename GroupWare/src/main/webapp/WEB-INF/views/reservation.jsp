@@ -356,7 +356,7 @@
 	                    if(data){ //성공 시 
 	                        alert('예약이 완료되었습니다.');
 	                        reservationModal.hide();
-// 	                        location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
+	                        location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
 	                        d.style.backgroundColor = "#ccc";
 	                        d.onclick = '';
 	                    }else{
@@ -429,7 +429,7 @@
             return;
         }
         // 3명 체크
-        if(approvalLine.length == 3) {
+        if(approvalLine.length == 300) {
         	alert("결재선은 3명까지 지정 가능합니다.");
         	return;
         }
@@ -461,11 +461,7 @@
         updateApprovalList();
     }
 
-    
-
-    
-    
-    
+ 
 	</script>
 
 

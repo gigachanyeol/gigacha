@@ -61,7 +61,7 @@ public class RoomController {
 	    	
 	    int result = roomService.insertRoom(roomDto);
 	   
-	    return "redirect:/roomList.do";
+	    return "redirect:/rooms/roomList.do";
 	    }
 	
 	
