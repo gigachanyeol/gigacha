@@ -21,6 +21,11 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	public int insertDepartment(DepartmentDto dto) {
 		return session.insert(NS+"insertDepartment",dto);
 	}
+	
+	@Override
+	public int insertHQDepartment(DepartmentDto dto) {
+		return session.insert(NS+"insertHQDepartment",dto);
+	}
 
 	@Override
 	public int updateDept(DepartmentDto dto) {
@@ -51,5 +56,7 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	public List<DepartmentDto> getDeletedDept() {
 		return session.selectList(NS+"getDeletedDept");
 	}
+
+
 
  }
