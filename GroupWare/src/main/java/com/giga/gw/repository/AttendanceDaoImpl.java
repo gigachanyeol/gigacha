@@ -14,18 +14,27 @@ public class AttendanceDaoImpl implements IAttendanceDao {
 
 	private final SqlSessionTemplate sessionTemplate;
 	private final String NS = "com.giga.gw.repository.AttendanceDaoImpl.";
-	
+
 	@Override
 	public void createattendacetable() {
-		System.out.println("스케쥴러 동작 φ(゜▽゜*)♪φ(゜▽゜*)♪ φ(゜▽゜*)♪φ(゜▽゜*)♪");
-		sessionTemplate.insert(NS+"createattendacetable");
+		sessionTemplate.insert(NS + "createattendacetable");
 	}
-	
+
+	@Override
+	public void resetSequence() {
+		sessionTemplate.update(NS + "resetSequence");
+	}
+
 	@Override
 	public List<Map<String, Object>> leaveList() {
-		List<Map<String,Object>> list = sessionTemplate.selectList(NS+"leaveListByEmpno","1505001");
+		List<Map<String, Object>> list = sessionTemplate.selectList(NS + "leaveListByEmpno", "1505001");
 		System.out.println(list);
 		return list;
-		
+	}
+
+	@Override
+	public boolean workInCheck(Map<String, Object>  workInInfo) {
+		sessionTemplate.update(NS + "workInCheck", workInInfo);
+		return false;
 	}
 }

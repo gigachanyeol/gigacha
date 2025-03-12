@@ -47,7 +47,8 @@
 								<div class="time-card">
 									<div class="row">
 										<div class="col-md-7">
-											<div class="work-time">오늘 근무한 시간</div>
+											<div class="work-time">오늘 근무 시간</div>
+											<input type="hidden" id="empno" value="${loginDto.empno}">
 											<div class="time-display">00:00:00</div>
 											<div class="action-buttons">
 												<button class="btn-check-in">출근</button>
@@ -70,18 +71,21 @@
 												</div>
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
-														<span>• 발생 연차:</span> <span class="text-primary fw-bold">12개</span>
+														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span>
+														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span>
+														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span>
 													</div>
 												</div>
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
-														<span>• 사용 연차:</span> <span class="text-primary fw-bold">12개</span>
+														<span>• 출근 시간:</span> <span class="text-primary fw-bold" id="workInTime">00:00:00</span>
+														
 													</div>
 												</div>
 
 												<div>
 													<div class="d-flex justify-content-between">
-														<span>• 남은 연차:</span> <span class="text-primary fw-bold">2.5개</span>
+														<span>• 퇴근 시간:</span> <span class="text-primary fw-bold" id="workOutTime">00:00:00</span>
 													</div>
 												</div>
 											</div>

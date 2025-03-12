@@ -43,7 +43,7 @@
 							<label for="empno" class="form-label">사원번호</label>
 							<div class="input-group has-validation">
 								<input type="text" name="empno" class="form-control" id="empno"
-									required>
+									required value="1505001">
 								<div class="invalid-feedback">사원번호를 입력해주세요.</div>
 							</div>
 						</div>
@@ -51,7 +51,7 @@
 						<div class="col-12">
 							<label for="password" class="form-label">비밀번호</label> <input
 								type="password" name="password" class="form-control"
-								id="password" required>
+								id="password" required value="password123">
 							<div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 						</div>
 
