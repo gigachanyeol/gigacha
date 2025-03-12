@@ -33,15 +33,6 @@ JOIN
   WHERE
     r2.ROOM_ID = #{room_id}	
 	</select>
-<!-- WHERE -->
-<!-- 		r2.RESERVATION_ID = #{reservation_id} -->
-	<!-- 예약 수정 -->
-<!-- 	<update id="updateReservation" parameterType="reservationDto"> -->
-<!-- 	UPDATE RESERVATION -->
-<!-- 		SET RESERVATION_TIME = #{reservation_time}, -->
-<!-- 			PURPOSE = #{content}, RESERVER = #{reserver} -->
-<!-- 		WHERE RESERVATION_ID = #{reservation_id}; -->
-<!-- 	</update> -->
 
 	<!-- 예약자와 참여자 조회 -->
 	<select id="selectReserverAndMember" resultType="reservationDto">
@@ -86,7 +77,20 @@ JOIN
         'YYYY-MM-DD') AND r.USE_YN = 'Y'
     ORDER BY r2.RESERVATION_DATE, r2.RESERVATION_TIME
 </select>
-
+	
+<select id="reservationList" resultType="reservationDto">
+SELECT
+	ROOM_ID,
+	ROOM_NAME,
+	RESERVATION_DATE,
+	RESERVATION_ID,
+	RESERVATION_TIME,
+	PURPOSE
+FROM
+	RESERVATION r
+WHERE
+	 INSTR(MEMBER , '2501009') > 0 OR  RESERVER = '1505001'
+</select>
 
 
 </mapper>

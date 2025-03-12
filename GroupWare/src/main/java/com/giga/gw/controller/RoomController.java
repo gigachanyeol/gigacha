@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.dto.RoomDto;
 import com.giga.gw.service.IRoomService;
 
@@ -38,16 +39,15 @@ public class RoomController {
 	}
 	
 	//회의실 등록
-//	@PostMapping(value = "/insertRoom.do")
-//	@ResponseBody
-//	public String registerRoom(@RequestBody RoomDto roomDto, HttpSession session) {
-//		String employee = (String)session.getAttribute("employee");
-//		
-//		if(employee == null) { //로그인 여부 확인
-//			return "redirect:/login.do";
-//		}
-//		
-//		String auth = employeeService.getAuthByEmpno(employee); //employeeService(?)
+	@PostMapping(value = "/insertRoom.do")
+	public String registerRoom(RoomDto roomDto, HttpSession session) {
+		EmployeeDto employee = (EmployeeDto)session.getAttribute("loginDto");
+		
+		if(employee == null) { //로그인 여부 확인
+			return "redirect:/login.do";
+		}
+		
+//		String auth = employee.getAuth(); 
 //		
 //	    if(auth == null || !"admin".equals(auth)) {
 //	    	return "권한이 없습니다."; //관리자 권한이 없는 경우
@@ -58,11 +58,12 @@ public class RoomController {
 //	    	}catch(Exception e) {
 //	    		return "redirect:/rooms/roomform.do"; //등록 실패 시 등록폼으로 이동
 //	    	}
-//	    	
-//	    int result = roomService.insertRoom(roomDto);
-//	    return (result > 0) ? "success":"fail"; //성공여부 
-//	    }
-//	}
+	    	
+	    int result = roomService.insertRoom(roomDto);
+	   
+	    return "redirect:/roomList.do";
+	    }
+	
 	
 	//회의실 리스트 조회(관리자)
 	@GetMapping("/roomList.do")

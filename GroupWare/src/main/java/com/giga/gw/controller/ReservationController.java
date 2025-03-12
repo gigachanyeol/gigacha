@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.dto.ReservationDto;
 import com.giga.gw.dto.RoomDto;
 import com.giga.gw.repository.IReservationDao;
@@ -73,6 +74,58 @@ public class ReservationController {
 			return ResponseEntity.status(400).body(map); // 실패 시 응답			
 		}
 //		return null;
+	}
+	
+	@GetMapping("/reservationList.do")
+	public String reservationList(Model model,@RequestParam (required = false) String date, HttpSession session) {
+		List<ReservationDto> reservationlists = reservationService.reservationList();
+		model.addAttribute("reservationList", reservationlists);
+		
+//		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
+//		
+//		if(loginDto == null) {
+//			return "redirect:/login.do";
+//		}
+		
+//		String empno = loginDto.getEmpno();
+		
+		
+		
+		return "reservationList";
+	}
+	
+	@GetMapping("/delReservation.do")
+	public String delReservation (HttpSession session, String reservation_id, Model model) {
+		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto"); //세션에서 로그인된 사용자 정보 가져오기
+//		String loggedInUserId = loginDto != null ? loginDto.getEmpno() : null; //로그인된 사용자 ID
+		
+		// 예약 정보 조회
+	    ReservationDto reservation = reservationService.selectReserverAndMember(reservation_id);
+//	    String reserver = reservation.getReserver(); // 예약자 정보
+		
+	    // 예약 정보가 없으면 처리
+//	    if (reservation == null) {
+//	        model.addAttribute("alertMessage", "예약 정보를 찾을 수 없습니다.");
+//	        return "redirect:/rooms/reservationList.do";  // 예약 정보가 없으면 리디렉션
+//	    }
+//	    
+//	    String reserver = reservation.getReserver(); // 예약자 정보
+//	    
+//	    // 예약자가 아니면 삭제 권한 없음
+//	    if (reserver == null || !reserver.equals(loggedInUserId)) {
+//	        model.addAttribute("alertMessage", "삭제 권한이 없습니다.");
+//	        return "redirect:/rooms/reservationList.do"; // 삭제 권한이 없을 경우 리디렉션
+//	    }
+	    
+		int deleted = reservationService.delReservation(reservation_id, loginDto.getEmpno()); // 삭제 실행
+		
+		
+		
+	    if (deleted > 0) {
+	        return "redirect:/rooms/reservationList.do";  // 삭제 성공 시 true 반환
+	    } else {
+	        return "redirect:/rooms/reservationList.do";  // 삭제 실패 시 false 반환
+	    }
 	}
 
 

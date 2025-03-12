@@ -103,14 +103,9 @@
             <a href="${pageContext.request.contextPath}/rooms/reservation.do">
               <span>회의실예약</span>
             </a>
-          </li>
+          </li> 
           <li>
-            <a href="#">
-              <span>회의실예약취소</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/rooms/reservationList.do">
               <span>회의실예약내역조회</span>
             </a>
           </li>

@@ -64,12 +64,11 @@
 							<thead>
 								<tr>
 									<th scope="col">번호</th>
-									<th scope="col">회의실 이름</th>
+									<th scope="col">회의실명</th>
 									<th scope="col">수용인원</th>
 									<th scope="col">등록일</th>
 									<th scope="col">수정일</th>
 									<th scope="col">사용여부</th>
-									<th scope="col">수정</th>
 								</tr>
 							</thead>
 							<tbody>

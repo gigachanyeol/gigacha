@@ -23,7 +23,7 @@ public class LoginController {
 	
 	private final ILoginService loginService;
 	
-	@GetMapping("/login.do")
+ 	@GetMapping("/login.do")
 	public String login() {
 		return "login";
 	}
