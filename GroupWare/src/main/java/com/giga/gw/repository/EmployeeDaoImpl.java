@@ -23,8 +23,13 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> readSignature(List<String> empList) {
-		return sql.selectList(NS+"readSignature",empList);
+	public List<Map<String, Object>> readSignature(String empno) {
+		return sql.selectList(NS+"readSignature",empno);
+	}
+
+	@Override
+	public int updateSignature(String empno) {
+		return sql.update(NS+"updateSignature",empno);
 	}
 
 }

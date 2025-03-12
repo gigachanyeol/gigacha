@@ -1,8 +1,11 @@
 package com.giga.gw.dto;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +17,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class ApprovalLineDto {
-	String approval_id, reject_reason, create_date, status_id, approval_time, update_date, use_yn, signature,approver_empno, delegatee_empno;
-	int line_id, sequence;
+public class FileDto {
+	String file_id,
+	approval_id,
+	origin_name,
+	file_path,
+	file_name,
+	create_date,
+	use_yn,
+	update_date,
+	create_emp,
+	update_emp,
+	code;
 }

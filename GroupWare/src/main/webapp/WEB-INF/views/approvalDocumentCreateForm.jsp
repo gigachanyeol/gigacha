@@ -8,8 +8,10 @@
 <title>Insert title here</title>
 
 <%@ include file="./layout/header.jsp"%>
-<script
-	src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<!-- <script -->
+<!-- 	src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script> -->
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script> -->
 <style type="text/css">
 #fileForm {
 	height: 100px;
@@ -25,7 +27,7 @@
 	display: none;
 }
 
-#formPickBtn, #linePickBtn, #organization, #documentForm {
+#formPickBtn, #linePickBtn, #organization, #documentForm, #referece, #refPickBtn, #lineSaveBtn {
 	display: none;
 }
 </style>
@@ -33,11 +35,11 @@
 	href="${pageContext.request.contextPath}/resources/css/editorStyle.css">
 <link rel="stylesheet"
 	href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" /> -->
+<!-- <script -->
+<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script> -->
 </head>
 <body>
 	<%@ include file="./layout/newNav.jsp"%>
@@ -47,12 +49,12 @@
 			<div id="content" class="col">
 				<h3 class="content_title">기안문작성</h3>
 				<div class="content_nav">
-					<button id="formBtn">문서양식</button>
-					<button id="lineBtn">결재선</button>
-					<button id="saveBtn">결재요청</button>
-					<button id="tempBtn">임시저장</button>
-					<button id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
-					<button id="getContent" data-bs-toggle="modal"
+					<button class="btn btn-secondary btn-sm" id="formBtn">문서양식</button>
+					<button class="btn btn-secondary btn-sm" id="lineBtn">결재선</button>
+					<button class="btn btn-secondary btn-sm" id="saveBtn">결재요청</button>
+					<button class="btn btn-secondary btn-sm" id="tempBtn">임시저장</button>
+					<button class="btn btn-secondary btn-sm" id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
+					<button class="btn btn-secondary btn-sm" id="getContent" data-bs-toggle="modal"
 						data-bs-target="#myModal">컨텐츠만 얻기</button>
 				</div>
 				<div class="row" id="contentHtml">
@@ -75,9 +77,9 @@
 								</tr>
 								<tr>
 									<th>참조자</th>
-									<td><span>참조자선택버튼</span></td>
+									<td><button class="btn btn-secondary btn-sm" id="refBtn">참조자선택버튼</button></td>
 									<th>마감기한</th>
-									<td><input type="date" name="approval_deadline"></td>
+									<td><input type="date" class="form-control" name="approval_deadline"></td>
 								</tr>
 								<tr>
 									<th>긴급여부</th>
@@ -85,16 +87,15 @@
 										일반 <input type="radio" name="urgency" value="N" checked>
 									</td>
 									<th>서명/도장</th>
-									<td>서명 <input type="radio" value="1" name="signature"
-										checked> 도장 <input type="radio" value="2"
-										name="signature">
+									<td>서명 <input type="radio" value="1" name="signature" checked> 
+										도장 <input type="radio" value="2" name="signature">
 									</td>
 								</tr>
 								<tr id="dateRange">
 									<th>시작날짜</th>
-									<td><input type="date" name="start_date"></td>
+									<td><input type="date"class="form-control" name="start_date"></td>
 									<th>종료날짜</th>
-									<td><input type="date" name="end_date"></td>
+									<td><input type="date"class="form-control" name="end_date"></td>
 								</tr>
 								<tr>
 									<th>문서제목</th>
@@ -107,7 +108,7 @@
 						<input type="hidden" name="form_id">
 						<div id="editor"></div>
 						<div id="fileDiv">
-							<input class="btn" type="file" multiple id="formFile">
+							<input class="btn" type="file" name="files" multiple id="formFile">
 							<div id="fileForm">파일업로드목록</div>
 						</div>
 					</form>
@@ -140,6 +141,19 @@
 							<hr>
 							<h5>결재순서</h5>
 							<div id="approvalList"></div>
+							<hr>
+						</div>
+					</div>
+					<div id="referece">
+						<h2>참조자</h2>
+						<input type="text" id="searchInputRefereceTree"
+							placeholder="검색">
+						<div class="row">
+							<div id="refereceTree" class="col-6"></div>
+							<hr>
+							<h5>참조자</h5>
+							<div id="referenceList"></div>
+							<hr>
 						</div>
 					</div>
 				</div>
@@ -151,6 +165,8 @@
 					<button type="button" class="btn btn-success" id="formPickBtn"
 						data-bs-dismiss="modal">선택</button>
 					<button type="button" class="btn btn-success" id="linePickBtn"
+						data-bs-dismiss="modal">선택</button>
+					<button type="button" class="btn btn-success" id="refPickBtn"
 						data-bs-dismiss="modal">선택</button>
 					<button type="button" class="btn btn-danger modalBtn"
 						data-bs-dismiss="modal">닫기</button>

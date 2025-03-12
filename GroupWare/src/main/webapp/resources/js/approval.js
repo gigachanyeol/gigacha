@@ -4,24 +4,44 @@
 	document.querySelector("#saveBtn").addEventListener('click', async () => {
 		let formData = new FormData(document.forms[0]);
 		let jsonData = {};
-		formData.forEach((value, key) => {
-			jsonData[key] = value;
-		});
-//			jsonData["approval_content"] = editor.getHTML();
-		jsonData["approval_content"] = editor.getData();
-		let d = approvalLine.map(item => ({approver_empno:item.id}));
+//		formData.forEach((value, key) => {
+//			jsonData[key] = value;
+//		});
+//		jsonData["approval_content"] = editor.getData();
+		let d = approvalLine.map((item)=> ({approver_empno:item.id})); 
+	    console.log(d[0].approver_empno);
+	    console.log(d.length);
+	    for(let i = 0; i<d.length; i++){
+			formData.append("approvalLineDtos["+i+"].approver_empno",d[i].approver_empno)
+		}
+//	    jsonData["approvalLineDtos"] = d; 
+//	    console.log(jsonData);
+		let refData = referenceLine.map((item)=> ({empno:item.id}));
+		for(let i = 0; i<refData.length; i++){
+			formData.append("approvalReferenceDtos["+i+"].empno",refData[i].empno);
+		}
+	    formData.append("approval_content", editor.getData());
+	    console.log([...formData]);
 	    
-	    jsonData["approvalLineDtos"] = d; 
+//	    let response = await fetch("./approvalDocumentSave.json", {
+//			method:'POST',
+//			body:formData
+//		})
+//		if(!response.ok) throw new Error ("저장실패");
 
-	    console.log(jsonData);
 
-        let data = await approvalDocumentSave('./approvalDocumentSave.json',jsonData);
-        if(data == true){
-            Swal.fire("작성성공");
+		let data = await approvalDocumentSave('./approvalDocumentSave.json',formData);
+		if(data == true){
+            Swal.fire("작성성공").then(()=>{
+				location.href='./approvalList.do'
+			});
         } else{
             Swal.fire("작성실패");
         }
 		
+//        let data = await approvalDocumentSave('./approvalDocumentSave.json',jsonData);
+        
+//		
 	});
 
 	document.querySelector("#tempBtn").addEventListener('click', async () => {
