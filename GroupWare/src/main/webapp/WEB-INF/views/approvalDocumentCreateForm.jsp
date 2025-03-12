@@ -54,11 +54,11 @@
 					<button class="btn btn-secondary btn-sm" id="saveBtn">결재요청</button>
 					<button class="btn btn-secondary btn-sm" id="tempBtn">임시저장</button>
 					<button class="btn btn-secondary btn-sm" id="cancelBtn" onclick="javascirpt:history.back()">취소</button>
-					<button class="btn btn-secondary btn-sm" id="getContent" data-bs-toggle="modal"
-						data-bs-target="#myModal">컨텐츠만 얻기</button>
+<!-- 					<button class="btn btn-secondary btn-sm" id="getContent" data-bs-toggle="modal" -->
+<!-- 						data-bs-target="#myModal">컨텐츠만 얻기</button> -->
 				</div>
 				<div class="row" id="contentHtml">
-					<div id="approvalLine" class="mt-3"></div>
+					<div id="approvalLine" class="mt-3 col-auto ms-auto"></div>
 					<form class="mt-3">
 						<table border="1" class="table">
 							<tbody>
@@ -100,7 +100,7 @@
 								<tr>
 									<th>문서제목</th>
 									<td colspan="3"><input type="text" class="form-control"
-										name="approval_title"></td>
+										name="approval_title" tabindex="-1"></td>
 								</tr>
 
 							</tbody>
@@ -180,7 +180,38 @@
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/approval.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("input[name=approval_deadline]").val(setDate());
+			$("input[type=date]").attr("min",setDate());
+			
+			let start_date = $("input[name=start_date]");
+			let end_date = $("input[name=end_date]");
+			
+			start_date.on('change',(event)=>{
+				console.log(event.target.value);
+				let start = new Date(event.target.value);
+				let end = new Date(end_date.val());
+				if(end_date.val() && start > end){
+					Swal.fire("시작날짜는 종료일보다 빠를 수 없습니다.");
+					start_date.val(end_date.val());
+					return;
+				}
+			});
+			
+			end_date.on('change',(event)=>{
+				console.log(event.target.value);
+	            let start = new Date(start_date.val());
+	            let end = new Date(event.target.value);
 
+	            if (start_date.val() && start > end) {
+	                Swal.fire("종료 날짜는 시작 날짜보다 빠를 수 없습니다.");
+	                end_date.val(start_date.val()); // 시작일로 변경
+	            }
+			});
+		});
+	</script>
 
 </body>
 </html>

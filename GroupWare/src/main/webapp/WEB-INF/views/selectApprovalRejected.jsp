@@ -148,14 +148,22 @@ $(document).ready(function() {
 	            $("#update_empno").text(data1.update_empno); // 수정한 사번
 				$("#modal-content").html(data1.approval_content);
 //					$(".modal-body").html(data.approval_content);
-				 let html = "<div class='approval-item'>결<br>재</div>";
+				 // 				 let html = "<div class='approval-item'>결<br>재</div>";
+				 let html = '';
 				 data1.approvalLineDtos.forEach((emp, i) => {
-					 console.log(emp.name, emp.approver_empno);
+		                console.log(emp.name, emp.approver_empno);
 		                html += "<div class='approval-item'>";
 		                html += "<div id='" + emp.approver_empno + "' class='text-center'>" + emp.approver_empno + "<br>"
 		                console.log(emp.signature);
 		                if(typeof emp.signature != 'undefined'){
 		                	html += "<img src='"+ emp.signature+"' width=50, height=50>";	
+		                } else{
+		                	if(emp.status_id == 'ST04'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/miscellaneous-80/60/check-512.png' width=50, height=50>";
+		                	} else if(emp.status_id == 'ST05'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Circle-512.png' width=50, height=50>";
+		                	}
+		                	
 		                }
 		                html += "</div>";
 		                html += "</div>";

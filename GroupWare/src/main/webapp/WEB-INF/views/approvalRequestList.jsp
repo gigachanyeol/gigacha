@@ -157,6 +157,16 @@
             {{#each approvalLineDtos}}
             <div class="approval-item">
                 <div class="text-center">{{approver_empno}}</div>
+				{{#if signature}}
+                	<img src="{{signature}}" width="50" height="50">
+          	 	 {{else}}
+            	    {{#if (eq status_id "ST04")}}
+                    <img src="https://cdn3.iconfinder.com/data/icons/miscellaneous-80/60/check-512.png" width="50" height="50">
+              		  {{else if (eq status_id "ST05")}}
+               		     <img src="https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Circle-512.png" width="50" height="50">
+             	   {{/if}}
+            	{{/if}}
+
             </div>
             {{/each}}
         </div>
@@ -185,6 +195,9 @@
 </body>
 	<script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
 <script type="text/javascript">
+	Handlebars.registerHelper("eq", function (a, b) {
+	    return a === b;
+	});
 	$(document).ready(function(){
 		var table = $('#documentsTable').DataTable({
 			// 샘플 데이터

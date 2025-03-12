@@ -25,21 +25,25 @@
 	<div class="row">
 		<div id="content" class="col-lg-10">
 			<h3 class="content_title">결재요청함</h3>
-			<div id="wrapper" class="list">
-	            <table id="example" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;">
-	                <thead>
-	                    <tr>
-	                        <th>문서번호</th>
-	                        <th>양식번호</th>
-	                        <th>작성자</th>
-	                        <th>제목</th>
-	                        <th>상태</th>
-	                        <th>작성일</th> 
-	                        <th>마감기한</th> 
-	                        <th>임시저장</th> 
-	                    </tr>
-	                </thead>
-	            </table>
+			<div class="card">
+	            <div class="card-body">
+					<div id="wrapper" class="list">
+			            <table id="example"  class="table table-hover">
+			                <thead>
+			                    <tr>
+			                        <th>문서번호</th>
+			                        <th>양식번호</th>
+			                        <th>작성자</th>
+			                        <th>제목</th>
+			                        <th>상태</th>
+			                        <th>작성일</th> 
+			                        <th>마감기한</th> 
+			                        <th>임시저장</th> 
+			                    </tr>
+			                </thead>
+			            </table>
+			        </div>
+		        </div>
 	        </div>
 		</div>
 	</div>
@@ -49,7 +53,7 @@
 	    <div class="modal-content">
 	    	
 	      <div class="modal-header">
-	      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button>
+<!-- 	      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button> -->
 	      </div>
 	      <div class="modal-body row">
 	      	<div class="col-8">
@@ -153,7 +157,8 @@
 		            $("#update_empno").text(data1.update_empno); // 수정한 사번
 					$("#modal-content").html(data1.approval_content);
 //						$(".modal-body").html(data.approval_content);
-					 let html = "<div class='approval-item'>결<br>재</div>";
+					 // 				 let html = "<div class='approval-item'>결<br>재</div>";
+				 	let html = '';
 					 data1.approvalLineDtos.forEach((emp, i) => {
 			                console.log(emp.name, emp.approver_empno);
 			                html += "<div class='approval-item'>";
@@ -168,6 +173,10 @@
 					 } 
 					 if(data1.approval_status === 'ST02'){
 						 html = '<button id="recallBtn" class="btn btn-secondary btn-sm" onclick="recall(event)" value="'+data1.approval_id+'">문서회수</button>'
+						 $(".modal-header").append(html);
+					 }
+					 if(data1.approval_status === 'ST01'){
+						 html = '<button id="approvalBtn" class="btn btn-secondary btn-sm" value="'+data1.approval_id+'" onclick="approvalBtn(event)">결재 요청</button>'
 						 $(".modal-header").append(html);
 					 }
 					 if(data1.approval_status === 'ST01'){
