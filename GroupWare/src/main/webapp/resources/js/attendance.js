@@ -69,10 +69,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		noticeText.textContent = '출근 등록이 완료되었습니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
 
-		// 타이머 시작
+		// 타이머 시작 - 이전에 누적된 시간부터 계속
 		startWorkTimer();
 
-		// 옵션: 로컬 스토리지나 서버에 출근 기록 저장
+		// 로컬 스토리지에 출근 상태 저장
+		localStorage.setItem('attendanceState', JSON.stringify({
+			isCheckedIn: true,
+			checkInTime: checkInTime.toISOString(),
+			totalWorkedSeconds: totalWorkedSeconds
+		}));
+
+		// 옵션: 서버에 출근 기록 저장
 		saveAttendanceRecord('check-in', checkInTime);
 	}
 
@@ -83,8 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		isCheckedIn = false;
 		const checkOutTime = new Date();
 
-		// 타이머 멈추기
+		// 타이머를 멈춤
 		clearInterval(workTimer);
+
+		// 이번 세션의 근무 시간 계산 (퇴근 시간 - 출근 시간)
+		const sessionWorkDuration = Math.floor((checkOutTime - checkInTime) / 1000);
+		
+		// 누적 근무 시간 업데이트 (기존 누적값 + 이번 세션)
+		totalWorkedSeconds += sessionWorkDuration;
+		
+		// 화면에 총 누적 근무 시간 표시
+		timeDisplay.textContent = formatTime(totalWorkedSeconds);
 
 		// UI 업데이트
 		checkInButton.style.backgroundColor = '#26c6da';
@@ -95,12 +111,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		noticeText.textContent = '퇴근 등록이 완료되었습니다. 오늘 하루도 수고하셨습니다.';
 
-		// 총 근무 시간 계산
-		const workDuration = Math.floor((checkOutTime - checkInTime) / 1000);
-		timeDisplay.textContent = formatTime(workDuration);
-
-		// 최종 근무 기록 저장
-		saveAttendanceRecord('check-out', checkOutTime, workDuration);
+		// 로컬 스토리지에 출근 상태 및 누적 시간 저장
+		localStorage.setItem('attendanceState', JSON.stringify({
+			isCheckedIn: false,
+			totalWorkedSeconds: totalWorkedSeconds
+		}));
+		
+		// 최종 근무 기록 저장 (총 누적 시간 기록)
+		saveAttendanceRecord('check-out', checkOutTime, totalWorkedSeconds);
 	}
 
 	// 출근 기록 저장 (모의 함수 - 실제 구현으로 대체)
@@ -133,14 +151,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// 이전 출근 상태 확인 (예: 로컬 스토리지나 세션에서)
 	function checkPreviousState() {
-		// 실제 애플리케이션에서는 로컬 스토리지나 서버 세션을 확인
+		// 로컬 스토리지에서 이전 상태 확인
 		const storedState = localStorage.getItem('attendanceState');
 		if (storedState) {
 			const state = JSON.parse(storedState);
+			
+			// 누적 근무 시간 불러오기
+			if (state.totalWorkedSeconds) {
+				totalWorkedSeconds = state.totalWorkedSeconds;
+				timeDisplay.textContent = formatTime(totalWorkedSeconds);
+			}
+			
+			// 출근 상태였다면 타이머 재시작
 			if (state.isCheckedIn) {
 				isCheckedIn = true;
 				checkInTime = new Date(state.checkInTime);
-				totalWorkedSeconds = Math.floor((new Date() - checkInTime) / 1000);
+				
+				// 페이지가 닫혀있던 동안의 시간을 계산
+				const now = new Date();
+				const elapsedWhileClosed = Math.floor((now - checkInTime) / 1000);
+				
+				// 이미 계산된 시간과 합산하여 표시
 				timeDisplay.textContent = formatTime(totalWorkedSeconds);
 				startWorkTimer();
 
@@ -149,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				checkInButton.disabled = true;
 				checkOutButton.style.backgroundColor = '#ff6b6b';
 				checkOutButton.style.color = 'white';
+				checkOutButton.disabled = false;
 				noticeText.textContent = '출근 중입니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
 			}
 		}
@@ -369,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			tbody.appendChild(row);
 		}
 		
-			fetchLeaveData();
+		fetchLeaveData();
 	}
 
 	// 모든 yearSelect 요소에 변경 이벤트 추가(이미 위에서 추가했음)
@@ -424,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					//				console.log("📌 searchtd:", searchtd);
 					// 해당 날짜의 셀에 '연차' 추가
 					const targetElement = document.getElementById(searchtd);
-					console.log("📌 targetElement:", targetElement);
+//					console.log("📌 targetElement:", targetElement);
 
 					if (targetElement) {
 						targetElement.innerHTML += `연차`;
@@ -433,5 +465,4 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
 	}
-
 });
