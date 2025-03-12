@@ -40,6 +40,11 @@ public class ReservationDaoImpl implements IReservationDao{
 		params.put("reserver", reserver);
 		
 		return sessionTemplate.delete("delReservation", params);
+	}
+
+	@Override
+	public List<ReservationDto> selectrooms(String date) {
+		return sessionTemplate.selectList(NS+"selectrooms",date);
 	}	
 
 }

@@ -17,11 +17,13 @@ import lombok.ToString;
 @Builder
 public class ReservationDto {
 
-	private String reservation_id,
-	room_id,
-	reservation_date,
-	reservation_time,
-	reserver,
-	member,
-	purpose;
+	private String reservation_id;
+	private String room_id;
+	private String room_name;
+	private String reservation_date;
+	private String reservation_time;
+	private String reserver;
+	private String member;
+	private String purpose;
+	private String capacity;
 }

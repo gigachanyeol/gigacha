@@ -58,7 +58,7 @@
 					<div class="card-body">
 						<table class="table">
 							<caption>
-								<button type="button" class="btn btn-success"
+								<button type="button" class="btn btn-primary"
 									onclick="location.href='./roomform.do'">회의실 등록</button>
 							</caption>
 							<thead>
@@ -86,7 +86,7 @@
 											</div>
 										</td>
 										<td>
-											<button type="button" name="modifyBtn" class="btn btn-warning">수정</button>
+											<button type="button" name="modifyBtn" class="btn btn-info">수정</button>
 										</td>
 									</tr>
 								</c:forEach>
