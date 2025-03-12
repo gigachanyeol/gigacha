@@ -1,5 +1,7 @@
 package com.giga.gw.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.giga.gw.dto.ReservationDto;
@@ -31,6 +33,11 @@ public class ReservationServiceImpl implements IReservationService {
 	@Override
 	public int delReservation(String reservation_id, String reserver) {
 		return reservationDao.delReservation(reservation_id, reserver);
+	}
+
+	@Override
+	public List<ReservationDto> reservationList() {
+		return reservationDao.reservationList();
 	}
 
 	

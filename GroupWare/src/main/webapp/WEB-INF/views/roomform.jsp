@@ -108,7 +108,7 @@
 <main id="main" class="main">
 	<div id="content">
 		<h3 class="content_title">회의실 등록</h3>
-		<form id="roomform" action="/room/reservation.do" method="post">
+		<form id="roomform" action="./insertRoom.do" method="post">
 		<div class="main-content">
 			<div class="info-box">
 				<div class="info-left">
@@ -142,41 +142,8 @@
 	<script type="text/javascript">
 	 function registerRoom() {
          let formData = new FormData(document.forms[0]);
-         formData.append("description", CKEDITOR.instances.description.getData()); // CKEditor 내용 추가
-
-         fetch('/room/roomform.do', {
-             method: 'POST',
-             body: formData
-         })
-         .then(resp => resp.json())
-         .then(data => {
-             console.log(data);
-             if (data.success) {
-                 Swal.fire("등록 완료").then(() => {
-                     // 등록된 회의실 정보를 테이블에 추가
-                     let newRow = `
-                         <tr>
-                             <td>${data.room.roomName}</td>
-                             <td><button class="btn_bg nocheck text-center">1</button></td>
-                             <td><button class="btn_bg nocheck text-center">2</button></td>
-                             <td><button class="btn_bg nocheck text-center">3</button></td>
-                             <td><button class="btn_bg nocheck text-center">4</button></td>
-                         </tr>
-                     `;
-                     $("#roomListTable tbody").append(newRow);
-
-                     // 폼 초기화
-                     $("#roomForm")[0].reset();
-                     CKEDITOR.instances.description.setData('');
-                 });
-             } else {
-                 Swal.fire("등록 실패: " + data.message);
-             }
-         })
-         .catch(err => {
-             console.error("등록 실패:", err);
-             Swal.fire("등록 실패: " + err);
-         });
+         
+      
      }
 	</script>
 </body>

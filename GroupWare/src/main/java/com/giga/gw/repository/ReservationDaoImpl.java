@@ -45,6 +45,11 @@ public class ReservationDaoImpl implements IReservationDao{
 	@Override
 	public List<ReservationDto> selectrooms(String date) {
 		return sessionTemplate.selectList(NS+"selectrooms",date);
+	}
+
+	@Override
+	public List<ReservationDto> reservationList() {
+		return sessionTemplate.selectList(NS+"reservationList");
 	}	
 
 }
