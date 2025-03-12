@@ -64,4 +64,18 @@
 		<filter-name>encoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- 로그인 필터 -->
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>com.giga.gw.filter.LoginFilter</filter-class>
+		<init-param>
+			<param-name>excludeURL</param-name>
+			<param-value>/,/login.do</param-value>			
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>
