@@ -106,26 +106,7 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
-         <i class="bi bi-incognito"></i>
-          <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
-        	<li>
-            <a href="${pageContext.request.contextPath}/rooms/roomform.do">
-              <span>회의실등록</span>
-            </a>
-          </li>
-          <li>
-            <a href="${pageContext.request.contextPath}/rooms/roomList.do">
-              <span>회의실정보 수정 및 삭제</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      
-      
+ 
      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#attendance-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
           <i class="bi bi-calendar2-week"></i>
@@ -170,6 +151,25 @@
             </a>
             <a href="href="#">
               <span>전사 연차 통계</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+       <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+         <i class="bi bi-incognito"></i>
+          <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
+        	<li>
+            <a href="${pageContext.request.contextPath}/rooms/roomform.do">
+              <span>회의실등록</span>
+            </a>
+          </li>
+          <li>
+            <a href="${pageContext.request.contextPath}/rooms/roomList.do">
+              <span>회의실정보 수정 및 삭제</span>
             </a>
           </li>
         </ul>

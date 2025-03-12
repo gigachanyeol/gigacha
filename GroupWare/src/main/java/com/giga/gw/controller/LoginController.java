@@ -39,14 +39,15 @@ public class LoginController {
 			return "login";
 		}
 		session.setAttribute("loginDto", employeeDto);
-		
+
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout.do")
 	public String logout(HttpSession session) {
 //		EmployeeDto dto = (EmployeeDto)session.getAttribute("loginDto");
-		session.removeAttribute("loginDto");
+//		session.removeAttribute("loginDto");
+		session.invalidate(); // 세션 초기화
 		return "redirect:/login.do";
 	}
 

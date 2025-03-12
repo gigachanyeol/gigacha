@@ -38,6 +38,11 @@ public class RoomServiceImpl implements IRoomService {
 		return roomDao.updateRoom(roomDto);
 	}
 
+	@Override
+	public List<RoomDto> selectUseAllRooms() {
+		return roomDao.selectUseAllRooms();
+	}
+
 
 	
 

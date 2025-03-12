@@ -133,7 +133,7 @@
 			</div>
 			<!-- 등록버튼 -->
 			<div class="button-area">
-				<button class="btn btn-info" type="submit">등록하기</button>
+				<button class="btn btn-primary" type="submit">등록하기</button>
 			</div>
 		</div>
 			</form>
