@@ -106,12 +106,14 @@ td {
                 <div class="tab-pane fade show active profile-overview" id="profile-overview" role="tabpanel">
                   <h5 class="card-title">부서 정보</h5>
                   <div>
+                  <!-- 
 	                  <div>
 						<h3>결재순서</h3>
 						<div id="ll"></div>
 						<button onclick="ok()">완료</button>
 						<button onclick="saveApprovalLine()">결재선 저장</button>
 					</div>
+					 -->
                   	<table style="border: 1px solid black; max-width: 100%; width: 100%; text-align: center;"  >
                   		<tr>
                   			<td style="background-color: #E1E1E1">부서명</td>
