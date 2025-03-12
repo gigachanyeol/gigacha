@@ -29,8 +29,13 @@ public class ApprovalLineServiceImpl implements IApprovalLineService{
 		int cnt = approvalLineDao.countApprovalLine(paramMap);
 		int allCnt = approvalLineDao.countApprovalLine(map.get("approval_id").toString());
 		System.out.println("\n\n"+cnt+"\n\n" + allCnt);
-		if (row == 1 && cnt == allCnt) {
-			return approvalDao.finalApprovalStatus(paramMap) == 1 ? true : false; 
+		if (row == 1) {
+			if(cnt == allCnt) {
+				return approvalDao.finalApprovalStatus(paramMap) == 1 ? true : false; 
+			} else {
+				paramMap.put("status_id","ST03");
+				return approvalDao.finalApprovalStatus(paramMap) == 1 ? true : false;
+			}
 		}
 		return row == 1 ? true : false;
 //		return approvalLineDao.acceptApprovalLine(map) == 1?true:false;

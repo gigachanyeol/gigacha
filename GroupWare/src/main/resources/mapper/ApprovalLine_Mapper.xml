@@ -8,11 +8,13 @@
 		<choose>
 			<when test="approvalLineDtos != null and approvalLineDtos.size() > 0">
 				<foreach collection="approvalLineDtos" item="item" index="i" separator=" UNION ALL ">
-					SELECT #{item.approval_id} , #{i} , 'ST02' , #{item.approver_empno, jdbcType=NUMERIC} FROM DUAL
+					SELECT #{item.approval_id} , #{i} , 'ST02' , #{item.approver_empno, jdbcType=NUMERIC}
+					FROM DUAL
 				</foreach>
 			</when>
 			<otherwise>
-				SELECT #{approval_id} , '1' ,'ST02' , #{approver_empno} FROM DUAL
+				SELECT #{approval_id} , '1' ,'ST02' , #{approver_empno}
+				FROM DUAL
 			</otherwise>
 		</choose>
 		) A
@@ -28,10 +30,11 @@
 	<!-- 결재승인 -->
 	<update id="acceptApprovalLine">
 		UPDATE APPROVAL_LINE 
-		SET STATUS_ID = 'ST04', APPROVAL_TIME = CURRENT_DATE
+		SET STATUS_ID = 'ST04', APPROVAL_TIME = CURRENT_DATE, SIGNATURE = (SELECT FILE_BASE FROM EMP_IMAGES
+																			WHERE EMPNO = #{empno} AND GUBUN = '1' AND USE_YN = 'Y' )
 		WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
 				WHERE a.APPROVAL_ID = #{approval_id} 
-				AND APPROVAL_STATUS = 'ST02')
+				AND APPROVAL_STATUS IN ('ST02', 'ST03'))
 		AND APPROVER_EMPNO = #{empno}
 	</update>
 	
@@ -43,7 +46,7 @@
 		</if>
 		WHERE APPROVAL_ID = (SELECT APPROVAL_ID FROM APPROVAL a 
 				WHERE a.APPROVAL_ID = #{approval_id} 
-				AND APPROVAL_STATUS = 'ST02')
+				AND APPROVAL_STATUS IN ('ST02', 'ST03'))
 		AND APPROVER_EMPNO = #{empno}
 	</update>
 	

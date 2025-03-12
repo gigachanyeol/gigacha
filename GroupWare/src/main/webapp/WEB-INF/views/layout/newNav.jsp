@@ -101,7 +101,7 @@
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> 
 				<span>회의실정보 수정 및 삭제(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservation.do"> 
 				<span>회의실 예약</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
             <li><a class="dropdown-item d-flex align-items-center" href="#"> 
