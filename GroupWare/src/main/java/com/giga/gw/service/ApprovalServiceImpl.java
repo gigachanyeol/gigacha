@@ -1,18 +1,32 @@
 package com.giga.gw.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.WebUtils;
 
 import com.giga.gw.dto.ApprovalDto;
 import com.giga.gw.dto.ApprovalLineDto;
+import com.giga.gw.dto.ApprovalReferenceDto;
+import com.giga.gw.dto.FileDto;
 import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IApprovalLineDao;
+import com.giga.gw.repository.IFileDao;
+import com.giga.gw.util.FileUploadUtil;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +37,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 
 	private final IApprovalDao approvalDao;
 	private final IApprovalLineDao approvalLineDao;
+	private final IFileDao fileDao;
 
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
@@ -34,11 +49,15 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.countApproval(form_id);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public boolean insertApproval(ApprovalDto approvalDto) {
-		int n = approvalDao.insertApproval(approvalDto);
-		int m = 0;
+	public boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files, String path) { // TODO 파일
+		int n = approvalDao.insertApproval(approvalDto); // 문서 row
+		int m = 0; // 결재선 row
+		int f = 0; // 파일 row
+		int r = 0; // 참조자 row 
+		
+		// 결재선 추가 로직
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
 		if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
 			for (ApprovalLineDto line : lineDtos) {
@@ -50,12 +69,73 @@ public class ApprovalServiceImpl implements IApprovalService {
 			map.put("approvalLineDtos", lineDtos);
 			m = approvalLineDao.insertApprovalLine(map);
 		}
-		return n == 1 && m >= 1 ? true : false;
-	}
+		
+		// 참조자 추가 로직
+		List<ApprovalReferenceDto> approvalReferenceDtos = approvalDto.getApprovalReferenceDtos();
+		if (approvalReferenceDtos.size() != 0 && !approvalReferenceDtos.isEmpty()) {
+			for (ApprovalReferenceDto refDto : approvalReferenceDtos) {
+				refDto.setApproval_id(approvalDto.getApproval_id());
+				System.out.println(refDto.getEmpno());
+			}
+			
+			Map<String, Object> refMap = new HashedMap<String, Object>();
+			refMap.put("approval_id", approvalDto.getApproval_id());
+			refMap.put("approvalReferenceDtos", approvalReferenceDtos);
+			r = approvalDao.insertApprovalReferences(refMap);
+		}
+		
+		
+		if (files.get(0).getSize() == 0) {
+	        return n == 1 && m >= 1;
+	    }
+		
+//		if(files != null && files.size() != 0) {
+			File storage = new File(path);
+			if (!storage.exists()) {
+	            storage.mkdirs(); // 경로가 없으면 생성
+	        }
+			String result = "파일 업로드 성공";
+			List<FileDto> fileDtos = new ArrayList<>();
+	        try {
+	            for (MultipartFile file : files) {
+	                String originalFileName = file.getOriginalFilename(); // 원본 파일명
+	                String saveFileName = UUID.randomUUID().toString() + originalFileName.substring(originalFileName.lastIndexOf(".")); // 고유한 이름으로 저장
+
+	                File saveFile = new File(path, saveFileName);
+	                file.transferTo(saveFile); // 파일을 저장
+	                FileDto fileDto = FileDto
+							.builder()
+							.approval_id(approvalDto.getApproval_id())
+							.origin_name(file.getOriginalFilename())
+							.file_name(saveFileName)
+							.file_path(path)
+							.create_emp(approvalDto.getEmpno())
+							.code("FILE01")
+							.build();
+					fileDtos.add(fileDto);
+	                log.info("파일 저장 완료: {}", saveFileName);
+	                System.out.println("\n\n " + fileDtos.toString() + "\n\n");
+	                
+	            }
+	        } catch (IOException e) {
+	            log.error("파일 저장 중 오류 발생", e);
+	            result = "파일 업로드 실패";
+	        }
+	        
+	        if(!fileDtos.isEmpty()) {
+				f = fileDao.insertFile(fileDtos);
+			}
+	        return n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size());
+		} 
+//	else {
+//			return n == 1 && m >= 1;
+//		}
+		
+//	}
 
 	@Transactional
 	@Override
-	public int updateApproval(ApprovalDto approvalDto) {
+	public int updateApproval(ApprovalDto approvalDto , List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.updateApproval(approvalDto);
 		int m = 0;
 
@@ -95,7 +175,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 	}
 
 	@Override
-	public boolean insertApprovalTemp(ApprovalDto approvalDto) {
+	public boolean insertApprovalTemp(ApprovalDto approvalDto, List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.insertApprovalTemp(approvalDto);
 		int m = 0;
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();

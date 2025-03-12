@@ -28,8 +28,9 @@ public class ApprovalDto {
 	approval_urgency,
 	temp_save_yn,
 	start_date,
-	end_date;
-	int empno,
+	end_date,
+	empno,
 	update_empno;
 	List<ApprovalLineDto> approvalLineDtos;
+	List<ApprovalReferenceDto> approvalReferenceDtos; 
 }

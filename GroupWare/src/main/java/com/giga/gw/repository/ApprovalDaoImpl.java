@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.giga.gw.dto.ApprovalDto;
 
@@ -131,6 +132,11 @@ public class ApprovalDaoImpl implements IApprovalDao {
 	@Override
 	public List<Map<String, Object>> postLeaveToCalendar(String empno) {
 		return sql.selectList(NS+"postLeaveToCalendar",empno);
+	}
+
+	@Override
+	public int insertApprovalReferences(Map<String, Object> references) {
+		return sql.insert(NS+"insertApprovalReferences",references);
 	}
 
 }

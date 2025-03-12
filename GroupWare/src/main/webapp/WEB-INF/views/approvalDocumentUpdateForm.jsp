@@ -10,9 +10,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/editorStyle.css">
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<!-- 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" /> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script> -->
 <style type="text/css">
 #fileForm{
    height: 100px;
@@ -141,59 +141,10 @@
 		src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
-
+	<script src="${pageContext.request.contextPath}/resources/js/approval_update.js"></script>
 
 	<script type="text/javascript">
-		editor.setData(document.querySelector('#editor').innerHTML);
-		if(document.querySelector("input[name=form_id]").value.startsWith("BC")){
-			console.log("참");
-			$("#dateRange").show();
-		}
-		
-		editor.setData(document.querySelector('#editor').innerHTML);
-		if(document.querySelector("input[name=form_id]").value.startsWith("BC")){
-			console.log("참");
-			$("#dateRange").show();
-		}
-		$(".modalBtn").on('click',()=>{
-			$("#linePickBtn").hide();
-		    $("#formPickBtn").hide();
-		    $("#documentForm").hide();
-			$("#organization").hide();
-			$("#myModal").hide();
-		})
-				// 문서 작성
-	    document.querySelector("#saveBtn").addEventListener('click', () => {
-	        let formData = new FormData(document.forms[0]);
-	        let jsonData = {};
-	        formData.forEach((value, key) => {
-	            jsonData[key] = value;
-	        });
-	        jsonData["approval_content"] = editor.getData();
-	        let d = approvalLine.map(item => ({approver_empno:item.id}));
-	        
-	        jsonData["approvalLineDtos"] = d;  
 
-	        console.log(jsonData);
-	        fetch('./approvalUpdateForm.json',{
-	            method:'POST',
-	            headers:{
-	                'Content-Type':'application/json'
-	            },
-	            body:JSON.stringify(jsonData)
-	        })
-	        .then(resp => resp.json())
-	        .then(data => {
-	            if(data == true) {
-	                Swal.fire("작성성공").then(()=>{
-	                    location.href="./approvalDetail.do?id=${approval.approval_id}"
-	                });
-	            } else{
-	                Swal.fire("작성실패");
-	            }
-	        })
-	        .catch(err => console.log(err));
-	    });
 	</script>
 </body>
 </html>

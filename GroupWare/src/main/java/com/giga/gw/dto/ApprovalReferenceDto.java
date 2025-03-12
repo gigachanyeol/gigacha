@@ -15,15 +15,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class ReservationDto {
-
-	private String reservation_id;
-	private String room_id;
-	private String room_name;
-	private String reservation_date;
-	private String reservation_time;
-	private String reserver;
-	private String member;
-	private String purpose;
-	private String capacity;
+public class ApprovalReferenceDto {
+	private String ref_id,
+	approval_id,
+	empno,
+	create_date,
+	use_yn,
+	update_date;
 }

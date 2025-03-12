@@ -38,6 +38,11 @@ public class RoomDaoImpl implements IRoomDao {
 		return sessionTemplate.update(NS+"updateRoom",roomDto);
 	}
 
+	@Override
+	public List<RoomDto> selectUseAllRooms() {
+		return sessionTemplate.selectList(NS+"selectUseAllRooms");
+	}
+
 
 
 }

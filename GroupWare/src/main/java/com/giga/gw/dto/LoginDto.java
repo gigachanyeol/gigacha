@@ -2,7 +2,6 @@ package com.giga.gw.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class ApprovalLineDto {
-	String approval_id, reject_reason, create_date, status_id, approval_time, update_date, use_yn, signature,approver_empno, delegatee_empno;
-	int line_id, sequence;
+public class LoginDto {
+	private String login_id;
+	private String login_time;
+	private String empno;
+	private String password;
+	private String user_agent;
+
 }

@@ -5,5 +5,7 @@ import java.util.Map;
 
 public interface IEmployeeDao {
 	boolean saveSignature(Map<String, Object> map);
-	List<Map<String, Object>> readSignature(List<String> empList);
+	List<Map<String, Object>> readSignature(String empno);
+	int updateSignature(String empno);
+	
 }
