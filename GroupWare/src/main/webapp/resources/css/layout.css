@@ -1255,8 +1255,8 @@ h6 {
 /* } */
 
 .approval-item {
-	display : inline-block;
-	float: right;
+	display : block;
+	float: left;
 	width: 80px;
 	height: 100px;
 	background: #fff;

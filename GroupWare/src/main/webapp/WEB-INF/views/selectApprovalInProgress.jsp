@@ -39,28 +39,6 @@
 						</tr>
 					</thead>
 				</table>
-<!-- 			<table class="table table-hover"> -->
-<!-- 				<tr> -->
-<!-- 					<th>문서번호</th> -->
-<!-- 					<th>작성자</th> -->
-<!-- 					<th>제목</th> -->
-<!-- 					<th>상태</th> -->
-<!-- 					<th>작성일</th> -->
-<!-- 					<th>마감기한</th> -->
-<!-- 					<th></th> -->
-<!-- 				</tr> -->
-<%-- 				<c:forEach items="${approvalList}" var="dto"> --%>
-<!-- 					<tr> -->
-<%-- 						<td><a href="./approvalDetail.do?id=${dto.approval_id}">${dto.approval_id}</a> --%>
-<!-- 						</td> -->
-<%-- 						<td>${dto.approval_content}</td> --%>
-<%-- 						<td>${dto.approval_title}</td> --%>
-<%-- 						<td>${dto.approval_status }</td> --%>
-<%-- 						<td>${dto.create_date}</td> --%>
-<%-- 						<td>${dto.approval_deadline}</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-<!-- 			</table> -->
 		</div>
 	</div>
 </main>
@@ -170,11 +148,24 @@ $(document).ready(function() {
 	            $("#update_empno").text(data1.update_empno); // 수정한 사번
 				$("#modal-content").html(data1.approval_content);
 //					$(".modal-body").html(data.approval_content);
-				 let html = "<div class='approval-item'>결<br>재</div>";
+				 // 				 let html = "<div class='approval-item'>결<br>재</div>";
+				 let html = '';
 				 data1.approvalLineDtos.forEach((emp, i) => {
-		                console.log(emp.name, emp.approver_empno);
+					 console.log(emp.name, emp.approver_empno);
 		                html += "<div class='approval-item'>";
-		                html += "<div id='" + emp.approver_empno + "' class='text-center'>" + emp.approver_empno + "</div>";
+		                html += "<div id='" + emp.approver_empno + "' class='text-center'>" + emp.approver_empno + "<br>"
+		                console.log(emp.signature);
+		                if(typeof emp.signature != 'undefined'){
+		                	html += "<img src='"+ emp.signature+"' width=50, height=50>";	
+		                } else{
+		                	if(emp.status_id == 'ST04'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/miscellaneous-80/60/check-512.png' width=50, height=50>";
+		                	} else if(emp.status_id == 'ST05'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Circle-512.png' width=50, height=50>";
+		                	}
+		                	
+		                }
+		                html += "</div>";
 		                html += "</div>";
 		            });
 

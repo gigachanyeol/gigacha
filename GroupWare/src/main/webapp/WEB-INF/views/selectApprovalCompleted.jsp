@@ -149,7 +149,8 @@ $(document).ready(function() {
 	            $("#update_empno").text(data1.update_empno); // 수정한 사번
 				$("#modal-content").html(data1.approval_content);
 //					$(".modal-body").html(data.approval_content);
-				 let html = "<div class='approval-item'>결<br>재</div>";
+// 				 let html = "<div class='approval-item'>결<br>재</div>";
+				 let html = '';
 				 data1.approvalLineDtos.forEach((emp, i) => {
 		                console.log(emp.name, emp.approver_empno);
 		                html += "<div class='approval-item'>";

@@ -13,7 +13,7 @@
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler/>
 	
-	<!-- transaction 설정  -->
-<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
+<!-- 	transaction 설정  -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

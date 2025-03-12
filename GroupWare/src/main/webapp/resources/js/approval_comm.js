@@ -2,14 +2,16 @@
 var approvalForm = [];
 
 $(".modalBtn").on('click',()=>{
-	$("#linePickBtn").hide();
 	$("#lineSaveBtn").hide();
+	$("#linePickBtn").hide();
     $("#formPickBtn").hide();
+    $("#refPickBtn").hide();
     $("#documentForm").hide();
 	$("#organization").hide();
-	$(".ck-editor").show();
-	$("#fileDiv").hide();
+//	$(".ck-editor").show();
+//	$("#fileDiv").hide();
 	$("#referece").hide();
+	
 	$("#myModal").hide();
 });
 
@@ -51,7 +53,7 @@ document.querySelector("#formBtn").addEventListener('click', () => {
             }
         }
     });
-//		window.open('./formTreeView.do',"popupWindow","width=400,height=600,top=150,left=300");
+//		window.open('./formTreeView.do',"popupWindow","width=400,height=600,top=150,left=300");	
 	$("#documentForm").show();
 	$("#formPickBtn").show();
 	$("#myModal").show();
@@ -120,6 +122,7 @@ async function selForm(){
     document.querySelector("input[name=form_id]").value = data.FORM_ID;
 		if(data.FORM_ID.startsWith("BC")){
 //				document.querySelector("#dateRange").style.display = 'table-row';
+ 			$("#dateRange input[type=date]").val(setDate());
 			$("#dateRange").show();
 		}
 //			editor.setHTML(data.FORM_CONTENT);
@@ -307,6 +310,7 @@ var organizationData = [];
 				
 			});
 			$("#linePickBtn").show();
+			$("#lineSaveBtn").show();
 			$("#organization").show();
 			$("#myModal").show();
 		} catch (e) {
@@ -342,6 +346,9 @@ var organizationData = [];
 				console.log(html);
 		});
 		document.getElementById("approvalLine").innerHTML = html;
+		$("#linePickBtn").hide();
+		$("#lineSaveBtn").hide();
+		$("#organization").hide();
 		$("#myModal").hide();
 	})
 
@@ -382,13 +389,15 @@ var organizationData = [];
 	}
      async function approvalDocumentSave(url ,formData) {
         try {
-			console.log([...formData]);
             let response = await fetch( url, {
 			method:'POST',
 			body:formData
 			})
 			
-            if(!response.ok) throw new Error ("저장실패");
+            if(!response.ok){
+				let errorMessage = await response.text();
+				throw new Error (errorMessage);
+			}
 
             return await response.json();
         } catch (error) {
@@ -551,3 +560,18 @@ $("#refPickBtn").on("click", function () {
     $("#refPickBtn").hide();
     $("#myModal").hide(); // 모달 닫기
 });
+
+function setDate(){
+	// date 값 오늘날짜 설정
+	const today = new Date();
+	
+	// 년, 월, 일 가져오기
+	const year = today.getFullYear();
+	const month = String(today.getMonth() + 1).padStart(2, "0"); // 월(0~11) → +1 (01~12)
+	const day = String(today.getDate()).padStart(2, "0"); // 일 (01~31)
+	
+	// 최종 출력
+	const todayString = `${year}-${month}-${day}`;
+	console.log(todayString);
+	return todayString;
+}

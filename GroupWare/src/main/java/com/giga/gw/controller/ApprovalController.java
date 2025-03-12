@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -61,6 +62,7 @@ public class ApprovalController {
 	private final IApprovalService approvalService;
 	private final IApprovalLineService approvalLineService;
 	private final IFileDao fileDao;
+	
 	@GetMapping("/index.do")
 	public String apprIndex() {
 		return "approval";
@@ -258,9 +260,40 @@ public class ApprovalController {
 //		return false;
 	}
 	
+//	유효성 체크 버전
+	@PostMapping("/approvalDocumentSaveReg.json")
+	@ResponseBody
+	public ResponseEntity<?> approvalDocumentSaveReg(
+			@ModelAttribute ApprovalDto approvalDto,
+			@RequestParam(value = "files", required = false) List<MultipartFile> files, 
+			HttpSession session,
+			HttpServletRequest request) throws FileNotFoundException {
+		System.out.println(approvalDto);
+		// 유효성 체크 시작
+		if(approvalDto.getForm_id() == null || 
+				approvalDto.getApprovalLineDtos() == null ||
+				approvalDto.getApproval_deadline() == null ||
+				approvalDto.getApproval_title() == null) {
+			return ResponseEntity.badRequest().body("빈 값이 존재함");
+		}
+		
+		System.out.println(approvalDto.getApprovalLineDtos().toString());
+		System.out.println(files);
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		approvalDto.setEmpno(loginDto.getEmpno());
+			
+		String path;
+		path = WebUtils.getRealPath(request.getSession().getServletContext(), "/storage");
+//		return approvalService.insertApproval(approvalDto, files, path);
+		
+		return approvalService.insertApproval(approvalDto, files, path)?ResponseEntity.ok(true):ResponseEntity.ok(false);
+	}
+	
+	
+	
 	@PostMapping("/approvalDocumentSaveTemp.json")
 	@ResponseBody
-	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, @RequestParam List<MultipartFile> files, HttpSession session) {
+	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, @RequestParam(value = "files", required = false) List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		approvalDto.setEmpno(loginDto.getEmpno());

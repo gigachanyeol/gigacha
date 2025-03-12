@@ -59,7 +59,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 		
 		// 결재선 추가 로직
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
-		if (lineDtos.size() != 0 && !lineDtos.isEmpty()) {
+		if (lineDtos != null && !lineDtos.isEmpty()) {
 			for (ApprovalLineDto line : lineDtos) {
 				line.setApproval_id(approvalDto.getApproval_id());
 				System.out.println(line.getApprover_empno());
@@ -72,7 +72,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 		
 		// 참조자 추가 로직
 		List<ApprovalReferenceDto> approvalReferenceDtos = approvalDto.getApprovalReferenceDtos();
-		if (approvalReferenceDtos.size() != 0 && !approvalReferenceDtos.isEmpty()) {
+		if (approvalReferenceDtos != null && !approvalReferenceDtos.isEmpty()) {
 			for (ApprovalReferenceDto refDto : approvalReferenceDtos) {
 				refDto.setApproval_id(approvalDto.getApproval_id());
 				System.out.println(refDto.getEmpno());
