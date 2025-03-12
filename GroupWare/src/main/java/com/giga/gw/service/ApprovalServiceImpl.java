@@ -133,7 +133,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 		
 //	}
 
-	@Transactional
+//	@Transactional
 	@Override
 	public int updateApproval(ApprovalDto approvalDto , List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.updateApproval(approvalDto);
