@@ -21,45 +21,49 @@
 </style>
 </head>
 <body>
-	<div id="content">
-		<h3 class="content_title">로그인페이지</h3>
-		
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th></th>
-				</tr>
-			</thead>
+	<main>
+    <div class="container">
 
-			<tbody>
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-				<div class="card-body">
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">GIGACHA</span>
+                </a>
+              </div><!-- End Logo -->
 
-					<div class="pt-4 pb-2">
-						<h5 class="card-title text-center pb-0 fs-4">로그인</h5>
-					</div>
-					<form action="./login.do" method="post">
-						<div class="col-12" style="align-items: center;">
-							<label for="empno" class="form-label">사원번호</label>
-							<div class="input-group has-validation">
-								<input type="text" name="empno" class="form-control" id="empno"
-									required value="1505001">
-								<div class="invalid-feedback">사원번호를 입력해주세요.</div>
-							</div>
-						</div>
+              <div class="card mb-3">
 
-						<div class="col-12">
-							<label for="password" class="form-label">비밀번호</label> <input
-								type="password" name="password" class="form-control"
-								id="password" required value="password123">
-							<div class="invalid-feedback">비밀번호를 입력해주세요.</div>
-						</div>
+                <div class="card-body">
 
-						<div class="col-12">
-							<button class="btn btn-primary w-100" type="submit">Login</button>
-						</div>			
-					</form>
-					<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">GIGACHA</h5>
+                  </div>
+
+                  <form class="row g-3 needs-validation" action="./login.do" method="POST" novalidate="">
+
+                    <div class="col-12">
+                      <label for="yourUsername" class="form-label">사원번호</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="empno"  class="form-control" id="yourUsername" required="">
+                        <div class="invalid-feedback">사원번호 입력해주세요</div>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">비밀번호</label>
+                      <input type="password" name="password" class="form-control" id="yourPassword" required="">
+                      <div class="invalid-feedback">비밀번호 입력해주세요</div>
+                    </div>
+
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                    </div>
+						<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
 						<p class="small mb-0">
 							<a href="pages-register.html">비밀번호 재설정</a>
 						</p>
@@ -67,13 +71,17 @@
 							<a href="pages-register.html">사원번호 찾기</a>
 						</p>
 					</div>
+                  </form>
 
-				</div>
-			</tbody>
-		</table>
-	</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+      </section>
 
-
+    </div>
+  </main>
 </body>
 </html>
