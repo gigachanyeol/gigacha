@@ -134,4 +134,9 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.selectList(NS+"postLeaveToCalendar",empno);
 	}
 
+	@Override
+	public int insertApprovalReferences(Map<String, Object> references) {
+		return sql.insert(NS+"insertApprovalReferences",references);
+	}
+
 }

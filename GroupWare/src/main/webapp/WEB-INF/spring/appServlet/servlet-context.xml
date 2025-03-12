@@ -22,5 +22,5 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	<!-- transaction 설정  -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
 </beans>

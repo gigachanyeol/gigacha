@@ -30,7 +30,8 @@ document.querySelector("#saveBtn").addEventListener('click', async () => {
 
     console.log(jsonData);
 
-    let data = await approvalDocumentSave('./approvalUpdateForm.json', jsonData);
+    let data = await fetchJsonPost('./approvalUpdateForm.json', jsonData);
+
     if(data == true) {
         Swal.fire("작성성공").then(()=>{
             location.href="./approvalDetail.do?id="+jsonData["approval_id"];

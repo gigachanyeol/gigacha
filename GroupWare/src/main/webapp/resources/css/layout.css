@@ -1259,7 +1259,7 @@ h6 {
 	float: right;
 	width: 80px;
 	height: 100px;
-	background: yellow;
+	background: #fff;
 	border: 1px solid black;
 	font-size: 0.8em;
 	display: inline-block;
@@ -1267,4 +1267,8 @@ h6 {
 
 #form {
 	clear:both;
+}
+
+		.signature-pad{
+	border:1px solid #ccc;
 }

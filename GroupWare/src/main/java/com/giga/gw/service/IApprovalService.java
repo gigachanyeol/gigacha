@@ -10,7 +10,7 @@ import com.giga.gw.dto.ApprovalDto;
 public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
 	int countApproval(String form_id);
-	boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files);
+	boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files, String path);
 	boolean insertApprovalTemp(ApprovalDto approvalDto, List<MultipartFile> files);
     int updateApproval(ApprovalDto approvalDto, List<MultipartFile> files);
     ApprovalDto selectApprovalById(String approval_id);

@@ -1,39 +1,46 @@
 package com.giga.gw.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.WebUtils;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.giga.gw.dto.ApprovalCategoryDto;
 import com.giga.gw.dto.ApprovalDto;
 import com.giga.gw.dto.ApprovalFormDto;
 import com.giga.gw.dto.EmployeeDto;
-import com.giga.gw.repository.EmployeeDaoImpl;
-import com.giga.gw.repository.IApprovalCategoryDao;
+import com.giga.gw.dto.FileDto;
 import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IEmployeeDao;
+import com.giga.gw.repository.IFileDao;
 import com.giga.gw.service.IApprovalCategoryService;
 import com.giga.gw.service.IApprovalFormService;
 import com.giga.gw.service.IApprovalLineService;
 import com.giga.gw.service.IApprovalService;
-import com.giga.gw.service.ILoginService;
+import com.giga.gw.service.IEmployeeService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -48,11 +55,12 @@ import oracle.jdbc.proxy.annotation.Post;
 public class ApprovalController {
 	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
+	private final IEmployeeService employeeService;
 	private final IApprovalCategoryService approvalCategoryService;
 	private final IApprovalFormService approvalFormService;
 	private final IApprovalService approvalService;
 	private final IApprovalLineService approvalLineService;
-	
+	private final IFileDao fileDao;
 	@GetMapping("/index.do")
 	public String apprIndex() {
 		return "approval";
@@ -70,21 +78,32 @@ public class ApprovalController {
 		return approvalDao.getOrganizationTree();
 	}
 
+	@GetMapping("/signature.do")
+	public String signature(HttpSession session, Model model) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+//		List<String> empList = new ArrayList<String>();
+//		empList.add(loginDto.getEmpno());
+//		model.addAttribute("signature",employeeDao.readSignature(empList));
+		return "signature";
+	}
+	
 	@PostMapping("/signatureSave.json")
 	@ResponseBody
-	public boolean signatureSave(@RequestBody Map<String, Object> map) {
-		boolean isc = employeeDao.saveSignature(map);
+	public boolean signatureSave(@RequestBody Map<String, Object> map,HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		map.put("empno", loginDto.getEmpno());
+		boolean isc = employeeService.saveSignature(map);
 		return isc;
 	}
 
 	@GetMapping("/signatureRead.json")
 	@ResponseBody
-	public List<Map<String, Object>> signatureRead() {
-		List<String> empList = new ArrayList<String>();
-		empList.add("2501001");
-		empList.add("2501002");
-		System.out.println(employeeDao.readSignature(empList));
-		return employeeDao.readSignature(empList);
+	public List<Map<String, Object>> signatureRead(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+//		List<String> empList = new ArrayList<String>();
+//		empList.add(loginDto.getEmpno());
+//		System.out.println(employeeDao.readSignature(empList));
+		return employeeDao.readSignature(loginDto.getEmpno());
 	}
 
 //	@PostMapping("/editorSave.do")
@@ -223,22 +242,28 @@ public class ApprovalController {
 	@PostMapping("/approvalDocumentSave.json")
 	@ResponseBody
 	public boolean approvalDocumentSave(
-			@RequestPart ApprovalDto approvalDto,
+			@ModelAttribute ApprovalDto approvalDto,
 			@RequestParam(value = "files", required = false) List<MultipartFile> files, 
-			HttpSession session) {
-		System.out.println(approvalDto);
+			HttpSession session,
+			HttpServletRequest request) throws FileNotFoundException {
+		System.out.println(approvalDto.getApprovalLineDtos().toString());
+		System.out.println(files);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
-//		return approvalService.insertApproval(approvalDto, files);
-		return false;
+		approvalDto.setEmpno(loginDto.getEmpno());
+			
+		String path;
+		path = WebUtils.getRealPath(request.getSession().getServletContext(), "/storage");
+//		return result.equals("파일 업로드 성공") ? true: false;
+		return approvalService.insertApproval(approvalDto, files, path);
+//		return false;
 	}
 	
 	@PostMapping("/approvalDocumentSaveTemp.json")
 	@ResponseBody
-	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto,List<MultipartFile> files, HttpSession session) {
+	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, @RequestParam List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		approvalDto.setEmpno(Integer.parseInt(loginDto.getEmpno()));
+		approvalDto.setEmpno(loginDto.getEmpno());
 		return approvalService.insertApprovalTemp(approvalDto, files);
 	}
 	
@@ -309,7 +334,7 @@ public class ApprovalController {
 	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto,List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		approvalDto.setUpdate_empno(Integer.parseInt(loginDto.getEmpno()));
+		approvalDto.setUpdate_empno(loginDto.getEmpno());
 		return approvalService.updateApproval(approvalDto, files) == 1 ? true : false;
 	}
 	
@@ -346,29 +371,55 @@ public class ApprovalController {
 	@GetMapping("/selectApprovalInProgress.do")
 	public String selectApprovalInProgress(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
-		model.addAttribute("approvalList",approvalList);
+//		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
+//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalInProgress";
 	}
 	
-	// 결재완료함 selectApprovalCompleted
+	@PostMapping("/selectApprovalInProgress.json")
+	@ResponseBody
+	public String selectApprovalInProgressAjax(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
+	}
+//	
+	// 결재완료함 selectApprovalCompleted 이동
 	@GetMapping("/selectApprovalCompleted.do")
 	public String selectApprovalCompleted(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
-		model.addAttribute("approvalList",approvalList);
+//		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
+//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalCompleted";
+	}
+	
+	@PostMapping("/selectApprovalCompleted.json")
+	@ResponseBody
+	public String selectApprovalCompletedAjax(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
 	}
 	
 	// 반려문서함
 	@GetMapping("/selectApprovalRejected.do")
 	public String selectApprovalRejected(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
-		model.addAttribute("approvalList",approvalList);
+//		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
+//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalRejected";
 	}
 	
+	@PostMapping("/selectApprovalRejected.json")
+	@ResponseBody
+	public String selectApprovalRejectedAjax(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
+		Gson gson = new Gson();
+		return gson.toJson(approvalList);
+	}
 	
 	
 	// 결재승인
@@ -458,5 +509,40 @@ public class ApprovalController {
 	public List<Map<String, Object>> selectSaveLine(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		return approvalLineService.selectSaveLine(loginDto.getEmpno());
+	}
+	
+	@GetMapping(value = "/fileList.json", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String fileList(@RequestParam String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("approval_id", id);
+		
+		List<FileDto> fileList =  fileDao.selectFile(map);
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(fileList);
+	}
+	
+//	파일다운로드
+	@PostMapping("/download.json")
+	@ResponseBody
+	public byte[] download(
+			@RequestBody Map<String, Object> map,
+			HttpServletResponse response) throws IOException {
+		// approval_id, file_id
+		List<FileDto> dto = fileDao.selectFile(map);
+		String path = dto.get(0).getFile_path();
+		String saveFileName = dto.get(0).getFile_name();
+		String originFileName = dto.get(0).getOrigin_name();
+		File file = new File(path+"/"+saveFileName);
+		String outputFileName = new String(originFileName.getBytes(), "8859_1");
+		String encodedFileName = URLEncoder.encode(originFileName, "UTF-8").replaceAll("\\+", "%20");
+		byte[] bytes = FileCopyUtils.copyToByteArray(file);
+		
+//		response.setHeader("Content-Disposition", "attachment; filename=\""+outputFileName+"\"");
+		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
+		response.setContentLength(bytes.length);
+		response.setContentType("application/octet-stream"); // meword로 정송 application/msword
+		
+		return bytes;
 	}
 }

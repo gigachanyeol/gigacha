@@ -14,6 +14,6 @@
 	<mvc:default-servlet-handler/>
 	
 	<!-- transaction 설정  -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
 
 </beans>

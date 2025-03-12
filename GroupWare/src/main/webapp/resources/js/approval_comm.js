@@ -9,6 +9,7 @@ $(".modalBtn").on('click',()=>{
 	$("#organization").hide();
 	$(".ck-editor").show();
 	$("#fileDiv").hide();
+	$("#referece").hide();
 	$("#myModal").hide();
 });
 
@@ -135,8 +136,6 @@ $("#formPickBtn").on('click',()=>{
 // 문서양식 tree 끝 ---------------------------------------------------
 // 결재선 tree 시작 ---------------------------------------------------
 var approvalLine = [];
-
-
 
 $("#searchInputOrganizationTree").keyup(function () {
     let searchText = $(this).val();
@@ -307,7 +306,6 @@ var organizationData = [];
 			    }
 				
 			});
-			
 			$("#linePickBtn").show();
 			$("#organization").show();
 			$("#myModal").show();
@@ -348,15 +346,48 @@ var organizationData = [];
 	})
 
 	
-    async function approvalDocumentSave(url ,jsonData) {
+//    async function approvalDocumentSave(url ,jsonData) {
+//        try {
+//            let response = await fetch(url,{
+//                method:'POST',
+//                headers:{
+//                    'Content-Type':'application/json'
+//                },
+//                body:JSON.stringify(jsonData)
+//            });
+//            if(!response.ok) throw new Error ("저장실패");
+//
+//            return await response.json();
+//        } catch (error) {
+//            
+//        }
+//    }
+	/** fetch post요청 (요청주소,json데이터) */
+     async function fetchJsonPost(url, jsonData){
+		try {
+            let response = await fetch( url, {
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json"
+			},
+			body:JSON.stringify(jsonData)
+			})
+			
+            if(!response.ok) throw new Error ("저장실패");
+
+            return await response.json();
+        } catch (error) {
+            
+        }
+	}
+     async function approvalDocumentSave(url ,formData) {
         try {
-            let response = await fetch(url,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(jsonData)
-            });
+			console.log([...formData]);
+            let response = await fetch( url, {
+			method:'POST',
+			body:formData
+			})
+			
             if(!response.ok) throw new Error ("저장실패");
 
             return await response.json();
@@ -364,3 +395,159 @@ var organizationData = [];
             
         }
     }
+    
+	async function getDetail(id){
+		let response = await fetch("./approvalDetail.json?id="+id);
+		let data = await response.json(); 
+	    console.log("서버 응답 데이터:", data); 
+	    return data;
+	}
+
+	async function getFile(id){
+		let response = await fetch("./fileList.json?id="+id);
+		let data = await response.json(); 
+        console.log("서버 응답 데이터:", data); 
+        return data;
+	}
+	
+	
+	async function download(event) {
+	    let file_id = event.value;
+	    let approval_id = $("#approval_id").text();
+	    console.log("다운로드 요청:", file_id, approval_id);
+	
+	    let jsonData = {
+	        file_id: file_id,
+	        approval_id: approval_id
+	    };
+	
+	    try {
+	        let response = await fetch("./download.json", {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify(jsonData)
+	        });
+	
+	        if (!response.ok) {
+	            throw new Error("파일 다운로드 실패: " + response.statusText);
+	        }
+	
+	        let blob = await response.blob();
+	        console.log("받은 파일 Blob:", blob);
+	
+	        let filename = "downloaded_file"; // 기본값 설정
+	        let contentDisposition = response.headers.get("Content-Disposition");
+	        console.log("응답 헤더 Content-Disposition:", contentDisposition);
+	
+	        if (contentDisposition) {
+	            let matches = contentDisposition.match(/filename\*?=(UTF-8'')?"?([^"]+)"?/);
+	            if (matches) {
+	                filename = matches[2] ? decodeURIComponent(matches[2]) : decodeURIComponent(matches[1]); // 파일명 URL 디코딩 적용
+	            }
+	        }
+	
+	        let link = document.createElement("a");
+	        link.href = window.URL.createObjectURL(blob);
+	        link.download = filename;
+	        document.body.appendChild(link);
+	        link.click();
+	        document.body.removeChild(link);
+	        URL.revokeObjectURL(link.href); // 메모리 해제
+	
+	        console.log("파일 다운로드 완료:", filename);
+	    } catch (error) {
+	        console.error("다운로드 중 오류 발생:", error);
+	        alert("파일 다운로드에 실패했습니다.");
+	    }
+	}
+
+// -- 참조자
+    var referenceLine = []; // 참조자 목록
+
+// 참조자 선택 이벤트 (조직도에서 선택)
+$('#refereceTree').on("select_node.jstree", function (e, data) {
+    let selectedNode = data.node;
+    let empNo = selectedNode.id;
+    let empName = selectedNode.text;
+
+    if (!empNo.startsWith("D") && !empNo.startsWith("HQ")) { // 부서가 아닌 사원만 추가
+        addToReferenceLine(empNo, empName);
+    }
+});
+
+// 참조자 추가 함수
+function addToReferenceLine(empNo, empName) {
+    // 중복 방지
+    if (referenceLine.some(emp => emp.id === empNo)) {
+        alert("이미 추가된 참조자입니다.");
+        return;
+    }
+
+    // 최대 5명 제한 (필요 시 변경 가능)
+    if (referenceLine.length >= 5) {
+        alert("참조자는 최대 5명까지 지정 가능합니다.");
+        return;
+    }
+
+    // 참조자 목록에 추가
+    referenceLine.push({ id: empNo, name: empName });
+    updateReferenceList();
+}
+
+// 참조자 리스트 업데이트 (UI 업데이트)
+function updateReferenceList() {
+    $("#referenceList").empty(); // 기존 리스트 초기화
+    let html = "";
+
+    referenceLine.forEach((emp, i) => {
+        html += "<div>";
+        html += "<span id='" + emp.id + "'>" + (i + 1) + ". " + emp.name + " (" + emp.id + ")</span>";
+        html += "<span class='remove-btn' onclick='removeFromReferenceLine(\"" + emp.id + "\")'>✖</span>";
+        html += "</div>";
+    });
+
+    $("#referenceList").html(html);
+}
+
+// 참조자 리스트에서 삭제
+function removeFromReferenceLine(empNo) {
+    referenceLine = referenceLine.filter(emp => emp.id !== empNo);
+    updateReferenceList();
+}
+
+$("#refBtn").on("click", function (event) {
+    event.preventDefault(); // 기본 이벤트 방지
+ 
+    $('#refereceTree').jstree({
+        'plugins': ["search"],
+        "search": { "show_only_matches": true }, // 검색 결과만 표시
+        'core': {
+            'data': function (node, cb) {
+                $.ajax({
+                    url: "./tree.json",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("조직도 데이터:", data);
+                        cb(data);
+                    }
+                });
+            }
+        }
+    });
+
+    // 모달 표시
+    $("#refPickBtn").show();
+    $("#referece").show();
+    $("#myModal").show();
+});
+
+// ✅ 참조자 선택 완료 버튼 (refPickBtn) 클릭 시 모달 닫기
+$("#refPickBtn").on("click", function () {
+    console.log("선택된 참조자 목록:", referenceLine);
+    $("#referece").hide();
+    $("#refPickBtn").hide();
+    $("#myModal").hide(); // 모달 닫기
+});

@@ -7,11 +7,11 @@
 <title>나의결재함</title>
 
 <%@ include file="./layout/header.jsp"%>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+<!-- <script type="text/javascript" -->
+<!-- 	src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" /> -->
 <style type="text/css">
 .modal-content{
 	width: 220mm;
@@ -114,6 +114,7 @@
 	  </div>
 	</div>
 </body>
+<script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
@@ -198,8 +199,8 @@ $(document).ready(function() {
 	
 	async function getDetail(id){
 		let response = await fetch("./approvalDetail.json?id="+id);
-		let data = await response.json(); // ✅ 한 번만 호출
-        console.log("서버 응답 데이터:", data); // ✅ JSON 데이터 확인
+		let data = await response.json(); 
+        console.log("서버 응답 데이터:", data); 
         return data;
 	}
 });
