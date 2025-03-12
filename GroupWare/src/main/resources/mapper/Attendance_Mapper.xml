@@ -68,6 +68,33 @@ WHERE A.EMPNO IS NULL
     )
 </update>
 
+<!-- 출근시간 등록 -->
+<update id="workInCheck" parameterType="map">
+    UPDATE ATTENDANCERECORD
+    SET WORKIN_TIME = TO_DATE(#{workin_time}, 'YYYY-MM-DD HH24:MI:SS')
+    WHERE EMPNO = #{empno}
+    AND ATTNO IN (
+        SELECT ATTNO 
+        FROM ATTENDANCERECORD 
+        WHERE ATTNO LIKE CONCAT(#{attno}, '%')
+    )
+    AND WORKIN_TIME IS NULL
+</update>
+
+<!-- 근무시간 계산하기 -->
+
+<!-- 출근시간 불러오기 -->
+<select id="loadworkintime" parameterType="map">
+SELECT WORKIN_TIME FROM ATTENDANCERECORD a
+WHERE EMPNO = '1505001' 
+    AND ATTNO IN (
+        SELECT ATTNO 
+        FROM ATTENDANCERECORD 
+        WHERE ATTNO LIKE CONCAT('250312', '%')
+    )
+</select> 
+<!---->
+
 
 
 

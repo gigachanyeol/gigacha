@@ -24,14 +24,13 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<!-- 근무테이블 생성 스케줄러 -->
-	<!--<task:annotation-driven scheduler="scheduler"/>-->
-	<!--<task:scheduler id="scheduler" pool-size="10"/>-->
+	<!--<task:annotation-driven scheduler="scheduler"/>
+	<task:scheduler id="scheduler" pool-size="10"/>-->
 	
 	<!--테스트 5분단위-->
 	<!--<task:scheduled-tasks>-->
     	<!--<task:scheduled ref="attendanceDaoImpl" method="createattendacetable" cron="0 */5 * * * *"/>-->
-    	<!--<task:scheduled ref="AttendanceServiceImpl" method="createtable" cron="0 */10 * * * *"/>-->
+    	<!--<task:scheduled ref="attendanceServiceImpl" method="createTable" cron="0 */1 * * * *"/>-->
 	<!--</task:scheduled-tasks>-->
     
 <!-- 	transaction 설정  -->

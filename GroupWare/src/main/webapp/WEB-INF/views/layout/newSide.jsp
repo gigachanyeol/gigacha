@@ -11,6 +11,59 @@
 <!-- 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <!-- <script type="text/javascript" src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script> -->
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css"/> -->
+<style type="text/css">
+.sidecard-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.sidecard-body .employee-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.sidecard-body .employee-id {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+}
+
+.sidecard-body .department {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  background-color: #f8f9fa;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
+.sidecard-body .job-title {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+  background-color: #e9ecef;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
+.employee-info-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+</style>
 </head>
 <body>
 	<aside id="sidebar" class="sidebar">
@@ -18,10 +71,13 @@
 		<img class="card-img-top"
 			src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj"
 			alt="Card image cap">
-		<div class="card-body">
-			<!-- <h5 class="card-title">이름 | 사번</h5> -->
-			<p class="card-text text-center">이름 | 사번</p>
-			<p class="card-text text-center">부서 | 직급</p>
+		<div class="sidecard-body" >
+  			<span class="employee-name">${loginDto.name}</span>
+  			<span class="employee-id">사원번호 :${loginDto.empno}</span>
+  			<div class="employee-info-row">
+    			<span class="department">부서 : ${loginDto.deptno}</span>
+    			<span class="job-title">직급 : ${loginDto.job_id}</span>
+ 			 </div>
 		</div>
 	</div>
     <ul class="sidebar-nav" id="sidebar-nav">
