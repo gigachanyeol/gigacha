@@ -98,16 +98,16 @@
 								<!-- General Form Elements -->
 								<form id="eventForm">
 									<div class="row mb-3">
-										<label for="empname" class="col-sm-2 col-form-label">등록자</label>
+										<label for="empname"  class="col-sm-2 col-form-label">등록자</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" id="empname"
+											<input type="text" name="empname" class="form-control" id="empname"
 												value="${loginDto.name}" readonly>
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="empno" class="col-sm-2 col-form-label">사원번호</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" id="empno"
+											<input type="text" class="form-control" id="empno" name="empno"
 												value="${loginDto.empno}" readonly>
 											<input type="hidden" id="event_id">
 										</div>
@@ -115,21 +115,21 @@
 									<div class="row mb-3">
 										<label for="sch_title" class="col-sm-2 col-form-label">제목</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control is-invalid" id="sch_title">
+											<input type="text" class="form-control is-invalid" id="sch_title" name="sch_title">
 											<div class="invalid-feedback">제목을 입력하세요.</div>
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_startdate" class="col-sm-2 col-form-label">시작</label>
 										<div class="col-sm-10">
-											<input type="datetime-local" class="form-control"
+											<input type="datetime-local" class="form-control" name="sch_startdate"
 												id="sch_startdate">
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_enddate" class="col-sm-2 col-form-label">종료</label>
 										<div class="col-sm-10">
-											<input type="datetime-local" class="form-control"
+											<input type="datetime-local" class="form-control" name="sch_enddate"
 												id="sch_enddate">
 										</div>
 									</div>
@@ -137,13 +137,13 @@
 										<label for="sch_color" class="col-sm-2 col-form-label">색상</label>
 										<div class="col-sm-10">
 											<input type="color" class="form-control form-control-color"
-												id="sch_color" value="#3788d8" title="일정 배경색 선택">
+												id="sch_color" value="#3788d8" title="일정 배경색 선택" name="sch_color">
 										</div>
 									</div>
 									<div class="row mb-3">
                   						<label for="sch_content" class="col-sm-2 col-form-label">내용</label>
                   						<div class="col-sm-10">
-                    						<textarea class="form-control" id="sch_content" style="height: 100px"></textarea>
+                    						<textarea class="form-control" id="sch_content" style="height: 100px" name="sch_content"></textarea>
                   						</div>
                   					</div>
 									<div class="row mb-3">
@@ -328,8 +328,10 @@
         $schTitle.val(event.title);
         
         // 날짜 포맷팅
-        let startDate = event.start ? event.start.toISOString().slice(0, 16) : '';
-        let endDate = event.end ? event.end.toISOString().slice(0, 16) : '';
+//         let startDate = event.start ? event.start.toISOString().slice(0, 16) : '';
+//         let endDate = event.end ? event.end.toISOString().slice(0, 16) : '';
+        let startDate = new Date(event.start - (new Date().getTimezoneOffset() * 60000)).toISOString()
+        let endDate = new Date(event.end - (new Date().getTimezoneOffset() * 60000)).toISOString()
         
         $schStartDate.val(startDate);
         $schEndDate.val(endDate);
@@ -357,6 +359,14 @@
         // 모달 표시
         $modal.modal('show');
       }
+      
+      function formatTimeString(dateObj) {
+  		const hours = dateObj.getHours().toString().padStart(2, '0');
+  		const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+  		const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+
+  		return `${hours}:${minutes}:${seconds}`;
+  	}
       
       // 이벤트 핸들러 설정
       function setupEventHandlers(event) {
@@ -429,7 +439,12 @@
       // 이벤트 저장
       function saveEvent(eventData) {
         console.log("저장할 이벤트:", eventData);
-        
+        let formData = new FormData(document.forms[0]);
+        let jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+        console.log(jsonData);
         fetch('./saveSchedule.do', {
           method: 'POST',
           headers: {

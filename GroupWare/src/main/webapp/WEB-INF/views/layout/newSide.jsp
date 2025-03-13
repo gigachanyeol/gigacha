@@ -177,7 +177,7 @@
         <ul id="attendance-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li class="nav-heading">나의 근태 관리</li>
           <li>
-            <a href="href="${pageContext.request.contextPath}/attendance/myattendance.do">
+            <a href="${pageContext.request.contextPath}/attendance/myattendance.do">
               <span>나의 근태 현황</span>
             </a>
             <a href="href="#">
