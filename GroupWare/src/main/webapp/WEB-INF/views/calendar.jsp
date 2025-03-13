@@ -70,15 +70,16 @@
 	<%-- <%@ include file="./layout/sidebar.jsp" %> --%>
 	<%@ include file="./layout/newSide.jsp"%>
 	<main id="main" class="main">
-	<div class="pagetitle">
-      <h1>Calendar</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
-          <li class="breadcrumb-item active">Calendar</li>
-        </ol>
-      </nav>
-    </div>
+		<div class="pagetitle">
+			<h1>Calendar</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a
+						href="${pageContext.request.contextPath}">Home</a></li>
+					<li class="breadcrumb-item active">Calendar</li>
+				</ol>
+			</nav>
+		</div>
 		<div class="row">
 			<div id="content" class="col-6 mt-3">
 
@@ -98,54 +99,57 @@
 								<!-- General Form Elements -->
 								<form id="eventForm">
 									<div class="row mb-3">
-										<label for="empname"  class="col-sm-2 col-form-label">등록자</label>
+										<label for="empname" class="col-sm-2 col-form-label">등록자</label>
 										<div class="col-sm-10">
-											<input type="text" name="empname" class="form-control" id="empname"
-												value="${loginDto.name}" readonly>
+											<input type="text" name="empname" class="form-control"
+												id="empname" value="${loginDto.name}" readonly>
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="empno" class="col-sm-2 col-form-label">사원번호</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" id="empno" name="empno"
-												value="${loginDto.empno}" readonly>
-											<input type="hidden" id="event_id">
+											<input type="text" class="form-control" id="empno"
+												name="empno" value="${loginDto.empno}" readonly> <input
+												type="hidden" id="event_id">
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_title" class="col-sm-2 col-form-label">제목</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control is-invalid" id="sch_title" name="sch_title">
+											<input type="text" class="form-control is-invalid"
+												id="sch_title" name="sch_title">
 											<div class="invalid-feedback">제목을 입력하세요.</div>
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_startdate" class="col-sm-2 col-form-label">시작</label>
 										<div class="col-sm-10">
-											<input type="datetime-local" class="form-control" name="sch_startdate"
-												id="sch_startdate">
+											<input type="datetime-local" class="form-control"
+												name="sch_startdate" id="sch_startdate">
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_enddate" class="col-sm-2 col-form-label">종료</label>
 										<div class="col-sm-10">
-											<input type="datetime-local" class="form-control" name="sch_enddate"
-												id="sch_enddate">
+											<input type="datetime-local" class="form-control"
+												name="sch_enddate" id="sch_enddate">
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label for="sch_color" class="col-sm-2 col-form-label">색상</label>
 										<div class="col-sm-10">
 											<input type="color" class="form-control form-control-color"
-												id="sch_color" value="#3788d8" title="일정 배경색 선택" name="sch_color">
+												id="sch_color" value="#3788d8" title="일정 배경색 선택"
+												name="sch_color">
 										</div>
 									</div>
 									<div class="row mb-3">
-                  						<label for="sch_content" class="col-sm-2 col-form-label">내용</label>
-                  						<div class="col-sm-10">
-                    						<textarea class="form-control" id="sch_content" style="height: 100px" name="sch_content"></textarea>
-                  						</div>
-                  					</div>
+										<label for="sch_content" class="col-sm-2 col-form-label">내용</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" id="sch_content"
+												style="height: 100px" name="sch_content"></textarea>
+										</div>
+									</div>
 									<div class="row mb-3">
 										<div class="col-sm-10 offset-sm-2" id="button-container">
 											<button type="button" class="btn btn-outline-secondary me-2"
@@ -275,8 +279,8 @@
             const eventArray = eventData.map(res => ({
               id: res.SCH_ID,
               title: res.SCH_TITLE,
-              start: res.SCH_STARTDATE,
-              end: res.SCH_ENDDATE,
+              start: new Date(res.SCH_STARTDATE).toISOString(),
+              end: new Date(res.SCH_ENDDATE).toISOString(),
               backgroundColor: res.SCH_COLOR || "#3788d8",
               extendedProps: { 
                 empno: res.EMPNO,     
@@ -330,8 +334,10 @@
         // 날짜 포맷팅
 //         let startDate = event.start ? event.start.toISOString().slice(0, 16) : '';
 //         let endDate = event.end ? event.end.toISOString().slice(0, 16) : '';
-        let startDate = new Date(event.start - (new Date().getTimezoneOffset() * 60000)).toISOString()
-        let endDate = new Date(event.end - (new Date().getTimezoneOffset() * 60000)).toISOString()
+//         let startDate = new Date(event.start - (new Date().getTimezoneOffset() * 60000)).toISOString()
+//         let endDate = new Date(event.end - (new Date().getTimezoneOffset() * 60000)).toISOString()
+let startDate = new Date(event.start - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+let endDate = new Date(event.end - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
         
         $schStartDate.val(startDate);
         $schEndDate.val(endDate);
