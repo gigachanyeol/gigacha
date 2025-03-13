@@ -24,8 +24,8 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<!--<task:annotation-driven scheduler="scheduler"/>
-	<task:scheduler id="scheduler" pool-size="10"/>-->
+	<!--<task:annotation-driven scheduler="scheduler"/>-->
+	<!--<task:scheduler id="scheduler" pool-size="10"/>-->
 	
 	<!--테스트 5분단위-->
 	<!--<task:scheduled-tasks>-->

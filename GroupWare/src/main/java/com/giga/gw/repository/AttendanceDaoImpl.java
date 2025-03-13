@@ -20,15 +20,23 @@ public class AttendanceDaoImpl implements IAttendanceDao {
 		sessionTemplate.insert(NS + "createattendacetable");
 	}
 
+	
 	@Override
-	public void resetSequence() {
-		sessionTemplate.update(NS + "resetSequence");
+	public void dropSequence() {
+		sessionTemplate.update(NS + "dropSequence");
+		
+	}
+	
+	@Override
+	public void createSequence() {
+		sessionTemplate.update(NS + "createSequence");
+		
 	}
 
 	@Override
-	public List<Map<String, Object>> leaveList() {
-		List<Map<String, Object>> list = sessionTemplate.selectList(NS + "leaveListByEmpno", "1505001");
-		System.out.println(list);
+	public List<Map<String, Object>> leaveList(String empno) {
+		List<Map<String, Object>> list = sessionTemplate.selectList(NS + "leaveListByEmpno", empno);
+//		System.out.println(list);
 		return list;
 	}
 

@@ -22,6 +22,22 @@ LEFT JOIN ATTENDANCERECORD A
 WHERE A.EMPNO IS NULL
 </insert>
 
+<update id="dropSequence">
+    BEGIN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE ATTNO_SEQ';
+    EXCEPTION
+        WHEN OTHERS THEN NULL;
+    END;
+</update>
+
+<update id="createSequence">
+    CREATE SEQUENCE ATTNO_SEQ
+        START WITH 1
+        INCREMENT BY 1
+        NOCACHE
+        NOCYCLE
+</update>
+
 <!--연차 가져오기
 ::: 결재 완료 처리된 휴가 ""해당하는 사원에 한해서""리스트를 전체~!!!! 가져온다.
 -->

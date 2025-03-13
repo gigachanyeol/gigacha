@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.repository.IAttendanceDao;
 
 import lombok.RequiredArgsConstructor;
@@ -45,10 +46,20 @@ public class AttendanceController {
 	@ResponseBody
 	public ResponseEntity<List<Map<String, Object>>> loadleave(HttpSession session) {
 		
-		 List<Map<String, Object>> leavelist = attendanceDao.leaveList();
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+//		System.out.println("o(*^＠^*)oo(*^＠^*)o(*^＠^*)oo(*^＠^*)o(*^＠^*)oo(*^＠^*)"+loginDto.getEmpno());
+		
+		
+		
+		 List<Map<String, Object>> leavelist = attendanceDao.leaveList(loginDto.getEmpno());
 //		 for (Map<String, Object> map : leavelist) {
+//			
+//			map.put("empno",loginDto.getEmpno());
 //			System.out.println("o(*^＠^*)oo(*^＠^*)"+map);
+//			
 //		}
+		 
+		
 //		 
 		 return ResponseEntity.ok(leavelist);
 	}

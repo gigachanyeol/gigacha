@@ -672,38 +672,40 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	function formatDate(timestamp) {
-		const date = new Date(timestamp);
-		return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
-	}
+    try {
+        // timestamp가 null, undefined 또는 유효하지 않은 형식인지 확인
+        if (!timestamp || isNaN(new Date(timestamp).getTime())) {
+            console.warn("유효하지 않은 날짜 값:", timestamp);
+            return ""; // 빈 문자열 반환 또는 기본값 설정
+        }
+        const date = new Date(timestamp);
+        return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
+    } catch (error) {
+        console.error("날짜 변환 오류:", timestamp, error);
+        return ""; // 오류 발생시 빈 문자열 반환
+    }
+}
 
-	function fetchLeaveData() {
-		fetch(`${pageContext}/attendance/loadleave.do`)
-			.then(response => response.json()) // 응답을 JSON 형식으로 파싱
-			.then(data => {
-				console.log("📌 서버에서 받은 데이터를 출력:", data);
-
-				data.forEach(item => {
-					const START_DATE = formatDate(item.START_DATE);
-					const END_DATE = formatDate(item.END_DATE);
-
-					//				console.log("📌 START_DATE:", START_DATE);
-					//            console.log("📌 END_DATE:", END_DATE);
-
-					// 날짜에 해당하는 요소 ID를 생성
-					var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
-					//				console.log("📌 searchtd:", searchtd);
-					// 해당 날짜의 셀에 '연차' 추가
-					const targetElement = document.getElementById(searchtd);
-					//					console.log("📌 targetElement:", targetElement);
-
-					if (targetElement) {
-						targetElement.innerHTML += `연차`;
-					}
-				});
-			})
-			.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
-	}
-
+function fetchLeaveData() {
+    fetch(`${pageContext}/attendance/loadleave.do`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                // formatDate 함수 호출 결과가 비어있지 않은 경우에만 처리
+                const START_DATE = formatDate(item.START_DATE);
+                if (START_DATE) {
+                    const END_DATE = formatDate(item.END_DATE);
+                    // searchtd 생성 및 처리
+                    var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
+                    const targetElement = document.getElementById(searchtd);
+                    if (targetElement) {
+                        targetElement.innerHTML += `연차`;
+                    }
+                }
+            });
+        })
+        .catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
+}
 
 
 });

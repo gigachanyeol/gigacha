@@ -192,7 +192,6 @@
       const $schEndDate = $('#sch_enddate');
       const $schColor = $('#sch_color');
       const $schContent = $('#sch_content');
-      
       // calendar element 취득
       const calendarEl = $calendar[0];
       
