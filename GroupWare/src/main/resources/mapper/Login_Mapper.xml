@@ -4,6 +4,7 @@
 <select id="login" resultType="employeeDto">
   SELECT EMPNO,
 	DEPTNO,
+<!-- 	(SELECT name FROM TBL_CONM WHERE CODE = ) -->
 	JOB_ID,
 	NAME,
 	EMAIL,
@@ -26,4 +27,9 @@
 	WHERE EMPNO = #{empno}
 	AND PASSWORD = #{password}
 </select>
+
+<!-- 사원번호 찾기 -->
+	<select id="findEmpnoByNameAndEmail" parameterType="map" resultType="String">
+		SELECT EMPNO FROM EMPLOYEES e WHERE NAME = #{name} AND EMAIL =#{email} 
+	</select>
 </mapper>

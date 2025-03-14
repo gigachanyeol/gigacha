@@ -95,19 +95,16 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">예약</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do"> 
-				<span>회의실 등록(관리자)</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
+<%--             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do">  --%>
+<!-- 				<span>회의실 등록(관리자)</span></a></li> -->
+<!--             <li> <hr class="dropdown-divider"> </li> -->
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> 
-				<span>회의실정보 수정 및 삭제(관리자)</span></a></li>
+				<span>회의실정보 리스트(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservation.do"> 
 				<span>회의실 예약</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
-				<span>회의실 예약취소</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="#"> 
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservationList.do"> 
 				<span>예약내역조회</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>

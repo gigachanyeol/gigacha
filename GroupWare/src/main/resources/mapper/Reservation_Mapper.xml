@@ -4,11 +4,20 @@
 	<!-- 예약 생성 -->
 	<insert id="insertreservation" parameterType="ReservationDto">
 	<selectKey keyProperty="room_id" resultType="String" order="BEFORE">
-	    	SELECT ROOM_ID FROM ROOMS WHERE ROOM_NAME = #{room_name}
+	    SELECT 
+	    	ROOM_ID 
+	    FROM ROOMS
+	    WHERE ROOM_NAME = #{room_name}
     </selectKey>
-	INSERT INTO RESERVATION (RESERVATION_ID, ROOM_ID, ROOM_NAME,
-		RESERVATION_DATE,
-		RESERVATION_TIME, RESERVER, CAPACITY, MEMBER, PURPOSE)
+	INSERT INTO RESERVATION 
+				(RESERVATION_ID, 
+				 ROOM_ID, ROOM_NAME,
+			     RESERVATION_DATE,
+				 RESERVATION_TIME, 
+				 RESERVER, 
+				 CAPACITY, 
+				 MEMBER, 
+				PURPOSE)
 	VALUES
 		(SEQ_RESERVATION_ID.NEXTVAL, #{room_id}, #{room_name}, #{reservation_date},
 		 		#{reservation_time}, #{reserver},#{capacity}, #{member}, #{purpose})
