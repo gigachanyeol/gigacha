@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		isCheckedIn = true;
 		checkInTime = new Date();
 
+
 		// UI 업데이트
 		checkInButton.style.backgroundColor = '#cccccc';
 		checkInButton.disabled = true;
@@ -117,6 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// 타이머 시작 - 이전에 누적된 시간부터 계속
 		startWorkTimer();
+
+		const now = new Date();
+		const Time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+		console.log("Time", Time);
+		document.getElementById('workInTime').textContent = Time;
 
 		// 주기적 동기화 시작
 		startPeriodicSync();
@@ -203,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// 셀이 비어있을 때만 출근 시간 업데이트
 				if (workintextContent == "") {
 					cell.textContent = formattedTime;
-					document.getElementById('workInTime').textContent = formattedTime;
+					//					document.getElementById('workInTime').textContent = formattedTime;
 				}
 				// 이미 값이 있으면 업데이트하지 않음
 			} else if (type == 'check-out') {
@@ -345,68 +352,49 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.log("📌 변환된 이벤트 데이터:", attendancelist);
 
 				// 출근 기록이 있는 경우
+				//				let hasAttendanceData = false;
+
 				attendancelist.forEach(function(data) {
 					if (data && data.workin_time) {
 						checkInTime = new Date(data.workin_time);
 
 						if (data.workout_time) {
-							isCheckedIn = true;
+							// 퇴근 기록이 있는 경우 - 이미 퇴근했으므로 isCheckedIn은 false가 되어야 함
+							isCheckedIn = false;
 							const checkOutTime = new Date(data.workout_time);
 
 							totalWorkedSeconds = data.total_worked_seconds || Math.floor((checkOutTime - checkInTime) / 1000);
 
-							//							timeDisplay.textContent = formatTime(totalWorkedSeconds);
-							checkInButton.style.backgroundColor = '#cccccc';
-							checkInButton.disabled = true;
-							checkOutButton.style.backgroundColor = '#ff6b6b';
-							checkOutButton.style.color = 'white';
-							checkOutButton.disabled = false;
-							noticeText.textContent = '퇴근 기록을 갱신할 수 있습니다.';
+							checkInButton.style.backgroundColor = '#26c6da'; // 출근 버튼 활성화
+							checkInButton.disabled = false;
+							checkOutButton.style.backgroundColor = 'white';
+							checkOutButton.style.color = '#333';
+							checkOutButton.disabled = true;
+							noticeText.textContent = '오늘 근무를 완료했습니다.';
 
 							const inTimeFormatted = formatTimeString(checkInTime);
 							const outTimeFormatted = formatTimeString(checkOutTime);
-							document.getElementById('workInTime').textContent = inTimeFormatted;
+//							document.getElementById('workInTime').textContent = inTimeFormatted;
 							document.getElementById('workOutTime').textContent = outTimeFormatted;
 
 							updateAttendanceTable('check-in', checkInTime, 0);
 							updateAttendanceTable('check-out', checkOutTime, totalWorkedSeconds);
-
-							startWorkTimer();
-							startPeriodicSync();
 						} else {
+							// 출근만 했고 퇴근은 안한 경우
 							isCheckedIn = true;
-
-							const now = new Date();
-							totalWorkedSeconds = Math.floor((now - checkInTime) / 1000);
-
-							startWorkTimer();
-							startPeriodicSync();
-
-							checkInButton.style.backgroundColor = '#cccccc';
-							checkInButton.disabled = true;
-							checkOutButton.style.backgroundColor = '#ff6b6b';
-							checkOutButton.style.color = 'white';
-							checkOutButton.disabled = false;
-							noticeText.textContent = '출근 중입니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
-
-							const inTimeFormatted = formatTimeString(checkInTime);
-							document.getElementById('workInTime').textContent = inTimeFormatted;
-
-							updateAttendanceTable('check-in', checkInTime, 0);
-
-							localStorage.setItem('attendanceState', JSON.stringify({
-								isCheckedIn: true,
-								checkInTime: checkInTime.toISOString(),
-								totalWorkedSeconds: totalWorkedSeconds
-							}));
+							// 나머지 코드는 그대로...
 						}
-
 					} else {
-						checkPreviousState();
+						// data가 없거나 workin_time이 null인 경우
+						isCheckedIn = false;
+						document.getElementById('workInTime').textContent = "00:00:00";
+						document.getElementById('workOutTime').textContent = "00:00:00";
 					}
-
-
 				});
+
+				//				if (!hasAttendanceData) {
+				//					checkPreviousState();
+				//				}
 
 
 
@@ -422,28 +410,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	function checkPreviousState() {
 		// 로컬 스토리지에서 이전 상태 확인
 		const storedState = localStorage.getItem('attendanceState');
+
 		if (storedState) {
 			const state = JSON.parse(storedState);
+			console.log("state", state);
 
 			// 누적 근무 시간 불러오기
 			if (state.totalWorkedSeconds) {
 				totalWorkedSeconds = state.totalWorkedSeconds;
-				//				timeDisplay.textContent = formatTime(totalWorkedSeconds);
 			}
 
 			// 출근 상태였다면 타이머 재시작
 			if (state.isCheckedIn) {
 				isCheckedIn = true;
 				checkInTime = new Date(state.checkInTime);
-
-				// 페이지가 닫혀있던 동안의 시간을 계산
-				const now = new Date();
-				const elapsedWhileClosed = Math.floor((now - checkInTime) / 1000);
-
-				// 이미 계산된 시간과 합산하여 표시
-				//				timeDisplay.textContent = formatTime(totalWorkedSeconds);
-				startWorkTimer();
-				startPeriodicSync();
 
 				// UI 업데이트
 				checkInButton.style.backgroundColor = '#cccccc';
@@ -452,7 +432,28 @@ document.addEventListener('DOMContentLoaded', function() {
 				checkOutButton.style.color = 'white';
 				checkOutButton.disabled = false;
 				noticeText.textContent = '출근 중입니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
+
+				startWorkTimer();
+				startPeriodicSync();
+			} else {
+				// 명시적으로 출근 버튼 활성화
+				isCheckedIn = false;
+				checkInButton.style.backgroundColor = '#26c6da';
+				checkInButton.disabled = false;
+				checkOutButton.style.backgroundColor = 'white';
+				checkOutButton.style.color = '#333';
+				checkOutButton.disabled = true;
+				noticeText.textContent = '출근하시려면 출근 버튼을 눌러주세요.';
 			}
+		} else {
+			// 로컬 스토리지에 데이터가 없는 경우 초기 상태로 설정
+			isCheckedIn = false;
+			checkInButton.style.backgroundColor = '#26c6da';
+			checkInButton.disabled = false;
+			checkOutButton.style.backgroundColor = 'white';
+			checkOutButton.style.color = '#333';
+			checkOutButton.disabled = true;
+			noticeText.textContent = '출근하시려면 출근 버튼을 눌러주세요.';
 		}
 	}
 
@@ -485,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			// ✅ 2. 월 옵션 다시 로드
 			const hireYear = hireDate ? hireDate.getFullYear() : year;
 			const hireMonth = hireDate ? hireDate.getMonth() : 0;
-//			console.log("✅ hireYear,hireMonth : ", hireYear, hireMonth);
+			//			console.log("✅ hireYear,hireMonth : ", hireYear, hireMonth);
 
 			populateMonths(year === hireYear ? hireMonth : 0);
 
