@@ -96,23 +96,29 @@ WHERE A.EMPNO IS NULL
     )
     AND WORKIN_TIME IS NULL
 </update>
-
-<!-- 근무시간 계산하기 -->
-
-<!-- 출근시간 불러오기 -->
-<select id="loadworkintime" parameterType="map">
-SELECT WORKIN_TIME FROM ATTENDANCERECORD a
-WHERE EMPNO = '1505001' 
+<!-- 퇴근시간 등록 -->
+<update id="workOutCheck" parameterType="map">
+    UPDATE ATTENDANCERECORD
+    SET WORKOUT_TIME = TO_DATE(#{workout_time}, 'YYYY-MM-DD HH24:MI:SS')
+    WHERE EMPNO = #{empno}
     AND ATTNO IN (
         SELECT ATTNO 
         FROM ATTENDANCERECORD 
-        WHERE ATTNO LIKE CONCAT('250312', '%')
+        WHERE ATTNO LIKE CONCAT(#{attno}, '%')
     )
-</select> 
+</update>
+<!-- 근무시간 계산하기 -->
+
+<!-- 출근시간 불러오기 -->
+<select id="loadworktime" parameterType="map" resultType="map">
+SELECT ATTNO, WORKIN_TIME, WORKOUT_TIME ,WORK_STATUS
+FROM ATTENDANCERECORD
+WHERE EMPNO = #{empno} 
+AND ATTNO LIKE CONCAT(#{attno}, '%')
+ORDER BY ATTNO ASC
+</select>
+
 <!---->
-
-
-
 
 
 </mapper>

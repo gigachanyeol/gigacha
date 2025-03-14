@@ -43,6 +43,23 @@ public class AttendanceDaoImpl implements IAttendanceDao {
 	@Override
 	public boolean workInCheck(Map<String, Object>  workInInfo) {
 		sessionTemplate.update(NS + "workInCheck", workInInfo);
-		return false;
+		return true;
 	}
+	
+	@Override
+	public boolean workOutCheck(Map<String, Object> workInInfo) {
+		sessionTemplate.update(NS + "workOutCheck", workInInfo);
+		return true;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getAttendance(Map<String, Object> getempatt) {
+	    // 여러 결과가 반환될 경우 selectList 사용
+	    List<Map<String, Object>> employeeAttendancelist = sessionTemplate.selectList(NS + "loadworktime", getempatt);
+
+	    System.out.println(employeeAttendancelist);
+	    
+	    return employeeAttendancelist;
+	}
+
 }

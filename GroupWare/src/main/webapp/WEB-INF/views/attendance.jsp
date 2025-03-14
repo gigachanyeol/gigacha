@@ -38,16 +38,16 @@
 					<div class="card info-card customers-card">
 						<div class="card-body">
 							<div class="attendance-container">
-								<div class="navigation">
-									<div class="nav-link">
-										<i class=" brightness-alt-high"></i> 01:43:23 PM 6/15(월)
-									</div>
-								</div>
+<!-- 								<div class="navigation"> -->
+<!-- 									<div class="nav-link"> -->
+<!-- 										<i class=" brightness-alt-high"></i> 01:43:23 PM 6/15(월) -->
+<!-- 									</div> -->
+<!-- 								</div> -->
 
 								<div class="time-card">
 									<div class="row">
 										<div class="col-md-7">
-											<div class="work-time">오늘 근무 시간</div>
+											<div class="work-time">TODAY</div>
 											<input type="hidden" id="empno" value="${loginDto.empno}">
 											<div class="time-display">00:00:00</div>
 											<div class="action-buttons">
@@ -69,13 +69,13 @@
 															class="badge rounded-pill bg-secondary" id="hiredateText"></span>
 													</div>
 												</div>
-												<div class="mb-3">
-													<div class="d-flex justify-content-between">
-														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span>
-														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span>
-														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span>
-													</div>
-												</div>
+<!-- 												<div class="mb-3"> -->
+<!-- 													<div class="d-flex justify-content-between"> -->
+<!-- 														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span> -->
+<!-- 														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span> -->
+<!-- 														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span> -->
+<!-- 													</div> -->
+<!-- 												</div> -->
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
 														<span>• 출근 시간:</span> <span class="text-primary fw-bold" id="workInTime">00:00:00</span>
@@ -83,9 +83,14 @@
 													</div>
 												</div>
 
-												<div>
+												<div class="mb-3">
 													<div class="d-flex justify-content-between">
 														<span>• 퇴근 시간:</span> <span class="text-primary fw-bold" id="workOutTime">00:00:00</span>
+													</div>
+												</div>
+												<div class="mb-3">
+													<div class="d-flex justify-content-between">
+														<span>• 월 누적 근무시간:</span> <span class="text-primary fw-bold" id="workOutTime">00:00:00</span>
 													</div>
 												</div>
 											</div>
