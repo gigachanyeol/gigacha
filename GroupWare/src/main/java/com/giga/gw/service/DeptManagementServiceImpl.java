@@ -19,9 +19,15 @@ public class DeptManagementServiceImpl implements IDeptManagementService{
 	private final IDeptManagementDao deptManagementDao;
 
 	@Override
-	public int insertDepartment(DepartmentDto dto) {
-		return deptManagementDao.insertDepartment(dto);
+	public int insertDepartment(Map<String, Object> map) {
+		return deptManagementDao.insertDepartment(map);
 	}
+	
+	@Override
+	public int duplicateCheck(String dto) {
+		return deptManagementDao.duplicateCheck(dto);
+	}
+
 
 	@Override
 	public int updateDept(DepartmentDto dto) {
@@ -34,7 +40,7 @@ public class DeptManagementServiceImpl implements IDeptManagementService{
 	}
 
 	@Override
-	public List<DepartmentDto> getAllDept() {
+	public List<Map<String, Object>> getAllDept() {
 		return deptManagementDao.getAllDept();
 	}
 
@@ -52,5 +58,6 @@ public class DeptManagementServiceImpl implements IDeptManagementService{
 	public List<DepartmentDto> getDeletedDept() {
 		return deptManagementDao.getDeletedDept();
 	}
+
 
 }

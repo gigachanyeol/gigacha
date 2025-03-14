@@ -32,6 +32,8 @@
 				<span>공지사항</span></a></li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeRegistration.do"> 
 				<span>인사등록</span></a></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/mypage.do"> 
+				<span>마이페이지</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
         </li>

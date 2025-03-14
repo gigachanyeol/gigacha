@@ -9,6 +9,11 @@
 
 <%@ include file="./layout/header.jsp"%>
 
+<style type="text/css">
+
+
+</style>
+
 </head> 
 <body>
 <%@ include file="./layout/newNav.jsp" %>

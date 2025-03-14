@@ -26,20 +26,34 @@
 		]]>
   </insert>
   -->
-  <insert id="insertDepartment">
+  <insert id="insertDepartment" parameterType="map">
   <![CDATA[
     INSERT INTO DEPARTMENTS
     (DEPTNO, DEPTNAME, PARENT_DEPTNO, USE_YN, CREATE_DATE, CREATE_EMP)
     VALUES(
         CASE 
-            WHEN #{deptType} = '본부' THEN 'HQ' || LPAD(DEPTHQ_SEQ.NEXTVAL, 2, '0')
-            WHEN #{deptType} = '부서' THEN 'D' || LPAD(DEPT_SEQ.NEXTVAL, 2, '0')
+            WHEN #{deptType} = 'HQ' THEN 'HQ' || LPAD(DEPTHQ_SEQ.NEXTVAL, 2, '0')
+            WHEN #{deptType} = 'D' THEN 'D' || LPAD(DEPT_SEQ.NEXTVAL, 2, '0')
         END,
-      	#{deptName}, #{parentDeptno}, 'Y', 
-        TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), #{createEmp})
+      	#{deptname}, #{parent_deptno}, 'Y', 
+        TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), #{create_emp})
    ]]>
 </insert>
+
+  <!-- 중복검사 -->
+  <select id="duplicateCheck" resultType="Integer">
+	SELECT COUNT(*)
+		FROM DEPARTMENTS
+		WHERE DEPTNAME=#{deptname}
+  </select>
   
+  <!-- 상위부서 조회 -->
+  <select id="hqSelect" resultType="DepartmentDto">
+  SELECT DEPTNO, DEPTNAME 
+	FROM DEPARTMENTS
+	WHERE PARENT_DEPTNO IS NULL
+	ORDER BY DEPTNAME
+  </select>
   
   <!-- 부서 수정 -->
   <update id="updateDepartment">
@@ -74,21 +88,32 @@
   </update>
   
   <!-- 부서 전체 조회 -->
-  <select id="getAllDept" resultType="DepartmentDto">
-	SELECT d1.DEPTNO, d1.DEPTNAME, d2.DEPTNAME AS PARENT_DEPTNAME
-		FROM DEPARTMENTS d1 LEFT JOIN DEPARTMENTS d2 
-		ON d1.PARENT_DEPTNO = d2.DEPTNO 
-		START WITH d1.PARENT_DEPTNO IS NULL
-		CONNECT BY PRIOR d1.DEPTNO = d1.PARENT_DEPTNO
-		AND d1.USE_YN = 'Y'
-		ORDER SIBLINGS BY d1.DEPTNO
+  <select id="getAllDept" resultType="map">
+	SELECT d1.DEPTNO AS "id", d1.DEPTNAME AS "text", NVL(d2.DEPTNO,'#') AS "parent"
+	FROM DEPARTMENTS d1 LEFT JOIN DEPARTMENTS d2  
+	ON d1.PARENT_DEPTNO = d2.DEPTNO 
+	START WITH d1.PARENT_DEPTNO IS NULL
+	CONNECT BY PRIOR d1.DEPTNO = d1.PARENT_DEPTNO
+	AND d1.USE_YN = 'Y'
+	ORDER SIBLINGS BY d1.DEPTNO
   </select>
   
   <!-- 부서 상세 조회 -->
-  <select id="selectDepartment" resultType="DepartmentDto">
- 	
+  <select id="getOneDept" resultType="DepartmentDto">
+  SELECT d1.DEPTNO, 
+		d1.DEPTNAME,
+		d2.DEPTNAME AS PARENT_DEPTNAME, 
+		d1.PARENT_DEPTNO,
+		TO_CHAR(d1.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE, 
+		TO_CHAR(d1.UPDATE_DATE,'YYYY-MM-DD') UPDATE_DATE, 
+		e.NAME AS UPDATE_EMP 
+	FROM DEPARTMENTS d1 LEFT JOIN DEPARTMENTS d2 
+	ON d1.PARENT_DEPTNO = d2.DEPTNO
+	LEFT JOIN EMPLOYEES e ON d1.UPDATE_EMP = e.EMPNO
+	WHERE d1.DEPTNO = #{deptno}
   </select>
   
+
   <!-- 부서 검색 -->
   <select id="getSearchDept" resultType="DepartmentDto">
   SELECT d1.DEPTNO, d1.DEPTNAME, d2.DEPTNAME AS PARENT_DEPTNAME
@@ -96,6 +121,7 @@
 	ON d1.PARENT_DEPTNO = d2.DEPTNO 
 	WHERE d1.DEPTNO = 'D01'
   </select>
+  
  
   
   <!-- 삭제된 부서 조회 -->
