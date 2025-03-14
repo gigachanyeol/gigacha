@@ -61,7 +61,7 @@
 	top: 0px;
 	left: 100%; 
  	margin-left:90px; 
-  	transform: translateX(90%); /* 오른쪽 정렬 보정 */
+  	transform: translateX(110%); /* 오른쪽 정렬 보정 */
 }
 .ui-datepicker {
     width: 350px; /* 달력 너비 조정 */
@@ -135,11 +135,13 @@
 					</tr>
 				</thead>
 				<tbody>
+				
 				<!-- 회의실 목록과 시간대를 분리하여 구현 -->
 <!-- 				<div style="display: flex;"> -->
 					<table class="reservation-table">
 						<thead>
 							<tr>
+							<th></th>
 								<th>회의실명</th>
 								<c:forEach var="timeSlot" items="${timeSlots}">
 									<th>${timeSlot}</th>
@@ -150,6 +152,7 @@
 
 							<c:forEach var="room" items="${rooms}" varStatus="roomStatus">
 								<tr>
+									<td><img src="/GroupWare/storage/${room.image_url}" width="100px" height="100px"></td>
 									<td class="room_name" data-room_id="${room.room_id}">${room.room_name}</td>
 									<c:forEach var="timeSlot" items="${timeSlots}"
 										varStatus="timeStatus">
@@ -165,6 +168,7 @@
 										<td>
 											<div
 												class="btn_bg nocheck text-center ${isReserved ? 'disableBtn' : ''}"
+												data-image_url="${room.image_url}"
 												data-room_id="${room.room_id}"
 												data-room_name="${room.room_name}"
 												data-time-slot="${timeSlot}"
@@ -331,7 +335,7 @@
 		   			capacity:capacity,
 // 		   			member:member.replace("✖","/") ,
 		   			member:ids,
-		   			purpose:purpose
+		   			purpose:purpose,
 		   		};
 		   		
 		   		console.log(JSON.stringify(reservationDto));

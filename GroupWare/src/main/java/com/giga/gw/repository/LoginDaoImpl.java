@@ -21,4 +21,9 @@ public class LoginDaoImpl implements ILoginDao {
 		return sessionTemplate.selectOne(NS+"login",map);
 	}
 
+	@Override
+	public String findEmpnoByNameAndEmail(Map<String, Object> map) {
+		return sessionTemplate.selectOne(NS+"findEmpnoByNameAndEmail",map);
+	}
+
 }

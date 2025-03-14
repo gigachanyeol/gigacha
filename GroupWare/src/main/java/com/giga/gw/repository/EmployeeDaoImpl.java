@@ -1,10 +1,13 @@
 package com.giga.gw.repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.giga.gw.dto.EmployeeDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,5 +34,6 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	public int updateSignature(String empno) {
 		return sql.update(NS+"updateSignature",empno);
 	}
+
 
 }

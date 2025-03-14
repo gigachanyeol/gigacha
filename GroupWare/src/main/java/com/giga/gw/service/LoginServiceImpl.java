@@ -23,4 +23,10 @@ public class LoginServiceImpl implements ILoginService {
 		return loginDao.login(map);
 	}
 
+	@Override
+	public String findEmpnoByNameAndEmail(Map<String, Object> map) {
+		return loginDao.findEmpnoByNameAndEmail(map);
+	}
+
+
 }

@@ -22,4 +22,7 @@
 		SELECT EMPNO, FILE_BASE FROM EMP_IMAGES
 		WHERE EMPNO = #{empno} AND GUBUN = '1' AND USE_YN = 'Y'
 	</select>
+	
+	
+	
 </mapper>

@@ -223,14 +223,14 @@
           <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
-        	<li>
-            <a href="${pageContext.request.contextPath}/rooms/roomform.do">
-              <span>회의실등록</span>
-            </a>
-          </li>
+<!--         	<li> -->
+<%--             <a href="${pageContext.request.contextPath}/rooms/roomform.do"> --%>
+<!--               <span>회의실등록</span> -->
+<!--             </a> -->
+<!--           </li> -->
           <li>
             <a href="${pageContext.request.contextPath}/rooms/roomList.do">
-              <span>회의실정보 수정 및 삭제</span>
+              <span>회의실정보 리스트</span>
             </a>
           </li>
         </ul>

@@ -58,8 +58,9 @@
 					<div class="card-body">
 						<table class="table">
 							<caption>
-								<button type="button" class="btn btn-primary"
-									onclick="location.href='./roomform.do'">회의실 등록</button>
+<!-- 								<button type="button" class="btn btn-primary" -->
+<!-- 									onclick="location.href='./roomform.do'">회의실 등록</button> -->
+								<button type="button" class="btn btn-primary" id="insertBtn">회의실 등록</button>
 							</caption>
 							<thead>
 								<tr>
@@ -68,6 +69,7 @@
 									<th scope="col">수용인원</th>
 									<th scope="col">등록일</th>
 									<th scope="col">수정일</th>
+									<th scope="col">회의실이미지</th>
 									<th scope="col">사용여부</th>
 								</tr>
 							</thead>
@@ -79,6 +81,7 @@
 										<td scope="col">${room.capacity}</td>
 										<td scope="col">${room.created_at}</td>
 										<td scope="col">${room.updated_at}</td>
+										<td scope="col">${room.image_url}</td>
 										<td scope="col">
 											<div class="${room.use_yn eq 'Y' ? 'switch on':'switch'}">
 												<div class="slider"></div>
@@ -121,6 +124,10 @@
 								type="number" class="form-control" id="capacity" min="1"
 								max="15">
 						</div>
+						<div class="mb-3">
+							<label for="image_url" class="form-label">회의실 이미지</label> 
+							<input type="file" class="form-control" id="image_url" name="file" accept="image/*" required>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
@@ -130,11 +137,53 @@
 				</div>
 			</div>
 		</div>
+<		<!-- 등록 Modal --> 
+		<div class="modal fade" id="insertModal" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">회의실 등록</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+					<form id="insertRoomForm" enctype="multipart/form-data">
+<!-- 						<input type="hidden" id="room_id"> -->
+						<div class="mb-3">
+							<label for="room_name" class="form-label">회의실 이름</label> 
+							<input type="text" class="form-control" id="room_name" name="room_name" required>
+						</div>
+						<div class="mb-3">
+							<label for="capacity" class="form-label">수용인원</label> 
+							<input type="number" class="form-control" id="capacity" name="capacity" min="1" max="15" required>
+						</div>
+						<div class="mb-3">
+							<label for="image_url" class="form-label">회의실 이미지</label> 
+							<input type="file" class="form-control" id="image_url" name="file" accept="image/*" required>
+<!-- 							<button type="button" id="uploadBtn" class="btn btn-secondary">파일 -->
+<!-- 									선택</button> -->
+						</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" id="insertFormBtn" class="btn btn-primary">등록</button>
+					</div>
+<!-- 						<button type="button" class="btn btn-secondary" -->
+<!-- 							data-bs-dismiss="modal">취소</button> -->
+<!-- 						<button type="button" id="insertRoomForm" class="btn btn-primary">등록</button> -->
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
 	<script>
              
         window.onload = function(){
         	var updateModal;
+        	var insertModal;
 
         	var switchBtn =  document.querySelectorAll(".switch")
         	console.log("스위치 버튼 갯수 : ", switchBtn.length)
@@ -226,11 +275,13 @@
         			var capacity_p = parent.children[2].textContent;
         			var created_at_p = parent.children[3].textContent;
         			var updated_at_p = parent.children[4].textContent;
+        			var image_url_p = parent.children[5].textContent;
         			
         			var room_id = document.getElementById("room_id");
         			var room_name = document.getElementById("room_name");
         			var capacity = document.getElementById("capacity");
-//         			var created_a t= document.getElementById("created_at");       			
+        			var image_url = document.getElementById("image_url");
+//         			var created_at= document.getElementById("created_at");       			
         			
         			
         			console.log("현재정보 : " , room_id_p , room_name_p, capacity_p, created_at_p, updated_at_p);
@@ -238,12 +289,12 @@
         			room_id.value = room_id_p;
         			room_name.value = room_name_p;
         			capacity.value = capacity_p;
+//         			image_url.value = image_url_p;
         			
         			updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
         	        updateModal.show();
         		}
         	}
-        	
         	
         	document.getElementById("updateRoomForm").onclick = function(event) {
         	    event.preventDefault();  // 폼 제출 이벤트 방지
@@ -251,13 +302,15 @@
         	    var room_id = document.getElementById("room_id").value;
         	    var room_name = document.getElementById("room_name").value;
     			var capacity = document.getElementById("capacity").value;
+    			var image_url = document.getElementById("image_url").value;
 
-    			console.log("전송될 값 :", room_id,room_name, capacity);
+    			console.log("전송될 값 :", room_id,room_name, capacity,image_url);
     			
     			var roomDto = {
     					room_id: room_id,
     					room_name: room_name,
-    					capacity: capacity
+    					capacity: capacity,
+    					image_url:image_url
             	    };
 
     			fetch("./update.do", {
@@ -284,6 +337,107 @@
     			});
 
         	}
+        	
+        	// 회의실 등록 버튼 클릭 이벤트
+        	var insertBtn = document.getElementById("insertBtn");
+        	insertBtn.onclick = function() {
+        	    // 모달을 열기 전에 입력 필드를 초기화 (필요한 경우)
+        	    var room_id = document.getElementById("room_id");
+        	    var room_name = document.getElementById("room_name");
+        	    var capacity = document.getElementById("capacity");
+        	    var image_url = document.getElementById("image_url");
+
+        	    room_id.value = '';   // 입력 필드 초기화
+        	    room_name.value = ''; // 입력 필드 초기화
+        	    capacity.value = '';  // 입력 필드 초기화
+        	    image_url.value = '';  // 입력 필드 초기화
+
+        	    // 회의실 등록 모달 띄우기
+        	    var insertModal = new bootstrap.Modal(document.getElementById("insertModal"));
+        	    insertModal.show();
+        	}
+        	
+        	//등록
+        	document.getElementById("insertFormBtn").onclick = function(event) {
+        	    event.preventDefault();  // 폼 제출 이벤트 방지
+        	    
+        	    //폼 데이터 생성
+        	    var form = document.getElementById("insertRoomForm");
+        	    var formData = new FormData(form);
+        	    
+        	    fetch("./insertRoom.do", {
+    			    method: "POST",
+    			    body: formData
+    			})
+    			.then(response => {
+    			    if (!response.ok) {
+    			        throw new Error("서버 응답 오류: " + response.status);
+    			    }
+    			    return response.json(); // JSON 형식의 응답을 파싱
+    			})
+    			.then(data => {
+    			    console.log(data);
+    			    if(data == true){
+    			    	Swal.fire("작성 성공").then(()=>{
+    			   			location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
+    			    		
+    			    	});
+    			    }else{
+    			    	Swal.fire("작성 실패");
+    			    }
+
+// 					insertModal.hide();
+    			})
+    			.catch(error => {
+    			    console.error("Error updating room data:", error);
+    			});
+        	    
+        	}
+        	
+        	
+        		
+        	
+        	
+//         	    console.log(event.target) //  modal button 
+//         	    var room_id = document.getElementById("room_id").value;
+//         	    var room_name = document.getElementById("room_name").value;
+//     			var capacity = document.getElementById("capacity").value;
+//     			var image_url = document.getElementById("image_url").value;
+
+//     			console.log("전송될 값 :", room_id,room_name, capacity, image_url);
+    			
+//     			var roomDto = {
+//     					room_id: room_id,
+//     					room_name: room_name,
+//     					capacity: capacity,
+//     					image_url: image_url
+//             	    };
+
+//     			fetch("./roomform.do", {
+//     			    method: "GET",
+//     			    headers: {
+//     			        "Content-Type": "application/json"
+//     			    },
+//     			    body: JSON.stringify(roomDto)
+//     			})
+//     			.then(response => {
+//     			    if (!response.ok) {
+//     			        throw new Error("서버 응답 오류: " + response.status);
+//     			    }
+//     			    return response.json(); // JSON 형식의 응답을 파싱
+//     			})
+//     			.then(data => {
+//     			    console.log(data);
+
+// 					updateModal.hide();
+//     			    location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
+//     			})
+//     			.catch(error => {
+//     			    console.error("Error updating room data:", error);
+//     			});
+
+//         	}
+
 
         }
     </script>

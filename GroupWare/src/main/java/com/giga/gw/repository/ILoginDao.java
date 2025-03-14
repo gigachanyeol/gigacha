@@ -7,4 +7,5 @@ import com.giga.gw.dto.EmployeeDto;
 public interface ILoginDao {
 
 	EmployeeDto login(Map<String, Object> map);
+	String findEmpnoByNameAndEmail(Map<String, Object> map);
 }
