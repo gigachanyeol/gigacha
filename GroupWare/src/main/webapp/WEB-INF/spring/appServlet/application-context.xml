@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<context:property-placeholder ignore-unresolvable="true"/>
 	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
 		<property name="locations">
 			<list>
 				<value>classpath:properties/db.properties</value>
 			</list>
 		</property>
 	</bean>
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="${driver}" />
-		<property name="url" value="${url}" />
-		<property name="username" value="${user}" />
-		<property name="password" value="${pw}" />
+		<property name="driverClassName" value="#{systemEnvironment['DB_DRIVER'] ?: '${driver}'}" />
+		<property name="url" value="#{systemEnvironment['DB_URL'] ?: '${url}'}" />
+		<property name="username" value="#{systemEnvironment['DB_USER'] ?: '${user}'}" />
+		<property name="password" value="#{systemEnvironment['DB_PASS'] ?: '${pw}'}" />
 	</bean>
 	
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">

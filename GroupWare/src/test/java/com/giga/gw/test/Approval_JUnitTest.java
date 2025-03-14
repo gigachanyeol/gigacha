@@ -31,7 +31,7 @@ public class Approval_JUnitTest {
 		ApprovalDto dto = ApprovalDto
 				.builder()
 				.form_id("HR005")
-				.empno(2501001)
+				.empno("2501001")
 				.approval_title("title~~~~~")
 				.approval_content("문서InsertTest~~~~~!~")
 				.approval_deadline("2025-03-01")
@@ -46,7 +46,7 @@ public class Approval_JUnitTest {
 		dto.setApproval_title("update title");
 		dto.setApproval_content("content ~~ update");
 		dto.setApproval_deadline("2025-03-07");
-		dto.setUpdate_empno(1501001);
+		dto.setUpdate_empno("1501001");
 		
 		assertNotEquals(0, approvalDao.updateApproval(dto));
 	}

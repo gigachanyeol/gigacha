@@ -569,7 +569,6 @@ function setDate(){
 	const year = today.getFullYear();
 	const month = String(today.getMonth() + 1).padStart(2, "0"); // 월(0~11) → +1 (01~12)
 	const day = String(today.getDate()).padStart(2, "0"); // 일 (01~31)
-	
 	// 최종 출력
 	const todayString = `${year}-${month}-${day}`;
 	console.log(todayString);
