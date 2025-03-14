@@ -22,6 +22,22 @@ LEFT JOIN ATTENDANCERECORD A
 WHERE A.EMPNO IS NULL
 </insert>
 
+<update id="dropSequence">
+    BEGIN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE ATTNO_SEQ';
+    EXCEPTION
+        WHEN OTHERS THEN NULL;
+    END;
+</update>
+
+<update id="createSequence">
+    CREATE SEQUENCE ATTNO_SEQ
+        START WITH 1
+        INCREMENT BY 1
+        NOCACHE
+        NOCYCLE
+</update>
+
 <!--연차 가져오기
 ::: 결재 완료 처리된 휴가 ""해당하는 사원에 한해서""리스트를 전체~!!!! 가져온다.
 -->
@@ -80,23 +96,29 @@ WHERE A.EMPNO IS NULL
     )
     AND WORKIN_TIME IS NULL
 </update>
-
-<!-- 근무시간 계산하기 -->
-
-<!-- 출근시간 불러오기 -->
-<select id="loadworkintime" parameterType="map">
-SELECT WORKIN_TIME FROM ATTENDANCERECORD a
-WHERE EMPNO = '1505001' 
+<!-- 퇴근시간 등록 -->
+<update id="workOutCheck" parameterType="map">
+    UPDATE ATTENDANCERECORD
+    SET WORKOUT_TIME = TO_DATE(#{workout_time}, 'YYYY-MM-DD HH24:MI:SS')
+    WHERE EMPNO = #{empno}
     AND ATTNO IN (
         SELECT ATTNO 
         FROM ATTENDANCERECORD 
-        WHERE ATTNO LIKE CONCAT('250312', '%')
+        WHERE ATTNO LIKE CONCAT(#{attno}, '%')
     )
-</select> 
+</update>
+<!-- 근무시간 계산하기 -->
+
+<!-- 출근시간 불러오기 -->
+<select id="loadworktime" parameterType="map" resultType="map">
+SELECT ATTNO, WORKIN_TIME, WORKOUT_TIME ,WORK_STATUS
+FROM ATTENDANCERECORD
+WHERE EMPNO = #{empno} 
+AND ATTNO LIKE CONCAT(#{attno}, '%')
+ORDER BY ATTNO ASC
+</select>
+
 <!---->
-
-
-
 
 
 </mapper>

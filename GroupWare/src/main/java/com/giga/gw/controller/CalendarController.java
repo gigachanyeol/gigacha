@@ -54,7 +54,7 @@ public class CalendarController {
 	@PostMapping("/saveSchedule.do")
 	@ResponseBody
 	public boolean saveSchedule(@RequestBody Map<String, Object> schedule) {
-		log.info("📢 컨트롤러 도착! 요청 데이터: {}", schedule);
+		log.info("📢 📢📢📢📢📢📢📢📢📢컨트롤러 도착! 요청 데이터: {}", schedule);
 
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> events = (List<Map<String, Object>>) schedule.get("events");
@@ -64,9 +64,11 @@ public class CalendarController {
 			paramMap.put("empno", event.get("empno"));
 			paramMap.put("sch_title", event.get("sch_title"));
 
-			// 🛠️ ISO 8601 형식의 날짜 문자열을 Timestamp로 변환
+//			// 🛠️ ISO 8601 형식의 날짜 문자열을 Timestamp로 변환
 			paramMap.put("sch_startdate", convertToTimestamp((String) event.get("start")));
 			paramMap.put("sch_enddate", convertToTimestamp((String) event.get("end")));
+//			paramMap.put("sch_startdate", event.get("start"));
+//			paramMap.put("sch_enddate", event.get("end"));
 
 			paramMap.put("sch_color", event.get("color"));
 			
@@ -109,38 +111,32 @@ public class CalendarController {
 	    @RequestParam("end") String end, 
 	    HttpSession session
 	) {
-	    // 로그인 사용자 정보 확인
+//	    // 로그인 사용자 정보 확인
 	    EmployeeDto loginUser = (EmployeeDto) session.getAttribute("loginDto");
-	    
-	    // 로그인 사용자 null 체크
-	    if (loginUser == null) {
-	        log.warn("⚠️ 미인증 사용자의 일정 조회 시도");
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	    }
-	    
-	    log.info("📢 로그인된 사용자 정보 확인: {}", loginUser);
+//	    
+//	    // 로그인 사용자 null 체크
+//	    if (loginUser == null) {
+//	        log.warn("⚠️ 미인증 사용자의 일정 조회 시도");
+//	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//	    }
+//	    
+//	    log.info("📢 로그인된 사용자 정보 확인: {}", loginUser);
 
 	    try {
-	        // 사용자 권한 레벨 결정
-	        ScheduleAccessLevel accessLevel = determineAccessLevel(loginUser);
-	        
-	        // 요청 타입 결정
-	        String requestType = switch (accessLevel) {
-	            case PERSONAL -> "personal";
-	            case DEPARTMENT -> "department";
-	            case HR, MANAGER -> "all";
-	            default -> throw new AccessDeniedException("일정 조회 권한 없음");
-	        };
-
-	        log.info("📢 요청 타입 결정: {}", requestType);
-	        log.info("📢 로그인한 사용자: {}", loginUser.getEmpno());
-	        // 일정 조회
-//	        List<Map<String, Object>> schedules = switch (requestType) {
-//	            case "personal" -> calendarDao.loadEmpSchedule(loginUser.getEmpno());
-//	            case "department" -> calendarDao.loadDeptSchedule(loginUser.getDeptno());
-//	            case "all" -> calendarDao.loadAllSchedule();
-//	            default -> Collections.emptyList();
+//	        // 사용자 권한 레벨 결정
+//	        ScheduleAccessLevel accessLevel = determineAccessLevel(loginUser);
+//	        
+//	        // 요청 타입 결정
+//	        String requestType = switch (accessLevel) {
+//	            case PERSONAL -> "personal";
+//	            case DEPARTMENT -> "department";
+//	            case HR, MANAGER -> "all";
+//	            default -> throw new AccessDeniedException("일정 조회 권한 없음");
 //	        };
+//
+//	        log.info("📢 요청 타입 결정: {}", requestType);
+//	        log.info("📢 로그인한 사용자: {}", loginUser.getEmpno());
+
 	        List<Map<String, Object>> schedules = calendarDao.loadEmpSchedule(loginUser.getEmpno());
 	        
 	        log.info("📢 일정 조회 성공");
@@ -150,32 +146,14 @@ public class CalendarController {
 	            log.info("📌 조회된 일정 없음");
 	            return ResponseEntity.noContent().build();
 	        }
-
-//	        // 날짜 파싱 및 필터링
-//	        LocalDateTime filterStart = LocalDateTime.parse(start);
-//	        LocalDateTime filterEnd = LocalDateTime.parse(end);
-//
-//	        List<Map<String, Object>> filteredSchedules = schedules.stream()
-//	            .filter(schedule -> {
-//	                try {
-//	                    LocalDateTime scheduleStart = parseDateTime(schedule.get("SCH_STARTDATE"));
-//	                    LocalDateTime scheduleEnd = parseDateTime(schedule.get("SCH_ENDDATE"));
-//	                    
-//	                    return (scheduleStart.isBefore(filterEnd) && scheduleEnd.isAfter(filterStart));
-//	                } catch (Exception e) {
-//	                    log.warn("⚠️ 일정 날짜 파싱 오류: {}", schedule, e);
-//	                    return false;
-//	                }
-//	            })
-//	            .collect(Collectors.toList());
-//
-//	        log.info("📌 필터링된 일정 건수: {}", filteredSchedules.size());
 	        return ResponseEntity.ok(schedules);
 
-	    } catch (AccessDeniedException e) {
-	        log.warn("🚫 접근 권한 없음: {}", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-	    } catch (Exception e) {
+	    } 
+//	        catch (AccessDeniedException e) {
+//	        log.warn("🚫 접근 권한 없음: {}", e.getMessage());
+//	        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//	    } 
+	    catch (Exception e) {
 	        log.error("❌ 일정 조회 중 예상치 못한 오류 발생", e);
 	        return ResponseEntity.internalServerError().build();
 	    }
@@ -272,6 +250,7 @@ public class CalendarController {
 			paramMap.put("empno", schedule.get("empno"));
 			paramMap.put("sch_title", schedule.get("sch_title"));
 
+				// 9시간씩 빼고있음~!! 이거 수정하기 
 			// 🛠️ ISO 8601 형식의 날짜 문자열을 Timestamp로 변환
 			paramMap.put("sch_startdate", convertToTimestamp((String) schedule.get("start")));
 			paramMap.put("sch_enddate", convertToTimestamp((String) schedule.get("end")));

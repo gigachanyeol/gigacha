@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// 내비게이션 바에 현재 날짜와 시간 업데이트
 	function updateCurrentDateTime() {
-		const navTimeElement = document.querySelector('.navigation .nav-link:first-child');
+		const navTimeElement = document.querySelector('.time-display');
 		const now = new Date();
 
 		const hours = now.getHours();
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		const date = now.getDate();
 		const day = ['일', '월', '화', '수', '목', '금', '토'][now.getDay()];
 
-		const timeString = `${hour12}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm} ${month}/${date}(${day})`;
-		navTimeElement.innerHTML = `<i class="bi bi-chevron-left"></i> ${timeString}`;
+		const timeString = `${month}/${date}(${day}) ${ampm} ${hour12}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+		navTimeElement.innerHTML = `<i class="ri-bear-smile-line"></i> ${timeString}`;
 
 		setTimeout(updateCurrentDateTime, 1000);
 	}
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		workTimer = setInterval(() => {
 			totalWorkedSeconds++;
-			timeDisplay.textContent = formatTime(totalWorkedSeconds);
+			//			timeDisplay.textContent = formatTime(totalWorkedSeconds);
 		}, 1000);
 	}
 
@@ -101,10 +101,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// 출근 함수
 	function checkIn() {
-		if (isCheckedIn) return;
+		console.log("출근 상태 확인:", isCheckedIn);
+		if (isCheckedIn) {
+			console.log("이미 출근 상태입니다.");
+			return;
+		}
 
 		isCheckedIn = true;
+		console.log("출근 함수>>>", isCheckedIn);
 		checkInTime = new Date();
+
 
 		// UI 업데이트
 		checkInButton.style.backgroundColor = '#cccccc';
@@ -149,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		syncInterval = null;
 
 		// 화면에 총 누적 근무 시간 표시
-		timeDisplay.textContent = formatTime(totalWorkedSeconds);
+		//		timeDisplay.textContent = formatTime(totalWorkedSeconds);
 
 		// UI 업데이트
 		checkInButton.style.backgroundColor = '#26c6da';
@@ -166,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			totalWorkedSeconds: totalWorkedSeconds
 		}));
 
-		console.log('누적시간 : ', totalWorkedSeconds);
+		//		console.log('누적시간 : ', totalWorkedSeconds);
 
 		// 최종 근무 기록 저장 (총 누적 시간 기록)
 		updateAttendanceTable('check-out', checkOutTime, totalWorkedSeconds);
@@ -187,34 +193,42 @@ document.addEventListener('DOMContentLoaded', function() {
 		const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
 		// 출근 또는 퇴근에 따른 셀 인덱스 설정
-		const cellIndex = type === 'check-in' ? 1 : 2; // 1은 출근, 2는 퇴근 셀
+		const cellIndex = type === 'check-in' ? 0 : 1; // 0은 출근, 1은 퇴근 셀
 
-		// 해당 셀 ID 생성 (날짜-인덱스)
-		const cellId = `${formattedDate}-${cellIndex - 1}`; // 인덱스는 0부터 시작하므로 1 빼기
+		// 해당 셀 ID 생성
+		const cellId = `${formattedDate}-${cellIndex}`;
 
-		// 셀 찾기 및 시간 추가
+		//		console.log('업데이트 중인 셀:', cellId, '시간:', formattedTime);
+
+		// 셀 찾기
 		const cell = document.getElementById(cellId);
+
 		if (cell) {
-			cell.textContent = formattedTime;
-		}
-		if (type == 'check-in') {
-			document.getElementById('workInTime').textContent = formattedTime;
-		}
+			if (type == 'check-in') {
+				var workintextContent = cell.textContent;
+				// 셀이 비어있을 때만 출근 시간 업데이트
+				if (workintextContent == "") {
+					cell.textContent = formattedTime;
+					document.getElementById('workInTime').textContent = formattedTime;
+				}
+			} else if (type == 'check-out') {
+				// 퇴근 시간은 항상 업데이트
+				cell.textContent = formattedTime;
 
-		if (type == 'check-out') {
-			// 총 근무 시간을 HH:MM:SS 형식으로 변환
-			const totalFormattedTime = formatTime(total); // total은 총 누적 시간(초 단위)
-			console.log('누적시간 : ', totalFormattedTime);
+				// 총 근무 시간을 HH:MM:SS 형식으로 변환
+				const totalFormattedTime = formatTime(total);
 
-			// 총 근무 시간 표시
-			const totalWorkTimeCell = document.getElementById(`${formattedDate}-${cellIndex + 2}`);
-			if (totalWorkTimeCell) {
-				totalWorkTimeCell.textContent = totalFormattedTime; // total 근무 시간 업데이트
+				// 총 근무 시간 표시 (4번째 셀에 표시)
+				const totalWorkTimeCell = document.getElementById(`${formattedDate}-4`);
+				//				console.log('총 근무 시간 셀:', `${formattedDate}-4`);
+
+				if (totalWorkTimeCell) {
+					totalWorkTimeCell.textContent = totalFormattedTime;
+				}
+				document.getElementById('workOutTime').textContent = formattedTime;
 			}
-			document.getElementById('workOutTime').textContent = formattedTime;
 		}
 	}
-
 	// 출근 기록 저장
 	function saveAttendanceRecord(type, time, duration = null) {
 		console.log('출근 기록 저장:', {
@@ -263,138 +277,166 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// DB에서 오늘의 출근 정보 로드
-	function loadTodayAttendanceFromDB() {
+	// 오늘 출근 정보 로드 함수에서 출근 기록이 없을 경우 초기화
+	function loadTodayAttendanceFromDB(selectedYear, selectedMonth) {
 		const empno = document.getElementById('empno').value;
 		const today = new Date();
-		const formattedDate = `${String(today.getFullYear()).substring(0,3)}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+		let formattedDate;
 
-	console.log("formattedDate",formattedDate);
-//		fetch(`./getTodayAttendance.do?empno=${empno}&date=${formattedDate}`)
-//			.then(response => {
-//				// 응답이 JSON인지 확인
-//				const contentType = response.headers.get('content-type');
-//				if (contentType && contentType.includes('application/json')) {
-//					return response.json();
-//				} else {
-//					// JSON이 아니면 빈 객체 반환
-//					console.log('출근 정보 없음 또는 잘못된 응답 형식');
-//					return {};
-//				}
-//			})
-//			.then(data => {
-//				// 출근 기록이 있는 경우
-//				if (data && data.workin_time) {
-//					checkInTime = new Date(data.workin_time);
-//
-//					// 퇴근 기록이 있는 경우 (하루 근무 완료)
-//					if (data.workout_time) {
-//						isCheckedIn = false;
-//						const checkOutTime = new Date(data.workout_time);
-//
-//						// 총 근무 시간 가져오기
-//						totalWorkedSeconds = data.total_worked_seconds ||
-//							Math.floor((checkOutTime - checkInTime) / 1000);
-//
-//						// UI 업데이트
-//						timeDisplay.textContent = formatTime(totalWorkedSeconds);
-//						checkInButton.style.backgroundColor = '#cccccc';
-//						checkInButton.disabled = true;
-//						checkOutButton.style.backgroundColor = '#cccccc';
-//						checkOutButton.disabled = true;
-//						noticeText.textContent = '오늘 근무가 완료되었습니다. 수고하셨습니다.';
-//
-//						// 출퇴근 시간 표시
-//						const inTimeFormatted = formatTimeString(checkInTime);
-//						const outTimeFormatted = formatTimeString(checkOutTime);
-//						document.getElementById('workInTime').textContent = inTimeFormatted;
-//						document.getElementById('workOutTime').textContent = outTimeFormatted;
-//
-//						// 테이블 업데이트
-//						updateAttendanceTable('check-in', checkInTime, 0);
-//						updateAttendanceTable('check-out', checkOutTime, totalWorkedSeconds);
-//					}
-//					// 출근만 한 상태 (근무 중)
-//					else {
-//						isCheckedIn = true;
-//
-//						// 현재 시간과 출근 시간의 차이 계산
-//						const now = new Date();
-//						totalWorkedSeconds = Math.floor((now - checkInTime) / 1000);
-//
-//						// UI 업데이트
-//						timeDisplay.textContent = formatTime(totalWorkedSeconds);
-//						startWorkTimer();
-//						startPeriodicSync();
-//
-//						checkInButton.style.backgroundColor = '#cccccc';
-//						checkInButton.disabled = true;
-//						checkOutButton.style.backgroundColor = '#ff6b6b';
-//						checkOutButton.style.color = 'white';
-//						checkOutButton.disabled = false;
-//						noticeText.textContent = '출근 중입니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
-//
-//						// 출근 시간 표시
-//						const inTimeFormatted = formatTimeString(checkInTime);
-//						document.getElementById('workInTime').textContent = inTimeFormatted;
-//
-//						// 테이블 업데이트
-//						updateAttendanceTable('check-in', checkInTime, 0);
-//
-//						// 로컬 스토리지에 출근 상태 저장 (백업용)
-//						localStorage.setItem('attendanceState', JSON.stringify({
-//							isCheckedIn: true,
-//							checkInTime: checkInTime.toISOString(),
-//							totalWorkedSeconds: totalWorkedSeconds
-//						}));
-//					}
-//				}
-//				// 출근 기록이 없는 경우 (로컬 스토리지 확인)
-//				else {
-//					checkPreviousState();
-//				}
-//			})
-//			.catch(error => {
-//				console.error('출근 정보 로드 오류:', error);
-//				// 오류 발생 시 로컬 스토리지 확인
-//				checkPreviousState();
-//			});
+		if (selectedYear === undefined || selectedMonth === undefined) {
+			formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+		} else {
+			formattedDate = `${selectedYear}${String(selectedMonth + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+		}
+
+		let data = { empno: empno, attno: formattedDate };
+
+		fetch('./getAttendance.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(handleAttendanceResponse)  // 서버 응답 처리 함수 호출
+			.catch(handleAttendanceError);    // 오류 처리 함수 호출
 	}
 
-	// 이전 출근 상태 확인 (로컬 스토리지에서)
-	function checkPreviousState() {
-		// 로컬 스토리지에서 이전 상태 확인
-		const storedState = localStorage.getItem('attendanceState');
-		if (storedState) {
-			const state = JSON.parse(storedState);
+	function handleAttendanceResponse(data) {
+		console.log("📢 서버에서 받아온 데이터:", data);
 
-			// 누적 근무 시간 불러오기
-			if (state.totalWorkedSeconds) {
-				totalWorkedSeconds = state.totalWorkedSeconds;
-				timeDisplay.textContent = formatTime(totalWorkedSeconds);
-			}
+		const attendancelist = data.map(res => ({
+			attno: res.ATTNO,
+			workin_time: res.WORKIN_TIME ? new Date(res.WORKIN_TIME - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 19).replace("T", " ") : null,
+			workout_time: res.WORKOUT_TIME ? new Date(res.WORKOUT_TIME - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 19).replace("T", " ") : null,
+			work_status: res.WORK_STATUS
+		}));
 
-			// 출근 상태였다면 타이머 재시작
-			if (state.isCheckedIn) {
-				isCheckedIn = true;
-				checkInTime = new Date(state.checkInTime);
+		console.log("📌 변환된 이벤트 데이터:", attendancelist);
 
-				// 페이지가 닫혀있던 동안의 시간을 계산
+		// 모든 출근 데이터를 테이블에 표시
+		displayAllAttendanceData(attendancelist);
+
+		const today = new Date();
+		const todayFormatted = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+		const todayAttendance = attendancelist.find(item => item.attno === todayFormatted);
+
+		if (!todayAttendance || !todayAttendance.workin_time) {
+			console.log("📌 오늘 출근 기록이 없음");
+
+			// 출근 기록이 없을 때 UI 초기화 추가
+			checkInButton.style.backgroundColor = '#26c6da';
+			checkInButton.disabled = false;
+			checkOutButton.style.backgroundColor = 'white';
+			checkOutButton.style.color = '#333';
+			checkOutButton.disabled = true;
+			noticeText.textContent = '출근 등록을 해주세요.';
+
+			isCheckedIn = false;
+			console.log("📌 초기화 후 >>> isCheckedIn", isCheckedIn);
+		} else {
+			// 출근 기록이 있는 경우 처리
+			processAttendanceData(todayAttendance);
+			isCheckedIn = todayAttendance.workout_time ? false : true; // 퇴근 시간이 있으면 false, 없으면 true
+			console.log("📌 isCheckedIn", isCheckedIn);
+		}
+	}
+
+	// 출근 기록을 처리하는 함수 (출근 기록이 있는 경우 호출)
+	function processAttendanceData(data) {
+		if (data.workin_time) {
+			const checkInTime = new Date(data.workin_time);
+			let totalWorkedSeconds = 0;
+
+			if (data.workout_time) {
+				// 퇴근 시간이 있는 경우
+				const checkOutTime = new Date(data.workout_time);
+				totalWorkedSeconds = data.total_worked_seconds || Math.floor((checkOutTime - checkInTime) / 1000);
+
+				// 출근은 가능하고 퇴근은 불가능하도록 설정
+				checkInButton.style.backgroundColor = '#26c6da';
+				checkInButton.disabled = false;
+				checkOutButton.style.backgroundColor = 'white';
+				checkOutButton.style.color = '#333';
+				checkOutButton.disabled = true;
+				noticeText.textContent = '오늘의 근무가 종료되었습니다.';
+
+				// 출근 및 퇴근 시간 포맷팅
+				const inTimeFormatted = formatTimeString(checkInTime);
+				const outTimeFormatted = formatTimeString(checkOutTime);
+				document.getElementById('workInTime').textContent = inTimeFormatted;
+				document.getElementById('workOutTime').textContent = outTimeFormatted;
+
+				// 출근 기록과 퇴근 기록을 테이블에 업데이트
+				updateAttendanceTable('check-in', checkInTime, 0);
+				updateAttendanceTable('check-out', checkOutTime, totalWorkedSeconds);
+
+				// 근무 시간 타이머 시작
+				startWorkTimer();
+				// 주기적인 동기화 시작
+				startPeriodicSync();
+			} else {
+				// 퇴근 시간이 없는 경우 (출근만 한 경우)
 				const now = new Date();
-				const elapsedWhileClosed = Math.floor((now - checkInTime) / 1000);
+				totalWorkedSeconds = Math.floor((now - checkInTime) / 1000);
 
-				// 이미 계산된 시간과 합산하여 표시
-				timeDisplay.textContent = formatTime(totalWorkedSeconds);
+				// 근무 시간 타이머 및 동기화 시작
 				startWorkTimer();
 				startPeriodicSync();
 
-				// UI 업데이트
+				// UI 업데이트: 출근 버튼 비활성화, 퇴근 버튼 활성화
 				checkInButton.style.backgroundColor = '#cccccc';
 				checkInButton.disabled = true;
 				checkOutButton.style.backgroundColor = '#ff6b6b';
 				checkOutButton.style.color = 'white';
 				checkOutButton.disabled = false;
 				noticeText.textContent = '출근 중입니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
+
+				// 출근 시간 표시
+				const inTimeFormatted = formatTimeString(checkInTime);
+				document.getElementById('workInTime').textContent = inTimeFormatted;
+
+				// 출근 기록을 테이블에 업데이트
+				updateAttendanceTable('check-in', checkInTime, 0);
+
+				// 로컬 스토리지에 출근 정보 저장
+				console.log("로컬 스토리지에 출근 정보 저장");
+				localStorage.setItem('attendanceState', JSON.stringify({
+					isCheckedIn: true,
+					checkInTime: checkInTime.toISOString(),
+					totalWorkedSeconds: totalWorkedSeconds
+				}));
 			}
+		} else {
+			// 출근 기록이 없는 경우
+			resetIfNoAttendance();
+		}
+	}
+
+	// 오류 처리 함수
+	function handleAttendanceError(error) {
+		console.error('출근 정보 로드 오류:', error);
+		resetIfNoAttendance(); // 오류 발생 시 초기화
+	}
+
+	// 출근 셀 체크 후 초기화 함수
+	function resetIfNoAttendance() {
+		const today = new Date();
+		const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+		const workInCell = document.getElementById(`${formattedDate}-0`);
+		console.log("출근 기록 없음. 로컬 스토리지 초기화 및 출근 상태 리셋");
+		// 출근 셀의 값이 비어있다면 출근 상태 초기화
+		if (!workInCell || workInCell.textContent.trim() === "") {
+			console.log("출근 기록 없음. 로컬 스토리지 초기화 및 출근 상태 리셋");
+			localStorage.removeItem('attendanceState');  // 로컬 스토리지 초기화
+			isCheckedIn = false; // 출근 상태 초기화
+			document.getElementById('workInTime').textContent = "00:00:00";
+			document.getElementById('workOutTime').textContent = "00:00:00";
+		} else {
+			console.log("출근 기록 없음. 로컬 스토리지 초기화 및 출근 상태 리셋");
+			localStorage.removeItem('attendanceState');  // 로컬 스토리지 초기화
+			isCheckedIn = false; // 출근 상태 초기화
+			document.getElementById('workInTime').textContent = "00:00:00";
+			document.getElementById('workOutTime').textContent = "00:00:00";
 		}
 	}
 
@@ -407,6 +449,50 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 이벤트 리스너 설정
 	checkInButton.addEventListener('click', checkIn);
 	checkOutButton.addEventListener('click', checkOut);
+
+	// TODAY 버튼 클릭 이벤트 리스너
+	const showTodayButton = document.getElementById('showtoday');
+	if (showTodayButton) {
+		showTodayButton.addEventListener('click', function() {
+			const today = new Date();
+			const year = today.getFullYear();
+			const month = today.getMonth();
+			const day = today.getDate();
+
+			console.log("📢 선택된 연도:", year);
+			console.log("📢 선택된 월:", month + 1);
+
+			// ✅ 1. 연도/월 선택 박스 값 변경
+			document.getElementById('yearSelect').value = year;
+			document.getElementById('monthSelect').value = month + 1; // 1부터 시작
+
+			// ✅ 2. 월 옵션 다시 로드
+			const hireYear = hireDate ? hireDate.getFullYear() : year;
+			const hireMonth = hireDate ? hireDate.getMonth() : 0;
+			//			console.log("✅ hireYear,hireMonth : ", hireYear, hireMonth);
+
+			populateMonths(year === hireYear ? hireMonth : 0);
+
+			// ✅ 3. 테이블 다시 로드
+			populateDates();
+			loadTodayAttendanceFromDB();
+
+			// ✅ 4. 자동 스크롤 실행
+			setTimeout(() => {
+				const todayId = `${year}${String(month + 1).padStart(2, '0')}${String(day).padStart(2, '0')}`;
+				//				console.log("✅ 3. todayId", todayId);  // "20250314" 형식으로 출력되는지 확인
+				const todayRowElement = document.querySelector(`td[id="${todayId}"]`);
+				//				console.log("✅ 3. todayRowElement", todayRowElement);
+
+				if (todayRowElement) {
+					const todayRow = todayRowElement.parentElement;
+					todayRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				} else {
+					console.log("⚠️ 오늘 날짜의 행을 찾지 못함.");
+				}
+			}, 100); // 500ms 정도로 설정해 테스트
+		});
+	}
 
 	// 초기화
 	updateCurrentDateTime();
@@ -461,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 월 셀렉트 박스 채우기
 	function populateMonths(startMonth = 0) {
 		// 기존 옵션 삭제
-		monthSelect.innerHTML = '';
+		monthSelect.innerHTML = ''; // 기존의 테이블 데이터 삭제
 
 		const endMonth = (getCurrentYearValue() == currentDate.getFullYear())
 			? currentDate.getMonth()
@@ -542,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var tenureText = yearDiff + "년 " + monthDiff + "개월";
 
 	// 콘솔에도 표시 (디버깅용)
-	console.log("근무 기간: " + tenureText);
+	//	console.log("근무 기간: " + tenureText);
 	document.getElementById('hiredate').innerHTML = year + "-" + month + "-" + date;
 	document.getElementById('hiredateText').innerHTML = "(" + tenureText + ")";
 
@@ -551,13 +637,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	/// 월에 맞는 일자를 채우는 함수
 	function populateDates(year, month) {
+		const tbody = document.getElementById('attendanceTable').querySelector('tbody');
 		tbody.innerHTML = ''; // 기존의 테이블 데이터 삭제
 
-		const daysInMonth = new Date(year, month + 1, 0).getDate(); // month + 1로 해당 월의 마지막 날짜를 구함
 		const today = new Date();
 		const todayYear = today.getFullYear();
 		const todayMonth = today.getMonth();
 		const todayDate = today.getDate();
+
+		if (year == undefined || month == undefined) {
+			year = todayYear;
+			month = todayMonth;
+		}
+
+		const daysInMonth = new Date(year, month + 1, 0).getDate(); // month + 1로 해당 월의 마지막 날짜를 구함
 
 		// 요일 배열 (일, 월, 화, 수, 목, 금, 토)
 		const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
@@ -571,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			const formattedDate = `${year}${String(month + 1).padStart(2, '0')}${String(day).padStart(2, '0')}`;
 
 			// 고유한 id를 날짜 형식에 '-5'를 추가하여 설정
-			dateCell.id = `${formattedDate}`;
+			dateCell.id = formattedDate;
 
 			// 날짜와 요일 표시
 			const date = new Date(year, month, day);
@@ -592,11 +685,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 
 			row.appendChild(dateCell);
+
 			// 출근, 퇴근, 연장, 야간, 합계, 상태 셀을 추가 (빈 셀로)
 			for (let i = 0; i < 6; i++) {
 				const emptyCell = document.createElement('td');
-				//각 td마다 id 지정~!
-
 				emptyCell.id = `${formattedDate}-${i}`;
 				row.appendChild(emptyCell);
 			}
@@ -606,61 +698,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		// 월에 해당하는 출퇴근 기록 로드
-		loadMonthlyAttendanceData(year, month + 1);
+		//		loadMonthlyAttendanceData(year, month + 1);
 		fetchLeaveData();
 	}
 
-	// 월별 출퇴근 기록 로드 함수
-	function loadMonthlyAttendanceData(year, month) {
-		const empno = document.getElementById('empno').value;
-		const formattedMonth = String(month).padStart(2, '0');
-
-//		fetch(`./getMonthlyAttendance.do?empno=${empno}&year=${year}&month=${formattedMonth}`)
-//			.then(response => response.json())
-//			.then(data => {
-//				if (data && data.length > 0) {
-//					data.forEach(record => {
-//						const workInDate = new Date(record.workin_time);
-//						const day = String(workInDate.getDate()).padStart(2, '0');
-//						const formattedDate = `${year}${formattedMonth}${day}`;
-//
-//						// 출근 시간 표시
-//						const workInCell = document.getElementById(`${formattedDate}-0`);
-//						if (workInCell) {
-//							workInCell.textContent = formatTimeString(workInDate);
-//						}
-//
-//						// 퇴근 시간이 있는 경우
-//						if (record.workout_time) {
-//							const workOutDate = new Date(record.workout_time);
-//							const workOutCell = document.getElementById(`${formattedDate}-1`);
-//							if (workOutCell) {
-//								workOutCell.textContent = formatTimeString(workOutDate);
-//							}
-//
-//							// 총 근무 시간 표시
-//							const totalWorkTimeCell = document.getElementById(`${formattedDate}-4`);
-//							if (totalWorkTimeCell && record.total_worked_seconds) {
-//								totalWorkTimeCell.textContent = formatTime(record.total_worked_seconds);
-//							}
-//						}
-//					});
-//				}
-//			})
-//			.catch(error => console.error('월간 출퇴근 기록 로드 오류:', error));
-	}
 
 	// 월 셀렉트 박스 변경 시 테이블 업데이트
 	monthSelect.addEventListener('change', function() {
 		const selectedYear = getCurrentYearValue();
-		const selectedMonth = parseInt(this.value) - 1;
-		populateDates(selectedYear, selectedMonth);
+		const selectedMonth = parseInt(this.value);  // 1부터 시작하는 월
+		populateDates(selectedYear, selectedMonth - 1);  // 0부터 시작하는 월로 변환
+		loadMonthlyAttendanceData(selectedYear, selectedMonth);  // 월 데이터 로드
 	});
 
 	// 기본 값으로 현재 월에 맞는 일자 채우기
 	const currentYear = new Date().getFullYear();
 	const currentMonth = new Date().getMonth();
 	populateDates(currentYear, currentMonth);
+	loadMonthlyAttendanceData(currentYear, currentMonth + 1);  // 1부터 시작하는 월로 변환
 
 	//클릭한 행 가져오기 
 	tbody.addEventListener('click', function(event) {
@@ -672,38 +727,134 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	function formatDate(timestamp) {
-		const date = new Date(timestamp);
-		return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
+		try {
+			// timestamp가 null, undefined 또는 유효하지 않은 형식인지 확인
+			if (!timestamp || isNaN(new Date(timestamp).getTime())) {
+				console.warn("유효하지 않은 날짜 값:", timestamp);
+				return ""; // 빈 문자열 반환 또는 기본값 설정
+			}
+			const date = new Date(timestamp);
+			return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
+		} catch (error) {
+			console.error("날짜 변환 오류:", timestamp, error);
+			return ""; // 오류 발생시 빈 문자열 반환
+		}
 	}
 
 	function fetchLeaveData() {
 		fetch(`${pageContext}/attendance/loadleave.do`)
-			.then(response => response.json()) // 응답을 JSON 형식으로 파싱
+			.then(response => response.json())
 			.then(data => {
-				console.log("📌 서버에서 받은 데이터를 출력:", data);
-
 				data.forEach(item => {
-					const START_DATE = formatDate(item.START_DATE);
-					const END_DATE = formatDate(item.END_DATE);
+					try {
+						// Parse dates properly
+						const startDate = new Date(item.START_DATE);
+						if (!isNaN(startDate.getTime())) {
+							// Format directly as YYYYMMDD
+							const formattedDate = `${startDate.getFullYear()}${String(startDate.getMonth() + 1).padStart(2, '0')}${String(startDate.getDate()).padStart(2, '0')}`;
+							const cellId = `${formattedDate}-5`;
+							const targetElement = document.getElementById(cellId);
 
-					//				console.log("📌 START_DATE:", START_DATE);
-					//            console.log("📌 END_DATE:", END_DATE);
-
-					// 날짜에 해당하는 요소 ID를 생성
-					var searchtd = `${START_DATE.replace(/-/g, '')}-5`;
-					//				console.log("📌 searchtd:", searchtd);
-					// 해당 날짜의 셀에 '연차' 추가
-					const targetElement = document.getElementById(searchtd);
-					//					console.log("📌 targetElement:", targetElement);
-
-					if (targetElement) {
-						targetElement.innerHTML += `연차`;
+							if (targetElement) {
+								targetElement.textContent = "연차";
+							}
+						}
+					} catch (error) {
+						console.error("Error processing leave item:", item, error);
 					}
 				});
 			})
-			.catch(error => console.error("📌 데이터 로드 중 오류 발생:", error));
+			.catch(error => console.error("데이터 로드 중 오류 발생:", error));
 	}
 
+	// 모든 출근 데이터를 테이블에 표시하는 함수
+	function displayAllAttendanceData(attendanceList) {
+		console.log("모든 출근 데이터 표시 시작");
 
+		attendanceList.forEach(item => {
+			const attno = item.attno; // 날짜 형식 (YYYYMMDD)
+
+			// 출근 시간 표시
+			if (item.workin_time) {
+				const workinTime = new Date(item.workin_time);
+				const formattedWorkinTime = formatTimeString(workinTime);
+				const workinCell = document.getElementById(`${attno}-0`);
+				if (workinCell) {
+					workinCell.textContent = formattedWorkinTime;
+					console.log(`출근 시간 표시: ${attno}-0 => ${formattedWorkinTime}`);
+				}
+			}
+
+			// 퇴근 시간 표시
+			if (item.workout_time) {
+				const workoutTime = new Date(item.workout_time);
+				const formattedWorkoutTime = formatTimeString(workoutTime);
+				const workoutCell = document.getElementById(`${attno}-1`);
+				if (workoutCell) {
+					workoutCell.textContent = formattedWorkoutTime;
+					console.log(`퇴근 시간 표시: ${attno}-1 => ${formattedWorkoutTime}`);
+				}
+
+				// 근무 상태 표시
+				if (item.work_status) {
+					const statusCell = document.getElementById(`${attno}-5`);
+					if (statusCell) {
+						// 근무 상태 코드를 텍스트로 변환
+						let statusText = '';
+						switch (item.work_status) {
+							case 'AT01':
+								statusText = '정상';
+								break;
+							case 'AT02':
+								statusText = '지각';
+								break;
+							case 'AT03':
+								statusText = '결근';
+								break;
+							default:
+								statusText = item.work_status;
+						}
+						statusCell.textContent = statusText;
+						console.log(`근무 상태 표시: ${attno}-5 => ${statusText}`);
+					}
+				}
+
+				// 근무 시간 계산 및 표시 (출근 시간과 퇴근 시간이 모두 있는 경우)
+				if (item.workin_time) {
+					const workinTime = new Date(item.workin_time);
+					const workoutTime = new Date(item.workout_time);
+					const totalWorkedSeconds = Math.floor((workoutTime - workinTime) / 1000);
+					const totalFormattedTime = formatTime(totalWorkedSeconds);
+
+					const totalWorkTimeCell = document.getElementById(`${attno}-4`);
+					if (totalWorkTimeCell) {
+						totalWorkTimeCell.textContent = totalFormattedTime;
+						console.log(`총 근무 시간 표시: ${attno}-4 => ${totalFormattedTime}`);
+					}
+				}
+			}
+		});
+
+		console.log("모든 출근 데이터 표시 완료");
+	}
+
+	function loadMonthlyAttendanceData(year, month) {
+		const empno = document.getElementById('empno').value;
+		// YYYYMM 형식으로 변환
+		const formattedYearMonth = `${year}${String(month).padStart(2, '0')}`;
+
+		console.log(`월 데이터 로드: ${formattedYearMonth}`);
+
+		let data = { empno: empno, attno: formattedYearMonth };
+
+		fetch('./getMonthlyAttendance.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(handleAttendanceResponse)  // 동일한 응답 처리 함수 사용
+			.catch(handleAttendanceError);    // 동일한 오류 처리 함수 사용
+	}
 
 });

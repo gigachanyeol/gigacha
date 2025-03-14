@@ -19,7 +19,8 @@ public class AttendanceServiceImpl implements IAttendanceService {
 	@Override
 	public void createTable() {
 		log.info("근태테이블 실행 스케줄러 동작");
-		attendanceDao.resetSequence();
+		attendanceDao.dropSequence();
+		attendanceDao.createSequence();
 		log.info("시퀀스 초기화 세팅 완료");
 		attendanceDao.createattendacetable();
 		log.info("테이블 추가 완료");

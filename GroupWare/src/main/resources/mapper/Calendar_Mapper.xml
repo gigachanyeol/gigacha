@@ -4,9 +4,25 @@
     <!-- 캘린더 저장 -->
 <insert id="scheduleSave" parameterType="map">
 INSERT INTO SCHEDULE (
-    SCH_ID, EMPNO, SCH_TITLE, SCH_STARTDATE, SCH_ENDDATE, SCH_COLOR, SCH_CONTENT, CREATE_EMPNO,CREATE_DATE
+    SCH_ID,
+    EMPNO,
+    SCH_TITLE,
+    SCH_STARTDATE,
+    SCH_ENDDATE,
+    SCH_COLOR,
+    SCH_CONTENT,
+    CREATE_EMPNO,
+    CREATE_DATE
 ) VALUES (
-    SCH_ID_SEQ.NEXTVAL, #{empno}, #{sch_title}, #{sch_startdate}, #{sch_enddate}, #{sch_color}, #{sch_content}, #{empno}, CURRENT_DATE
+    SCH_ID_SEQ.NEXTVAL,
+     #{empno},
+     #{sch_title},
+     #{sch_startdate},
+     #{sch_enddate},
+     #{sch_color},
+     #{sch_content},
+     #{empno},
+     CURRENT_DATE
 )
 </insert>
 

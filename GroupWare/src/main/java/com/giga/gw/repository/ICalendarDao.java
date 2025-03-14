@@ -14,6 +14,7 @@ public interface ICalendarDao {
     
     //개인 스케줄2
     List<Map<String, Object>> loadEmpSchedule(String empno);
+//    List<Map<String, Object>> loadEmpSchedule(Map<String, Object> emp);
     
     //부서 스케줄
     List<Map<String, Object>> loadDeptSchedule(String deptno);
