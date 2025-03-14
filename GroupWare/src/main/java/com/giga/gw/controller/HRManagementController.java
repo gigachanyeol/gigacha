@@ -11,6 +11,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/hrManagement")
 public class HRManagementController {
 	
+	@GetMapping("/mypage.do")
+	public String Mypage() {
+		return "mypage";
+	}
+	
+	
 	@GetMapping("/employeeRegistration.do")
 	public String DeptManagement() {
 		return "employeeRegistration";

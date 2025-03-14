@@ -18,10 +18,11 @@ public class DepartmentDto {
 	private String deptno;
 	private String deptname;
 	private String parent_deptno;
+	private String parent_deptname;
 	private String use_yn;
 	private String create_date;
 	private String update_date;
-	private int create_emp;
-	private int update_emp;
+	private String create_emp;
+	private String update_emp;
 
 }

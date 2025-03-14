@@ -18,13 +18,23 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	private final String NS = "com.giga.gw.repository.DeptManagementImpl.";
 
 	@Override
-	public int insertDepartment(DepartmentDto dto) {
-		return session.insert(NS+"insertDepartment",dto);
+	public int insertDepartment(Map<String, Object> map) {
+		return session.insert(NS+"insertDepartment",map);
+	}
+	
+	@Override
+	public int duplicateCheck(String dto) {
+		return session.selectOne(NS+"duplicateCheck",dto);
 	}
 	
 	@Override
 	public int insertHQDepartment(DepartmentDto dto) {
 		return session.insert(NS+"insertHQDepartment",dto);
+	}
+	
+	@Override
+	public List<DepartmentDto> hqSelect() {
+		return session.selectList(NS+"hqSelect");
 	}
 
 	@Override
@@ -38,7 +48,7 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	}
 	
 	@Override
-	public List<DepartmentDto> getAllDept() {
+	public List<Map<String, Object>> getAllDept() {
 		return session.selectList(NS+"getAllDept");
 	}
 
@@ -56,6 +66,10 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	public List<DepartmentDto> getDeletedDept() {
 		return session.selectList(NS+"getDeletedDept");
 	}
+
+
+
+	
 
 
 
