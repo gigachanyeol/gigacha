@@ -106,6 +106,27 @@
     <artifactId>ojdbc10</artifactId>
     <version>19.21.0.0</version>
 </dependency>
+<!-- 전자지갑 연결 방식을 위한 dependency 추가-->
+<!-- https://mvnrepository.com/artifact/com.oracle.database.security/oraclepki -->
+<dependency>
+    <groupId>com.oracle.database.security</groupId>
+    <artifactId>oraclepki</artifactId>
+    <version>19.21.0.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_cert -->
+<dependency>
+    <groupId>com.oracle.database.security</groupId>
+    <artifactId>osdt_cert</artifactId>
+    <version>19.21.0.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_core -->
+<dependency>
+    <groupId>com.oracle.database.security</groupId>
+    <artifactId>osdt_core</artifactId>
+    <version>19.21.0.0</version>
+</dependency>
 
 		<!-- myBatis -->
 		<dependency>
