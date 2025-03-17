@@ -66,9 +66,9 @@ public class LoginController {
 	    Map<String, Object> response = new HashMap<>();
 	    
 	    if (empno != null) {
-	        response.put("empno", empno);  // 사원번호 반환
+	        response.put("msg", empno);  // 사원번호 반환
 	    } else {
-	        response.put("error", "사원번호를 찾을 수 없습니다.");
+	        response.put("msg", "사원번호를 찾을 수 없습니다.");
 	    }
 	    
 	    return response;  // JSON 형태로 반환
