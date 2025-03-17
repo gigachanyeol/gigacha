@@ -99,6 +99,32 @@
 			<artifactId>ojdbc11</artifactId>
 			<version>23.3.0.23.09</version>
 		</dependency>
+
+	<!-- 전자지갑 연결 방식을 위한 dependency 추가-->
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>oraclepki</artifactId>
+	    <version>19.21.0.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>osdt_cert</artifactId>
+	    <version>19.21.0.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>osdt_core</artifactId>
+	    <version>19.21.0.0</version>
+	</dependency>
+<!-- UCP 추가-->
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ucp</artifactId>
+    <version>23.3.0.23.09</version>
+</dependency>
+
 		<!-- myBatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>

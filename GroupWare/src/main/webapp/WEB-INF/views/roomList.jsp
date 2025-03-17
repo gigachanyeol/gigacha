@@ -302,7 +302,14 @@
         	    var room_id = document.getElementById("room_id").value;
         	    var room_name = document.getElementById("room_name").value;
     			var capacity = document.getElementById("capacity").value;
-    			var image_url = document.getElementById("image_url").value;
+    			var image_url = document.getElementById("image_url").files[0];
+    			
+    			var formData = new FormData();
+    		    formData.append("room_id", room_id);
+    		    formData.append("room_name", room_name);
+    		    formData.append("capacity", capacity);
+    		    formData.append("file", image_url); // 파일 데이터 추가
+
 
     			console.log("전송될 값 :", room_id,room_name, capacity,image_url);
     			
@@ -328,8 +335,7 @@
     			})
     			.then(data => {
     			    console.log(data);
-
-					updateModal.hide();
+					updateModal.hide();					 
     			    location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
     			})
     			.catch(error => {
@@ -338,7 +344,7 @@
 
         	}
         	
-        	// 회의실 등록 버튼 클릭 이벤트
+			// 회의실 등록 버튼 클릭 이벤트
         	var insertBtn = document.getElementById("insertBtn");
         	insertBtn.onclick = function() {
         	    // 모달을 열기 전에 입력 필드를 초기화 (필요한 경우)
