@@ -15,7 +15,7 @@
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@0.tcp.jp.ngrok.io:13868:xe" />
+		<property name="url" value="jdbc:oracle:thin:@n3pvs6lm6k85iam9_medium?TNS_ADMIN=/home/Wallet_N3PVS6LM6K85IAM9" />
 		<property name="username" value="ATPC_GIGA" />
 		<property name="password" value="giga12345GIGA" />
 		
