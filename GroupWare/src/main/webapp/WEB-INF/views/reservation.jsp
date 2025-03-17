@@ -121,7 +121,6 @@
 		<div id="content">
 
 			<h3 class="content_title">예약하기</h3>
-			${reservation}
 			<table>
 				<thead>
 					<tr>
@@ -152,7 +151,7 @@
 
 							<c:forEach var="room" items="${rooms}" varStatus="roomStatus">
 								<tr>
-									<td><img src="/GroupWare/storage/${room.image_url}" width="100px" height="100px"></td>
+									<td><img src="/GroupWare/storage/${room.image_url}?v=${timestamp}" width="100px" height="100px"></td>
 									<td class="room_name" data-room_id="${room.room_id}">${room.room_name}</td>
 									<c:forEach var="timeSlot" items="${timeSlots}"
 										varStatus="timeStatus">
@@ -242,8 +241,6 @@
 		
 		var d;
 		
-	
-	
 		$(document).ready(function() {
 			
 			var date = new Date();
@@ -298,7 +295,7 @@
 	    		document.getElementById("reservation_time").value = choice_temp;
 	    		
 	    		document.getElementById("room_id").value = this.dataset.roomId; // data-room_id 속성 값 사용
-	    		document.getElementById("room_name").value = parent.children[0].textContent.trim();
+	    		document.getElementById("room_name").value = parent.children[1].textContent.trim();
 	    		
 	    			
 	   			reservationModal = new bootstrap.Modal(document.getElementById("reservationModal"));

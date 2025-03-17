@@ -66,7 +66,7 @@
 						<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
 						<button type="button" class="btn btn-link small mb-0" 
 							onclick="location.href=#">비밀번호 재설정</button>
-							<button type="button" class="btn btn-link small mb-0" data-bs-toggle="modal" data-bs-target="#findEmpno">사원번호 찾기
+							<button type="button" class="btn btn-link small mb-0" id="findEmpnoBtn" data-bs-toggle="modal" data-bs-target="#findEmpno">사원번호 찾기
               </button>
 					</div>
                   </form>
@@ -108,52 +108,97 @@
 									id="email" placeholder="이메일을 입력해주세요">
 							</div>
 						</div>
-
+						 <span id="empnoResult"></span>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">취소</button>
+						data-bs-dismiss="modal">닫기</button>
 					<button type="button" class="btn btn-primary" id="findBtn">조회</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
-	$("#findBtn").on("click", function(event) {
-	    console.log("🔍 버튼 클릭됨! findEmpno 실행!");
-	    event.preventDefault();
-	    findEmpno();
-	});
+	$("#findEmpnoBtn").on('click', function() {
+		
+		 $("#findEmpnoModal").modal('show');
+    });
+// });
+	   
+	$("#findBtn").on('click', function(){
+		 	var name = $("#name").val();
+		    var email = $("#email").val();
+			var msg = $('#empnoResult');
+		    // 이메일 형식 체크
+		    const emailRegex = /^[a-zA-Z0-9,_%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-	function findEmpno() {
-	    console.log("📢 findEmpno 함수 실행됨!");
+		    if (email.match(emailRegex)) {
+		        // AJAX 요청을 통해 사원번호를 찾기
+		        $.ajax({
+		            url: "./findEmpno.do",
+		            type: "POST",
+		            data: { "name": name, "email": email },
+		            success: function(data) {
+		                console.log("🎉 성공 응답:", data.msg);
+//	 	                if (data && data.empno) {
+		                    msg.text("사원번호는 [" + data.msg + "]입니다.");
+//	 	                } else {
+//	 	                	msg.text("사원번호를 찾을 수 없습니다.");
+//	 	                }
+		            },
+		            error: function(err) {
+		                console.log("🚨 에러 발생:", err);
+		                alert("관리자에게 문의하세요.");
+		            }
+		        });
+		    } else {
+		    	msg.text("잘못된 이메일 형식입니다.");
+		    }
+		});
+		    // "닫기" 버튼 또는 모달 종료 시 입력값 & 결과 초기화
+		    $("#findEmpno").on("hidden.bs.modal", function() {
+		    	$("#findForm")[0].reset(); // 폼 전체 초기화
+		        $("#empnoResult").text(""); // 결과 메시지 초기화
+		    });
+	
+	
 
-	    var name = document.getElementById('name').value;
-	    var email = document.getElementById('email').value;
 
-	    console.log("✅ 입력된 이름:", name);
-	    console.log("✅ 입력된 이메일:", email);
+// 	$("#findBtn").on("click", function(event) {
+// 	    console.log("🔍 버튼 클릭됨! findEmpno 실행!");
+// 	    event.preventDefault();
+// 	    findEmpno();
+// 	});
 
-	    $.ajax({
-	        url: "/findEmpno.do",
-	        type: "POST",
-	        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	        data: { "name": name, "email": email },
-	        success: function(data) {
-	            console.log("🎉 성공 응답:", data);
-	            if (data && data.empno) {
-	                $('#info').text("사원번호는 [" + data.empno + "]입니다.");
-	            } else {
-	                $('#info').text("사원번호를 찾을 수 없습니다.");
-	            }
-	        },
-	        error: function(err) {
-	            console.log("🚨 에러 발생:", err);
-	            alert("관리자에게 문의하세요.");
-	        }
-	    });
-	}
+// 	function findEmpno() {
+// 	    console.log("📢 findEmpno 함수 실행됨!");
+
+// 	    var name = document.getElementById('name').value;
+// 	    var email = document.getElementById('email').value;
+
+// 	    console.log("✅ 입력된 이름:", name);
+// 	    console.log("✅ 입력된 이메일:", email);
+
+// 	    $.ajax({
+// 	        url: "/findEmpno.do",
+// 	        type: "POST",
+// 	        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+// 	        data: { "name": name, "email": email },
+// 	        success: function(data) {
+// 	            console.log("🎉 성공 응답:", data);
+// 	            if (data && data.empno) {
+// 	                $('#info').text("사원번호는 [" + data.empno + "]입니다.");
+// 	            } else {
+// 	                $('#info').text("사원번호를 찾을 수 없습니다.");
+// 	            }
+// 	        },
+// 	        error: function(err) {
+// 	            console.log("🚨 에러 발생:", err);
+// 	            alert("관리자에게 문의하세요.");
+// 	        }
+// 	    });
+// 	}
 
 	</script>
 </body>
