@@ -14,7 +14,16 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/attendance.css">
-
+<!-- jQuery 및 jQuery UI -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- jQuery UI CSS -->
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Add SheetJS library for Excel export -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 	<%@ include file="./layout/newNav.jsp"%>
@@ -38,11 +47,11 @@
 					<div class="card info-card customers-card">
 						<div class="card-body">
 							<div class="attendance-container">
-<!-- 								<div class="navigation"> -->
-<!-- 									<div class="nav-link"> -->
-<!-- 										<i class=" brightness-alt-high"></i> 01:43:23 PM 6/15(월) -->
-<!-- 									</div> -->
-<!-- 								</div> -->
+								<!-- 								<div class="navigation"> -->
+								<!-- 									<div class="nav-link"> -->
+								<!-- 										<i class=" brightness-alt-high"></i> 01:43:23 PM 6/15(월) -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
 
 								<div class="time-card">
 									<div class="row">
@@ -69,28 +78,31 @@
 															class="badge rounded-pill bg-secondary" id="hiredateText"></span>
 													</div>
 												</div>
-<!-- 												<div class="mb-3"> -->
-<!-- 													<div class="d-flex justify-content-between"> -->
-<!-- 														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span> -->
-<!-- 														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span> -->
-<!-- 														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
+												<!-- 												<div class="mb-3"> -->
+												<!-- 													<div class="d-flex justify-content-between"> -->
+												<!-- 														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span> -->
+												<!-- 														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span> -->
+												<!-- 														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span> -->
+												<!-- 													</div> -->
+												<!-- 												</div> -->
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
-														<span>• 출근 시간:</span> <span class="text-primary fw-bold" id="workInTime">00:00:00</span>
-														
+														<span>• 출근 시간:</span> <span class="text-primary fw-bold"
+															id="workInTime">00:00:00</span>
+
 													</div>
 												</div>
 
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
-														<span>• 퇴근 시간:</span> <span class="text-primary fw-bold" id="workOutTime">00:00:00</span>
+														<span>• 퇴근 시간:</span> <span class="text-primary fw-bold"
+															id="workOutTime">00:00:00</span>
 													</div>
 												</div>
 												<div class="mb-3">
 													<div class="d-flex justify-content-between">
-														<span>• 월 누적 근무시간:</span> <span class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
+														<span>• 월 누적 근무시간:</span> <span
+															class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
 													</div>
 												</div>
 											</div>
@@ -143,10 +155,11 @@
 													<!-- 										<option selected>2월</option> -->
 													<!-- 										<option>3월</option> -->
 												</select>
-												<button class="btn btn-outline-danger btn-sm rounded-pill" id="showtoday">TODAY</button>
+												<button class="btn btn-outline-danger btn-sm rounded-pill"
+													id="showtoday">TODAY</button>
 											</div>
 											<!-- 근태 기록 다운로드 버튼 -->
-											<button class="btn btn-outline-primary">
+											<button class="btn btn-outline-primary" id="downloadBtn">
 												<i class="bi bi-box-arrow-down"></i> 근태기록 다운로드
 											</button>
 										</div>
@@ -231,8 +244,8 @@
 			</div>
 		</div>
 	</main>
-<script>
-    var pageContext = '${pageContext.request.contextPath}';
-</script>
+	<script>
+		var pageContext = '${pageContext.request.contextPath}';
+	</script>
 </body>
 </html>
