@@ -229,6 +229,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 	}
+	
+	//누적 근무기록 저장
+	function saveMonthWorkTotal(total){
+		
+		document.getElementById("");
+		
+	}
+	
 	// 출근 기록 저장
 	function saveAttendanceRecord(type, time, duration = null) {
 		console.log('출근 기록 저장:', {
