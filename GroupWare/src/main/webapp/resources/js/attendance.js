@@ -873,6 +873,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			.catch(error => console.error("월별 데이터 로드 오류:", error));
 	}
 
+
+
+	//download
 	const downloadBtn = document.getElementById("downloadBtn");
 	if (downloadBtn) {
 		downloadBtn.addEventListener('click', downloadAttendanceAsExcel);
@@ -898,11 +901,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		const now = new Date();
 		const year = now.getFullYear();
 		const month = String(now.getMonth() + 1).padStart(2, '0');
-		const day = String(now.getDate()).padStart(2, '0');
-		const dateStr = `${year}${month}${day}`;
+		const dateStr = `${year}${month}`;
 
 		// Generate the filename
-		const filename = `근태기록_${dateStr}.xlsx`;
+		const filename = `근태기록_${dateStr}월.xlsx`;
 
 		// Save the workbook as an Excel file
 		XLSX.writeFile(wb, filename);
