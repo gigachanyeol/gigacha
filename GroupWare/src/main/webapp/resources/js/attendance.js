@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				updateAttendanceTable('check-in', checkInTime, 0);
 
 				// 로컬 스토리지에 출근 정보 저장
-				console.log("로컬 스토리지에 출근 정보 저장");
+				//				console.log("로컬 스토리지에 출근 정보 저장");
 				localStorage.setItem('attendanceState', JSON.stringify({
 					isCheckedIn: true,
 					checkInTime: checkInTime.toISOString(),
@@ -459,8 +459,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			const month = today.getMonth();
 			const day = today.getDate();
 
-			console.log("📢 선택된 연도:", year);
-			console.log("📢 선택된 월:", month + 1);
+			//			console.log("📢 선택된 연도:", year);
+			//			console.log("📢 선택된 월:", month + 1);
 
 			// ✅ 1. 연도/월 선택 박스 값 변경
 			document.getElementById('yearSelect').value = year;
@@ -777,8 +777,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (attno && attno.startsWith('25')) {
 				attno = '20' + attno;
 			}
-			
-			console.log(attno);
+
+			//			console.log(attno);
 			// 출근 시간 표시
 			if (item.workin_time) {
 				const workinTime = new Date(item.workin_time);
@@ -786,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				const workinCell = document.getElementById(`${attno}-0`);
 				if (workinCell) {
 					workinCell.textContent = formattedWorkinTime;
-					console.log(`출근 시간 표시: ${attno}-0 => ${formattedWorkinTime}`);
+					//					console.log(`출근 시간 표시: ${attno}-0 => ${formattedWorkinTime}`);
 				}
 			}
 
@@ -797,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				const workoutCell = document.getElementById(`${attno}-1`);
 				if (workoutCell) {
 					workoutCell.textContent = formattedWorkoutTime;
-					console.log(`퇴근 시간 표시: ${attno}-1 => ${formattedWorkoutTime}`);
+					//					console.log(`퇴근 시간 표시: ${attno}-1 => ${formattedWorkoutTime}`);
 				}
 
 				// 근무 상태 표시
@@ -812,15 +812,16 @@ document.addEventListener('DOMContentLoaded', function() {
 								break;
 							case 'AT02':
 								statusText = '지각';
+								statusCell.textContent = statusText;
 								break;
 							case 'AT03':
 								statusText = '결근';
+								statusCell.textContent = statusText;
 								break;
 							default:
 								statusText = item.work_status;
 						}
-						statusCell.textContent = statusText;
-						console.log(`근무 상태 표시: ${attno}-5 => ${statusText}`);
+						//						console.log(`근무 상태 표시: ${attno}-5 => ${statusText}`);
 					}
 				}
 
@@ -834,7 +835,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					const totalWorkTimeCell = document.getElementById(`${attno}-4`);
 					if (totalWorkTimeCell) {
 						totalWorkTimeCell.textContent = totalFormattedTime;
-						console.log(`총 근무 시간 표시: ${attno}-4 => ${totalFormattedTime}`);
+						//						console.log(`총 근무 시간 표시: ${attno}-4 => ${totalFormattedTime}`);
 					}
 				}
 			}
@@ -848,8 +849,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		// YYYYMM 형식으로 변환
 		const formattedYearMonth = `${year}${String(month).padStart(2, '0')}`;
 
-		console.log("formattedYearMonth", formattedYearMonth);
-		console.log(`월 데이터 로드: ${formattedYearMonth}`);
+		//		console.log("formattedYearMonth", formattedYearMonth);
+		//		console.log(`월 데이터 로드: ${formattedYearMonth}`);
 
 		let data = { empno: empno, attno: formattedYearMonth };
 
@@ -860,7 +861,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 			.then(response => response.json())
 			.then(data => {
-				console.log("월별 데이터 응답:", data);
+				//				console.log("월별 데이터 응답:", data);
 				// 모든 출근 데이터 표시 함수 호출
 				displayAllAttendanceData(data.map(res => ({
 					attno: res.ATTNO,
@@ -870,6 +871,41 @@ document.addEventListener('DOMContentLoaded', function() {
 				})));
 			})
 			.catch(error => console.error("월별 데이터 로드 오류:", error));
+	}
+
+	const downloadBtn = document.getElementById("downloadBtn");
+	if (downloadBtn) {
+		downloadBtn.addEventListener('click', downloadAttendanceAsExcel);
+	}
+
+	function downloadAttendanceAsExcel() {
+		//		console.log("다운로드 버튼 클릭")
+		// Get the table data
+		const table = document.getElementById('attendanceTable');
+		if (!table) {
+			alert('테이블을 찾을 수 없습니다.');
+			return;
+		}
+
+		// Create a workbook and worksheet
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.table_to_sheet(table);
+
+		// Add the worksheet to the workbook
+		XLSX.utils.book_append_sheet(wb, ws, '근태기록');
+
+		// Get the current date and time for the filename
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const day = String(now.getDate()).padStart(2, '0');
+		const dateStr = `${year}${month}${day}`;
+
+		// Generate the filename
+		const filename = `근태기록_${dateStr}.xlsx`;
+
+		// Save the workbook as an Excel file
+		XLSX.writeFile(wb, filename);
 	}
 
 });
