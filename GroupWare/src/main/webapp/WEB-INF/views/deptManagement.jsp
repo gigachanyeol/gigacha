@@ -168,8 +168,8 @@ td {
           </div>
         </div>
       </div>
-        </div>
-		</div>
+     </div>
+	</div>
 </main>
 	
 </body>
@@ -293,9 +293,9 @@ td {
         $('#modifyDept').click(function(){
         	console.log("수정하기", tableData);
         	
-        	var getDept= document.querySelector(".table ")
-     		console.log(getDept);
-     		getDept.innerHTML=""
+//         	var getDept= document.querySelector(".table ")
+//      		console.log(getDept);
+//      		getDept.innerHTML=""
         	
 //      			for(let i=0; i<tableData.length; i++){
 //     				var tr= document.createElement("tr");
@@ -320,7 +320,7 @@ td {
 //     						td.append(input);
 //     					}
     					
-    					///////
+//     					/////
 //                         if (item.colspan) {
 //                             td.setAttribute("colspan", item.colspan);
 //                         }
@@ -329,10 +329,17 @@ td {
 //                     	getDept.append(tr);
 //                 }
         	
-//         })
+        })
 
-
-     			var input=document.createElement("input");
+     			var input = document.createElement("input");
+        		var GetDeptname = document.getElementById("getDeptname")
+        		
+        		GetDeptname.inner
+        		
+     			var selctBox = document.createElement("select");
+        		var hqDeptname = document.getElementById("getParent_deptname")
+        		
+        		
 
     });
 
