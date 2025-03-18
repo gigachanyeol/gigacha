@@ -39,7 +39,7 @@
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content">
+		<div id="content" class="col">
 			<h3 class="content_title">기안문작성</h3>
 			<div class="content_nav">
 				<button class="btn btn-secondary btn-sm" id="formBtn">문서양식</button>

@@ -23,7 +23,7 @@
 <%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-lg-10">
+		<div id="content" class="col">
 			<h3 class="content_title">결재요청함</h3>
 			<div id="wrapper" class="list">
 	            <table id="example" class="display nowrap dataTable dtr-inline collapsed">

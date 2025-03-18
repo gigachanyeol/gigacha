@@ -18,7 +18,7 @@
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content">
+		<div id="content" class="col">
 			<h3 class="content_title">${form.form_name}</h3>
 			<form>
 				<label for="inputText" class="col-sm-2 col-form-label">양식이름</label>

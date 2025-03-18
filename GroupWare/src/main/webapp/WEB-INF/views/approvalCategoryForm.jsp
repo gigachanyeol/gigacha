@@ -15,7 +15,7 @@
 	<div class="row">
 		<div id="content">
 			<h3 class="content_title">문서양식 카테고리 등록</h3>
-				<div class="col-10">
+				<div class="col">
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">카테고리 등록</h5>

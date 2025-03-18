@@ -24,7 +24,7 @@
 <%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-10 mt-3">
+		<div id="content" class="col">
 			<h3 class="content_title">결재목록함</h3>
 			<table id="documentsTable"
 				class="display nowrap dataTable dtr-inline collapsed"

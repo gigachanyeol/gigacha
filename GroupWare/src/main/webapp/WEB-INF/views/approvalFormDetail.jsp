@@ -19,7 +19,7 @@
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content">
+		<div id="content" class="col">
 			<h3 class="content_title">${form.form_name}</h3>
 			<button class="btn btn-info" onclick="location.href='./approvalFormUpdate.do?id=${form.form_id}'">수정</button>
 			<button class="btn btn-danger" id="deleteBtn">삭제</button>
