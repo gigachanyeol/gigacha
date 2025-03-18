@@ -65,9 +65,7 @@
 </style>
 </head>
 <body>
-	<%-- <%@ include file="./layout/nav.jsp" %> --%>
 	<%@ include file="./layout/newNav.jsp"%>
-	<%-- <%@ include file="./layout/sidebar.jsp" %> --%>
 	<%@ include file="./layout/newSide.jsp"%>
 	<main id="main" class="main">
 		<div class="pagetitle">
@@ -81,7 +79,7 @@
 			</nav>
 		</div>
 		<div class="row">
-			<div id="content" class="col-6 mt-3">
+			<div id="content" class="col">
 
 				<!-- 캘린더 생성 위치 -->
 				<div id='calendar-container'>
@@ -611,103 +609,74 @@ let endDate = new Date(event.end - (new Date().getTimezoneOffset() * 60000)).toI
 
       
     });
-    
-    // 연차 데이터 불러오기
-//     function loadLeaveData() {
-//       fetch('${pageContext.request.contextPath}/approval/postLeaveToCalendar.json', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         }
-//       })
-//       .then(resp => resp.json())
-//       .then(data => {
-//         console.log("연차 데이터:", data);
-//         // 연차 데이터 처리 로직 추가
-//         if (data && Array.isArray(data) && data.length > 0) {
-//           const leaveEvents = data.map(leave => ({
-//             title: '연차: ' + leave.title || '연차',
-//             start: leave.start,
-//             end: leave.end,
-//             backgroundColor: '#FFD700', // 연차 색상 (금색)
-//             borderColor: '#FFA500',
-//             allDay: true,
-//             extendedProps: {
-//               isLeave: true,
-//               details: leave.details || ''
-//             }
-//           }));
-          
-//           calendar.addEventSource({
-//             events: leaveEvents,
-//             color: '#FFD700',
-//             textColor: 'black'
-//           });
-//         }
-//       })
-//       .catch(error => {
-//         console.error("연차 데이터 불러오기 오류:", error);
-//       });
-//     }
-    
-    
- async function loadLeaveData() {
-  if (!calendar) {
-    console.error("calendar가 아직 초기화되지 않았습니다.");
-    return;
-  }
 
-  try {
-    const response = await fetch('${pageContext.request.contextPath}/approval/postLeaveToCalendar.json', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log("연차 데이터:", data);
     
-    
-
-    if (data && Array.isArray(data) && data.length > 0) {
-      const leaveEvents = data.map(leave => ({
-        // empno: leave.empno, // extendedProps 안으로 이동
-        title: leave.title ? '연차: ' + leave.title : '연차', // sch_title -> title
-        start: leave.START_DATE,
-        end: leave.END_DATE, // 
-        backgroundColor: '#FFD700',  // color -> backgroundColor
-        //sch_content: leave.details || '', // extendedProps 안으로 이동
-        extendedProps: {  // extendedProps 객체 추가
-          isLeave: true,
-          empno: leave.EMPNO,
-          sch_content: leave.details || '',
-          empname : leave.NAME //이름도 추가
-        }
-      }));
-
-      console.log("🎆🎆연차 데이터:", leaveEvents);
-      // 기존 연차 이벤트 소스 제거 (v6 방식)
-      calendar.getEventSources().forEach(source => {
-          if (source.internalEventSource.meta.isLeaveSource) {
-              source.remove();
+          async function loadLeaveData() {
+          if (!calendar) {
+            console.error("calendar가 아직 초기화되지 않았습니다.");
+            return;
           }
-      });
 
+          try {
+            const response = await fetch(`${pageContext.request.contextPath}/approval/postLeaveToCalendar.json`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
 
-      // 연차 이벤트 소스 추가
-      calendar.addEventSource({
-          events: leaveEvents,  // 이벤트 배열을 events 속성에 할당
-          id: 'leaveSource', // 고유한 ID (선택 사항이지만 권장)
-          isLeaveSource: true // 커스텀 속성 (선택 사항)
-      });
-    }
-  } catch (error) {
-    console.error("연차 데이터 불러오기 오류:", error);
-  }
-}
+            if (!response.ok) {
+              throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+            }
+
+            // 응답이 있는지 먼저 확인
+            const text = await response.text();
+            if (!text) {
+              console.warn("⚠ 서버에서 응답이 없습니다.");
+              return; // 데이터가 없으면 추가 작업 없이 종료
+            }
+
+            console.log("서버 응답 확인:", text);
+
+            // JSON 파싱
+            const data = JSON.parse(text);
+            console.log("연차 데이터:", data);
+
+            if (data && Array.isArray(data) && data.length > 0) {
+              const leaveEvents = data.map(leave => ({
+                title: leave.title ? '연차: ' + leave.title : '연차', // sch_title -> title
+                start: leave.START_DATE,
+                end: leave.END_DATE, 
+                backgroundColor: '#FFD700',  
+                extendedProps: {  
+                  isLeave: true,
+                  empno: leave.EMPNO,
+                  sch_content: leave.details || '',
+                  empname: leave.NAME // 이름 추가
+                }
+              }));
+
+              console.log("🎆🎆 연차 데이터:", leaveEvents);
+
+              // 기존 연차 이벤트 소스 제거 (v6 방식)
+              calendar.getEventSources().forEach(source => {
+                if (source.internalEventSource.meta.isLeaveSource) {
+                  source.remove();
+                }
+              });
+
+              // 연차 이벤트 소스 추가
+              calendar.addEventSource({
+                events: leaveEvents, 
+                id: 'leaveSource', 
+                isLeaveSource: true 
+              });
+            } else {
+              console.warn("⚠ 연차 데이터가 없습니다.");
+            }
+          } catch (error) {
+            console.error("연차 데이터 불러오기 오류:", error);
+          }
+        }
+
 
   
 </script>
