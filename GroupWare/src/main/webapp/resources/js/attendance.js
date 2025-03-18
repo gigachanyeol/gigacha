@@ -229,14 +229,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 	}
-	
+
 	//누적 근무기록 저장
-	function saveMonthWorkTotal(total){
-		
+	function saveMonthWorkTotal(total) {
+
 		document.getElementById("");
-		
+
 	}
-	
+
 	// 출근 기록 저장
 	function saveAttendanceRecord(type, time, duration = null) {
 		console.log('출근 기록 저장:', {
@@ -326,7 +326,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		const today = new Date();
 		const todayFormatted = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
-		const todayAttendance = attendancelist.find(item => item.attno === todayFormatted);
+		const todayAttendance = attendancelist.find(item =>
+			item.attno === todayFormatted.substring(2) || // 연도 두 자리만 있는 경우
+			item.attno === todayFormatted // 전체 연도가 있는 경우
+		);
+
+		console.log("todayFormatted:", todayFormatted);
+		console.log("todayAttendance:", todayAttendance);
 
 		if (!todayAttendance || !todayAttendance.workin_time) {
 			console.log("📌 오늘 출근 기록이 없음");

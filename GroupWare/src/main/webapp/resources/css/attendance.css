@@ -1,43 +1,5 @@
 @charset "UTF-8";
 
-body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background-color: #f5f7f9;
-    margin: 0;
-    padding: 0;
-    overflow-x: auto; /* 가로 스크롤 허용 */
-}
-
-/* 헤더 스타일 */
-.header {
-    background-color: white;
-    padding: 15px 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-.logo span {
-    color: #2196F3;
-}
-
-/* 제목 스타일 */
-.main-title {
-    background-color: #2196F3;
-    color: white;
-    padding: 15px 20px;
-    font-size: 20px;
-    font-weight: bold;
-    width: 100%;
-}
-
 /* 근태 관리 컨테이너 */
 .attendance-container {
     padding: 20px;
@@ -160,21 +122,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* 네비게이션 */
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: #2196F3;
-    display: flex;
-    align-items: center;
-}
-
 /* 기간 선택 영역 스타일 */
 #attperiod {
     display: flex;
@@ -214,24 +161,6 @@ body {
 .btn-outline-primary:hover {
     background-color: #2196F3;
     color: white;
-}
-
-/* 반응형 스타일 */
-@media (max-width: 768px) {
-    .d-flex.align-items-center.justify-content-between {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    #attperiod {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .btn-outline-primary {
-        width: 100%;
-        justify-content: center;
-    }
 }
 
 /* 테이블 스타일 */
