@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.repository.IAttendanceDao;
 import com.giga.gw.service.AttendanceServiceImpl;
+import com.giga.gw.service.IAttendanceService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class AttendanceController {
 
 	@Autowired
 	private IAttendanceDao attendanceDao;
+	@Autowired
+	private IAttendanceService attendanceService;
 
 //	나의 근무 현황             
 //	/myattendance.do"> <
@@ -176,20 +179,6 @@ public class AttendanceController {
 //	                    
 //	부서 연차 현황                    
 //	/deptannualleave.do"
-//	                    
-//	전사 근무현황                    
-//	/emplattendance.do">
-//	                    
-//	전사 근무통계                    
-//	/attstatistics.do"> 
-//	                    
-//	전사 연차현황                    
-//	/attannualleave.do">
-//	                    
-//	전사 연차 사용 내역                    
-//	/attuseannualleave.d
-//	                    
-//	전사 연차 통계                    
-//	/annstatistics.do"> 
+
 
 }

@@ -331,8 +331,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			item.attno === todayFormatted // 전체 연도가 있는 경우
 		);
 
-		console.log("todayFormatted:", todayFormatted);
-		console.log("todayAttendance:", todayAttendance);
+		//		console.log("todayFormatted:", todayFormatted);
+		//		console.log("todayAttendance:", todayAttendance);
 
 		if (!todayAttendance || !todayAttendance.workin_time) {
 			console.log("📌 오늘 출근 기록이 없음");
@@ -512,6 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	updateCurrentDateTime();
 	loadTodayAttendanceFromDB(); // DB에서 출근 정보 로드
 	initAttendanceTable();
+	updateMonthlyWorkHours();
 
 	// 선택사항: 출근 중일 때 페이지를 떠날 경우 확인 메시지
 	window.addEventListener('beforeunload', function(e) {
@@ -863,7 +864,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// YYYYMM 형식으로 변환
 		const formattedYearMonth = `${year}${String(month).padStart(2, '0')}`;
 
-		//		console.log("formattedYearMonth", formattedYearMonth);
+//				console.log("loadMonthlyAttendanceData formattedYearMonth", formattedYearMonth);
 		//		console.log(`월 데이터 로드: ${formattedYearMonth}`);
 
 		let data = { empno: empno, attno: formattedYearMonth };
@@ -876,6 +877,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => response.json())
 			.then(data => {
 				//				console.log("월별 데이터 응답:", data);
+
+
 				// 모든 출근 데이터 표시 함수 호출
 				displayAllAttendanceData(data.map(res => ({
 					attno: res.ATTNO,
@@ -885,6 +888,95 @@ document.addEventListener('DOMContentLoaded', function() {
 				})));
 			})
 			.catch(error => console.error("월별 데이터 로드 오류:", error));
+	}
+
+	// 월 누적 근무시간 계산 및 표시 함수
+	function updateMonthlyWorkHours() {
+		const empno = document.getElementById('empno').value; // 사원번호 가져오기
+		const today = new Date();
+//		const year = String(today.getFullYear()).slice(2); // '2025' → '25'
+		const year = today.getFullYear(); // '2025' → '25'
+		const month = String(today.getMonth() + 1).padStart(2, '0'); // 1 → '01'
+		const formattedYearMonth = `${year}${month}`; // '2503' 형식
+
+//				console.log("updateMonthlyWorkHours formattedYearMonth", formattedYearMonth);
+
+
+		let data = { empno: empno, attno: formattedYearMonth }; // 데이터 객체 수정
+
+//		console.log("updateMonthlyWorkHours data", data);
+
+		if (!empno) {
+			console.error("사원번호(empno)가 입력되지 않았습니다.");
+			return;
+		}
+
+		fetch('./getAttendance.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+				}
+				return response.text(); // 먼저 텍스트로 변환해서 확인
+			})
+			.then(text => {
+//				console.log("updateMonthlyWorkHours text", text);
+				
+				if (!text || text.trim() === '') {
+					console.warn("⚠ 서버에서 빈 응답이 왔습니다.");
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return null;
+				}
+//				console.log("📄 서버 응답 원본:", text);
+
+				try {
+					return JSON.parse(text);
+				} catch (error) {
+					console.error("JSON 파싱 오류:", error);
+					console.log("파싱 실패한 텍스트:", text);
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return null;
+				}
+			})
+			.then(data => {
+				if (!data || !Array.isArray(data) || data.length === 0) {
+					console.warn("⚠ 근태 데이터가 없습니다.");
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return;
+				}
+
+				console.log("데이터 첫 번째 항목:", data[0]); // 키 이름 확인을 위한 로그
+
+				let totalSeconds = 0;
+				data.forEach(record => {
+					// 대문자 키 이름 사용 (서버 응답 키 이름에 맞게 수정)
+					if (record.WORKIN_TIME && record.WORKOUT_TIME) {
+						const inTime = new Date(record.WORKIN_TIME);
+						const outTime = new Date(record.WORKOUT_TIME);
+						if (!isNaN(inTime) && !isNaN(outTime)) {
+							const diffSeconds = Math.floor((outTime - inTime) / 1000);
+							if (diffSeconds > 0) {
+								totalSeconds += diffSeconds;
+							}
+						}
+					}
+				});
+
+				// 시간 포맷팅 코드 유지
+				const hours = Math.floor(totalSeconds / 3600);
+				const minutes = Math.floor((totalSeconds % 3600) / 60);
+				const seconds = totalSeconds % 60;
+				const formattedTime =
+					String(hours).padStart(2, '0') + ':' +
+					String(minutes).padStart(2, '0') + ':' +
+					String(seconds).padStart(2, '0');
+				document.getElementById('workTotalTime').textContent = formattedTime;
+			})
+			.catch(error => console.error("월별 데이터 로드 오류:", error));
+
 	}
 
 

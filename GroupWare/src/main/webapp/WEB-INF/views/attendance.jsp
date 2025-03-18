@@ -98,8 +98,8 @@
 											</div>
 											<div class="mb-3">
 												<div class="d-flex justify-content-between">
-													<span>• 월 누적 근무시간:</span> <span
-														class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
+													<span>• 월 누적 근무시간:</span> 
+													<span class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
 												</div>
 											</div>
 										</div>
