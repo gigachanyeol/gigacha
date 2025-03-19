@@ -42,7 +42,7 @@ document.querySelector("#formBtn").addEventListener('click', () => {
         'core': {
             'data': function (node, cb) {
                 $.ajax({
-                    url: "./formTree.json", // 데이터를 JSON 형태로 가져오는 API
+                    url: "./formTreeAjax.do", // 데이터를 JSON 형태로 가져오는 API
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -101,7 +101,7 @@ function removeFromApprovalForm(formId) {
 
 async function selectForm(){
     try {
-        const response = await fetch("./selectForm.json", {
+        const response = await fetch("./selectFormAjax.do", {
             method:'post',
             headers:{
                 'Content-Type':'text/plain'
@@ -226,7 +226,7 @@ function removeFromApprovalLine(empNo) {
 	        console.log("결재선 저장:", approvalJson);
 	
 	        // 서버에 저장 요청
-	        const response = await fetch("./insertSaveLine.json", {
+	        const response = await fetch("./insertSaveLineAjax.do", {
 	            method: "POST",
 	            headers: { 'Content-Type': 'application/json' },
 	            body: JSON.stringify(approvalJson)
@@ -251,7 +251,7 @@ var organizationData = [];
 			        'core': {
 			            'data': function (node, cb) {
 			                $.ajax({
-			                    url: "./tree.json",
+			                    url: "./treeAjax.do",
 			                    type: "GET",
 			                    dataType: "json",
 			                    success: function (data) {
@@ -323,7 +323,7 @@ var organizationData = [];
 	
 	async function selectSaveLine(){
 	    try {
-	        let response = await fetch("./selectSaveLine.json");
+	        let response = await fetch("./selectSaveLineAjax.do");
 	        if(!response.ok) throw new Error("에러발생");
 	        return await response.json();
 	    } catch (error) {
@@ -406,14 +406,14 @@ var organizationData = [];
     }
     
 	async function getDetail(id){
-		let response = await fetch("./approvalDetail.json?id="+id);
+		let response = await fetch("./approvalDetailAjax.do?id="+id);
 		let data = await response.json(); 
 	    console.log("서버 응답 데이터:", data); 
 	    return data;
 	}
 
 	async function getFile(id){
-		let response = await fetch("./fileList.json?id="+id);
+		let response = await fetch("./fileListAjax.do?id="+id);
 		let data = await response.json(); 
         console.log("서버 응답 데이터:", data); 
         return data;
@@ -431,7 +431,7 @@ var organizationData = [];
 	    };
 	
 	    try {
-	        let response = await fetch("./download.json", {
+	        let response = await fetch("./downloadAjax.do", {
 	            method: "POST",
 	            headers: {
 	                "Content-Type": "application/json"
@@ -535,7 +535,7 @@ $("#refBtn").on("click", function (event) {
         'core': {
             'data': function (node, cb) {
                 $.ajax({
-                    url: "./tree.json",
+                    url: "./treeAjax.do",
                     type: "GET",
                     dataType: "json",
                     success: function (data) {

@@ -119,7 +119,7 @@
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
         ajax: {
-            url: './myApprovalData.json',
+            url: './myApprovalDataAjax.do',
             type: 'POST',
             dataType: 'json',
             dataSrc: function(json) {
@@ -176,7 +176,7 @@ $(document).ready(function() {
 
 		            document.getElementById("approvalLine").innerHTML = html;
 				$("#myModal").show();
-// 				fetch("./approvalDetail.json?id="+data.APPROVAL_ID)
+// 				fetch("./approvalDetailAjax.do?id="+data.APPROVAL_ID)
 // 				.then(resp => resp.json())
 // 				.then(data => {
 					
@@ -198,7 +198,7 @@ $(document).ready(function() {
     });
 	
 	async function getDetail(id){
-		let response = await fetch("./approvalDetail.json?id="+id);
+		let response = await fetch("./approvalDetailAjax.do?id="+id);
 		let data = await response.json(); 
         console.log("서버 응답 데이터:", data); 
         return data;

@@ -108,7 +108,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalListTemp.json',
+	            url: './approvalListTempAjax.do',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {
@@ -192,7 +192,7 @@
 	function approvalBtn(event){
 		let approval_id = event.target.value;
 		console.log(approval_id);
-		fetch("./approvalRequest.json",{
+		fetch("./approvalRequestAjax.do",{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"

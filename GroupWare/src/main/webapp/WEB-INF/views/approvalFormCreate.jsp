@@ -108,7 +108,7 @@
 			});
 			jsonData["form_content"] = editorHtml;
 			console.log(jsonData);
-			fetch('./approvalFormSave.json',{
+			fetch('./approvalFormSaveAjax.do',{
 	 			method:'POST',
 	 			headers:{
 	 				'Content-Type':'application/json'
@@ -125,7 +125,7 @@
 	 	editorSaveBtn.addEventListener('click',()=>{
 	 		let editorHtml = editor.getData();
 	 		
-	 		fetch('./approvalFormSave.json',{
+	 		fetch('./approvalFormSaveAjax.do',{
 	 			method:'POST',
 	 			headers:{
 	 				'Content-Type':'application/json'

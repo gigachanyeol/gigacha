@@ -174,7 +174,7 @@
 		console.log(btoa(data));
 		console.log(data)
 	  //window.open(data);
-		fetch('./signatureSave.json',{
+		fetch('./signatureSaveAjax.do',{
 			method:'post',
 			headers:{
 				'Content-Type':'application/json'
@@ -189,7 +189,7 @@
 	});
 	
 	readButton.addEventListener('click',()=>{
-		fetch('./signatureRead.json')
+		fetch('./signatureReadAjax.do')
 		.then(res => res.json())
 		.then(data => {
 			console.log(data);

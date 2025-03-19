@@ -104,7 +104,7 @@
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
         ajax: {
-            url: './selectApprovalCompleted.json',
+            url: './selectApprovalCompletedAjax.do',
             type: 'POST',
             dataType: 'json',
             dataSrc: function(json) {

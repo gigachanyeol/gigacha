@@ -104,7 +104,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './selectApprovalReference.json',
+	            url: './selectApprovalReferenceAjax.do',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {

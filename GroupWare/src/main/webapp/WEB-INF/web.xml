@@ -23,7 +23,8 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+			<!-- TODO Socket 스프링 빈 설정 xml 파일 등록-->
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml /WEB-INF/spring/appServlet/websocket-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -48,6 +49,7 @@
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
 	
+		
 	<filter>
 		<filter-name>encoding</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

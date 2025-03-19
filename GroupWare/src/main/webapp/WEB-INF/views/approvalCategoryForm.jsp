@@ -83,7 +83,7 @@
 					return;
 				}
 				
-				fetch('./categoryCheck.json?yname='+yname)
+				fetch('./categoryCheckAjax.do?yname='+yname)
 				.then(resp => resp.json())
 				.then(data => {
 					if(data === false){
@@ -95,7 +95,7 @@
 						formData.forEach((value, key) => {
 							jsonData[key] = value;
 						});
-						fetch("./categorySave.json",{
+						fetch("./categorySaveAjax.do",{
 							method:'post',
 							headers:{
 								'Content-Type':'application/json'

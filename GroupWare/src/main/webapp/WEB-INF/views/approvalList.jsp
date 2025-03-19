@@ -109,7 +109,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalList.json',
+	            url: './approvalListAjax.do',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {
@@ -199,7 +199,7 @@
 	function recall(event) {
 // 		let id = document.querySelector(".content_title").textContent;
 		 id = event.target.value
-		fetch("./approvalRecall.json",{
+		fetch("./approvalRecallAjax.do",{
 			method:"POST",
 			headers:{
 				"Content-Type":"plain/text"

@@ -202,7 +202,7 @@
 		var table = $('#documentsTable').DataTable({
 			// 샘플 데이터
 	        ajax: {
-	            url: './approvalRequestList.json',
+	            url: './approvalRequestListAjax.do',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {
@@ -326,7 +326,7 @@
 	    });
 
 // 		function openModal(approval_id){
-// 			fetch("./approvalDetail.json?id="+approval_id)
+// 			fetch("./approvalDetailAjax.do?id="+approval_id)
 // 			.then(resp => resp.json())
 // 			.then(data => {
 // 				console.log(data);
@@ -355,7 +355,7 @@
 			jsonData["approval_id"] = $("#acceptBtn").val();
 			console.log(jsonData);
 		
-			let data = await fetchJsonPost("./acceptApprovalLine.json", jsonData)
+			let data = await fetchJsonPost("./acceptApprovalLineAjax.do", jsonData)
 			if(data == true) {
 				Swal.fire("결재승인").then(()=>{
 					table.ajax.reload();
@@ -391,7 +391,7 @@
 				jsonData["reject_reason"] = result.value;
 				console.log(jsonData);
 				
-				let data = await fetchJsonPost("./rejectApprovalLine.json", jsonData)
+				let data = await fetchJsonPost("./rejectApprovalLineAjax.do", jsonData)
 				if(data == true) {
 					Swal.fire("반려성공").then(() => {
 						table.ajax.reload();
@@ -417,7 +417,7 @@
 			jsonData["approval_id"] = $("#acceptBtn").val();
 			console.log(jsonData);
 		
-			fetch("./acceptApprovalLine.json",{
+			fetch("./acceptApprovalLineAjax.do",{
 				method:"POST",
 				headers:{
 					"Content-Type":"application/json"
@@ -461,7 +461,7 @@
 				console.log(result);
 				jsonData["reject_reason"] = result.value;
 				console.log(jsonData);
-				fetch("./rejectApprovalLine.json",{
+				fetch("./rejectApprovalLineAjax.do",{
 					method:"POST",
 					headers:{
 						'Content-Type':'application/json'
@@ -485,14 +485,14 @@
 	});
 	
 // 	async function getDetail(id){
-// 		let response = await fetch("./approvalDetail.json?id="+id);
+// 		let response = await fetch("./approvalDetailAjax.do?id="+id);
 // 		let data = await response.json(); 
 //         console.log("서버 응답 데이터:", data); 
 //         return data;
 // 	}
 	
 // 	async function getFile(id){
-// 		let response = await fetch("./fileList.json?id="+id);
+// 		let response = await fetch("./fileListAjax.do?id="+id);
 // 		let data = await response.json(); 
 //         console.log("서버 응답 데이터:", data); 
 //         return data;
@@ -510,7 +510,7 @@
 // 	    };
 	
 // 	    try {
-// 	        let response = await fetch("./download.json", {
+// 	        let response = await fetch("./downloadAjax.do", {
 // 	            method: "POST",
 // 	            headers: {
 // 	                "Content-Type": "application/json"

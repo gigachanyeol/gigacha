@@ -344,7 +344,7 @@
 	})
 
 	async function readSignature(){
-		let response = await fetch(url+'/approval/signatureRead.json');
+		let response = await fetch(url+'/approval/signatureReadAjax.do');
 		
 		if(!response.ok) throw new Error("네트워크 오류")
 			
@@ -356,7 +356,7 @@
 	})
 	
 	async function signatureSave(data) {
-			let response = await fetch(url+'/approval/signatureSave.json',{
+			let response = await fetch(url+'/approval/signatureSaveAjax.do',{
 				method:'post',
 				headers:{
 					'Content-Type':'application/json'

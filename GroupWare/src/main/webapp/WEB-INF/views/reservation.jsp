@@ -388,7 +388,7 @@
 		            'core': {
 		                'data': function (node, cb) {
 		                    $.ajax({
-		                        url: "${pageContext.request.contextPath}/approval/tree.json",
+		                        url: "${pageContext.request.contextPath}/approval/treeAjax.do",
 		                        type: "GET",
 		                        dataType: "json",
 		                        success: function (data) {

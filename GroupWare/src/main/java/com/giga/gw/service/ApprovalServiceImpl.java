@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
+import com.giga.gw.config.WebSocketHandler;
 import com.giga.gw.dto.ApprovalDto;
 import com.giga.gw.dto.ApprovalLineDto;
 import com.giga.gw.dto.ApprovalReferenceDto;
@@ -38,6 +39,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 	private final IApprovalDao approvalDao;
 	private final IApprovalLineDao approvalLineDao;
 	private final IFileDao fileDao;
+	private final WebSocketHandler webSocketHandler;
 
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
@@ -56,7 +58,6 @@ public class ApprovalServiceImpl implements IApprovalService {
 		int m = 0; // 결재선 row
 		int f = 0; // 파일 row
 		int r = 0; // 참조자 row 
-		
 		// 결재선 추가 로직
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
 		if (lineDtos != null && !lineDtos.isEmpty()) {
@@ -69,6 +70,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 			map.put("approvalLineDtos", lineDtos);
 			m = approvalLineDao.insertApprovalLine(map);
 		}
+		
 		
 		// 참조자 추가 로직
 		List<ApprovalReferenceDto> approvalReferenceDtos = approvalDto.getApprovalReferenceDtos();
@@ -125,13 +127,21 @@ public class ApprovalServiceImpl implements IApprovalService {
 	        if(!fileDtos.isEmpty()) {
 				f = fileDao.insertFile(fileDtos);
 			}
-	        return n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size());
+	        if(n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size())) {
+	        	
+	    		if(approvalDto.getApproval_urgency().equals("Y")) {
+	        		try {
+						webSocketHandler.sendMessageToUser(lineDtos.get(0).getApprover_empno(), "<span style='color:red;'>[긴급]</span>결재문서 도착 <br>"+approvalDto.getApproval_title());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	    		}
+
+	    		return true;
+	        }
+	        return false;
+	        
 		} 
-//	else {
-//			return n == 1 && m >= 1;
-//		}
-		
-//	}
 
 //	@Transactional
 	@Override

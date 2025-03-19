@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
+import com.giga.gw.config.WebSocketHandler;
 import com.giga.gw.dto.ApprovalCategoryDto;
 import com.giga.gw.dto.ApprovalDto;
 import com.giga.gw.dto.ApprovalFormDto;
@@ -62,6 +63,7 @@ public class ApprovalController {
 	private final IApprovalService approvalService;
 	private final IApprovalLineService approvalLineService;
 	private final IFileDao fileDao;
+	private final WebSocketHandler webSocketHandler;
 	
 	@GetMapping("/index.do")
 	public String apprIndex() {
@@ -75,7 +77,7 @@ public class ApprovalController {
 	}
 
 	@ResponseBody
-	@GetMapping("/tree.json")
+	@GetMapping("/treeAjax.do")
 	public List<Map<String, Object>> tree() {
 		return approvalDao.getOrganizationTree();
 	}
@@ -83,13 +85,10 @@ public class ApprovalController {
 	@GetMapping("/signature.do")
 	public String signature(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		List<String> empList = new ArrayList<String>();
-//		empList.add(loginDto.getEmpno());
-//		model.addAttribute("signature",employeeDao.readSignature(empList));
 		return "signature";
 	}
 	
-	@PostMapping("/signatureSave.json")
+	@PostMapping("/signatureSaveAjax.do")
 	@ResponseBody
 	public boolean signatureSave(@RequestBody Map<String, Object> map,HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -98,28 +97,12 @@ public class ApprovalController {
 		return isc;
 	}
 
-	@GetMapping("/signatureRead.json")
+	@GetMapping("/signatureReadAjax.do")
 	@ResponseBody
 	public List<Map<String, Object>> signatureRead(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		List<String> empList = new ArrayList<String>();
-//		empList.add(loginDto.getEmpno());
-//		System.out.println(employeeDao.readSignature(empList));
 		return employeeDao.readSignature(loginDto.getEmpno());
 	}
-
-//	@PostMapping("/editorSave.do")
-//	@ResponseBody
-//	public boolean editorSave(@RequestBody String editor) {
-//		int row = approvalDao.editorSave(editor);
-//		return row == 1 ? true : false;
-//	}
-
-//	@GetMapping(value = "/editorRead.do", produces = "text/html; charset=UTF-8")
-//	@ResponseBody
-//	public String editroRead() {
-//		return approvalDao.editorRead();
-//	}
 
 	// TODO 00100 전자결재 - 카테고리 Controller
 	@GetMapping("/categoryForm.do")
@@ -128,21 +111,22 @@ public class ApprovalController {
 	}
 
 	// 카테고리 중복체크
-	@GetMapping("/categoryCheck.json")
+	@GetMapping("/categoryCheckAjax.do")
 	@ResponseBody
 	public boolean categoryCheck(String yname) {
 		return approvalCategoryService.categoryCheck(yname.toUpperCase()) == 0 ? true : false;
 	}
 
 	// 카테고리 저장
-	@PostMapping("/categorySave.json")
+	@PostMapping("/categorySaveAjax.do")
 	@ResponseBody
 	public boolean categorySave(@RequestBody ApprovalCategoryDto categoryDto) {
 		System.out.println(categoryDto);
 		categoryDto.setCategory_yname(categoryDto.getCategory_yname().toUpperCase());
 		return approvalCategoryService.categoryInsert(categoryDto) == 1 ? true : false;
 	}
-
+	
+	// 카테고리 전체 조회 리스트 이동
 	@GetMapping("/category.do")
 	public String categoryList(Model model) {
 		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelect();
@@ -168,6 +152,7 @@ public class ApprovalController {
 	}
 
 	@GetMapping("/approvalFormDetail.do")
+	// 문서상세 페이지 이동 
 	public String approvalFormDetail(@RequestParam String id, Model model) {
 		System.out.println(id);
 		ApprovalFormDto form = approvalFormService.formSelectDetail(id);
@@ -182,7 +167,7 @@ public class ApprovalController {
 	}
 	
 	// 문서양식등록
-	@PostMapping("/approvalFormSave.json")
+	@PostMapping("/approvalFormSaveAjax.do")
 	@ResponseBody
 	public boolean approvalFormSave(@RequestBody ApprovalFormDto approvalFormDto) {
 		System.out.println(approvalFormDto);
@@ -192,7 +177,7 @@ public class ApprovalController {
 	
 	// 문서양식 tree 데이터 조회 api
 	@ResponseBody
-	@GetMapping("/formTree.json")
+	@GetMapping("/formTreeAjax.do")
 	public List<Map<String, Object>> formTree() {
 		return approvalDao.formTree();
 	}
@@ -204,7 +189,7 @@ public class ApprovalController {
 	}
 	
 	// 문서양식 불러오기
-	@PostMapping("/selectForm.json")
+	@PostMapping("/selectFormAjax.do")
 	@ResponseBody
 	public Map<String, Object> selectFormContent(@RequestBody String form_id) {
 		System.out.println(form_id);
@@ -220,14 +205,14 @@ public class ApprovalController {
 	}
 	
 	// 문서양식 수정
-	@PostMapping("/approvalFormUpdate.json")
+	@PostMapping("/approvalFormUpdateAjax.do")
 	@ResponseBody
 	public boolean formUpdate(@RequestBody ApprovalFormDto approvalFormDto) {
 		return approvalFormService.formUpdate(approvalFormDto) == 1?true:false;
 	}
 	
 	// 문서양식 삭제
-	@GetMapping("/approvalFormDelete.json")
+	@GetMapping("/approvalFormDeleteAjax.do")
 	@ResponseBody
 	public boolean formDelete(@RequestParam String id) {
 		return approvalFormService.formDelete(id) == 1 ? true : false;
@@ -241,7 +226,7 @@ public class ApprovalController {
 		return "approvalDocumentCreateForm";
 	}
 	
-	@PostMapping("/approvalDocumentSave.json")
+	@PostMapping("/approvalDocumentSaveAjax.do")
 	@ResponseBody
 	public boolean approvalDocumentSave(
 			@ModelAttribute ApprovalDto approvalDto,
@@ -255,13 +240,24 @@ public class ApprovalController {
 			
 		String path;
 		path = WebUtils.getRealPath(request.getSession().getServletContext(), "/storage");
-//		return result.equals("파일 업로드 성공") ? true: false;
-		return approvalService.insertApproval(approvalDto, files, path);
-//		return false;
+		if(approvalService.insertApproval(approvalDto, files, path)) {
+			if(approvalDto.getApproval_urgency().equals("Y")) {
+				try {
+					webSocketHandler.sendMessageToUser(approvalDto.
+								getApprovalLineDtos()
+								.get(0)
+								.getApprover_empno(), "긴급문서 도착");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	
 //	유효성 체크 버전
-	@PostMapping("/approvalDocumentSaveReg.json")
+	@PostMapping("/approvalDocumentSaveRegAjax.do")
 	@ResponseBody
 	public ResponseEntity<?> approvalDocumentSaveReg(
 			@ModelAttribute ApprovalDto approvalDto,
@@ -284,14 +280,13 @@ public class ApprovalController {
 			
 		String path;
 		path = WebUtils.getRealPath(request.getSession().getServletContext(), "/storage");
-//		return approvalService.insertApproval(approvalDto, files, path);
 		
 		return approvalService.insertApproval(approvalDto, files, path)?ResponseEntity.ok(true):ResponseEntity.ok(false);
 	}
 	
 	
 	
-	@PostMapping("/approvalDocumentSaveTemp.json")
+	@PostMapping("/approvalDocumentSaveTempAjax.do")
 	@ResponseBody
 	public boolean approvalDocumentSaveTemp(@RequestBody ApprovalDto approvalDto, @RequestParam(value = "files", required = false) List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
@@ -306,7 +301,7 @@ public class ApprovalController {
 		return "approvalList";
 	}
 	
-	@GetMapping("/approvalList.json")
+	@GetMapping("/approvalListAjax.do")
 	@ResponseBody
 	public String approvalListAjax(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -321,7 +316,7 @@ public class ApprovalController {
 		return "approvalListTemp";
 	}
 	
-	@GetMapping("/approvalListTemp.json")
+	@GetMapping("/approvalListTempAjax.do")
 	@ResponseBody
 	public String approvalListTempAjax(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -341,7 +336,7 @@ public class ApprovalController {
 	}
 	
 	// 문서 상세 api 요청
-	@GetMapping(value = "/approvalDetail.json", produces = "application/json; charset=UTF-8")
+	@GetMapping(value = "/approvalDetailAjax.do", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String approvalDetailAjax(@RequestParam String id) {
 		System.out.println(id);
@@ -362,7 +357,7 @@ public class ApprovalController {
 	}
 	
 	// 문서 수정
-	@PostMapping("/approvalUpdateForm.json")
+	@PostMapping("/approvalUpdateFormAjax.do")
 	@ResponseBody
 	public boolean approvalUpdate(@RequestBody ApprovalDto approvalDto,List<MultipartFile> files, HttpSession session) {
 		System.out.println(approvalDto);
@@ -372,14 +367,14 @@ public class ApprovalController {
 	}
 	
 	// 문서 회수
-	@PostMapping("/approvalRecall.json")
+	@PostMapping("/approvalRecallAjax.do")
 	@ResponseBody
 	public boolean approvalRecall(@RequestBody String approval_id, HttpSession session) {
 		return approvalService.recallApproval(approval_id) == 1 ? true : false;
 	}
 	
 	// 임시저장상태에서 결재요청
-	@PostMapping("/approvalRequest.json")
+	@PostMapping("/approvalRequestAjax.do")
 	@ResponseBody
 	public boolean approvalRequest(@RequestBody String approval_id, HttpSession session) {
 		return approvalService.approvalRequest(approval_id) == 1 ? true : false;
@@ -391,7 +386,7 @@ public class ApprovalController {
 		return "approvalRequestList";
 	}
 	
-	@GetMapping("/approvalRequestList.json")
+	@GetMapping("/approvalRequestListAjax.do")
 	@ResponseBody
 	public String approvalRequestListAjax(HttpSession session){
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -400,16 +395,14 @@ public class ApprovalController {
 		return gson.toJson(approvalList);
 	}
 	
-	// 결재진행함
+	// 결재진행함 페이지 이동
 	@GetMapping("/selectApprovalInProgress.do")
 	public String selectApprovalInProgress(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		List<ApprovalDto> approvalList = approvalService.selectApprovalInProgress(loginDto.getEmpno());
-//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalInProgress";
 	}
 	
-	@PostMapping("/selectApprovalInProgress.json")
+	@PostMapping("/selectApprovalInProgressAjax.do")
 	@ResponseBody
 	public String selectApprovalInProgressAjax(HttpSession session){
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -422,12 +415,10 @@ public class ApprovalController {
 	@GetMapping("/selectApprovalCompleted.do")
 	public String selectApprovalCompleted(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		List<ApprovalDto> approvalList = approvalService.selectApprovalCompleted(loginDto.getEmpno());
-//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalCompleted";
 	}
 	
-	@PostMapping("/selectApprovalCompleted.json")
+	@PostMapping("/selectApprovalCompletedAjax.do")
 	@ResponseBody
 	public String selectApprovalCompletedAjax(HttpSession session){
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -440,12 +431,10 @@ public class ApprovalController {
 	@GetMapping("/selectApprovalRejected.do")
 	public String selectApprovalRejected(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
-//		List<ApprovalDto> approvalList = approvalService.selectApprovalRejected(loginDto.getEmpno());
-//		model.addAttribute("approvalList",approvalList);
 		return "selectApprovalRejected";
 	}
 	
-	@PostMapping("/selectApprovalRejected.json")
+	@PostMapping("/selectApprovalRejectedAjax.do")
 	@ResponseBody
 	public String selectApprovalRejectedAjax(HttpSession session){
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -456,7 +445,7 @@ public class ApprovalController {
 	
 	
 	// 결재승인
-	@PostMapping("/acceptApprovalLine.json")
+	@PostMapping("/acceptApprovalLineAjax.do")
 	@ResponseBody
 	public boolean acceptApprovalLine(@RequestBody Map<String, Object> map, HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -466,7 +455,7 @@ public class ApprovalController {
 	}
 	
 	// 결재 반려
-	@PostMapping("/rejectApprovalLine.json")
+	@PostMapping("/rejectApprovalLineAjax.do")
 	@ResponseBody
 	public boolean rejectApprovalLine(@RequestBody Map<String, Object> map, HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -475,7 +464,6 @@ public class ApprovalController {
 		System.out.println("\n\n"+map+"\n\n");
 		
 		return approvalLineService.rejectApprovalLine(map);
-//		return false;
 	}
 	
 	// 나의 결재함
@@ -485,7 +473,7 @@ public class ApprovalController {
 	}
 	
 	// 나의 결재함 api 요청주소  
-	@PostMapping("/myApprovalData.json")
+	@PostMapping("/myApprovalDataAjax.do")
 	@ResponseBody
 	 public Map<String, Object> myDocumentsData(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -502,7 +490,7 @@ public class ApprovalController {
 	}
 	
 	// 참조문서함 api 요청주소  selectApprovalReference
-	@GetMapping("/selectApprovalReference.json")
+	@GetMapping("/selectApprovalReferenceAjax.do")
 	@ResponseBody
 	 public Map<String, Object> selectApprovalReferenceAjax(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
@@ -524,7 +512,7 @@ public class ApprovalController {
 		return leaveList;
 	}
 	
-	@PostMapping("/insertSaveLine.json")
+	@PostMapping("/insertSaveLineAjax.do")
 	@ResponseBody
 	public String insertSaveLine(@RequestBody Map<String, Object> map, HttpSession session) {
 		System.out.println(map);
@@ -537,14 +525,14 @@ public class ApprovalController {
 		return "true";
 	}
 	
-	@GetMapping("/selectSaveLine.json")
+	@GetMapping("/selectSaveLineAjax.do")
 	@ResponseBody
 	public List<Map<String, Object>> selectSaveLine(HttpSession session) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
 		return approvalLineService.selectSaveLine(loginDto.getEmpno());
 	}
 	
-	@GetMapping(value = "/fileList.json", produces = "application/json; charset=UTF-8")
+	@GetMapping(value = "/fileListAjax.do", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String fileList(@RequestParam String id) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -556,12 +544,11 @@ public class ApprovalController {
 	}
 	
 //	파일다운로드
-	@PostMapping("/download.json")
+	@PostMapping("/downloadAjax.do")
 	@ResponseBody
 	public byte[] download(
 			@RequestBody Map<String, Object> map,
 			HttpServletResponse response) throws IOException {
-		// approval_id, file_id
 		List<FileDto> dto = fileDao.selectFile(map);
 		String path = dto.get(0).getFile_path();
 		String saveFileName = dto.get(0).getFile_name();
@@ -571,7 +558,6 @@ public class ApprovalController {
 		String encodedFileName = URLEncoder.encode(originFileName, "UTF-8").replaceAll("\\+", "%20");
 		byte[] bytes = FileCopyUtils.copyToByteArray(file);
 		
-//		response.setHeader("Content-Disposition", "attachment; filename=\""+outputFileName+"\"");
 		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
 		response.setContentLength(bytes.length);
 		response.setContentType("application/octet-stream"); // meword로 정송 application/msword
