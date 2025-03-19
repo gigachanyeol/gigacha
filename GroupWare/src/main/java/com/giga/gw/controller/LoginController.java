@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	
 	private final ILoginService loginService;
-	private final WebSocketHandler webSocketHandler;
  	@GetMapping("/login.do")
 	public String login() {
 		return "login";
@@ -47,7 +46,6 @@ public class LoginController {
 			return "login";
 		}
 		session.setAttribute("loginDto", employeeDto);
-		webSocketHandler.sendMessageToUser(employeeDto.getEmpno(), "로그인함~~");
 		return "redirect:/";
 	}
 	

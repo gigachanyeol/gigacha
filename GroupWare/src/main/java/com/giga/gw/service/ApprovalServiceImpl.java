@@ -39,7 +39,6 @@ public class ApprovalServiceImpl implements IApprovalService {
 	private final IApprovalDao approvalDao;
 	private final IApprovalLineDao approvalLineDao;
 	private final IFileDao fileDao;
-	private final WebSocketHandler webSocketHandler;
 
 	@Override
 	public List<Map<String, Object>> getOrganizationTree() {
@@ -57,7 +56,8 @@ public class ApprovalServiceImpl implements IApprovalService {
 		int n = approvalDao.insertApproval(approvalDto); // 문서 row
 		int m = 0; // 결재선 row
 		int f = 0; // 파일 row
-		int r = 0; // 참조자 row 
+		int r = 0; // 참조자 row
+		
 		// 결재선 추가 로직
 		List<ApprovalLineDto> lineDtos = approvalDto.getApprovalLineDtos();
 		if (lineDtos != null && !lineDtos.isEmpty()) {
@@ -70,8 +70,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 			map.put("approvalLineDtos", lineDtos);
 			m = approvalLineDao.insertApprovalLine(map);
 		}
-		
-		
+
 		// 참조자 추가 로직
 		List<ApprovalReferenceDto> approvalReferenceDtos = approvalDto.getApprovalReferenceDtos();
 		if (approvalReferenceDtos != null && !approvalReferenceDtos.isEmpty()) {
@@ -79,73 +78,56 @@ public class ApprovalServiceImpl implements IApprovalService {
 				refDto.setApproval_id(approvalDto.getApproval_id());
 				System.out.println(refDto.getEmpno());
 			}
-			
+
 			Map<String, Object> refMap = new HashedMap<String, Object>();
 			refMap.put("approval_id", approvalDto.getApproval_id());
 			refMap.put("approvalReferenceDtos", approvalReferenceDtos);
 			r = approvalDao.insertApprovalReferences(refMap);
 		}
-		
-		
+		// 파일 없으면 리턴
 		if (files.get(0).getSize() == 0) {
-	        return n == 1 && m >= 1;
-	    }
+			return n == 1 && m >= 1;
+		}
 		
-//		if(files != null && files.size() != 0) {
-			File storage = new File(path);
-			if (!storage.exists()) {
-	            storage.mkdirs(); // 경로가 없으면 생성
-	        }
-			String result = "파일 업로드 성공";
-			List<FileDto> fileDtos = new ArrayList<>();
-	        try {
-	            for (MultipartFile file : files) {
-	                String originalFileName = file.getOriginalFilename(); // 원본 파일명
-	                String saveFileName = UUID.randomUUID().toString() + originalFileName.substring(originalFileName.lastIndexOf(".")); // 고유한 이름으로 저장
+		// 파일업로드 로직
+		File storage = new File(path);
+		if (!storage.exists()) {
+			storage.mkdirs(); // 경로가 없으면 생성
+		}
+		String result = "파일 업로드 성공";
+		List<FileDto> fileDtos = new ArrayList<>();
+		try {
+			for (MultipartFile file : files) {
+				String originalFileName = file.getOriginalFilename(); // 원본 파일명
+				String saveFileName = UUID.randomUUID().toString()
+						+ originalFileName.substring(originalFileName.lastIndexOf(".")); // 고유한 이름으로 저장
 
-	                File saveFile = new File(path, saveFileName);
-	                file.transferTo(saveFile); // 파일을 저장
-	                FileDto fileDto = FileDto
-							.builder()
-							.approval_id(approvalDto.getApproval_id())
-							.origin_name(file.getOriginalFilename())
-							.file_name(saveFileName)
-							.file_path(path)
-							.create_emp(approvalDto.getEmpno())
-							.code("FILE01")
-							.build();
-					fileDtos.add(fileDto);
-	                log.info("파일 저장 완료: {}", saveFileName);
-	                System.out.println("\n\n " + fileDtos.toString() + "\n\n");
-	                
-	            }
-	        } catch (IOException e) {
-	            log.error("파일 저장 중 오류 발생", e);
-	            result = "파일 업로드 실패";
-	        }
-	        
-	        if(!fileDtos.isEmpty()) {
-				f = fileDao.insertFile(fileDtos);
+				File saveFile = new File(path, saveFileName);
+				file.transferTo(saveFile); // 파일을 저장
+				FileDto fileDto = FileDto.builder().approval_id(approvalDto.getApproval_id())
+						.origin_name(file.getOriginalFilename()).file_name(saveFileName).file_path(path)
+						.create_emp(approvalDto.getEmpno()).code("FILE01").build();
+				fileDtos.add(fileDto);
+				log.info("파일 저장 완료: {}", saveFileName);
+				System.out.println("\n\n " + fileDtos.toString() + "\n\n");
+
 			}
-	        if(n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size())) {
-	        	
-	    		if(approvalDto.getApproval_urgency().equals("Y")) {
-	        		try {
-						webSocketHandler.sendMessageToUser(lineDtos.get(0).getApprover_empno(), "<span style='color:red;'>[긴급]</span>결재문서 도착 <br>"+approvalDto.getApproval_title());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-	    		}
+		} catch (IOException e) {
+			log.error("파일 저장 중 오류 발생", e);
+			result = "파일 업로드 실패";
+		}
 
-	    		return true;
-	        }
-	        return false;
-	        
-		} 
+		if (!fileDtos.isEmpty()) {
+			f = fileDao.insertFile(fileDtos);
+		}
+
+		return n == 1 && m >= 1 && (fileDtos.isEmpty() || f == fileDtos.size());
+
+	}
 
 //	@Transactional
 	@Override
-	public int updateApproval(ApprovalDto approvalDto , List<MultipartFile> files) { // TODO 파일
+	public int updateApproval(ApprovalDto approvalDto, List<MultipartFile> files) { // TODO 파일
 		int n = approvalDao.updateApproval(approvalDto);
 		int m = 0;
 
@@ -162,7 +144,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 			map.put("approval_id", approvalDto.getApproval_id());
 			map.put("approvalLineDtos", lineDtos);
 			m = approvalLineDao.insertApprovalLine(map);
-			
+
 			return n == 1 && m >= 1 ? 1 : 0;
 		}
 
@@ -201,7 +183,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 				m = approvalLineDao.insertApprovalLine(map);
 			}
 		}
-		return n == 1 ? true : false;
+		return n == 1;
 	}
 
 	@Override
@@ -211,7 +193,7 @@ public class ApprovalServiceImpl implements IApprovalService {
 
 	@Override
 	public int approvalRequest(String approval_id) {
-		if(approvalLineDao.countApprovalLine(approval_id) == 0) {
+		if (approvalLineDao.countApprovalLine(approval_id) == 0) {
 			return -1;
 		}
 		return approvalDao.approvalRequest(approval_id);

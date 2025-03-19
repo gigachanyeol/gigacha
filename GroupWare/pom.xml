@@ -214,6 +214,7 @@
 		</dependency>
 
 		<!-- spring framework 에서 websocket과 HandShake를 위한 라이브러리 -->
+		 <!-- TODO 00201 websocket과 HandShake를 위한 의존성 추가 --> 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>

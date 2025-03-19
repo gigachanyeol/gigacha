@@ -83,8 +83,8 @@
 								</tr>
 								<tr>
 									<th>긴급여부</th>
-									<td>긴급 <input type="radio" name="urgency" value="Y">
-										일반 <input type="radio" name="urgency" value="N" checked>
+									<td>긴급 <input type="radio" name="approval_urgency" value="Y">
+										일반 <input type="radio" name="approval_urgency" value="N" checked>
 									</td>
 									<th>서명/도장</th>
 									<td>서명 <input type="radio" value="1" name="signature" checked> 
