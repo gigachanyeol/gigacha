@@ -9,7 +9,7 @@
 <%@ include file="./layout/header.jsp"%>
 <!-- jQuery UI CSS -->
 <link rel="stylesheet"
-  href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!-- jQuery (필수) -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -18,15 +18,16 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!-- SheetJS (Excel 내보내기 기능) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <!-- 사용자 정의 스타일 -->
 <link rel="stylesheet"
-  href="${pageContext.request.contextPath}/resources/css/attendance.css">
+	href="${pageContext.request.contextPath}/resources/css/attendance.css">
 
 <!-- 사용자 정의 스크립트 (attendance.js) -->
 <script type="text/javascript"
-  src="${pageContext.request.contextPath}/resources/js/attendance.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/attendance.js"></script>
 
 </head>
 <body>
@@ -75,13 +76,6 @@
 														class="badge rounded-pill bg-secondary" id="hiredateText"></span>
 												</div>
 											</div>
-											<!-- 												<div class="mb-3"> -->
-											<!-- 													<div class="d-flex justify-content-between"> -->
-											<!-- 														<span>• 발생 연차:</span> <span class="text-primary fw-bold">20개</span> -->
-											<!-- 														<span>• 사용 연차:</span> <span class="text-primary fw-bold">8.2개</span> -->
-											<!-- 														<span>• 남은 연차:</span> <span class="text-primary fw-bold">11.5개</span> -->
-											<!-- 													</div> -->
-											<!-- 												</div> -->
 											<div class="mb-3">
 												<div class="d-flex justify-content-between">
 													<span>• 출근 시간:</span> <span class="text-primary fw-bold"
@@ -98,9 +92,22 @@
 											</div>
 											<div class="mb-3">
 												<div class="d-flex justify-content-between">
-													<span>• 월 누적 근무시간:</span> 
-													<span class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
+													<span>• 월 누적 근무시간:</span> <span
+														class="text-primary fw-bold" id="workTotalTime">00:00:00</span>
 												</div>
+
+												<!-- 												<div class="time-progress-container"> -->
+												<!-- 													<div class="progress"> -->
+												<!-- 														<div id="timeProgressBar" -->
+												<!-- 															class="progress-bar progress-bar-striped bg-success" -->
+												<!-- 															role="progressbar" style="width: 0%" aria-valuenow="0" -->
+												<!-- 															aria-valuemin="0" aria-valuemax="100"></div> -->
+												<!-- 													</div> -->
+
+												<!-- 													<span class="required-time" id="requiredTime" -->
+												<!-- 														style="left: 75%">최소 152h</span> <span class="max-time">최대 -->
+												<!-- 														209h 6m</span> -->
+												<!-- 												</div> -->
 											</div>
 										</div>
 									</div>
@@ -187,7 +194,20 @@
 							<div class="tab-pane fade" id="profile" role="tabpanel"
 								aria-labelledby="profile-tab">
 								<div class="card-body">
-									<h5 class="card-title">연차 내역</h5>
+									<div id="leaveStatus">
+										<div class="leave-box">
+											<span class="leave-title">총 연차</span> <span
+												class="leave-value" id="totalleave">0</span>
+										</div>
+										<div class="leave-box">
+											<span class="leave-title">사용 연차</span> <span
+												class="leave-value" id="useleave">0</span>
+										</div>
+										<div class="leave-box">
+											<span class="leave-title">잔여 연차</span> <span
+												class="leave-value" id="stillleave">0</span>
+										</div>
+									</div>
 									<div class="datatable-top">
 										<div
 											class="d-flex align-items-center mb-3 justify-content-between">
@@ -218,10 +238,10 @@
 													<th>휴가 종류</th>
 													<th>사용 기간</th>
 													<th>사용 연차</th>
-													<th>승인 연부</th>
+													<th>승인 날짜</th>
 													<th>비고
 														<button type="button" data-id="0"
-															class="btn btn-sm btn-primary pull-right notify">Click
+															class="btn btn-sm btn-primary pull-right notify" id="clicktest">Click
 															Me</button>
 													</th>
 												</tr>

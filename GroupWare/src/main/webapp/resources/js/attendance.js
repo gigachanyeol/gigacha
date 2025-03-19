@@ -513,6 +513,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	loadTodayAttendanceFromDB(); // DB에서 출근 정보 로드
 	initAttendanceTable();
 	updateMonthlyWorkHours();
+	setLeave();
+
 
 	// 선택사항: 출근 중일 때 페이지를 떠날 경우 확인 메시지
 	window.addEventListener('beforeunload', function(e) {
@@ -760,6 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetch(`${pageContext}/attendance/loadleave.do`)
 			.then(response => response.json())
 			.then(data => {
+				console.log("연차", data);
 				data.forEach(item => {
 					try {
 						// Parse dates properly
@@ -864,7 +867,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// YYYYMM 형식으로 변환
 		const formattedYearMonth = `${year}${String(month).padStart(2, '0')}`;
 
-//				console.log("loadMonthlyAttendanceData formattedYearMonth", formattedYearMonth);
+		//				console.log("loadMonthlyAttendanceData formattedYearMonth", formattedYearMonth);
 		//		console.log(`월 데이터 로드: ${formattedYearMonth}`);
 
 		let data = { empno: empno, attno: formattedYearMonth };
@@ -894,17 +897,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateMonthlyWorkHours() {
 		const empno = document.getElementById('empno').value; // 사원번호 가져오기
 		const today = new Date();
-//		const year = String(today.getFullYear()).slice(2); // '2025' → '25'
+		//		const year = String(today.getFullYear()).slice(2); // '2025' → '25'
 		const year = today.getFullYear(); // '2025' → '25'
 		const month = String(today.getMonth() + 1).padStart(2, '0'); // 1 → '01'
 		const formattedYearMonth = `${year}${month}`; // '2503' 형식
 
-//				console.log("updateMonthlyWorkHours formattedYearMonth", formattedYearMonth);
+		//				console.log("updateMonthlyWorkHours formattedYearMonth", formattedYearMonth);
 
 
 		let data = { empno: empno, attno: formattedYearMonth }; // 데이터 객체 수정
 
-//		console.log("updateMonthlyWorkHours data", data);
+		//		console.log("updateMonthlyWorkHours data", data);
 
 		if (!empno) {
 			console.error("사원번호(empno)가 입력되지 않았습니다.");
@@ -923,14 +926,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				return response.text(); // 먼저 텍스트로 변환해서 확인
 			})
 			.then(text => {
-//				console.log("updateMonthlyWorkHours text", text);
-				
+				//				console.log("updateMonthlyWorkHours text", text);
+
 				if (!text || text.trim() === '') {
 					console.warn("⚠ 서버에서 빈 응답이 왔습니다.");
 					document.getElementById('workTotalTime').textContent = "00:00:00";
 					return null;
 				}
-//				console.log("📄 서버 응답 원본:", text);
+				//				console.log("📄 서버 응답 원본:", text);
 
 				try {
 					return JSON.parse(text);
@@ -974,12 +977,69 @@ document.addEventListener('DOMContentLoaded', function() {
 					String(minutes).padStart(2, '0') + ':' +
 					String(seconds).padStart(2, '0');
 				document.getElementById('workTotalTime').textContent = formattedTime;
+
+				//				 updateWorkTimeProgress();
 			})
 			.catch(error => console.error("월별 데이터 로드 오류:", error));
 
 	}
 
 
+	//// 월 누적 근무시간 진행률 표시 함수
+	//function updateWorkTimeProgress() {
+	//    // 월 누적 근무시간 값 가져오기 (형식: 00:00:00)
+	//    const workTotalTimeElement = document.getElementById('workTotalTime');
+	//    const workTotalTime = workTotalTimeElement.textContent.trim();
+	//    
+	//    console.log("workTotalTime",workTotalTime)
+	//    
+	//    // 시간 형식(00:00:00)에서 시간, 분, 초 추출
+	//    const [hours, minutes, seconds] = workTotalTime.split(':').map(Number);
+	//    
+	//    // 최소 근무시간 (시간)
+	//    const requiredHours = 152;
+	//    
+	//    // 최대 근무시간 (시간과 분)
+	//    const maxHours = 209;
+	//    const maxMinutes = 6;
+	//    
+	//    // 총 근무시간을 분으로 변환
+	//    const currentTimeInMinutes = (hours * 60) + minutes;
+	//    const maxTimeInMinutes = (maxHours * 60) + maxMinutes;
+	//    
+	//    // 달성률 계산 (%)
+	//    const progressPercentage = Math.min(100, (currentTimeInMinutes / maxTimeInMinutes) * 100);
+	//    
+	//    // 최소 근무시간 위치 계산 (%)
+	//    const requiredPercentage = (requiredHours * 60) / maxTimeInMinutes * 100;
+	//    
+	//    // 시간 표시 업데이트
+	//    document.getElementById('currentHours').textContent = hours;
+	//    document.getElementById('currentMinutes').textContent = minutes;
+	//    
+	//    // 최소 근무시간 선 위치 설정
+	//    const requiredTime = document.getElementById('requiredTime');
+	//    requiredTime.style.left = requiredPercentage + '%';
+	//    requiredTime.textContent = `최소 ${requiredHours}h`;
+	//    
+	//    // 최대 근무시간 표시 업데이트
+	//    document.querySelector('.max-time').textContent = `최대 ${maxHours}h ${maxMinutes}m`;
+	//    
+	//    // 프로그레스 바 업데이트
+	//    const progressBar = document.getElementById('timeProgressBar');
+	//    
+	//    // 애니메이션 효과: 0%에서 progressPercentage까지 증가
+	//    let currentProgress = 0;
+	//    const animationInterval = setInterval(() => {
+	//        if (currentProgress >= progressPercentage) {
+	//            clearInterval(animationInterval);
+	//        } else {
+	//            currentProgress += 1;
+	//            progressBar.style.width = currentProgress + '%';
+	//            progressBar.setAttribute('aria-valuenow', currentProgress);
+	//        }
+	//    }, 15);
+	//}
 
 	//download
 	const downloadBtn = document.getElementById("downloadBtn");
@@ -1014,6 +1074,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Save the workbook as an Excel file
 		XLSX.writeFile(wb, filename);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	document.getElementById('profile-tab').addEventListener('click', function() {
+		setLeave();
+	});
+
+	function setLeave() {
+
+		fetch('./selectemployeeLeave.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+		})
+			.then(response => {
+				// HTTP 응답을 JSON으로 파싱
+				return response.json();
+			})
+			.then(data => {
+				// 여기서 data는 서버에서 보낸 JSON 데이터입니다
+				//				console.log("ANNUAL_COUNT",data.ANNUAL_COUNT);
+				//				console.log("ANNUAL_LEAVE",data.ANNUAL_LEAVE);
+				//				console.log("USE_LEAVE",data.USE_LEAVE);
+
+				// 총 연차
+				document.getElementById("totalleave").innerText = data.ANNUAL_LEAVE;
+				//사용연차
+				document.getElementById("useleave").innerText = data.USE_LEAVE;
+				//잔여연차
+				document.getElementById("stillleave").innerText = data.ANNUAL_COUNT;
+
+
+			})
+			.catch(error => {
+				console.error('에러 발생:', error);
+			});
 	}
 
 });

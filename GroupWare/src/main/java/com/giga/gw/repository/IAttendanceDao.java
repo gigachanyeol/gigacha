@@ -25,4 +25,7 @@ public interface IAttendanceDao {
 	//근태기록 가져오기
 	public List<Map<String, Object>> getAttendance(Map<String, Object> getempatt);
 	
+	//사원의 연차갯수(부여,잔여,사용) 가져오기 
+	public List<Map<String, Object>> selectemployeeLeave(String empno);
+	
 }

@@ -169,6 +169,29 @@ public class AttendanceController {
 	        return ResponseEntity.internalServerError().build(); // 예외 발생 시 500 반환
 	    }
 	}
+	
+	@PostMapping("/selectemployeeLeave.do")
+	@ResponseBody
+	public Map<String, Object> SelectemployeeLeave(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		
+		List<Map<String, Object>> leaveList =  attendanceDao.selectemployeeLeave(loginDto.getEmpno());		
+		
+//		[{ANNUAL_LEAVE=23, ANNUAL_COUNT=20, EMPNO=1505001, USE_LEAVE=3}]
+		
+//		φ(*￣0￣)φ(*￣0￣)φ(*￣0￣)( •̀ ω •́ )✧φ(*￣0￣)φ(*￣0￣)φ(*￣0￣)( •̀ ω •́ )✧[{ANNUAL_LEAVE=23, ANNUAL_COUNT=20, EMPNO=1505001, USE_LEAVE=3}]
+		
+		Map<String, Object> leaveMap = null;
+		if (leaveList != null && !leaveList.isEmpty()) {
+		    leaveMap = leaveList.get(0);
+		}
+//
+//		// Now you can pass leaveMap to your JSP
+//		request.setAttribute("leaveInfo", leaveMap);
+
+		return leaveMap;
+		
+	}
 
 
 
