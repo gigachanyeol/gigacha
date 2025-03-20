@@ -15,7 +15,7 @@
 <%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-10">
+		<div id="content" class="col">
 				
 		</div>
 	</div>
