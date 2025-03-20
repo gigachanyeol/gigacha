@@ -163,7 +163,7 @@
 												id="showtoday">TODAY</button>
 										</div>
 										<!-- 근태 기록 다운로드 버튼 -->
-										<button class="btn btn-outline-primary" id="downloadBtn">
+										<button class="btn btn-outline-primary" id="attendance" name="downloadBtn">
 											<i class="bi bi-box-arrow-down"></i> 근태기록 다운로드
 										</button>
 									</div>
@@ -226,13 +226,13 @@
 														<option value="-1">All</option></select> entries per page
 												</label>
 											</div>
-											<button class="btn btn-outline-primary">
+											<button class="btn btn-outline-primary" id="leave" name="downloadBtn">
 												<i class="bi bi-box-arrow-down"></i> 연차기록 다운로드
 											</button>
 										</div>
 									</div>
 									<div class="datatable-container">
-										<table class="table table-hover">
+										<table class="table table-hover" id="leaveTable">
 											<thead class="table-light">
 												<tr>
 													<th>휴가 종류</th>

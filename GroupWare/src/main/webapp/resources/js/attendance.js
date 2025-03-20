@@ -790,8 +790,8 @@ document.addEventListener('DOMContentLoaded', function() {
             			<td>${formatDate}</td>
             			<td>${usedDays}일</td>
         				`;
-        				
-        				tbody.appendChild(newRow);
+
+						tbody.appendChild(newRow);
 
 					} catch (error) {
 						console.error("Error processing leave item:", item, error);
@@ -1080,15 +1080,25 @@ document.addEventListener('DOMContentLoaded', function() {
 	//}
 
 	//download
-	const downloadBtn = document.getElementById("downloadBtn");
-	if (downloadBtn) {
-		downloadBtn.addEventListener('click', downloadAttendanceAsExcel);
-	}
+	const downloadBtns = document.getElementsByName("downloadBtn");
+	Array.from(downloadBtns).forEach(btn => {
+		btn.addEventListener('click', () => {
+			// ID와 함께 data-type 속성 값도 전달
+			downloadAttendanceAsExcel(btn.id);
+		});
+	});
 
-	function downloadAttendanceAsExcel() {
+	function downloadAttendanceAsExcel(id) {
 		//		console.log("다운로드 버튼 클릭")
 		// Get the table data
-		const table = document.getElementById('attendanceTable');
+		
+		var table;
+		
+		if(id=="attendance"){
+			table = document.getElementById('attendanceTable');
+		}else{
+			table = document.getElementById('leaveTable');
+		}
 		if (!table) {
 			alert('테이블을 찾을 수 없습니다.');
 			return;
@@ -1099,7 +1109,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		const ws = XLSX.utils.table_to_sheet(table);
 
 		// Add the worksheet to the workbook
-		XLSX.utils.book_append_sheet(wb, ws, '근태기록');
+		if(id=="attendance"){
+			XLSX.utils.book_append_sheet(wb, ws, '근태기록');
+		}else{
+			XLSX.utils.book_append_sheet(wb, ws, '연차사용기록');
+		}
 
 		// Get the current date and time for the filename
 		const now = new Date();
@@ -1108,7 +1122,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		const dateStr = `${year}${month}`;
 
 		// Generate the filename
-		const filename = `근태기록_${dateStr}월.xlsx`;
+		// Add the worksheet to the workbook
+		var filename;
+		if(id=="attendance"){
+			filename = `근태기록_${dateStr}월.xlsx`;
+		}else{
+			filename = `연차기록_${dateStr}월.xlsx`;
+		}
 
 		// Save the workbook as an Excel file
 		XLSX.writeFile(wb, filename);
