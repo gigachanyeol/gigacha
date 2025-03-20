@@ -204,19 +204,19 @@
 						<input type="text" id="reservation_time">
 						<div class="mb-3">
 							<label for="reserver" class="form-label">예약자</label> 
-							<input type="text" class="form-control" id="reserver" value="${loginDto.empno}" readonly>
+							<input type="text" class="form-control required" id="reserver" value="${loginDto.empno}" readonly>
 						</div>
 						<div class="mb-3">
 							<label for="capacity" class="form-label">예약인원수</label> 
-							<input type="number" class="form-control" id="capacity" value="1" min="1" max="15">
+							<input type="number" class="form-control required" id="capacity" value="1" min="1" max="15">
 						</div>
 						<div class="mb-3">
 							<label for="member" class="form-label">참여자</label> 
-							<div id="member" class="form-control"></div>
+							<div id="member" class="form-control required"></div>
 						</div>
 						<div class="mb-3">
 							<label for="purpose" class="form-label">회의 사유</label> 
-							<input type="text" class="form-control" id="purpose">
+							<input type="text" class="form-control required" id="purpose">
 						</div>
 						<div id="organization">
 							<h2>조직도</h2>
@@ -227,7 +227,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
+							data-bs-dismiss="modal" id="cancelBtn">취소</button>
 						<button type="button" id="reserSend" 
 							class="btn btn-primary">예약</button>
 					</div>
@@ -314,11 +314,29 @@
 	    			
 	   			reservationModal = new bootstrap.Modal(document.getElementById("reservationModal"));
     			reservationModal.show();
+    		
 	   			}
     		}
 		    
-		   	// 예전전송 send submit
+		   	// 예약전송 send submit
 		   	document.getElementById("reserSend").onclick=function(){
+		   		event.preventDefault();
+		   		let requiredFields = document.querySelectorAll(".required");
+		   		let isValid = true;
+		   		
+		   		requiredFields.forEach(function(field){
+		   			if(field.value === ""){ //빈칸 확인
+		   				isValid = false;
+		   			}else{
+		   				field.style.border = ""; // 값이 있으면 원래대로
+		   			}
+		   		});
+		   		
+		   		if(!isValid){
+		   			alert("모든 항목을 입력하세요.");
+		   			return;
+		   		}
+		   		
 		   		console.log("send 작동");
 		   		//예약 버튼 비활성화
 		   		console.log(d);
@@ -391,6 +409,17 @@
 	                });
 		   		
 		   	};
+		   	document.getElementById("cancelBtn").addEventListener("click", function() {
+		   	    var requiredFields = document.querySelectorAll(".required");
+		   	    
+		   	    requiredFields.forEach(function(field) {
+		   	     if (field.id !== "reserver" && field.id !== "capacity") {
+		   	        field.value = ""; // 입력값 초기화
+		   	     }
+		   	        field.style.border = ""; // 테두리 원래대로
+		   	    });
+		   	});
+		  
 		   	
 	    	
 		    	// 조직도 jstress 조회 출력

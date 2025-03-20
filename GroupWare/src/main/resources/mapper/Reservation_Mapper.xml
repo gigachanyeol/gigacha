@@ -48,23 +48,29 @@
 	SELECT DISTINCT 
 		r.RESERVATION_ID, 
 		r.ROOM_NAME, 
-		r.RESERVER AS reserver, 
+		r.RESERVER, 
 		r.MEMBER, 
 		r.RESERVATION_DATE, 
 		r.RESERVATION_TIME, 
 		r.PURPOSE
     FROM RESERVATION r
     LEFT JOIN RESERVATION_PARTICIPANT rp ON r.RESERVATION_ID = rp.RESERVATION_ID
-    WHERE r.RESERVER = #{empno}
-    OR rp.EMPNO = #{empno}
+    WHERE r.RESERVATION_ID IN ( SELECT
+	RESERVATION_ID
+FROM
+	RESERVATION r
+WHERE
+	 INSTR(MEMBER , #{empno}) > 0 OR  RESERVER = #{empno})
     ORDER BY r.RESERVATION_DATE DESC, r.RESERVATION_TIME ASC
+	
 	</select>
 
 	<!-- 예약자와 참여자 조회 -->
 	<select id="selectReserverAndMember" resultType="reservationDto">
 		SELECT
 			e.EMPNO AS RESERVER,
-			r.MEMBER
+			r.MEMBER,
+			r.RESERVATION_ID
 		FROM
 			RESERVATION r
 		LEFT JOIN

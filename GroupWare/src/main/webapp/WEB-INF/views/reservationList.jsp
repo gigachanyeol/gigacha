@@ -33,36 +33,32 @@
 							<tbody>
 								<c:forEach items="${reservationList}" var="reservation">
 									<tr>
-										<td scope="col">${reservation.room_id}</td>
+										<td scope="col">${reservation.reservation_id}</td>
 										<td scope="col">${reservation.room_name}</td>
 										<td scope="col">${reservation.reservation_date}</td>
 										<td scope="col">${reservation.reservation_time}</td>
 										<td scope="col">${reservation.purpose}</td>
 										<td scope="col">
-												
 										<c:if test="${not empty sessionScope.loginDto}">
 										 <!-- 예약이 존재하는지 확인 -->
     									  <c:if test="${not empty reservation}">
 											<c:if test="${sessionScope.loginDto.auth eq 'A'}">
-<!-- 													관리자에게는 '취소' 버튼만 표시 -->
+														관리자
 													<button class="btn btn-danger" onclick="deleteRev('${reservation.reservation_id}')">
 														취소
 													</button>
 											</c:if>
 											<c:if test="${reservation.reserver ne null && reservation.reserver eq sessionScope.loginDto.empno}">
+													예약자
 												<button class="btn btn-danger" onclick="deleteRev('${reservation.reservation_id}')">
 													취소
 												</button>
 											</c:if>
-											<c:if test="${reservation.member ne null && reservation.member eq sessionScope.loginDto.empno}">
+											<c:if test="${reservation.reserver ne sessionScope.loginDto.empno && sessionScope.loginDto.auth ne 'A'}">
         											참여자
 											</c:if>
 										  </c:if>
-										</c:if>
-											
-										</td>
-										<td>
-											<button type="button" name="delBtn" class="btn btn-danger" onclick="deleteRev('${reservation.reservation_id}')">취소</button>
+										</c:if>		
 										</td>
 									</tr>
 								</c:forEach>

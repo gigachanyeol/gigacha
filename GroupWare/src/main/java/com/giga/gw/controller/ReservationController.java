@@ -1,9 +1,11 @@
 package com.giga.gw.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.WebUtils;
 
+import com.giga.gw.config.WebSocketHandler;
 import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.dto.ReservationDto;
 import com.giga.gw.dto.RoomDto;
@@ -35,6 +39,7 @@ public class ReservationController {
 	private final IReservationService reservationService;
 	private final IRoomService roomService;
 	private final IReservationDao reservationDao;
+	private final WebSocketHandler webSocketHandler;
 	
 	@GetMapping("/reservation.do")
 	public String reservation(Model model , @RequestParam (value = "date", required = false) String date ) {
@@ -53,18 +58,25 @@ public class ReservationController {
 	//예약 설정
 	@PostMapping("/api/reservation.do") //예약 데이터 처리
 	@ResponseBody
-	public ResponseEntity insertreservation(HttpSession session, @RequestBody ReservationDto reservationDto){
+	public ResponseEntity insertreservation(HttpSession session, @RequestBody ReservationDto reservationDto,HttpServletRequest request){
 		System.out.println(reservationDto);
 
-//		String empno = reservationDto.getReserver();
-//		log.info("（；´д｀）ゞ（；´д｀）ゞ:{}",empno);)
 		if (reservationDto.getReserver() == null) {
 		    return ResponseEntity.status(401).body("로그인 실패");
 		}
-//		reservationDto.setReserver(empno);
-		
+
 		int result = reservationService.insertreservation(reservationDto);
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String[] member = reservationDto.getMember().split("/");
+		for(int i = 0; i < member.length; i++) {
+			try {
+				webSocketHandler.sendMessageToUser(member[i], "회의예약 참가자로 등록<br>회의사유:"+reservationDto.getPurpose());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		if(result > 0) {
 			map.put("isc", true);
@@ -73,41 +85,31 @@ public class ReservationController {
 			map.put("isc", false);
 			return ResponseEntity.status(400).body(map); // 실패 시 응답			
 		}
-//		return null;
+		
+	
+
 	}
 	//전체예약내역
 	@GetMapping("/reservationList.do")
 	public String reservationList(Model model,@RequestParam (required = false) String date, HttpSession session) {
-		List<ReservationDto> reservationlists = reservationService.reservationList();
-		model.addAttribute("reservationList", reservationlists);
+		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
 		
-//		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
-//		
-//		if(loginDto == null) {
-//			return "redirect:/login.do";
-//		}
+		List<ReservationDto> reservationList = null;
 		
-//		String empno = loginDto.getEmpno();
+		if(loginDto.getAuth().equals("A")) {
+			reservationList = reservationService.reservationList();			
+		}else {
+			reservationList = reservationService.getReservationList(loginDto.getEmpno());			
+		}
 		
+
+//		model.addAttribute("reservationList", reservationList);
+
+		
+		model.addAttribute("reservationList", reservationList);
 		
 		
 		return "reservationList";
-	}
-	
-	//로그인한 사용자의 예약 목록 조회 (예약자 또는 참여자인 경우)
-	@GetMapping("/getReservationList.do")
-	public String getReservationList(HttpSession session, Model model) {
-		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
-		if(loginDto == null) {
-			return "redirect:/login.do";
-		}
-		
-		String empno = (String) session.getAttribute("empno");
-		List<ReservationDto> reservationList = reservationService.getReservationList(empno);	
-
-		model.addAttribute("reservationList", reservationList);
-		
-		return "reservationList.do";
 	}
 	
 	
@@ -147,11 +149,17 @@ public class ReservationController {
 	        } else {
 	            response.put("errorMessage", "예약자만 취소할 수 있습니다.");
 	        }
+	        String[] member = reservation.getMember().split("/");
+	        for(int i = 0; i < member.length; i++) {
+	        webSocketHandler.sendMessageToUser(member[i], reservation.getReservation_id()+"회의예약이 취소되었습니다.");
+	        }
 	    } catch (Exception e) {
 	        System.out.println("예외 발생: " + e.getMessage());
 	        e.printStackTrace();
 	        response.put("errorMessage", "서버 오류가 발생했습니다.");
 	    }
+		
+
 	    return response;
 	}
 
