@@ -17,7 +17,7 @@
 <!-- 게시판 조회(게시판리스트) -->
 <select id="getBoardList" resultType="NoticeDto">
 	SELECT 
-		ROW_NUMBER () OVER (ORDER BY n.CREATE_DATE) AS 게시판번호, 
+		n.NOTICE_ID , 
 		e.NAME , TITLE, n.CREATE_DATE,
 		n.UPDATE_DATE, VIEW_COUNT, IMPORTANT,
 			CASE WHEN BOARD_STATUS = 'BS03' THEN '삭제된 게시물입니다.'

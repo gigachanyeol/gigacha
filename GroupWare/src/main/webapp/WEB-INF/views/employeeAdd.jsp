@@ -153,7 +153,6 @@
 </main>
 </body>
 <script>
-
 // 생년월일
 document.addEventListener('DOMContentLoaded', function() {
     // 연도 드롭다운
@@ -281,20 +280,19 @@ document.getElementById('employeeForm').addEventListener('submit', function(even
 
 //값 보내기
 function saveEmployee() {
-    // 폼 값 가져오기
+    
     const empno = document.getElementById('empno').value;
     const name = document.getElementById('name').value;
     
-    // 생년월일 값 가져오기 - 선택자 수정
-    const birthYear = document.getElementById('birth-year').value;
-    const birthMonth = document.getElementById('birth-month').value;
-    const birthDay = document.getElementById('birth-day').value;
+    // 생년월일 값
+    const birthYear = document.getElementById('birth-year').options[document.getElementById("birth-year").selectedIndex].value;
+    const birthMonth = document.getElementById('birth-month').options[document.getElementById('birth-month').selectedIndex].value;
+    const birthDate = document.getElementById('birth-day').options[document.getElementById('birth-month').selectedIndex].value;
     
-    const birthday = getCombinedBirthday();
+    const formattedMonth = String(birthMonth).padStart(2, '0');
+    const formattedDay = String(birthDate).padStart(2, '0');
     
-    const formattedMonth = birthMonth.padStart(2, '0');
-    const formattedDay = birthDay.padStart(2, '0');
-    const birthday = `${birthYear}-${formattedMonth}-${formattedDay}`;
+    const birthday = birthYear +"-"+formattedMonth+"-"+formattedDay;
     
     const degree = document.getElementById('degree').value;
     
@@ -317,16 +315,18 @@ function saveEmployee() {
     const school = document.getElementById('school').value;
     const hiredate = document.getElementById('hiredate').value;
     
-    // 유효성 검사
-    if (!name) {
-        alert('이름을 입력해주세요.');
-        return;
-    }
     
-    if (!hiredate) {
-        alert('입사일자를 입력해주세요.');
-        return;
-    }
+    
+    // 유효성 검사
+//     if (!name) {
+//         alert('이름을 입력해주세요.');
+//         return;
+//     }
+    
+//     if (!hiredate) {
+//         alert('입사일자를 입력해주세요.');
+//         return;
+//     }
 
     const data = {
     	empno : empno,
@@ -347,7 +347,7 @@ function saveEmployee() {
         auth: '',
     };
     
-    console.log('전송할 데이터:', data); // 디버깅용
+    console.log('전송할 데이터:', data); 
     
     // 서버로 데이터 전송
     fetch('./employeeAdd.do', {
