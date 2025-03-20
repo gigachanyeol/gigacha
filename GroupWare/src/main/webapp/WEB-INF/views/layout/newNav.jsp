@@ -45,27 +45,6 @@
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> 
 				<span>나의 근태 현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptattendance.do"> 
-				<span>부서 근태 현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptannualleave.do"> 
-				<span>부서 연차 현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/emplattendance.do"> 
-				<span>전사 근태현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attstatistics.do"> 
-				<span>전사 근태통계</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attannualleave.do"> 
-				<span>전사 연차현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attuseannualleave.do"> 
-				<span>전사 연차 사용 내역</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/annstatistics.do"> 
-				<span>전사 연차 통계</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
           </ul>
         </li>
         <li class="nav-item pe-3">

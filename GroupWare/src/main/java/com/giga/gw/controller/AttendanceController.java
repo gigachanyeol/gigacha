@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.repository.IAttendanceDao;
 import com.giga.gw.service.AttendanceServiceImpl;
+import com.giga.gw.service.IAttendanceService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class AttendanceController {
 
 	@Autowired
 	private IAttendanceDao attendanceDao;
+	@Autowired
+	private IAttendanceService attendanceService;
 
 //	나의 근무 현황             
 //	/myattendance.do"> <
@@ -166,6 +169,29 @@ public class AttendanceController {
 	        return ResponseEntity.internalServerError().build(); // 예외 발생 시 500 반환
 	    }
 	}
+	
+	@PostMapping("/selectemployeeLeave.do")
+	@ResponseBody
+	public Map<String, Object> SelectemployeeLeave(HttpSession session){
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		
+		List<Map<String, Object>> leaveList =  attendanceDao.selectemployeeLeave(loginDto.getEmpno());		
+		
+//		[{ANNUAL_LEAVE=23, ANNUAL_COUNT=20, EMPNO=1505001, USE_LEAVE=3}]
+		
+//		φ(*￣0￣)φ(*￣0￣)φ(*￣0￣)( •̀ ω •́ )✧φ(*￣0￣)φ(*￣0￣)φ(*￣0￣)( •̀ ω •́ )✧[{ANNUAL_LEAVE=23, ANNUAL_COUNT=20, EMPNO=1505001, USE_LEAVE=3}]
+		
+		Map<String, Object> leaveMap = null;
+		if (leaveList != null && !leaveList.isEmpty()) {
+		    leaveMap = leaveList.get(0);
+		}
+//
+//		// Now you can pass leaveMap to your JSP
+//		request.setAttribute("leaveInfo", leaveMap);
+
+		return leaveMap;
+		
+	}
 
 
 
@@ -176,20 +202,6 @@ public class AttendanceController {
 //	                    
 //	부서 연차 현황                    
 //	/deptannualleave.do"
-//	                    
-//	전사 근무현황                    
-//	/emplattendance.do">
-//	                    
-//	전사 근무통계                    
-//	/attstatistics.do"> 
-//	                    
-//	전사 연차현황                    
-//	/attannualleave.do">
-//	                    
-//	전사 연차 사용 내역                    
-//	/attuseannualleave.d
-//	                    
-//	전사 연차 통계                    
-//	/annstatistics.do"> 
+
 
 }

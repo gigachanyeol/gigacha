@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
 	// 요소들
-	const timeDisplay = document.querySelector('.time-display');
 	const checkInButton = document.querySelector('.btn-check-in');
 	const checkOutButton = document.querySelector('.btn-check-out');
 	const noticeText = document.querySelector('.notice');
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		isCheckedIn = true;
-		console.log("출근 함수>>>", isCheckedIn);
+		//		console.log("출근 함수>>>", isCheckedIn);
 		checkInTime = new Date();
 
 
@@ -119,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		checkOutButton.style.color = 'white';
 		checkOutButton.disabled = false;
 
-		noticeText.textContent = '출근 등록이 완료되었습니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
+		noticeText.textContent = '출근 등록이 완료되었습니다.';
 
 		// 타이머 시작 - 이전에 누적된 시간부터 계속
 		startWorkTimer();
@@ -229,14 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 	}
-	
+
 	//누적 근무기록 저장
-	function saveMonthWorkTotal(total){
-		
+	function saveMonthWorkTotal(total) {
+
 		document.getElementById("");
-		
+
 	}
-	
+
 	// 출근 기록 저장
 	function saveAttendanceRecord(type, time, duration = null) {
 		console.log('출근 기록 저장:', {
@@ -326,7 +325,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		const today = new Date();
 		const todayFormatted = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
-		const todayAttendance = attendancelist.find(item => item.attno === todayFormatted);
+		const todayAttendance = attendancelist.find(item =>
+			item.attno === todayFormatted.substring(2) || // 연도 두 자리만 있는 경우
+			item.attno === todayFormatted // 전체 연도가 있는 경우
+		);
+
+		//		console.log("todayFormatted:", todayFormatted);
+		//		console.log("todayAttendance:", todayAttendance);
 
 		if (!todayAttendance || !todayAttendance.workin_time) {
 			console.log("📌 오늘 출근 기록이 없음");
@@ -340,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			noticeText.textContent = '출근 등록을 해주세요.';
 
 			isCheckedIn = false;
-			console.log("📌 초기화 후 >>> isCheckedIn", isCheckedIn);
+			//			console.log("📌 초기화 후 >>> isCheckedIn", isCheckedIn);
 		} else {
 			// 출근 기록이 있는 경우 처리
 			processAttendanceData(todayAttendance);
@@ -506,6 +511,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	updateCurrentDateTime();
 	loadTodayAttendanceFromDB(); // DB에서 출근 정보 로드
 	initAttendanceTable();
+	updateMonthlyWorkHours();
+	EmployeeLevae();
+
 
 	// 선택사항: 출근 중일 때 페이지를 떠날 경우 확인 메시지
 	window.addEventListener('beforeunload', function(e) {
@@ -734,24 +742,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
-	function formatDate(timestamp) {
-		try {
-			// timestamp가 null, undefined 또는 유효하지 않은 형식인지 확인
-			if (!timestamp || isNaN(new Date(timestamp).getTime())) {
-				console.warn("유효하지 않은 날짜 값:", timestamp);
-				return ""; // 빈 문자열 반환 또는 기본값 설정
-			}
-			const date = new Date(timestamp);
-			return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
-		} catch (error) {
-			console.error("날짜 변환 오류:", timestamp, error);
-			return ""; // 오류 발생시 빈 문자열 반환
-		}
-	}
-
 	function fetchLeaveData() {
 		fetch(`${pageContext}/attendance/loadleave.do`)
 			.then(response => response.json())
+			.then(data => {
+				leaveData = data; // 전역 변수에 저장
+
+				// 페이지 컨트롤 초기화
+				initializePagination();
+
+				// 첫 페이지 데이터 표시
+				displayLeaveData();
+
+				return data;
+			})
 			.then(data => {
 				data.forEach(item => {
 					try {
@@ -857,7 +861,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// YYYYMM 형식으로 변환
 		const formattedYearMonth = `${year}${String(month).padStart(2, '0')}`;
 
-		//		console.log("formattedYearMonth", formattedYearMonth);
+		//				console.log("loadMonthlyAttendanceData formattedYearMonth", formattedYearMonth);
 		//		console.log(`월 데이터 로드: ${formattedYearMonth}`);
 
 		let data = { empno: empno, attno: formattedYearMonth };
@@ -870,6 +874,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => response.json())
 			.then(data => {
 				//				console.log("월별 데이터 응답:", data);
+
+
 				// 모든 출근 데이터 표시 함수 호출
 				displayAllAttendanceData(data.map(res => ({
 					attno: res.ATTNO,
@@ -881,18 +887,174 @@ document.addEventListener('DOMContentLoaded', function() {
 			.catch(error => console.error("월별 데이터 로드 오류:", error));
 	}
 
+	// 월 누적 근무시간 계산 및 표시 함수
+	function updateMonthlyWorkHours() {
+		const empno = document.getElementById('empno').value; // 사원번호 가져오기
+		const today = new Date();
+		//		const year = String(today.getFullYear()).slice(2); // '2025' → '25'
+		const year = today.getFullYear(); // '2025' → '25'
+		const month = String(today.getMonth() + 1).padStart(2, '0'); // 1 → '01'
+		const formattedYearMonth = `${year}${month}`; // '2503' 형식
+
+		//				console.log("updateMonthlyWorkHours formattedYearMonth", formattedYearMonth);
 
 
-	//download
-	const downloadBtn = document.getElementById("downloadBtn");
-	if (downloadBtn) {
-		downloadBtn.addEventListener('click', downloadAttendanceAsExcel);
+		let data = { empno: empno, attno: formattedYearMonth }; // 데이터 객체 수정
+
+		//		console.log("updateMonthlyWorkHours data", data);
+
+		if (!empno) {
+			console.error("사원번호(empno)가 입력되지 않았습니다.");
+			return;
+		}
+
+		fetch('./getAttendance.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+				}
+				return response.text(); // 먼저 텍스트로 변환해서 확인
+			})
+			.then(text => {
+				//				console.log("updateMonthlyWorkHours text", text);
+
+				if (!text || text.trim() === '') {
+					console.warn("⚠ 서버에서 빈 응답이 왔습니다.");
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return null;
+				}
+				//				console.log("📄 서버 응답 원본:", text);
+
+				try {
+					return JSON.parse(text);
+				} catch (error) {
+					console.error("JSON 파싱 오류:", error);
+					console.log("파싱 실패한 텍스트:", text);
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return null;
+				}
+			})
+			.then(data => {
+				if (!data || !Array.isArray(data) || data.length === 0) {
+					console.warn("⚠ 근태 데이터가 없습니다.");
+					document.getElementById('workTotalTime').textContent = "00:00:00";
+					return;
+				}
+
+				//				console.log("데이터 첫 번째 항목:", data[0]); // 키 이름 확인을 위한 로그
+
+				let totalSeconds = 0;
+				data.forEach(record => {
+					// 대문자 키 이름 사용 (서버 응답 키 이름에 맞게 수정)
+					if (record.WORKIN_TIME && record.WORKOUT_TIME) {
+						const inTime = new Date(record.WORKIN_TIME);
+						const outTime = new Date(record.WORKOUT_TIME);
+						if (!isNaN(inTime) && !isNaN(outTime)) {
+							const diffSeconds = Math.floor((outTime - inTime) / 1000);
+							if (diffSeconds > 0) {
+								totalSeconds += diffSeconds;
+							}
+						}
+					}
+				});
+
+				// 시간 포맷팅 코드 유지
+				const hours = Math.floor(totalSeconds / 3600);
+				const minutes = Math.floor((totalSeconds % 3600) / 60);
+				const seconds = totalSeconds % 60;
+				const formattedTime =
+					String(hours).padStart(2, '0') + ':' +
+					String(minutes).padStart(2, '0') + ':' +
+					String(seconds).padStart(2, '0');
+				document.getElementById('workTotalTime').textContent = formattedTime;
+
+				//				 updateWorkTimeProgress();
+			})
+			.catch(error => console.error("월별 데이터 로드 오류:", error));
+
 	}
 
-	function downloadAttendanceAsExcel() {
+
+	//// 월 누적 근무시간 진행률 표시 함수
+	//function updateWorkTimeProgress() {
+	//    // 월 누적 근무시간 값 가져오기 (형식: 00:00:00)
+	//    const workTotalTimeElement = document.getElementById('workTotalTime');
+	//    const workTotalTime = workTotalTimeElement.textContent.trim();
+	//    
+	//    console.log("workTotalTime",workTotalTime)
+	//    
+	//    // 시간 형식(00:00:00)에서 시간, 분, 초 추출
+	//    const [hours, minutes, seconds] = workTotalTime.split(':').map(Number);
+	//    
+	//    // 최소 근무시간 (시간)
+	//    const requiredHours = 152;
+	//    
+	//    // 최대 근무시간 (시간과 분)
+	//    const maxHours = 209;
+	//    const maxMinutes = 6;
+	//    
+	//    // 총 근무시간을 분으로 변환
+	//    const currentTimeInMinutes = (hours * 60) + minutes;
+	//    const maxTimeInMinutes = (maxHours * 60) + maxMinutes;
+	//    
+	//    // 달성률 계산 (%)
+	//    const progressPercentage = Math.min(100, (currentTimeInMinutes / maxTimeInMinutes) * 100);
+	//    
+	//    // 최소 근무시간 위치 계산 (%)
+	//    const requiredPercentage = (requiredHours * 60) / maxTimeInMinutes * 100;
+	//    
+	//    // 시간 표시 업데이트
+	//    document.getElementById('currentHours').textContent = hours;
+	//    document.getElementById('currentMinutes').textContent = minutes;
+	//    
+	//    // 최소 근무시간 선 위치 설정
+	//    const requiredTime = document.getElementById('requiredTime');
+	//    requiredTime.style.left = requiredPercentage + '%';
+	//    requiredTime.textContent = `최소 ${requiredHours}h`;
+	//    
+	//    // 최대 근무시간 표시 업데이트
+	//    document.querySelector('.max-time').textContent = `최대 ${maxHours}h ${maxMinutes}m`;
+	//    
+	//    // 프로그레스 바 업데이트
+	//    const progressBar = document.getElementById('timeProgressBar');
+	//    
+	//    // 애니메이션 효과: 0%에서 progressPercentage까지 증가
+	//    let currentProgress = 0;
+	//    const animationInterval = setInterval(() => {
+	//        if (currentProgress >= progressPercentage) {
+	//            clearInterval(animationInterval);
+	//        } else {
+	//            currentProgress += 1;
+	//            progressBar.style.width = currentProgress + '%';
+	//            progressBar.setAttribute('aria-valuenow', currentProgress);
+	//        }
+	//    }, 15);
+	//}
+
+	//download
+	const downloadBtns = document.getElementsByName("downloadBtn");
+	Array.from(downloadBtns).forEach(btn => {
+		btn.addEventListener('click', () => {
+			// ID와 함께 data-type 속성 값도 전달
+			downloadAttendanceAsExcel(btn.id);
+		});
+	});
+
+	function downloadAttendanceAsExcel(id) {
 		//		console.log("다운로드 버튼 클릭")
 		// Get the table data
-		const table = document.getElementById('attendanceTable');
+
+		var table;
+
+		if (id == "attendance") {
+			table = document.getElementById('attendanceTable');
+		} else {
+			table = document.getElementById('leaveTable');
+		}
 		if (!table) {
 			alert('테이블을 찾을 수 없습니다.');
 			return;
@@ -903,7 +1065,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		const ws = XLSX.utils.table_to_sheet(table);
 
 		// Add the worksheet to the workbook
-		XLSX.utils.book_append_sheet(wb, ws, '근태기록');
+		if (id == "attendance") {
+			XLSX.utils.book_append_sheet(wb, ws, '근태기록');
+		} else {
+			XLSX.utils.book_append_sheet(wb, ws, '연차사용기록');
+		}
 
 		// Get the current date and time for the filename
 		const now = new Date();
@@ -912,10 +1078,187 @@ document.addEventListener('DOMContentLoaded', function() {
 		const dateStr = `${year}${month}`;
 
 		// Generate the filename
-		const filename = `근태기록_${dateStr}월.xlsx`;
+		// Add the worksheet to the workbook
+		var filename;
+		if (id == "attendance") {
+			filename = `근태기록_${dateStr}월.xlsx`;
+		} else {
+			filename = `연차기록_${dateStr}월.xlsx`;
+		}
 
 		// Save the workbook as an Excel file
 		XLSX.writeFile(wb, filename);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//	document.getElementById('profile-tab').addEventListener('click', function() {
+	//		setLeave();
+	//	});
+
+	function EmployeeLevae() {
+		setLeave();
+		//		leaveList()
+
+	}
+
+	function setLeave() {
+
+		fetch('./selectemployeeLeave.do', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+		})
+			.then(response => {
+				// HTTP 응답을 JSON으로 파싱
+				return response.json();
+			})
+			.then(data => {
+				console.log("연차", data);
+
+				// 총 연차
+				document.getElementById("totalleave").innerText = data.ANNUAL_LEAVE;
+				//사용연차
+				document.getElementById("useleave").innerText = data.USE_LEAVE;
+				//잔여연차
+				document.getElementById("stillleave").innerText = data.ANNUAL_COUNT;
+
+
+			})
+			.catch(error => {
+				console.error('에러 발생:', error);
+			});
+	}
+
+
+	// 연차 데이터를 저장할 전역 변수
+	let leaveData = [];
+	// 현재 페이지 상태 관리 변수
+	let currentPage = 1;
+	let entriesPerPage = 10;
+
+	// 페이지네이션 초기화
+	function initializePagination() {
+		// 페이지당 항목 수 선택기에 이벤트 리스너 추가
+		const selector = document.querySelector('.datatable-selector[name="leave-entries"]');
+		if (selector) {
+			selector.addEventListener('change', function() {
+				entriesPerPage = parseInt(this.value);
+				currentPage = 1; // 페이지 변경 시 첫 페이지로 이동
+				displayLeaveData();
+				updatePaginationControls();
+			});
+		}
+
+		// 초기 설정
+		updatePaginationControls();
+	}
+
+	// 페이지네이션 컨트롤 업데이트
+	function updatePaginationControls() {
+		const totalItems = leaveData.length;
+		const totalPages = entriesPerPage === -1 ? 1 : Math.ceil(totalItems / entriesPerPage);
+
+		// 정보 텍스트 업데이트
+		const infoFrom = totalItems === 0 ? 0 : (entriesPerPage === -1 ? 1 : ((currentPage - 1) * entriesPerPage) + 1);
+		const infoTo = entriesPerPage === -1 ? totalItems : Math.min(currentPage * entriesPerPage, totalItems);
+
+		document.querySelector('.datatable-info-entries-from').textContent = infoFrom;
+		document.querySelector('.datatable-info-entries-to').textContent = infoTo;
+		document.querySelector('.datatable-info-entries-all').textContent = totalItems;
+
+		// 페이지 버튼 생성
+		const paginationList = document.querySelector('.datatable-pagination-list');
+		paginationList.innerHTML = '';
+
+		// 이전 페이지 버튼
+		if (currentPage > 1) {
+			const prevButton = document.createElement('li');
+			prevButton.innerHTML = '<a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>';
+			prevButton.classList.add('datatable-pagination-list-item');
+			prevButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage--;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(prevButton);
+		}
+
+		// 페이지 번호 버튼
+		for (let i = 1; i <= totalPages; i++) {
+			const pageButton = document.createElement('li');
+			pageButton.innerHTML = `<a href="#">${i}</a>`;
+			pageButton.classList.add('datatable-pagination-list-item');
+			if (i === currentPage) {
+				pageButton.classList.add('active');
+			}
+			pageButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage = i;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(pageButton);
+		}
+
+		// 다음 페이지 버튼
+		if (currentPage < totalPages) {
+			const nextButton = document.createElement('li');
+			nextButton.innerHTML = '<a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>';
+			nextButton.classList.add('datatable-pagination-list-item');
+			nextButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage++;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(nextButton);
+		}
+	}
+	// 연차 데이터 표시
+	function displayLeaveData() {
+		const tbody = document.querySelector('#leaveTable tbody');
+		tbody.innerHTML = ''; // 테이블 내용 초기화
+
+
+		// 현재 페이지에 표시할 데이터 범위 계산
+		let startIndex = (currentPage - 1) * entriesPerPage;
+		let endIndex = entriesPerPage === -1 ? leaveData.length : Math.min(startIndex + entriesPerPage, leaveData.length);
+
+		// 해당 범위의 데이터만 표시
+		for (let i = startIndex; i < endIndex; i++) {
+			const item = leaveData[i];
+			try {
+				// 날짜 파싱
+				var startDate = new Date(item.START_DATE);
+				var endDate = new Date(item.END_DATE);
+
+				// 날짜 포맷팅
+				var formattedStartDate = `${startDate.getFullYear()}.${String(startDate.getMonth() + 1).padStart(2, '0')}.${String(startDate.getDate()).padStart(2, '0')}`;
+				var formattedEndDate = `${endDate.getFullYear()}.${String(endDate.getMonth() + 1).padStart(2, '0')}.${String(endDate.getDate()).padStart(2, '0')}`;
+
+				var formatDate = `${formattedStartDate} ~ ${formattedEndDate}`;
+
+				// 사용일수 계산 (밀리초를 일수로 변환, 양 끝 날짜 포함)
+				var usedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+				// 테이블에 행 추가
+				var newRow = document.createElement('tr');
+
+				newRow.innerHTML = `
+                <td>${item.LEAVE_TYPE || '연차'}</td>
+                <td>${formatDate}</td>
+                <td>${usedDays}일</td>
+            `;
+
+				tbody.appendChild(newRow);
+
+			} catch (error) {
+				console.error("Error processing leave item:", item, error);
+			}
+		}
+
+
 	}
 
 });

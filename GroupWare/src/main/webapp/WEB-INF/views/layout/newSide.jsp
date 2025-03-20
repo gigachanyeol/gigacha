@@ -198,40 +198,8 @@
             <a href="${pageContext.request.contextPath}/attendance/myattendance.do">
               <span>나의 근태 현황</span>
             </a>
-            <a href="href="#">
-              <span>나의 연차 내역</span>
-            </a>
           </li>
           <li class="nav-heading">부서 근태 관리</li>
-          <li>
-            <a href="href="#">
-              <span>부서 근태 현황</span>
-            </a>
-            <a href="href="#">
-              <span>부서 연차 내역</span>
-            </a>
-          </li>
-          <li class="nav-heading">전사 근태 관리</li>
-          <li>
-            <a href="href="#">
-              <span>전사 근태 현황</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 현황</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 사용내역</span>
-            </a>
-          </li>
-          <li class="nav-heading">통계</li>
-          <li>
-            <a href="href="#">
-              <span>전사 근태 통계</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 통계</span>
-            </a>
-          </li>
         </ul>
       </li>
       
