@@ -7,7 +7,9 @@ public class EmployeeDto {
 
 	private String empno,
 	deptno,
+	deptname,
 	job_id,
+	job_title,
 	name,
 	email,
 	phone,

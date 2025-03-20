@@ -44,8 +44,22 @@ public class AttendanceController {
 //	나의 근무 현황             
 //	/myattendance.do"> <
 	@GetMapping("/myattendance.do")
-	public String fullcalendar(HttpSession session) {
+	public String myAttendance(HttpSession session) {
 		return "attendance";
+	}
+	
+//	회사 근태 현황             
+//	/myattendance.do"> <
+	@GetMapping("/attendance.do")
+	public String EmployeeAttendance(HttpSession session) {
+		return "EmployeeAttendance";
+	}
+	
+//	회사 연차 현황             
+//	/myattendance.do"> <
+	@GetMapping("/leaveattendance.do")
+	public String EmployeeLeave(HttpSession session) {
+		return "EmployeeLeave";
 	}
 
 	// 연차 불러오기
