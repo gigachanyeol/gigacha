@@ -23,7 +23,7 @@
 	<%@ include file="./layout/newSide.jsp"%>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-10 mt-3">
+		<div id="content" class="col">
 			<h3 class="content_title">결재진행함</h3>
 						<table id="documentsTable"
 					class="display nowrap dataTable dtr-inline collapsed"
@@ -103,7 +103,7 @@
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
         ajax: {
-            url: './selectApprovalInProgress.json',
+            url: './selectApprovalInProgressAjax.do',
             type: 'POST',
             dataType: 'json',
             dataSrc: function(json) {
@@ -180,7 +180,7 @@ $(document).ready(function() {
 	
 	
 // 	async function getDetail(id){
-// 		let response = await fetch("./approvalDetail.json?id="+id);
+// 		let response = await fetch("./approvalDetailAjax.do?id="+id);
 // 		let data = await response.json(); 
 //         console.log("서버 응답 데이터:", data); 
 //         return data;

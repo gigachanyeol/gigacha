@@ -301,7 +301,7 @@
 	  </div>
 </body>
 <script type="text/javascript">
-	var url = "${pageContext.request.contextPath}";
+	var contextUrl = "${pageContext.request.contextPath}";
 	var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
 		  backgroundColor: 'rgba(255, 255, 255, 0)', // 배경
 		  penColor: 'rgb(0, 0, 0)' // 사인색
@@ -362,7 +362,7 @@
 	})
 
 	async function readSignature(){
-		let response = await fetch(url+'/approval/signatureRead.json');
+		let response = await fetch(contextUrl+'/approval/signatureReadAjax.do');
 		
 		if(!response.ok) throw new Error("네트워크 오류")
 			
@@ -374,7 +374,7 @@
 	})
 	
 	async function signatureSave(data) {
-			let response = await fetch(url+'/approval/signatureSave.json',{
+			let response = await fetch(contextUrl+'/approval/signatureSaveAjax.do',{
 				method:'post',
 				headers:{
 					'Content-Type':'application/json'

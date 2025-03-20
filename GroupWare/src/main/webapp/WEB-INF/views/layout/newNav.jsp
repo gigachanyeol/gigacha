@@ -115,6 +115,27 @@
     </nav>
 
   </header>
+  <!-- TODO 00207 Socket - 웹소켓 알림 표시될 Div   -->
+  <div id="toast-container" style="
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 1050;
+"></div>
+<!--   <div class="toast" style=" -->
+/*     position: absolute; */
+/*     bottom: 15px; */
+/*     right: 15px; */
+<!-- "> -->
+<!--   <div class="toast-header"> -->
+<!--     <strong class="me-auto">알림내역</strong> -->
+<!--     <button type="button" class="btn-close" data-bs-dismiss="toast"></button> -->
+<!--   </div> -->
+<!--   <div class="toast-body"> -->
+<!--     <p id="toast-text"></p> -->
+<!--   </div> -->
+<!-- </div> -->
+<script src="${pageContext.request.contextPath}/resources/js/notificationWebSocket.js"></script>
   <script src="https://bootstrapmade.com/assets/js/demo.js?v=42"></script>
   <script type="text/javascript">
   	var sideIsc = true;

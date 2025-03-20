@@ -1,5 +1,6 @@
 package com.giga.gw.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.giga.gw.config.WebSocketHandler;
 import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.service.ILoginService;
 
@@ -28,14 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	
 	private final ILoginService loginService;
-	
  	@GetMapping("/login.do")
 	public String login() {
 		return "login";
 	}
 	
 	@PostMapping("/login.do")
-	public String login(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String login(@RequestParam Map<String, Object> map, HttpSession session) throws IOException {
 		System.out.println(map.toString());
 		EmployeeDto employeeDto = loginService.login(map);
 		System.out.println(employeeDto);
@@ -45,7 +46,6 @@ public class LoginController {
 			return "login";
 		}
 		session.setAttribute("loginDto", employeeDto);
-
 		return "redirect:/";
 	}
 	
