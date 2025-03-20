@@ -27,6 +27,11 @@ public class ReservationDaoImpl implements IReservationDao{
 	public ReservationDto selectReservationByRoomId(String room_id) {
 		return sessionTemplate.selectOne(NS+"selectReservationByRoomId",room_id);
 	}
+	
+	@Override
+	public List<ReservationDto> getReservationList(String empno) {
+		return sessionTemplate.selectList(NS+"getReservationList",empno);
+	}	
 
 	@Override
 	public ReservationDto selectReserverAndMember(String reservation_id) {
@@ -50,6 +55,6 @@ public class ReservationDaoImpl implements IReservationDao{
 	@Override
 	public List<ReservationDto> reservationList() {
 		return sessionTemplate.selectList(NS+"reservationList");
-	}	
+	}
 
 }

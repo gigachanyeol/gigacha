@@ -40,11 +40,13 @@ public class LoginController {
 		EmployeeDto employeeDto = loginService.login(map);
 		System.out.println(employeeDto);
 		
+		
 		if(employeeDto == null) {
 			
 			return "login";
 		}
 		session.setAttribute("loginDto", employeeDto);
+		System.out.println(employeeDto.getAuth());
 
 		return "redirect:/";
 	}

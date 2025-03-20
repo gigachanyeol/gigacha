@@ -254,6 +254,7 @@
 				document.getElementById("reservation_date").value = paramdate;
 			}
 			
+			
 			// 데이터 피커 날짜 선택
 			$("#datepicker").datepicker({
 				inline : true, // 항상 보이도록 설정
@@ -262,6 +263,19 @@
 				changeMonth : true, // 월 변경 가능
 				showOtherMonths : true, // 이전/다음 달 날짜도 표시
 				selectOtherMonths : true, // 다른 달 날짜도 선택 가능
+				dayNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			    dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
+			    monthNames: [
+			        "1월", "2월", "3월", "4월", "5월", "6월",
+			        "7월", "8월", "9월", "10월", "11월", "12월"
+			    ],
+			    monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월",
+                    "7월", "8월", "9월", "10월", "11월", "12월"],
+                currentText: "오늘",
+  				prevText: "이전 달",
+  				nextText: "다음 달",
+  				yearSuffix: "년",
+  				showMonthAfterYear: true, // 연도 뒤에 월 표시
 				onSelect : function(dateText) {
 					console.log("선택한 날짜: " + dateText);
 					document.getElementById("reservation_date").value = dateText;
