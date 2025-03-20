@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		checkOutButton.style.color = 'white';
 		checkOutButton.disabled = false;
 
-		noticeText.textContent = '출근 등록이 완료되었습니다. 퇴근하시려면 퇴근 버튼을 눌러주세요.';
+		noticeText.textContent = '출근 등록이 완료되었습니다.';
 
 		// 타이머 시작 - 이전에 누적된 시간부터 계속
 		startWorkTimer();
@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			noticeText.textContent = '출근 등록을 해주세요.';
 
 			isCheckedIn = false;
-			console.log("📌 초기화 후 >>> isCheckedIn", isCheckedIn);
+			//			console.log("📌 초기화 후 >>> isCheckedIn", isCheckedIn);
 		} else {
 			// 출근 기록이 있는 경우 처리
 			processAttendanceData(todayAttendance);
@@ -513,7 +513,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	loadTodayAttendanceFromDB(); // DB에서 출근 정보 로드
 	initAttendanceTable();
 	updateMonthlyWorkHours();
-	setLeave();
+
+
+	EmployeeLevae();
 
 
 	// 선택사항: 출근 중일 때 페이지를 떠날 경우 확인 메시지
@@ -762,7 +764,43 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetch(`${pageContext}/attendance/loadleave.do`)
 			.then(response => response.json())
 			.then(data => {
-				console.log("연차", data);
+				// 연차 탭 리스트 뿌려주기
+				console.log("data", data);
+				data.forEach(item => {
+					try {
+						// 날짜 파싱
+						var startDate = new Date(item.START_DATE);
+						var endDate = new Date(item.END_DATE);
+
+						var formattedStartDate = `${startDate.getFullYear()}.${String(startDate.getMonth() + 1).padStart(2, '0')}.${String(startDate.getDate()).padStart(2, '0')}`;
+						var formattedEndDate = `${endDate.getFullYear()}.${String(endDate.getMonth() + 1).padStart(2, '0')}.${String(endDate.getDate()).padStart(2, '0')}`;
+
+
+						var formatDate = `${formattedStartDate} ~ ${formattedEndDate}`
+						//사용일 구하기
+						var usedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+						//테이블 추가
+						var tbody = document.querySelector('.datatable-container table tbody');
+						var newRow = document.createElement('tr');
+
+						//테이블에 행 추가 
+						newRow.innerHTML = `
+           				<td>${item.LEAVE_TYPE || '연차'}</td>
+            			<td>${formatDate}</td>
+            			<td>${usedDays}일</td>
+        				`;
+        				
+        				tbody.appendChild(newRow);
+
+					} catch (error) {
+						console.error("Error processing leave item:", item, error);
+					}
+				});
+
+				return data;
+			})
+			.then(data => {
 				data.forEach(item => {
 					try {
 						// Parse dates properly
@@ -951,7 +989,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					return;
 				}
 
-				console.log("데이터 첫 번째 항목:", data[0]); // 키 이름 확인을 위한 로그
+				//				console.log("데이터 첫 번째 항목:", data[0]); // 키 이름 확인을 위한 로그
 
 				let totalSeconds = 0;
 				data.forEach(record => {
@@ -1078,9 +1116,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	document.getElementById('profile-tab').addEventListener('click', function() {
+	//	document.getElementById('profile-tab').addEventListener('click', function() {
+	//		setLeave();
+	//	});
+
+	function EmployeeLevae() {
 		setLeave();
-	});
+		//		leaveList()
+
+	}
 
 	function setLeave() {
 
@@ -1112,4 +1156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 	}
 
+	function leaveList(data) {
+		cosole.log("받은 데이터 : ", data);
+	}
 });

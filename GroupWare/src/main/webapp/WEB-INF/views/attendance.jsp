@@ -238,12 +238,6 @@
 													<th>휴가 종류</th>
 													<th>사용 기간</th>
 													<th>사용 연차</th>
-													<th>승인 날짜</th>
-													<th>비고
-														<button type="button" data-id="0"
-															class="btn btn-sm btn-primary pull-right notify" id="clicktest">Click
-															Me</button>
-													</th>
 												</tr>
 											</thead>
 											<tbody>
