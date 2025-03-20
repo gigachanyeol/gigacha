@@ -64,9 +64,10 @@
 	    <div class="modal-content">
 	    	
 	      <div class="modal-header">
+	      	<button type="button" id="printBtn" class="btn btn-secondery" data-bs-dismiss="modal">프린트</button>
 	      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button>
 	      </div>
-	      <div class="modal-body row">
+	      <div class="modal-body row" id="doc">
 	      	<div class="col-8">
 	      		<table border="1" class="table">
 					<tbody>
@@ -114,6 +115,9 @@
 	  </div>
 	</div>
 </body>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas@latest/dist/jspdf-html2canvas.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -199,6 +203,29 @@ $(document).ready(function() {
 	$(".modalBtn").on('click', function(){
 		$("#myModal").hide();
 	})
+	
+  document.getElementById('printBtn').addEventListener('click', function() {
+            const body = document.querySelector("#doc");
+
+            // html2pdf를 이용하여 PDF로 변환
+            html2PDF(body, {
+                jsPDF: {
+                    format: 'a4'
+                },
+                html2canvas: {
+                    scrollX: 0,
+                    scrollY: -window.scrollY  // 페이지 스크롤 위치 반영
+                },
+                imageType: 'image/jpeg', // 이미지 형식
+                filename: "my_pdf.pdf", // 저장되는 파일 이름
+                margin: { // 상하좌우 여백
+                    top: 5,
+                    right: 5,
+                    bottom: 5,
+                    left: 5,
+                }
+            });
+        });
 	
     $('.filter-status').on('change', function() {
         let selectedStatuses = [];

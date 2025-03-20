@@ -6,8 +6,8 @@ window.onload = function () {
 //    var wsUrl = "ws://localhost:9999/ws/notification.do";
 //	var wsUrl = "ws://" + location.host + "/ws/notification.do";
 	url = window.location.pathname; // 현재 페이지의 경로
-var contextPath = "/" + url.split("/")[1]; // 첫 번째 경로 추출
-var wsUrl = "ws://" + location.host + contextPath + "/ws/notification.do";
+	var contextPath = "/" + url.split("/")[1]; // 첫 번째 경로 추출
+	var wsUrl = "ws://" + location.host + contextPath + "/ws/notification.do";
     console.log(wsUrl);
 
     ws = new WebSocket(wsUrl);
