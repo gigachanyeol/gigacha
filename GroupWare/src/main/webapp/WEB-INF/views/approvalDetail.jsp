@@ -41,7 +41,7 @@
 		function recall(){
 			let id = document.querySelector(".content_title").textContent;
 			console.log(id);
-			fetch("./approvalRecall.json",{
+			fetch("./approvalRecallAjax.do",{
 				method:"POST",
 				headers:{
 					"Content-Type":"plain/text"
@@ -63,7 +63,7 @@
 		
 		function approvalBtn(){
 			let approval_id = document.querySelector(".content_title").textContent;
-			fetch("./approvalRequest.json",{
+			fetch("./approvalRequestAjax.do",{
 				method:"POST",
 				headers:{
 					"Content-Type":"application/json"

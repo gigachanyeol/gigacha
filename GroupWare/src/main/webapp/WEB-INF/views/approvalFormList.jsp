@@ -16,7 +16,7 @@
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content">
+		<div id="content" class="col">
 			<h3 class="content_title">문서양식추가</h3>
 			<button type="button" class="btn btn-primary" onclick="location.href='./approvalFormCreate.do'">문서양식등록</button>
 			<button type="button" class="btn btn-info" onclick="location.href='./categoryForm.do'">카테고리등록</button>

@@ -31,7 +31,7 @@
 				<span>부서 관리</span></a></li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/notice/notice.do"> 
 				<span>공지사항</span></a></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeRegistration.do"> 
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do"> 
 				<span>인사등록</span></a></li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/mypage.do"> 
 				<span>마이페이지</span></a></li>
@@ -45,27 +45,6 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> 
 				<span>나의 근태 현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptattendance.do"> 
-				<span>부서 근태 현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/deptannualleave.do"> 
-				<span>부서 연차 현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/emplattendance.do"> 
-				<span>전사 근태현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attstatistics.do"> 
-				<span>전사 근태통계</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attannualleave.do"> 
-				<span>전사 연차현황</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attuseannualleave.do"> 
-				<span>전사 연차 사용 내역</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/annstatistics.do"> 
-				<span>전사 연차 통계</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>
         </li>
@@ -125,6 +104,27 @@
     </nav>
 
   </header>
+  <!-- TODO 00207 Socket - 웹소켓 알림 표시될 Div   -->
+  <div id="toast-container" style="
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 1050;
+"></div>
+<!--   <div class="toast" style=" -->
+/*     position: absolute; */
+/*     bottom: 15px; */
+/*     right: 15px; */
+<!-- "> -->
+<!--   <div class="toast-header"> -->
+<!--     <strong class="me-auto">알림내역</strong> -->
+<!--     <button type="button" class="btn-close" data-bs-dismiss="toast"></button> -->
+<!--   </div> -->
+<!--   <div class="toast-body"> -->
+<!--     <p id="toast-text"></p> -->
+<!--   </div> -->
+<!-- </div> -->
+<script src="${pageContext.request.contextPath}/resources/js/notificationWebSocket.js"></script>
   <script src="https://bootstrapmade.com/assets/js/demo.js?v=42"></script>
   <script type="text/javascript">
   	var sideIsc = true;

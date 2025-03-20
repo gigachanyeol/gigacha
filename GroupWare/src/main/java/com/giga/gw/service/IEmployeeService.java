@@ -8,5 +8,6 @@ import com.giga.gw.dto.EmployeeDto;
 public interface IEmployeeService {
 	boolean saveSignature(Map<String, Object> map);
 	List<Map<String, Object>> readSignature(String empno);
+	String getNextEmpno(String hiredate);
 	}
 

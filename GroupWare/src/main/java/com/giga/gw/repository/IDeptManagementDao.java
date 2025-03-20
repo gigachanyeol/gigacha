@@ -16,9 +16,9 @@ public interface IDeptManagementDao {
 	// 상위부서 조회
 	public List<DepartmentDto> hqSelect();
 	// 부서 수정
-	public int updateDept(DepartmentDto dto);
+	public int updateDept(Map<String, Object> map);
 	// 부서 삭제
-	public int deleteDept(List <String> dto);
+	public int deleteDept(Map<String, Object> map);
 	// 부서 전체 조회
 	public List<Map<String, Object>> getAllDept();
 	// 부서 상세 조회

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- TODO 00202 Socket - 웹소켓 핸들러 빈등록 -->
+    <bean class="com.giga.gw.config.WebSocketHandler" id="websocketHandler" />
+    <!-- TODO 00203 Socket - 웹소켓 빈연결 -->
+    <websocket:handlers>
+        <websocket:mapping handler="websocketHandler" path="/ws/notification.do"/>
+        <websocket:handshake-interceptors>
+        	<!-- TODO 00203 Socket - 세션등록시 자동으로 웹 소켓 세션에 담아주는 Bean Handshake 빈 -->
+            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+</beans>

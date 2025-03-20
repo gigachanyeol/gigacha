@@ -38,13 +38,13 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	}
 
 	@Override
-	public int updateDept(DepartmentDto dto) {
-		return session.update(NS+"updateDept",dto);
+	public int updateDept(Map<String, Object> map) {
+		return session.update(NS+"updateDept",map);
 	}
 
 	@Override
-	public int deleteDept(List<String> dto) {
-		return session.update(NS+"deleteDept", dto);
+	public int deleteDept(Map<String, Object> map) {
+		return session.update(NS+"deleteDept", map);
 	}
 	
 	@Override

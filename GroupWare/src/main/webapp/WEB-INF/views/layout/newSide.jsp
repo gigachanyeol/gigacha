@@ -149,6 +149,24 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+          <i class="bi bi-calendar2-plus"></i>
+          <span>인사</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="res-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
+         <li>
+            <a href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do">
+              <span>사원등록</span>
+            </a>
+          </li> 
+          <li>
+            <a href="${pageContext.request.contextPath}/deptManagement/deptManagement.do">
+              <span>부서관리</span>
+            </a>
+          </li>
+        </ul>
+      </li>
       
      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
@@ -181,40 +199,8 @@
             <a href="${pageContext.request.contextPath}/attendance/myattendance.do">
               <span>나의 근태 현황</span>
             </a>
-            <a href="href="#">
-              <span>나의 연차 내역</span>
-            </a>
           </li>
           <li class="nav-heading">부서 근태 관리</li>
-          <li>
-            <a href="href="#">
-              <span>부서 근태 현황</span>
-            </a>
-            <a href="href="#">
-              <span>부서 연차 내역</span>
-            </a>
-          </li>
-          <li class="nav-heading">전사 근태 관리</li>
-          <li>
-            <a href="href="#">
-              <span>전사 근태 현황</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 현황</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 사용내역</span>
-            </a>
-          </li>
-          <li class="nav-heading">통계</li>
-          <li>
-            <a href="href="#">
-              <span>전사 근태 통계</span>
-            </a>
-            <a href="href="#">
-              <span>전사 연차 통계</span>
-            </a>
-          </li>
         </ul>
       </li>
       <!-- 관리자 메뉴 - 권란이 있는 경우에만 표시 -->
@@ -284,7 +270,7 @@
 	  </div>
 </body>
 <script type="text/javascript">
-	var url = "${pageContext.request.contextPath}";
+	var contextUrl = "${pageContext.request.contextPath}";
 	var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
 		  backgroundColor: 'rgba(255, 255, 255, 0)', // 배경
 		  penColor: 'rgb(0, 0, 0)' // 사인색
@@ -345,7 +331,7 @@
 	})
 
 	async function readSignature(){
-		let response = await fetch(url+'/approval/signatureRead.json');
+		let response = await fetch(contextUrl+'/approval/signatureReadAjax.do');
 		
 		if(!response.ok) throw new Error("네트워크 오류")
 			
@@ -357,7 +343,7 @@
 	})
 	
 	async function signatureSave(data) {
-			let response = await fetch(url+'/approval/signatureSave.json',{
+			let response = await fetch(contextUrl+'/approval/signatureSaveAjax.do',{
 				method:'post',
 				headers:{
 					'Content-Type':'application/json'

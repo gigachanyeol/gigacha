@@ -24,7 +24,7 @@
 	<%@ include file="./layout/newSide.jsp"%>
 	<main id="main" class="main">
 		<div class="row">
-			<div id="content" class="col-lg-10">
+			<div id="content" class="col">
 				<h3 class="content_title">내 문서함</h3>
 
 				<div>
@@ -64,9 +64,10 @@
 	    <div class="modal-content">
 	    	
 	      <div class="modal-header">
+	      	<button type="button" id="printBtn" class="btn btn-secondery" data-bs-dismiss="modal">프린트</button>
 	      	<button type="button" class="btn-close modalBtn" data-bs-dismiss="modal"></button>
 	      </div>
-	      <div class="modal-body row">
+	      <div class="modal-body row" id="doc">
 	      	<div class="col-8">
 	      		<table border="1" class="table">
 					<tbody>
@@ -114,12 +115,15 @@
 	  </div>
 	</div>
 </body>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas@latest/dist/jspdf-html2canvas.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/approval_comm.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     let table = $('#documentsTable').DataTable({
         ajax: {
-            url: './myApprovalData.json',
+            url: './myApprovalDataAjax.do',
             type: 'POST',
             dataType: 'json',
             dataSrc: function(json) {
@@ -166,17 +170,28 @@ $(document).ready(function() {
 	            $("#update_empno").text(data1.update_empno); // 수정한 사번
 				$("#modal-content").html(data1.approval_content);
 //					$(".modal-body").html(data.approval_content);
-				 let html = "<div class='approval-item'>결<br>재</div>";
+				 let html = "";
 				 data1.approvalLineDtos.forEach((emp, i) => {
-		                console.log(emp.name, emp.approver_empno);
+					 console.log(emp.name, emp.approver_empno);
 		                html += "<div class='approval-item'>";
-		                html += "<div id='" + emp.approver_empno + "' class='text-center'>" + emp.approver_empno + "</div>";
+		                html += "<div id='" + emp.approver_empno + "' class='text-center'>" + emp.approver_empno + "<br>"
+		                console.log(emp.signature);
+		                if(typeof emp.signature != 'undefined'){
+		                	html += "<img src='"+ emp.signature+"' width=50, height=50>";	
+		                } else{
+		                	if(emp.status_id == 'ST04'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/miscellaneous-80/60/check-512.png' width=50, height=50>";
+		                	} else if(emp.status_id == 'ST05'){
+		                		html += "<img src='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Circle-512.png' width=50, height=50>";
+		                	}
+		                }
+		                html += "</div>";
 		                html += "</div>";
 		            });
-
+				 
 		            document.getElementById("approvalLine").innerHTML = html;
 				$("#myModal").show();
-// 				fetch("./approvalDetail.json?id="+data.APPROVAL_ID)
+// 				fetch("./approvalDetailAjax.do?id="+data.APPROVAL_ID)
 // 				.then(resp => resp.json())
 // 				.then(data => {
 					
@@ -189,6 +204,29 @@ $(document).ready(function() {
 		$("#myModal").hide();
 	})
 	
+  document.getElementById('printBtn').addEventListener('click', function() {
+            const body = document.querySelector("#doc");
+
+            // html2pdf를 이용하여 PDF로 변환
+            html2PDF(body, {
+                jsPDF: {
+                    format: 'a4'
+                },
+                html2canvas: {
+                    scrollX: 0,
+                    scrollY: -window.scrollY  // 페이지 스크롤 위치 반영
+                },
+                imageType: 'image/jpeg', // 이미지 형식
+                filename: "my_pdf.pdf", // 저장되는 파일 이름
+                margin: { // 상하좌우 여백
+                    top: 5,
+                    right: 5,
+                    bottom: 5,
+                    left: 5,
+                }
+            });
+        });
+	
     $('.filter-status').on('change', function() {
         let selectedStatuses = [];
         $('.filter-status:checked').each(function() {
@@ -198,7 +236,7 @@ $(document).ready(function() {
     });
 	
 	async function getDetail(id){
-		let response = await fetch("./approvalDetail.json?id="+id);
+		let response = await fetch("./approvalDetailAjax.do?id="+id);
 		let data = await response.json(); 
         console.log("서버 응답 데이터:", data); 
         return data;

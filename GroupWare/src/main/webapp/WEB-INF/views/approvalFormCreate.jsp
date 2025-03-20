@@ -29,7 +29,7 @@
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-9">
+		<div id="content" class="col">
 			<h3 class="content_title">문서양식추가</h3>
 			<div class="card">
 				<div class="card-body">
@@ -108,7 +108,7 @@
 			});
 			jsonData["form_content"] = editorHtml;
 			console.log(jsonData);
-			fetch('./approvalFormSave.json',{
+			fetch('./approvalFormSaveAjax.do',{
 	 			method:'POST',
 	 			headers:{
 	 				'Content-Type':'application/json'
@@ -125,7 +125,7 @@
 	 	editorSaveBtn.addEventListener('click',()=>{
 	 		let editorHtml = editor.getData();
 	 		
-	 		fetch('./approvalFormSave.json',{
+	 		fetch('./approvalFormSaveAjax.do',{
 	 			method:'POST',
 	 			headers:{
 	 				'Content-Type':'application/json'

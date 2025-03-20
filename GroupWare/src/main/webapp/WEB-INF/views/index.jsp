@@ -47,6 +47,15 @@
 <!-- 						<th>라이브러리</th> -->
 <!-- 					</tr> -->
 <!-- 				</thead> -->
+		<div id="content" class="col">
+		${sessionScope.loginDto}
+			<h3 class="content_title">제목trestest</h3>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>라이브러리</th>
+					</tr>
+				</thead>
 				
 <!-- 				<tbody> -->
 <!-- 					<tr> -->

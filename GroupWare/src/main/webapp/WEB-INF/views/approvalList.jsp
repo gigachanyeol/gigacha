@@ -23,7 +23,7 @@
 <%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-lg-10">
+		<div id="content" class="col">
 			<h3 class="content_title">결재요청함</h3>
 			<div class="card">
 	            <div class="card-body">
@@ -109,7 +109,7 @@
 	    $('#example').DataTable({
 	    	// 샘플 데이터
 	        ajax: {
-	            url: './approvalList.json',
+	            url: './approvalListAjax.do',
 	            method:'get',
 	            dataType: 'json',
 	            dataSrc: function(json) {
@@ -199,7 +199,7 @@
 	function recall(event) {
 // 		let id = document.querySelector(".content_title").textContent;
 		 id = event.target.value
-		fetch("./approvalRecall.json",{
+		fetch("./approvalRecallAjax.do",{
 			method:"POST",
 			headers:{
 				"Content-Type":"plain/text"
