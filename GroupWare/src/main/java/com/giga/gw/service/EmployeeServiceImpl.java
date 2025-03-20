@@ -32,6 +32,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		
 		return employeeDao.readSignature(empno);
 	}
+
+	@Override
+	public String getNextEmpno(String hiredate) {
+		return employeeDao.getNextEmpno(hiredate);
+	}
+
 	
 
 }

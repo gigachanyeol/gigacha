@@ -30,7 +30,7 @@
 				<span>부서 관리</span></a></li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/notice/notice.do"> 
 				<span>공지사항</span></a></li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeRegistration.do"> 
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do"> 
 				<span>인사등록</span></a></li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/hrManagement/mypage.do"> 
 				<span>마이페이지</span></a></li>

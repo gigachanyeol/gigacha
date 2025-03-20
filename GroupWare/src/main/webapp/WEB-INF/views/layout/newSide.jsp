@@ -148,6 +148,24 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+          <i class="bi bi-calendar2-plus"></i>
+          <span>인사</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="res-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
+         <li>
+            <a href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do">
+              <span>사원등록</span>
+            </a>
+          </li> 
+          <li>
+            <a href="${pageContext.request.contextPath}/deptManagement/deptManagement.do">
+              <span>부서관리</span>
+            </a>
+          </li>
+        </ul>
+      </li>
       
      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
