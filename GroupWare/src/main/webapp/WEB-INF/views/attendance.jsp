@@ -45,7 +45,6 @@
 				</ol>
 			</nav>
 		</div>
-		"${loginDto}"
 		<div class="row">
 			<div id="content" class="col">
 				<div class="work-status">

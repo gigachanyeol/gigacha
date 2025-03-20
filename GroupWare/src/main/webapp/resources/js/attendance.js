@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
 	// 요소들
-	const timeDisplay = document.querySelector('.time-display');
 	const checkInButton = document.querySelector('.btn-check-in');
 	const checkOutButton = document.querySelector('.btn-check-out');
 	const noticeText = document.querySelector('.notice');
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		isCheckedIn = true;
-//		console.log("출근 함수>>>", isCheckedIn);
+		//		console.log("출근 함수>>>", isCheckedIn);
 		checkInTime = new Date();
 
 
@@ -743,58 +742,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
-	function formatDate(timestamp) {
-		try {
-			// timestamp가 null, undefined 또는 유효하지 않은 형식인지 확인
-			if (!timestamp || isNaN(new Date(timestamp).getTime())) {
-				console.warn("유효하지 않은 날짜 값:", timestamp);
-				return ""; // 빈 문자열 반환 또는 기본값 설정
-			}
-			const date = new Date(timestamp);
-			return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
-		} catch (error) {
-			console.error("날짜 변환 오류:", timestamp, error);
-			return ""; // 오류 발생시 빈 문자열 반환
-		}
-	}
-
 	function fetchLeaveData() {
 		fetch(`${pageContext}/attendance/loadleave.do`)
 			.then(response => response.json())
 			.then(data => {
-				// 연차 탭 리스트 뿌려주기
-//				console.log("data", data);
-				data.forEach(item => {
-					try {
-						// 날짜 파싱
-						var startDate = new Date(item.START_DATE);
-						var endDate = new Date(item.END_DATE);
+				leaveData = data; // 전역 변수에 저장
 
-						var formattedStartDate = `${startDate.getFullYear()}.${String(startDate.getMonth() + 1).padStart(2, '0')}.${String(startDate.getDate()).padStart(2, '0')}`;
-						var formattedEndDate = `${endDate.getFullYear()}.${String(endDate.getMonth() + 1).padStart(2, '0')}.${String(endDate.getDate()).padStart(2, '0')}`;
+				// 페이지 컨트롤 초기화
+				initializePagination();
 
-
-						var formatDate = `${formattedStartDate} ~ ${formattedEndDate}`
-						//사용일 구하기
-						var usedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-
-						//테이블 추가
-						var tbody = document.querySelector('.datatable-container table tbody');
-						var newRow = document.createElement('tr');
-
-						//테이블에 행 추가 
-						newRow.innerHTML = `
-           				<td>${item.LEAVE_TYPE || '연차'}</td>
-            			<td>${formatDate}</td>
-            			<td>${usedDays}일</td>
-        				`;
-
-						tbody.appendChild(newRow);
-
-					} catch (error) {
-						console.error("Error processing leave item:", item, error);
-					}
-				});
+				// 첫 페이지 데이터 표시
+				displayLeaveData();
 
 				return data;
 			})
@@ -1089,12 +1047,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	function downloadAttendanceAsExcel(id) {
 		//		console.log("다운로드 버튼 클릭")
 		// Get the table data
-		
+
 		var table;
-		
-		if(id=="attendance"){
+
+		if (id == "attendance") {
 			table = document.getElementById('attendanceTable');
-		}else{
+		} else {
 			table = document.getElementById('leaveTable');
 		}
 		if (!table) {
@@ -1107,9 +1065,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		const ws = XLSX.utils.table_to_sheet(table);
 
 		// Add the worksheet to the workbook
-		if(id=="attendance"){
+		if (id == "attendance") {
 			XLSX.utils.book_append_sheet(wb, ws, '근태기록');
-		}else{
+		} else {
 			XLSX.utils.book_append_sheet(wb, ws, '연차사용기록');
 		}
 
@@ -1122,9 +1080,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Generate the filename
 		// Add the worksheet to the workbook
 		var filename;
-		if(id=="attendance"){
+		if (id == "attendance") {
 			filename = `근태기록_${dateStr}월.xlsx`;
-		}else{
+		} else {
 			filename = `연차기록_${dateStr}월.xlsx`;
 		}
 
@@ -1156,10 +1114,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then(data => {
 				console.log("연차", data);
-				// 여기서 data는 서버에서 보낸 JSON 데이터입니다
-				//				console.log("ANNUAL_COUNT",data.ANNUAL_COUNT);
-				//				console.log("ANNUAL_LEAVE",data.ANNUAL_LEAVE);
-				//				console.log("USE_LEAVE",data.USE_LEAVE);
 
 				// 총 연차
 				document.getElementById("totalleave").innerText = data.ANNUAL_LEAVE;
@@ -1174,30 +1128,13 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.error('에러 발생:', error);
 			});
 	}
-	
-	
+
+
 	// 연차 데이터를 저장할 전역 변수
 	let leaveData = [];
 	// 현재 페이지 상태 관리 변수
 	let currentPage = 1;
 	let entriesPerPage = 10;
-
-	// 데이터 로드 함수
-	function fetchLeaveData() {
-		fetch(`${pageContext}/attendance/loadleave.do`)
-			.then(response => response.json())
-			.then(data => {
-//				console.log("연차", data);
-				leaveData = data; // 전역 변수에 저장
-
-				// 페이지 컨트롤 초기화
-				initializePagination();
-
-				// 첫 페이지 데이터 표시
-				displayLeaveData();
-			})
-			.catch(error => console.error("데이터 로드 중 오류 발생:", error));
-	}
 
 	// 페이지네이션 초기화
 	function initializePagination() {
@@ -1278,11 +1215,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			paginationList.appendChild(nextButton);
 		}
 	}
-
 	// 연차 데이터 표시
 	function displayLeaveData() {
 		const tbody = document.querySelector('#leaveTable tbody');
 		tbody.innerHTML = ''; // 테이블 내용 초기화
+
 
 		// 현재 페이지에 표시할 데이터 범위 계산
 		let startIndex = (currentPage - 1) * entriesPerPage;
@@ -1320,6 +1257,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.error("Error processing leave item:", item, error);
 			}
 		}
+
+
 	}
 
 });

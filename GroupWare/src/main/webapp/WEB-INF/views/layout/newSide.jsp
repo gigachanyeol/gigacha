@@ -182,14 +182,6 @@
             </a>
           </li>
           <li class="nav-heading">부서 근태 관리</li>
-          <li>
-            <a href="href="#">
-              <span>부서 근태 현황</span>
-            </a>
-            <a href="href="#">
-              <span>부서 연차 내역</span>
-            </a>
-          </li>
         </ul>
       </li>
       
