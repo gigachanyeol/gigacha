@@ -163,7 +163,8 @@
 												id="showtoday">TODAY</button>
 										</div>
 										<!-- 근태 기록 다운로드 버튼 -->
-										<button class="btn btn-outline-primary" id="attendance" name="downloadBtn">
+										<button class="btn btn-outline-primary" id="attendance"
+											name="downloadBtn">
 											<i class="bi bi-box-arrow-down"></i> 근태기록 다운로드
 										</button>
 									</div>
@@ -218,19 +219,27 @@
 													id="yearSelect">
 												</select>
 											</div>
-											<div class="datatable-dropdown">
-												<label> <select class="datatable-selector"
-													name="per-page"><option value="5">5</option>
-														<option value="10" selected="">10</option>
-														<option value="15">15</option>
-														<option value="-1">All</option></select> entries per page
-												</label>
+											<div class="datatable-top">
+												<div class="datatable-dropdown">
+													<label> <select class="datatable-selector"
+														name="leave-entries">
+															<option value="5">5</option>
+															<option value="10" selected="">10</option>
+															<option value="15">15</option>
+															<option value="-1">All</option>
+													</select> 보기
+													</label>
+												</div>
 											</div>
-											<button class="btn btn-outline-primary" id="leave" name="downloadBtn">
-												<i class="bi bi-box-arrow-down"></i> 연차기록 다운로드
-											</button>
+											<div class="ms-auto button-container">
+												<button class="btn btn-outline-primary" id="leave"
+													name="downloadBtn">
+													<i class="bi bi-box-arrow-down"></i> 연차기록 다운로드
+												</button>
+											</div>
 										</div>
 									</div>
+
 									<div class="datatable-container">
 										<table class="table table-hover" id="leaveTable">
 											<thead class="table-light">
@@ -243,6 +252,17 @@
 											<tbody>
 											</tbody>
 										</table>
+									</div>
+									<!-- 테이블 아래에 페이지네이션 컨트롤 추가 -->
+									<div class="datatable-bottom">
+										<div class="datatable-info">
+											Showing <span class="datatable-info-entries-from">1</span> to
+											<span class="datatable-info-entries-to">10</span> of <span
+												class="datatable-info-entries-all">0</span> entries
+										</div>
+										<nav class="datatable-pagination">
+											<ul class="datatable-pagination-list"></ul>
+										</nav>
 									</div>
 									<!-- End Table with hoverable rows -->
 								</div>

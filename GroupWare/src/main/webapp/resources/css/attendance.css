@@ -156,6 +156,8 @@
 	padding: 8px 12px;
 	border-radius: 5px;
 	transition: all 0.3s ease;
+	margin-left: auto;
+	display: block;
 }
 
 .btn-outline-primary:hover {
@@ -312,10 +314,9 @@ tr.hoverable:hover {
 /* 	height: 60%; */
 /* 	background-color: #999; */
 /* } */
-
 .leave-title {
 	font-size: 14px;
-	font-weight:bold;
+	font-weight: bold;
 	color: #555;
 }
 
@@ -323,4 +324,57 @@ tr.hoverable:hover {
 	font-size: 20px;
 	font-weight: bold;
 	color: #0099cc;
+}
+
+/* 페이지네이션 스타일링 */
+.datatable-top, .datatable-bottom {
+	padding: 8px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.datatable-pagination-list {
+	display: flex;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.datatable-pagination-list-item {
+	margin: 0 2px;
+}
+
+.datatable-pagination-list-item a {
+	padding: 5px 10px;
+	border: 1px solid #dee2e6;
+	border-radius: 3px;
+	text-decoration: none;
+	color: #007bff;
+}
+
+.datatable-pagination-list-item.active a {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.datatable-pagination-list-item a:hover {
+	background-color: #e9ecef;
+}
+
+.datatable-selector {
+	padding: 4px 8px;
+	border-radius: 3px;
+	border: 1px solid #ced4da;
+}
+
+.button-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center; /* 버튼들이 수직 중앙 정렬되도록 추가 */
+	gap: 10px; /* 버튼 사이 간격 조정 */
+}
+.ms-auto {
+	margin-left: auto !important;
 }

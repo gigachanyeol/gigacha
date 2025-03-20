@@ -49,6 +49,7 @@ WHERE A.EMPNO IS NULL
 			WHERE t1.EMPNO = #{empno}
 			AND APPROVAL_STATUS = 'ST04'
 			AND FORM_ID LIKE 'BC%'
+			ORDER BY START_DATE DESC
 </select>
 <!--연차 가져오기
 ::: 결재 완료 처리된 휴가 리스트를 """오늘 날짜에 연차인 사람"""""만 가져온다.

@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		isCheckedIn = true;
-		console.log("출근 함수>>>", isCheckedIn);
+//		console.log("출근 함수>>>", isCheckedIn);
 		checkInTime = new Date();
 
 
@@ -513,8 +513,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	loadTodayAttendanceFromDB(); // DB에서 출근 정보 로드
 	initAttendanceTable();
 	updateMonthlyWorkHours();
-
-
 	EmployeeLevae();
 
 
@@ -765,7 +763,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => response.json())
 			.then(data => {
 				// 연차 탭 리스트 뿌려주기
-				console.log("data", data);
+//				console.log("data", data);
 				data.forEach(item => {
 					try {
 						// 날짜 파싱
@@ -1157,6 +1155,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				return response.json();
 			})
 			.then(data => {
+				console.log("연차", data);
 				// 여기서 data는 서버에서 보낸 JSON 데이터입니다
 				//				console.log("ANNUAL_COUNT",data.ANNUAL_COUNT);
 				//				console.log("ANNUAL_LEAVE",data.ANNUAL_LEAVE);
@@ -1175,8 +1174,152 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.error('에러 발생:', error);
 			});
 	}
+	
+	
+	// 연차 데이터를 저장할 전역 변수
+	let leaveData = [];
+	// 현재 페이지 상태 관리 변수
+	let currentPage = 1;
+	let entriesPerPage = 10;
 
-	function leaveList(data) {
-		cosole.log("받은 데이터 : ", data);
+	// 데이터 로드 함수
+	function fetchLeaveData() {
+		fetch(`${pageContext}/attendance/loadleave.do`)
+			.then(response => response.json())
+			.then(data => {
+//				console.log("연차", data);
+				leaveData = data; // 전역 변수에 저장
+
+				// 페이지 컨트롤 초기화
+				initializePagination();
+
+				// 첫 페이지 데이터 표시
+				displayLeaveData();
+			})
+			.catch(error => console.error("데이터 로드 중 오류 발생:", error));
 	}
+
+	// 페이지네이션 초기화
+	function initializePagination() {
+		// 페이지당 항목 수 선택기에 이벤트 리스너 추가
+		const selector = document.querySelector('.datatable-selector[name="leave-entries"]');
+		if (selector) {
+			selector.addEventListener('change', function() {
+				entriesPerPage = parseInt(this.value);
+				currentPage = 1; // 페이지 변경 시 첫 페이지로 이동
+				displayLeaveData();
+				updatePaginationControls();
+			});
+		}
+
+		// 초기 설정
+		updatePaginationControls();
+	}
+
+	// 페이지네이션 컨트롤 업데이트
+	function updatePaginationControls() {
+		const totalItems = leaveData.length;
+		const totalPages = entriesPerPage === -1 ? 1 : Math.ceil(totalItems / entriesPerPage);
+
+		// 정보 텍스트 업데이트
+		const infoFrom = totalItems === 0 ? 0 : (entriesPerPage === -1 ? 1 : ((currentPage - 1) * entriesPerPage) + 1);
+		const infoTo = entriesPerPage === -1 ? totalItems : Math.min(currentPage * entriesPerPage, totalItems);
+
+		document.querySelector('.datatable-info-entries-from').textContent = infoFrom;
+		document.querySelector('.datatable-info-entries-to').textContent = infoTo;
+		document.querySelector('.datatable-info-entries-all').textContent = totalItems;
+
+		// 페이지 버튼 생성
+		const paginationList = document.querySelector('.datatable-pagination-list');
+		paginationList.innerHTML = '';
+
+		// 이전 페이지 버튼
+		if (currentPage > 1) {
+			const prevButton = document.createElement('li');
+			prevButton.innerHTML = '<a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>';
+			prevButton.classList.add('datatable-pagination-list-item');
+			prevButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage--;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(prevButton);
+		}
+
+		// 페이지 번호 버튼
+		for (let i = 1; i <= totalPages; i++) {
+			const pageButton = document.createElement('li');
+			pageButton.innerHTML = `<a href="#">${i}</a>`;
+			pageButton.classList.add('datatable-pagination-list-item');
+			if (i === currentPage) {
+				pageButton.classList.add('active');
+			}
+			pageButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage = i;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(pageButton);
+		}
+
+		// 다음 페이지 버튼
+		if (currentPage < totalPages) {
+			const nextButton = document.createElement('li');
+			nextButton.innerHTML = '<a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>';
+			nextButton.classList.add('datatable-pagination-list-item');
+			nextButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				currentPage++;
+				displayLeaveData();
+				updatePaginationControls();
+			});
+			paginationList.appendChild(nextButton);
+		}
+	}
+
+	// 연차 데이터 표시
+	function displayLeaveData() {
+		const tbody = document.querySelector('#leaveTable tbody');
+		tbody.innerHTML = ''; // 테이블 내용 초기화
+
+		// 현재 페이지에 표시할 데이터 범위 계산
+		let startIndex = (currentPage - 1) * entriesPerPage;
+		let endIndex = entriesPerPage === -1 ? leaveData.length : Math.min(startIndex + entriesPerPage, leaveData.length);
+
+		// 해당 범위의 데이터만 표시
+		for (let i = startIndex; i < endIndex; i++) {
+			const item = leaveData[i];
+			try {
+				// 날짜 파싱
+				var startDate = new Date(item.START_DATE);
+				var endDate = new Date(item.END_DATE);
+
+				// 날짜 포맷팅
+				var formattedStartDate = `${startDate.getFullYear()}.${String(startDate.getMonth() + 1).padStart(2, '0')}.${String(startDate.getDate()).padStart(2, '0')}`;
+				var formattedEndDate = `${endDate.getFullYear()}.${String(endDate.getMonth() + 1).padStart(2, '0')}.${String(endDate.getDate()).padStart(2, '0')}`;
+
+				var formatDate = `${formattedStartDate} ~ ${formattedEndDate}`;
+
+				// 사용일수 계산 (밀리초를 일수로 변환, 양 끝 날짜 포함)
+				var usedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+				// 테이블에 행 추가
+				var newRow = document.createElement('tr');
+
+				newRow.innerHTML = `
+                <td>${item.LEAVE_TYPE || '연차'}</td>
+                <td>${formatDate}</td>
+                <td>${usedDays}일</td>
+            `;
+
+				tbody.appendChild(newRow);
+
+			} catch (error) {
+				console.error("Error processing leave item:", item, error);
+			}
+		}
+	}
+
 });
