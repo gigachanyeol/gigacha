@@ -34,6 +34,19 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	public int updateSignature(String empno) {
 		return sql.update(NS+"updateSignature",empno);
 	}
+	
+	@Override
+	public String getNextEmpno(String empno) {
+		return sql.selectOne(NS+"getNextEmpno", empno);
+	}
+
+	@Override
+	public int insertEmployee(Map<String, Object> map) {
+		return sql.insert(NS+"insertEmployee", map);
+	}
+
+	
+
 
 
 }

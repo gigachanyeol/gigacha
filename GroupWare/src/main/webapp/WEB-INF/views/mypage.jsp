@@ -24,7 +24,7 @@
 <%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
 	<div class="row">
-		<div id="content" class="col-12">
+		<div id="content" class="col">
 			<h3 class="content_title">마이페이지</h3>
 			
 			<div class="row">

@@ -36,7 +36,7 @@ public class DepartmentManagementController {
 	
 	private final IDeptManagementDao deptManagementDao ;
 	
-	@GetMapping("/tree.json")
+	@GetMapping("/tree.do")
 	@ResponseBody
 	public List<Map<String, Object>> deptTree() {
 		return deptManagementDao.getAllDept();
@@ -55,6 +55,35 @@ public class DepartmentManagementController {
 		return deptManagementDao.insertDepartment(map)==1 ?"true":"false";
 	}
 	
+	//수정
+	@PostMapping("/deptUpdate.do")
+	@ResponseBody
+	public String updateDepartment(
+		@RequestBody Map<String, Object> map, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
+		map.put("update_emp", loginDto.getUpdate_emp());
+		map.put("update_date", loginDto.getUpdate_date());
+		log.info("♧♣♧♣♧♣♧♣ DepartmentManagementController updateDepartment POST 요청");
+		System.out.println("\n\n"+map+"\n\n");
+		return deptManagementDao.updateDept(map)==1 ?"true":"false";
+	}
+	
+	// 삭제
+	@PostMapping("/deptDelete.do")
+	@ResponseBody
+	public String deleteDepartment(
+		@RequestBody Map<String, Object> map, HttpSession session) {
+		
+		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
+		map.put("update_emp", loginDto.getUpdate_emp());
+		log.info("♧♣♧♣♧♣♧♣ DepartmentManagementController deleteDepartment POST 요청");
+		System.out.println("\n\n"+map+"\n\n");
+		return deptManagementDao.deleteDept(map)==1 ?"true":"false";
+	}
+	
+	
+	
+	
 	// 중복검사
 	@GetMapping("/deptCheck.do")
 	@ResponseBody
@@ -62,7 +91,7 @@ public class DepartmentManagementController {
 		return deptManagementDao.duplicateCheck(deptname) == 0 ? true:false;
 	}
 	
-	// select박스 값 가져오기
+	// select박스 값 가져오기 
 	@GetMapping("/deptManagement.do")
 	public String hqSelct(Model model) {
 		List<DepartmentDto> hqList = deptManagementDao.hqSelect();
@@ -84,16 +113,23 @@ public class DepartmentManagementController {
 		return "deptManagement";
 	}
 	
+	// JSON 형식
+	@GetMapping("/api/hqList.do")
+	@ResponseBody
+	public List<DepartmentDto> getHqList() {
+	    return deptManagementDao.hqSelect();
+	}
+	
 	// 값 가져오기
-	@GetMapping("/deptGet.json")
+	@GetMapping("/deptGet.do")
 	@ResponseBody
 	public DepartmentDto getOneDept(@RequestParam("seq") String seq){
-		
 		log.info("♧♣♧♣♧♣♧♣DepartmentManagementController getOneDept GET 요청");
-		
 		DepartmentDto dept = deptManagementDao.getOneDept(seq);
 		return dept;
 	}
+	
+	
 	
 	
 	
