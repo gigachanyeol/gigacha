@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,21 +77,30 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">예약</span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
-<%--             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomform.do">  --%>
-<!-- 				<span>회의실 등록(관리자)</span></a></li> -->
-<!--             <li> <hr class="dropdown-divider"> </li> -->
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> 
-				<span>회의실정보 리스트(관리자)</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservation.do"> 
 				<span>회의실 예약</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservationList.do"> 
 				<span>예약내역조회</span></a></li>
-            <li> <hr class="dropdown-divider"> </li>
+            <li> <hr class="dropdown-divider"> </li>         
           </ul>
-        </li>
-      </ul>
+        </li>      
+        <c:if test="${loginDto.auth == 'A'}">
+<!--          <li class="nav-item dropdown pe-3"> -->
+         		<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            		<span class="d-none d-md-block dropdown-toggle ps-2">관리자</span>
+          		</a><!-- End Profile Iamge Icon -->
+          	<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="">
+            <li>
+            	<a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/roomList.do"> 
+					<span>회의실정보 리스트</span>
+				</a>
+				<a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservationList.do"> 
+					<span>전체회의실내역조회</span>
+				</a>
+			</li>
+      		</ul>
+		</c:if>
     </nav>
 
   </header>

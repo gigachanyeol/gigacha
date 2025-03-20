@@ -24,6 +24,11 @@ public class ReservationServiceImpl implements IReservationService {
 	public ReservationDto selectReservationByRoomId(String room_id) {
 		return reservationDao.selectReservationByRoomId(room_id);
 	}
+	
+	@Override
+	public List<ReservationDto> getReservationList(String empno) {
+		return reservationDao.getReservationList(empno);
+	}
 
 	@Override
 	public ReservationDto selectReserverAndMember(String reservation_id) {
@@ -39,6 +44,5 @@ public class ReservationServiceImpl implements IReservationService {
 	public List<ReservationDto> reservationList() {
 		return reservationDao.reservationList();
 	}
-
 	
 }

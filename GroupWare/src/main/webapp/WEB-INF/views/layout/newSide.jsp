@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,25 +203,25 @@
           <li class="nav-heading">부서 근태 관리</li>
         </ul>
       </li>
-      
+      <!-- 관리자 메뉴 - 권란이 있는 경우에만 표시 -->
+      <c:if test="${loginDto.auth == 'A'}">
        <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
          <i class="bi bi-incognito"></i>
           <span>관리자</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
-<!--         	<li> -->
-<%--             <a href="${pageContext.request.contextPath}/rooms/roomform.do"> --%>
-<!--               <span>회의실등록</span> -->
-<!--             </a> -->
-<!--           </li> -->
           <li>
             <a href="${pageContext.request.contextPath}/rooms/roomList.do">
               <span>회의실정보 리스트</span>
             </a>
+            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/rooms/reservationList.do"> 
+			  <span>전체회의실내역조회</span>
+			</a>
           </li>
         </ul>
       </li>
+      </c:if>
       
       
     </ul>

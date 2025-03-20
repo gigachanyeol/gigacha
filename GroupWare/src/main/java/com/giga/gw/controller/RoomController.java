@@ -58,6 +58,7 @@ public class RoomController {
 			HttpSession session,
 								@RequestParam MultipartFile file, HttpServletRequest request, 
 								Model model) {
+
 		EmployeeDto employee = (EmployeeDto)session.getAttribute("loginDto");
 			
 		if(employee == null) { //로그인 여부 확인
@@ -155,6 +156,9 @@ public class RoomController {
 	        return ResponseEntity.status(400).body(false);  // 실패 시 응답
 	    }
 	}
+	
+
+	
 	
 	
 
