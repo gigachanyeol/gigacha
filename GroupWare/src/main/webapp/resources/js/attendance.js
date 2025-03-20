@@ -1242,7 +1242,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// 사용일수 계산 (밀리초를 일수로 변환, 양 끝 날짜 포함)
 				var usedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
-				// 테이블에 행 추가
+				// 에 행 추가테이블
 				var newRow = document.createElement('tr');
 
 				newRow.innerHTML = `

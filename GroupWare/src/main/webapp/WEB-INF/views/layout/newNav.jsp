@@ -46,6 +46,12 @@
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/myattendance.do"> 
 				<span>나의 근태 현황</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/attendance.do"> 
+				<span>부서 근태 현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/attendance/leaveattendance.do"> 
+				<span>부서 연차 현황</span></a></li>
+            <li> <hr class="dropdown-divider"> </li>
           </ul>
         </li>
         <li class="nav-item pe-3">

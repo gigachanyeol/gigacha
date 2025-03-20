@@ -255,9 +255,9 @@
 									<!-- 테이블 아래에 페이지네이션 컨트롤 추가 -->
 									<div class="datatable-bottom">
 										<div class="datatable-info">
-											Showing <span class="datatable-info-entries-from">1</span> to
-											<span class="datatable-info-entries-to">10</span> of <span
-												class="datatable-info-entries-all">0</span> entries
+											<span class="datatable-info-entries-from">1</span> ~
+											<span class="datatable-info-entries-to">10</span> 총 사용 갯수 :  <span
+												class="datatable-info-entries-all">0</span>
 										</div>
 										<nav class="datatable-pagination">
 											<ul class="datatable-pagination-list"></ul>

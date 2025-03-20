@@ -14,12 +14,12 @@
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css"/> -->
 <style type="text/css">
 .sidecard-body {
-  padding: 1.5rem;
+/*   padding: 1.5rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.5rem;
+/*   gap: 0.5rem; */
 }
 
 .sidecard-body .employee-name {
@@ -40,7 +40,7 @@
 }
 
 .sidecard-body .department {
-  font-size: 0.9rem;
+  font-size: 11px;
   color: #555;
   font-weight: 500;
   margin-right: 0.5rem;
@@ -74,11 +74,11 @@
 			alt="Card image cap">
 		<div class="sidecard-body" >
   			<span class="employee-name">${loginDto.name}</span>
-  			<span class="employee-id">사원번호 :${loginDto.empno}</span>
-  			<div class="employee-info-row">
-    			<span class="department">부서 : ${loginDto.deptno}</span>
-    			<span class="job-title">직급 : ${loginDto.job_id}</span>
- 			 </div>
+  			<span class="employee-id">사원번호 | ${loginDto.empno}</span>
+<!--   			<div class="employee-info-row"> -->
+    			<span class="department" id="dept">${loginDto.deptname}</span>
+    			<span class="job-title" id="job">${loginDto.job_title}</span>
+<!--  			 </div> -->
 		</div>
 	</div>
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -201,6 +201,16 @@
             </a>
           </li>
           <li class="nav-heading">부서 근태 관리</li>
+             <li>
+            <a href="${pageContext.request.contextPath}/attendance/attendance.do">
+              <span>부서 근태 현황</span>
+            </a>
+          </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/attendance/leaveattendance.do">
+              <span>나의 연차 현황</span>
+            </a>
+          </li>
         </ul>
       </li>
       <!-- 관리자 메뉴 - 권란이 있는 경우에만 표시 -->
@@ -355,6 +365,14 @@
 			
 			return await response.json();
 		}
+	
+	
+	var dept = document.getElementById("dept");
+	var job = (document.getElementById("job");
+	
+	if(lo)
+	
+	
 	</script>
 
 </html>
