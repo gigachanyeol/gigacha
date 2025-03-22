@@ -7,6 +7,7 @@
 
 	<!-- TODO 00202 Socket - 웹소켓 핸들러 빈등록 -->
     <bean class="com.giga.gw.config.WebSocketHandler" id="websocketHandler" />
+    <bean class="com.giga.gw.config.WebSocketChatHandler" id="websocketChatHandler" />
     <!-- TODO 00203 Socket - 웹소켓 빈연결 -->
     <websocket:handlers>
         <websocket:mapping handler="websocketHandler" path="/ws/notification.do"/>
@@ -15,4 +16,10 @@
             <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
         </websocket:handshake-interceptors>
     </websocket:handlers>
+    <websocket:handlers>
+		<websocket:mapping handler="websocketChatHandler" path="/wsChat.do"/>
+		<websocket:handshake-interceptors>
+            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+        </websocket:handshake-interceptors>
+	</websocket:handlers>
 </beans>

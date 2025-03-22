@@ -129,8 +129,41 @@
 	        ],
 	        // 행 선택
 	        lengthMenu: [10, 20, 30],
+	        order: [[5, 'desc']],
+	        columnDefs: [
+	            { 
+	                orderable: false, targets: [0,1,2,3,4,7] // 정렬 비활성화할 컬럼 설정
+	            }
+	        ],
+	        autoWidth: false,    
+	        responsive: true,
 	        search: {
 	            return: true
+	        },
+	        scrollX: true ,
+	        language: {
+	            "decimal": "",
+	            "emptyTable": "등록된 문서가 없습니다.",
+	            "info": "총 _TOTAL_건 중 _START_부터 _END_까지 표시",
+	            "infoEmpty": "총 0건 중 0부터 0까지 표시",
+	            "infoFiltered": "(_MAX_건의 데이터에서 필터링됨)",
+	            "infoPostFix": "",
+	            "thousands": ",",
+	            "lengthMenu": "_MENU_ 개씩 보기",
+	            "loadingRecords": "로딩 중...",
+	            "processing": "처리 중...",
+	            "search": "검색:",
+	            "zeroRecords": "일치하는 데이터가 없습니다.",
+	            "paginate": {
+	                "first": "<<",
+	                "last": ">>",
+	                "next": ">",
+	                "previous": "<"
+	            },
+	            "aria": {
+	                "sortAscending": ": 오름차순 정렬",
+	                "sortDescending": ": 내림차순 정렬"
+	            }
 	        },
 	        rowCallback: function(row, data) {
 	        	$(row).find('td').on('click', async function() {

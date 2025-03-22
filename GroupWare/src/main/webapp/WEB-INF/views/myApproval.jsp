@@ -37,23 +37,26 @@
 						결재완료</label> <label><input type="checkbox" class="filter-status form-check-input"
 						value="결재반려" checked> 결재반려</label>
 				</div>
-
-				<table id="documentsTable"
-					class="display nowrap dataTable dtr-inline collapsed"
-					style="width: 100%;">
-					<thead>
-						<tr>
-							<th>문서번호</th>
-							<th>양식명</th>
-							<th>사원번호</th>
-							<th>제목</th>
-							<th>카테고리</th>
-							<th>상태</th>
-							<th>작성일</th>
-							<th>마감기한</th>
-						</tr>
-					</thead>
-				</table>
+				<div class="card">
+					<div class="card-body">
+						<table id="documentsTable"
+							class="display nowrap dataTable dtr-inline collapsed"
+							style="width: 100%;">
+							<thead>
+								<tr>
+									<th>문서번호</th>
+									<th>양식명</th>
+									<th>사원번호</th>
+									<th>제목</th>
+									<th>카테고리</th>
+									<th>상태</th>
+									<th>작성일</th>
+									<th>마감기한</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -141,9 +144,40 @@ $(document).ready(function() {
             { data: 'CREATE_DATE' },
             { data: 'APPROVAL_DEADLINE' }
         ],
+        columnDefs: [
+            { orderable: false, targets: [0,1,2,3,4,5] }  // 특정 컬럼(2번째, 4번째)의 정렬 비활성화
+        ],
+        order: [[6, 'desc']],
+        autoWidth: false,    
+        responsive: true,
         lengthMenu: [10, 20, 30],
         search: {
             return: true
+        },
+        scrollX: true ,
+        language: {
+            "decimal": "",
+            "emptyTable": "데이터가 없습니다.",
+            "info": "총 _TOTAL_건 중 _START_부터 _END_까지 표시",
+            "infoEmpty": "총 0건 중 0부터 0까지 표시",
+            "infoFiltered": "(_MAX_건의 데이터에서 필터링됨)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "_MENU_ 개씩 보기",
+            "loadingRecords": "로딩 중...",
+            "processing": "처리 중...",
+            "search": "검색:",
+            "zeroRecords": "일치하는 데이터가 없습니다.",
+            "paginate": {
+            	"first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "aria": {
+                "sortAscending": ": 오름차순 정렬",
+                "sortDescending": ": 내림차순 정렬"
+            }
         },
         rowCallback: function(row, data) {
             $(row).find('td').on('click', async function() {
