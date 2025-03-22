@@ -143,5 +143,15 @@ public class ApprovalDaoImpl implements IApprovalDao {
 		return sql.insert(NS+"insertApprovalReferences",references);
 	}
 
+	@Override
+	public Map<String, Object> selectApprovalLineStats(String empno) {
+		return sql.selectOne(NS+"selectApprovalLineStats",empno);
+	}
+
+	@Override
+	public Map<String, Object> selectApprovalStats(String empno) {
+		return sql.selectOne(NS+"selectApprovalStats",empno);
+	}
+
 
 }

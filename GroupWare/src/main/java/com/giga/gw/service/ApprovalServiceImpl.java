@@ -239,4 +239,14 @@ public class ApprovalServiceImpl implements IApprovalService {
 		return approvalDao.selectApprovalReference(empno);
 	}
 
+	@Override
+	public Map<String, Object> selectApprovalLineStats(String empno) {
+		return approvalDao.selectApprovalLineStats(empno);
+	}
+
+	@Override
+	public Map<String, Object> selectApprovalStats(String empno) {
+		return approvalDao.selectApprovalStats(empno);
+	}
+
 }

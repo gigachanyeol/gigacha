@@ -26,7 +26,7 @@
 	<div class="row">
 		<div id="content" class="col">
 			<h3 class="content_title">결재목록함</h3>
-			<div class="card">
+				<div class="card">
 					<div class="card-body">
 						<table id="documentsTable"
 							class="display nowrap dataTable dtr-inline collapsed"

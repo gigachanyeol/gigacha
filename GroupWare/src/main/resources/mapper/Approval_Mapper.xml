@@ -472,4 +472,23 @@
 		) A
 	</insert>
 	    
+    <select id="selectApprovalLineStats" parameterType="String" resultType="map">
+	    SELECT 
+	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST02' THEN 1 END),'0') AS WAIT,
+	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST03' THEN 1 END),'0') AS PRE,
+	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST04' THEN 1 END),'0') AS COMPLETED,
+	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST05' THEN 1 END),'0') AS REJECTED
+	    FROM APPROVAL_LINE
+	    WHERE APPROVER_EMPNO = #{empNo}
+	</select>
+	
+	<select id="selectApprovalStats" parameterType="String" resultType="map">
+	    SELECT 
+	        NVL(COUNT(CASE WHEN APPROVAL_STATUS = 'ST02' THEN 1 END),'0') AS WAIT,
+	        NVL(COUNT(CASE WHEN APPROVAL_STATUS = 'ST03' THEN 1 END),'0') AS PRE,
+	        NVL(COUNT(CASE WHEN APPROVAL_STATUS = 'ST04' THEN 1 END),'0') AS COMPLETED,
+	        NVL(COUNT(CASE WHEN APPROVAL_STATUS = 'ST05' THEN 1 END),'0') AS REJECTED
+	    FROM APPROVAL
+	    WHERE EMPNO = #{empNo}
+	</select>
 </mapper>

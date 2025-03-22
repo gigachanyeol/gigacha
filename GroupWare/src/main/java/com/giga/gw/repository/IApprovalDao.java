@@ -37,4 +37,7 @@ public interface IApprovalDao {
     List<Map<String, Object>> postLeaveToCalendar(String empno);
     
     int insertApprovalReferences(Map<String, Object> references);
+    
+    Map<String, Object> selectApprovalLineStats (String empno);
+    Map<String, Object> selectApprovalStats (String empno);
 }

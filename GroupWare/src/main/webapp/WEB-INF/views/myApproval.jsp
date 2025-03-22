@@ -28,14 +28,11 @@
 				<h3 class="content_title">내 문서함</h3>
 
 				<div>
-					<label><input type="checkbox" class="filter-status form-check-input"
-						value="임시저장" checked> 임시저장</label> <label><input
-						type="checkbox" class="filter-status form-check-input" value="결재대기" checked>
-						결재대기</label> <label><input type="checkbox" class="filter-status form-check-input"
-						value="진행중" checked> 진행중</label> <label><input
-						type="checkbox" class="filter-status form-check-input" value="결재완료" checked>
-						결재완료</label> <label><input type="checkbox" class="filter-status form-check-input"
-						value="결재반려" checked> 결재반려</label>
+					<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label> 
+					<label><input type="checkbox" class="filter-status form-check-input" value="결재대기" checked> 결재대기</label> 
+					<label><input type="checkbox" class="filter-status form-check-input" value="진행중" checked> 진행중</label>
+					<label><input type="checkbox" class="filter-status form-check-input" value="결재완료" checked> 결재완료</label> 
+					<label><input type="checkbox" class="filter-status form-check-input" value="결재반려" checked> 결재반려</label>
 				</div>
 				<div class="card">
 					<div class="card-body">
