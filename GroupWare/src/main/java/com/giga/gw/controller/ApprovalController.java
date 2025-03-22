@@ -78,8 +78,9 @@ public class ApprovalController {
 
 	@ResponseBody
 	@GetMapping("/treeAjax.do")
-	public List<Map<String, Object>> tree() {
-		return approvalDao.getOrganizationTree();
+	public List<Map<String, Object>> tree(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		return approvalService.getOrganizationTree(loginDto.getEmpno());
 	}
 
 	@GetMapping("/signature.do")
@@ -221,8 +222,9 @@ public class ApprovalController {
 	// TODO 00102 전자결재 문서
 	// 전자결재 문서 작성 페이지 이동
 	@GetMapping("/approvalDocument.do")
-	public String approvalDocument(HttpSession session) {
+	public String approvalDocument(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		model.addAttribute("loginDto",loginDto);
 		return "approvalDocumentCreateForm";
 	}
 	

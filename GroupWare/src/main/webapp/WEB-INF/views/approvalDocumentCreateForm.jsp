@@ -73,7 +73,7 @@
 									<th>기안자</th>
 									<td>${loginDto.name}</td>
 									<th>부서</th>
-									<td>${loginDto.deptno}</td>
+									<td>${loginDto.deptname}</td>
 								</tr>
 								<tr>
 									<th>참조자</th>
@@ -183,6 +183,9 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function () {
+			const empno = ${loginDto.empno};
+			console.log("empno" + empno);
+			
 			$("input[name=approval_deadline]").val(setDate());
 			$("input[type=date]").attr("min",setDate());
 			

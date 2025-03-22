@@ -9,6 +9,7 @@ public interface IApprovalDao {
 	List<Map<String, Object>> getDepartments();
     List<Map<String, Object>> getEmployeesByDepartment();
     List<Map<String, Object>> getOrganizationTree();
+    List<Map<String, Object>> getOrganizationTree(String empno);
     int editorSave(String content);
     String editorRead();
     
