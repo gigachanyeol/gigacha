@@ -128,9 +128,9 @@ public class ApprovalController {
 	}
 	
 	// 카테고리 전체 조회 리스트 이동
-	@GetMapping("/managerCategory.do")
+	@GetMapping("/managerCategoryList.do")
 	public String categoryList(Model model) {
-		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelect();
+		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelectAll();
 		model.addAttribute("categoryList", categoryList);
 		return "approvalCategoryList";
 	}
@@ -145,7 +145,7 @@ public class ApprovalController {
 
 	// TODO 00101 전자결재 문서양식 Controller
 	// 문서양식 리스트 조회
-	@GetMapping("/managerFormList.do")
+	@GetMapping("/formList.do")
 	public String approvalForm(Model model) {
 		List<ApprovalFormDto> formList = approvalFormService.formSelectAll();
 		model.addAttribute("formList", formList);
@@ -213,10 +213,10 @@ public class ApprovalController {
 	}
 	
 	// 문서양식 삭제
-	@GetMapping("/managerFormDeleteAjax.do")
+	@PostMapping("/managerFormDeleteAjax.do")
 	@ResponseBody
-	public boolean formDelete(@RequestParam String id) {
-		return approvalFormService.formDelete(id) == 1 ? true : false;
+	public boolean formUpdateUseYN(@RequestBody Map<String, Object> map) {
+		return approvalFormService.formUpdateUseYN(map) == 1 ? true : false;
 	}
 	
 	// TODO 00102 전자결재 문서
@@ -565,5 +565,11 @@ public class ApprovalController {
 		response.setContentType("application/octet-stream"); // meword로 정송 application/msword
 		
 		return bytes;
+	}
+	
+	@PostMapping("/categoryUseChange.do")
+	@ResponseBody
+	public ResponseEntity<Boolean> categoryUseChange(@RequestBody Map<String, Object> map) {
+		return ResponseEntity.ok(approvalCategoryService.categoryUpdateUseYN(map));
 	}
 }

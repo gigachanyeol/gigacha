@@ -8,7 +8,7 @@ import com.giga.gw.dto.ApprovalFormDto;
 public interface IApprovalFormDao {
 	int formInsert(ApprovalFormDto approvalFormDto);
 	int formUpdate(ApprovalFormDto approvalFormDto);
-	int formDelete(String form_id);
+	int formUpdateUseYN(Map<String, Object> map);
 	List<ApprovalFormDto> formSelectAll();
 	ApprovalFormDto formSelectDetail(String form_id);
 	Map<String, Object> formSelectById(String form_id);

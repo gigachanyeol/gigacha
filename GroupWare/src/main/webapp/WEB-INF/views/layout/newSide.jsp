@@ -94,6 +94,19 @@
           <span>전자결재</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="charts-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li class="nav-heading">문서양식</li>
+          <li>
+            <a href="${pageContext.request.contextPath}/approval/formList.do">
+              <span>문서양식관리</span>
+            </a>
+          </li>
+          <c:if test="${loginDto.auth eq 'A' }">
+	          <li>
+	            <a href="${pageContext.request.contextPath}/approval/managerCategoryList.do">
+	              <span>카테고리관리</span>
+	            </a>
+	          </li>
+         </c:if>
           <li class="nav-heading">기안</li>
           <li>
             <a href="${pageContext.request.contextPath}/approval/approvalDocument.do">

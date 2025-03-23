@@ -1,6 +1,7 @@
 package com.giga.gw.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,16 @@ public class ApprovalCategoryDaoImpl implements IApprovalCategoryDao {
 	@Override
 	public int categoryCheck(String category_yname) {
 		return sql.selectOne(NS+"categoryCheck",category_yname);
+	}
+
+	@Override
+	public int categoryUpdateUseYN(Map<String, Object> map) {
+		return sql.update(NS+"categoryUpdateUseYN",map);
+	}
+
+	@Override
+	public List<ApprovalCategoryDto> categorySelectAll() {
+		return sql.selectList(NS+"categorySelectAll");
 	}
 	
 }

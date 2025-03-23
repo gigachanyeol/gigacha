@@ -27,8 +27,8 @@ public class ApprovalFormDaoImpl implements IApprovalFormDao {
 	}
 
 	@Override
-	public int formDelete(String form_id) {
-		return sql.update(NS+"formDelete",form_id);
+	public int formUpdateUseYN(Map<String, Object> map) {
+		return sql.update(NS+"formUpdateUseYN",map);
 	}
 
 	@Override
