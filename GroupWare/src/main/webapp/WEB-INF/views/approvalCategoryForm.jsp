@@ -115,7 +115,7 @@
 						.then(data => {
 							if(data === true) {
 								Swal.fire("성공").then(()=>{
-									location.href = '${pageContext.request.contextPath}/approval/managerCategory.do';
+									location.href = '${pageContext.request.contextPath}/approval/managerCategoryList.do';
 								})
 								
 							}

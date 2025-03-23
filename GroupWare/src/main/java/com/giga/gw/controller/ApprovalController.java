@@ -580,4 +580,10 @@ public class ApprovalController {
 	public ResponseEntity<Boolean> categoryUseChange(@RequestBody Map<String, Object> map) {
 		return ResponseEntity.ok(approvalCategoryService.categoryUpdateUseYN(map));
 	}
+	@PostMapping("/ocrUpload.do")
+	@ResponseBody
+	public ResponseEntity<?> ocrUpload(@RequestParam MultipartFile ocrFile) {
+		log.info("업로드 파일 {}",ocrFile);
+		return null;
+	}
 }

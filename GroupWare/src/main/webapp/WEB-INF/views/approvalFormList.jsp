@@ -48,9 +48,9 @@
 	                    <th>카테고리이름</th>
 	                    <th>양식이름</th>
 	                    <th>생성일</th>
-	                    <c:if test="${loginDto.auth eq 'A' }">
-		                    <th>수정일</th>
-	                    </c:if>
+<%-- 	                    <c:if test="${loginDto.auth eq 'A' }"> --%>
+<!-- 		                    <th>수정일</th> -->
+<%-- 	                    </c:if> --%>
 	                    <c:if test="${loginDto.auth eq 'A' }">
 		                    <th>사용여부</th>
 	                    </c:if>
@@ -154,7 +154,11 @@
 		 document.querySelectorAll("tbody tr").forEach(row => {
 		        row.addEventListener("click", async function(event) {
 		            let formId = row.querySelector(".datailOpen").id; // form_id 가져오기
-
+		            let lastTd = row.lastElementChild;
+		            if (lastTd.contains(event.target)) {
+		                console.log("체크박스 포함 마지막 TD 클릭됨, 모달 안 띄움");
+		                return; // 마지막 TD 클릭 시 이벤트 중단
+		            }
 		            console.log("양식 상세 요청 ID:", formId);
 
 		            let formData = await getFormDetails(formId); // 

@@ -121,7 +121,7 @@
 	 		.then(data => {
 	 			if(data == true) {
 	 				Swal.fire("양식등록이 완료되었습니다.").then(()=>{
-	 					location.href="./managerFormList.do"
+	 					location.href="./formList.do"
 	 				})
 	 			}
 	 		})

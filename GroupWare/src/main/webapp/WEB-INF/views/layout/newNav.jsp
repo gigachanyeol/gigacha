@@ -74,8 +74,8 @@
 				<span>결재요청함</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
             <c:if test="${loginDto.auth eq 'A'}">
-	            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/managerFormList.do"> 
-					<span>문서양식관리(관리자)</span></a></li>
+	            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/formList.do"> 
+					<span>문서양식</span></a></li>
 	            <li> <hr class="dropdown-divider"> </li>
            </c:if>
           </ul>

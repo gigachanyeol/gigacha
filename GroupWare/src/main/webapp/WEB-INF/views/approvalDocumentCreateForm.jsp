@@ -27,7 +27,7 @@
 	display: none;
 }
 
-#formPickBtn, #linePickBtn, #organization, #documentForm, #referece, #refPickBtn, #lineSaveBtn {
+#formPickBtn, #linePickBtn, #organization, #documentForm, #referece, #refPickBtn, #lineSaveBtn, #ocrDiv {
 	display: none;
 }
 </style>
@@ -67,6 +67,10 @@
 <!-- 						data-bs-target="#myModal">컨텐츠만 얻기</button> -->
 				</div>
 				<div class="row" id="contentHtml">
+					<div id="ocrDiv">
+						<input type="file" name="ocrFile">
+						<input type="button" id="ocrBtn" value="이미지 읽기"> 
+					</div>
 					<div id="approvalLine" class="mt-3 col-auto ms-auto"></div>
 					<form class="mt-3">
 						<table border="1" class="table">
@@ -111,7 +115,6 @@
 									<td colspan="3"><input type="text" class="form-control"
 										name="approval_title" tabindex="-1"></td>
 								</tr>
-
 							</tbody>
 						</table>
 						<input type="hidden" name="form_id">
@@ -223,6 +226,27 @@
 	            }
 			});
 		});
+		
+		document.querySelector("#ocrBtn").addEventListener('click', async () => {
+			let data = await ocrUpload();
+			console.log("ocr결과",data)
+		});
+		async function ocrUpload() {
+			const formData = new FormData();
+			const fileInput = document.querySelector("input[name=ocrFile]");
+			
+			formData.append("file",document.querySelector("input[name=ocrFile]").files[0]);
+// 			let response = await fetch("./ocrUpload.do",{
+// 				method:"POST",
+// 				body:formData
+// 			})
+			
+			let response = await fetch("http://localhost:11000/uploadAndOcr",{
+				method:"POST",
+				body:formData
+			})
+			return await response.json();
+		}
 	</script>
 
 </body>
