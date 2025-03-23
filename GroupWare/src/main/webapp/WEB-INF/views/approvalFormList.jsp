@@ -49,6 +49,9 @@
 	                    <th>양식이름</th>
 	                    <th>생성일</th>
 	                    <c:if test="${loginDto.auth eq 'A' }">
+		                    <th>수정일</th>
+	                    </c:if>
+	                    <c:if test="${loginDto.auth eq 'A' }">
 		                    <th>사용여부</th>
 	                    </c:if>
 	                  </tr>
@@ -65,6 +68,7 @@
 			                    	${frm.form_name}
 			                    </td>
 			                    <td >${frm.create_date}</td>
+<%-- 			                    <td >${frm.update_date}</td> --%>
 			                    <td>
 									<div class="form-check form-switch">
 				                      <input class="form-check-input" type="checkbox" value="${frm.form_id}" ${frm.use_yn eq 'Y' ?'checked':''}>

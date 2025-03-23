@@ -72,7 +72,7 @@
 					console.log(data);
 					if(data == true) {
 						Swal.fire("수정에 성공했습니다.").then(()=>{
-							location.href="./managerFormDetail.do?id="+jsonData["form_id"];
+							location.href="./formList.do";
 						})
 					} else {
 						Swal.fire("수정에 실패했습니다.<br> 해당 양식으로 작성된 <br>글이 존재합니다.");
