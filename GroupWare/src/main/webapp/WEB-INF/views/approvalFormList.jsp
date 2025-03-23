@@ -17,7 +17,15 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">문서양식추가</h3>
+			<div class="pagetitle">
+				<h1>문서양식관리</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+						<li class="breadcrumb-item active">문서양식관리</li>
+					</ol>
+				</nav>
+			</div>
 			<button type="button" class="btn btn-primary" onclick="location.href='./managerFormCreate.do'">문서양식등록</button>
 			<button type="button" class="btn btn-info" onclick="location.href='./managerCategoryForm.do'">카테고리등록</button>
 			<div class="card">

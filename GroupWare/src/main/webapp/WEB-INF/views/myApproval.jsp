@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의결재함</title>
+<title>내문서함</title>
 
 <%@ include file="./layout/header.jsp"%>
 <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
@@ -25,7 +25,17 @@
 	<main id="main" class="main">
 		<div class="row">
 			<div id="content" class="col">
-				<h3 class="content_title">내 문서함</h3>
+				<div class="pagetitle">
+					<h1>내문서함</h1>
+					<nav>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+							<li class="breadcrumb-item">전자결재</li>
+							<li class="breadcrumb-item">개인</li>
+							<li class="breadcrumb-item active">내문서함</li>
+						</ol>
+					</nav>
+				</div>
 
 				<div>
 					<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label> 

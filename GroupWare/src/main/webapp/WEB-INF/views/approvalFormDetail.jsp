@@ -18,6 +18,16 @@
 	<%@ include file="./layout/newNav.jsp" %>
 	<%@ include file="./layout/newSide.jsp" %>
 <main id="main" class="main">
+	<div class="pagetitle">
+		<h1>양식상세</h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+				<li class="breadcrumb-item">문서양식관리</li>
+				<li class="breadcrumb-item active">양식상세</li>
+			</ol>
+		</nav>
+	</div>
 	<div class="row">
 		<div id="content" class="col">
 			<h3 class="content_title">${form.form_name}</h3>

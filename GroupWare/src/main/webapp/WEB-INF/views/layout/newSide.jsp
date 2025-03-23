@@ -330,15 +330,25 @@
 	  <div class="modal-dialog modal-dialog-scrollabl">
 	    <div class="modal-content">
 	      <div class="modal-header d-flex mb-3">
-	      	  <div class="me-auto p-2">
-	      	  	<span class="fs-3">서명관리</span>
-	      	  </div>
-			  <div class="p-2">
-			  	<button id="save" class="btn btn-sm btn-success">저장</button>
-			  </div>
-			  <div class="p-2">
-			  	<button id="clear" class="btn btn-sm btn-danger">Clear</button>
-			  </div>
+	      	   <div class="pagetitle">
+					<h1>서명관리</h1>
+					<nav>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+							<li class="breadcrumb-item">전자결재</li>
+							<li class="breadcrumb-item">개인</li>
+							<li class="breadcrumb-item active">서명관리</li>
+						</ol>
+					</nav>
+				</div>
+			  <div>
+				  <div class="p-2">
+				  	<button id="save" class="btn btn-sm btn-success">저장</button>
+				  </div>
+				  <div class="p-2">
+				  	<button id="clear" class="btn btn-sm btn-danger">Clear</button>
+				  </div>
+			 </div>
 	      </div>
 	      <div class="modal-body">
 	      	<div class="row border-bottom">

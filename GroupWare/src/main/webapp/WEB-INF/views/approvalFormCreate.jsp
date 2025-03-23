@@ -30,7 +30,16 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">문서양식추가</h3>
+			<div class="pagetitle">
+				<h1>문서양식등록</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+						<li class="breadcrumb-item">문서양식관리</li>
+						<li class="breadcrumb-item active">문서양식등록</li>
+					</ol>
+				</nav>
+			</div>
 			<div class="card">
 				<div class="card-body">
 					<form>

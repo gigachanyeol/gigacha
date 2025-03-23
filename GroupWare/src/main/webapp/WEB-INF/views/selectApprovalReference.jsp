@@ -24,7 +24,17 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">참조문서함</h3>
+			<div class="pagetitle">
+					<h1>참조문서함</h1>
+					<nav>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+							<li class="breadcrumb-item">전자결재</li>
+							<li class="breadcrumb-item">결재</li>
+							<li class="breadcrumb-item active">참조문서함</li>
+						</ol>
+					</nav>
+				</div>
 			<div class="card">
 					<div class="card-body">
 						<div id="wrapper" class="list">

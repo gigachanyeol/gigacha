@@ -19,7 +19,16 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">${form.form_name}</h3>
+			<div class="pagetitle">
+				<h1>${form.form_name}</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+						<li class="breadcrumb-item active">문서양식관리</li>
+						<li class="breadcrumb-item active">문서양식수정</li>
+					</ol>
+				</nav>
+			</div>
 			<form>
 				<label for="inputText" class="col-sm-2 col-form-label">양식이름</label>
 				<div class="col-sm-10">

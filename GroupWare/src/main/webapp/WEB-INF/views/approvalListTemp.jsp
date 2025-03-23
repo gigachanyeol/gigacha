@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>결재요청함/임시저장요청함</title>
+<title>임시저장요청함</title>
 
 <%@ include file="./layout/header.jsp"%>
 <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
@@ -24,7 +24,17 @@
 	<main id="main" class="main">
 		<div class="row">
 			<div id="content" class="col">
-				<h3 class="content_title">결재요청함</h3>
+				<div class="pagetitle">
+				<h1>임시저장함</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+						<li class="breadcrumb-item">전자결재</li>
+						<li class="breadcrumb-item">기안</li>
+						<li class="breadcrumb-item active">임시저장함</li>
+					</ol>
+				</nav>
+			</div>
 				<div class="card">
 					<div class="card-body">
 						<div id="wrapper" class="list">
