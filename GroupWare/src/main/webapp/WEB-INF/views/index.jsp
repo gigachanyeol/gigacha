@@ -45,7 +45,7 @@
         	<div class="row mb-3">
         		<div class="card">
 					<div class="card-body row">
-		        		<h5 class="card-title">결재현황</h5>
+		        		<h5 class="card-title">결재현황[최근 3일]</h5>
 		        		<div class="col-lg-6">
 		        			<canvas id="approvalLineChart"></canvas>
 		        		</div>
@@ -111,7 +111,7 @@
         			<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">
-								<a href="./approval/selectApprovalReference.do">결재대기함</a>
+								<a href="./approval/selectApprovalReference.do">참조문서함</a>
 							</h5>
 							<table id="refDocument"
 								class="table text-center">
@@ -180,7 +180,7 @@ $(document).ready(function() {
             type: 'POST',
             dataType: 'json',
             dataSrc: function(json) {
-                console.log("서버 응답 데이터:", json);
+                console.log("서버 응답 데이터 내문서함:", json);
                 return json.data || [];
             }
         },
@@ -225,10 +225,7 @@ $(document).ready(function() {
             url: './approval/approvalRequestListAjax.do',
             type: 'get',
             dataType: 'json',
-            dataSrc: function(json) {
-                console.log("서버 응답 데이터:", json);
-                return json.data || [];
-            }
+            dataSrc:""
         },
         searching: false,
         columns: [
@@ -272,7 +269,7 @@ $(document).ready(function() {
             type: 'get',
             dataType: 'json',
             dataSrc: function(json) {
-                console.log("서버 응답 데이터:", json);
+                console.log("서버 응답 데이터 참조문서함:", json);
                 return json.data || [];
             }
         },
@@ -329,14 +326,16 @@ $(document).ready(function() {
         new Chart(ctx, {
             type: 'pie', 
             data: {
-                labels: ['대기', '진행', '완료', '반려'],
+                labels: ['대기', '진행', '반려'
+//                 	'완료', '반려'
+                	],
                 datasets: [{
                     label: label,
                     backgroundColor: ['#FF6384', '#36A2EB', '#4BC0C0', '#FFCE56'], 
                     data: [
                         chartData.WAIT,
                         chartData.PRE,
-                        chartData.COMPLETED,
+//                         chartData.COMPLETED,
                         chartData.REJECTED
                     ]
                 }]

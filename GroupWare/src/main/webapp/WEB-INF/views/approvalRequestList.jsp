@@ -222,7 +222,7 @@
 	        },
 	        columns: [
 	            { data: 'approval_id' },
-	            { data: 'empno' },
+	            { data: 'name' },
 	            { data: 'approval_title' },
 	            { data: 'approval_status' },
 	            { data: 'create_date' },

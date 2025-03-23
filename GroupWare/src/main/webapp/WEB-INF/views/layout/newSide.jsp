@@ -68,6 +68,8 @@
 </head>
 <body>
 	<aside id="sidebar" class="sidebar">
+	출근사원
+	<div id="connectedUsers"></div>
    	<div class="card mb-3 mt-3">
 		<img class="card-img-top"
 			src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj"
@@ -83,7 +85,7 @@
 	</div>
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link " href="#">
+        <a class="nav-link " href="${pageContext.request.contextPath}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>

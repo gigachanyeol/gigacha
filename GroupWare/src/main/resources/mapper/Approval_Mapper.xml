@@ -293,17 +293,20 @@
    
     <!-- 결재 대기함 -->
     <select id="selectPendingApprovalDocuments" resultType="approvalDto">
-    	SELECT APPROVAL_ID, EMPNO , APPROVAL_TITLE, 
-    		TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE ,
-    		 CASE APPROVAL_STATUS 
-				WHEN 'ST01' THEN '[임시저장]'
-				WHEN 'ST02' THEN '[결재대기]'
-				WHEN 'ST03' THEN '[진행중]'
-				WHEN 'ST04' THEN '[결재완료]'
-				WHEN 'ST05' THEN '[결재반려]'
-			END AS APPROVAL_STATUS,
-    		  COALESCE(TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD'),'-') AS APPROVAL_DEADLINE
-			FROM APPROVAL
+    	SELECT APPROVAL_ID,
+    	 EMPNO ,
+    	 (SELECT NAME FROM EMPLOYEES WHERE EMPNO = a.EMPNO ) AS "name",
+    	 APPROVAL_TITLE, 
+   		TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE ,
+   		 CASE APPROVAL_STATUS 
+			WHEN 'ST01' THEN '[임시저장]'
+			WHEN 'ST02' THEN '[결재대기]'
+			WHEN 'ST03' THEN '[진행중]'
+			WHEN 'ST04' THEN '[결재완료]'
+			WHEN 'ST05' THEN '[결재반려]'
+		END AS APPROVAL_STATUS,
+   		  COALESCE(TO_CHAR(APPROVAL_DEADLINE,'YYYY-MM-DD'),'-') AS APPROVAL_DEADLINE
+		FROM APPROVAL a
 			WHERE APPROVAL_ID IN (SELECT APPROVAL_ID 
 					FROM APPROVAL_LINE al1
 					WHERE APPROVER_EMPNO  = #{empno}
@@ -474,12 +477,52 @@
 	    
     <select id="selectApprovalLineStats" parameterType="String" resultType="map">
 	    SELECT 
-	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST02' THEN 1 END),'0') AS WAIT,
-	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST03' THEN 1 END),'0') AS PRE,
-	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST04' THEN 1 END),'0') AS COMPLETED,
-	        NVL(COUNT(CASE WHEN STATUS_ID = 'ST05' THEN 1 END),'0') AS REJECTED
-	    FROM APPROVAL_LINE
-	    WHERE APPROVER_EMPNO = #{empNo}
+        NVL(SUM(CASE 
+            WHEN a.APPROVAL_ID IN (
+                SELECT APPROVAL_ID
+                FROM APPROVAL_LINE
+                WHERE APPROVER_EMPNO = #{empNo}
+                AND STATUS_ID = 'ST04'
+            ) AND a.APPROVAL_STATUS = 'ST03'
+            THEN 1 ELSE 0 END), 0) AS PRE, 
+        NVL(SUM(CASE 
+            WHEN a.APPROVAL_ID IN (
+                SELECT APPROVAL_ID
+                FROM APPROVAL_LINE al1
+                WHERE al1.APPROVER_EMPNO = #{empNo}
+                AND al1.STATUS_ID = 'ST02'
+                AND (al1.SEQUENCE = '0' 
+                    OR EXISTS (
+                        SELECT 1 
+                        FROM APPROVAL_LINE al2
+                        WHERE al2.APPROVAL_ID = al1.APPROVAL_ID
+                        AND al2.SEQUENCE = al1.SEQUENCE - 1
+                        AND al2.STATUS_ID = 'ST04'
+                    )
+                )
+            ) 
+            AND a.APPROVAL_STATUS != 'ST05'
+            AND a.TEMP_SAVE_YN = 'N'
+            THEN 1 ELSE 0 END), 0) AS WAIT,  
+        NVL(SUM(CASE 
+            WHEN a.APPROVAL_STATUS = 'ST05' 
+            AND a.APPROVAL_ID IN (
+                SELECT APPROVAL_ID
+                FROM APPROVAL_LINE 
+                WHERE APPROVER_EMPNO = #{empNo} AND STATUS_ID = 'ST05'
+            )
+            THEN 1 ELSE 0 END), 0) AS REJECTED,  
+        NVL(SUM(CASE 
+            WHEN a.APPROVAL_ID IN (
+                SELECT APPROVAL_ID
+                FROM APPROVAL_LINE 
+                WHERE APPROVER_EMPNO = #{empNo}
+                AND STATUS_ID = 'ST04'
+            ) 
+            AND a.APPROVAL_STATUS = 'ST04'
+            THEN 1 ELSE 0 END), 0) AS COMPLETED 
+    FROM APPROVAL a
+    WHERE a.CREATE_DATE >= CURRENT_DATE - 3
 	</select>
 	
 	<select id="selectApprovalStats" parameterType="String" resultType="map">

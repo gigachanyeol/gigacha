@@ -326,6 +326,8 @@ $(document).ready(function() {
                     approval_content: data1.approval_content,
                     approval_deadline: data1.approval_deadline,
                     create_date: data1.create_date,
+                    start_date: data1.start_date,
+                    end_date: data1.end_date,
                     empno: data1.empno,
                     deptno: data1.deptno,
                     showDateRange: data1.form_id?.startsWith('BC'),
