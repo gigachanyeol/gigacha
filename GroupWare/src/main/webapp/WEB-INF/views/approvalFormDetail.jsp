@@ -21,7 +21,7 @@
 	<div class="row">
 		<div id="content" class="col">
 			<h3 class="content_title">${form.form_name}</h3>
-			<button class="btn btn-info" onclick="location.href='./approvalFormUpdate.do?id=${form.form_id}'">수정</button>
+			<button class="btn btn-info" onclick="location.href='./managerFormUpdate.do?id=${form.form_id}'">수정</button>
 			<button class="btn btn-danger" id="deleteBtn">삭제</button>
 			<div id="viewer" class="toastui-editor-contents">${form.form_content}</div>
 		</div>
@@ -30,12 +30,12 @@
 </body>
 	<script type="text/javascript">
 		document.querySelector("#deleteBtn").addEventListener('click', () => {
-			fetch("./approvalFormDeleteAjax.do?id=${form.form_id}")
+			fetch("./managerFormDeleteAjax.do?id=${form.form_id}")
 			.then(resp => resp.json())
 			.then(data => {
 				if(data == true) {
 					Swal.fire("삭제 성공").then(() => {
-						location.href="./approvalFormList.do";
+						location.href="./managerFormList.do";
 					})
 				} else {
 					Swal.fire("삭제 실패");

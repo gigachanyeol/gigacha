@@ -18,8 +18,8 @@
 	<div class="row">
 		<div id="content" class="col">
 			<h3 class="content_title">문서양식추가</h3>
-			<button type="button" class="btn btn-primary" onclick="location.href='./approvalFormCreate.do'">문서양식등록</button>
-			<button type="button" class="btn btn-info" onclick="location.href='./categoryForm.do'">카테고리등록</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='./managerFormCreate.do'">문서양식등록</button>
+			<button type="button" class="btn btn-info" onclick="location.href='./managerCategoryForm.do'">카테고리등록</button>
 			<div class="card">
 	            <div class="card-body">
 	              <table class="table">
@@ -38,7 +38,7 @@
 		                    <td scope="col">#</td>
 		                    <td scope="col">${frm.form_id}</td>
 		                    <td scope="col">${frm.form_content}</td>
-		                    <td scope="col"><a href="./approvalFormDetail.do?id=${frm.form_id}">${frm.form_name}</a></td>
+		                    <td scope="col"><a href="./managerFormDetail.do?id=${frm.form_id}">${frm.form_name}</a></td>
 		                    <td scope="col">${frm.create_date}</td>
 		                  </tr>
 	                 </c:forEach>

@@ -72,20 +72,14 @@
 					</form>
 				</div>
 			</div>
-	
 		</div>
 	</div>	
 </main>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script type="text/javascript">
-	function categoryPick(category_id,category_name) {
-		console.log("팝업에서 보낸 값", category_id, category_name);
-		document.querySelector("input[name=category_id]").value = category_id;
-		document.querySelector("#category_id").textContent = category_name;
-	}
+	
 	window.onload = function() {
-		
 		document.querySelector("button[type=reset]").addEventListener('click',()=> {
 			console.log("리셋클릭");
 			editor.setData();
@@ -94,9 +88,8 @@
 		document.querySelector("#cateBtn").addEventListener('click',(event)=>{
 			event.preventDefault();
 			console.log("cateBtn클릭");
-			window.open('./categoryPop.do',"popupWindow","width=400,height=600,top=150,left=300");
+			window.open('./managerCategoryPop.do',"popupWindow","width=400,height=600,top=150,left=300");
 		});
-		
 		document.querySelector("button[type=submit]").addEventListener('click', (event) => {
 			event.preventDefault();
 			let editorHtml = editor.getData();
@@ -108,7 +101,7 @@
 			});
 			jsonData["form_content"] = editorHtml;
 			console.log(jsonData);
-			fetch('./approvalFormSaveAjax.do',{
+			fetch('./managerFormSaveAjax.do',{
 	 			method:'POST',
 	 			headers:{
 	 				'Content-Type':'application/json'
@@ -116,26 +109,37 @@
 	 			body:JSON.stringify(jsonData)
 	 		})
 	 		.then(resp => resp.json())
-	 		.then(data => console.log(data))
+	 		.then(data => {
+	 			if(data == true) {
+	 				Swal.fire("양식등록이 완료되었습니다.").then(()=>{
+	 					location.href="./managerFormList.do"
+	 				})
+	 			}
+	 		})
 	 		.catch(err => console.log(err))
 		});
 		
 	  // --- 에디터 저장
-	 	var editorSaveBtn = document.querySelector("#editorSaveBtn");
-	 	editorSaveBtn.addEventListener('click',()=>{
-	 		let editorHtml = editor.getData();
+// 	 	var editorSaveBtn = document.querySelector("#editorSaveBtn");
+// 	 	editorSaveBtn.addEventListener('click',()=>{
+// 	 		let editorHtml = editor.getData();
 	 		
-	 		fetch('./approvalFormSaveAjax.do',{
-	 			method:'POST',
-	 			headers:{
-	 				'Content-Type':'application/json'
-	 			},
-	 			body:JSON.stringify({html:editorHtml})
-	 		})
-	 		.then(res => res.text())
-	 		.then(data => console.log(data))
-	 		.catch(err => console.log(err));
-	 	});
+// 	 		fetch('./managerFormSaveAjax.do',{
+// 	 			method:'POST',
+// 	 			headers:{
+// 	 				'Content-Type':'application/json'
+// 	 			},
+// 	 			body:JSON.stringify({html:editorHtml})
+// 	 		})
+// 	 		.then(res => res.text())
+// 	 		.then(data => console.log(data))
+// 	 		.catch(err => console.log(err));
+// 	 	});
+	}
+	function categoryPick(category_id,category_name) {
+			console.log("팝업에서 보낸 값", category_id, category_name);
+			document.querySelector("input[name=category_id]").value = category_id;
+		document.querySelector("#category_id").textContent = category_name;
 	}
 	 
 	</script>

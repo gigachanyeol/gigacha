@@ -232,10 +232,99 @@
         </ul>
       </li>
       </c:if>
-      
-      
     </ul>
+<!--     <button id="floatingBtn" class="btn btn-primary btn-lg rounded-circle position-fixed" style="bottom: 20px; right: 20px;"> -->
+<!-- 	  + -->
+<!-- 	</button> -->
   </aside>    
+<!-- 	<div class="modal" id="floatingModal" data-bs-backdrop="static" data-bs-keyboard="false"> -->
+<!-- 	  <div class="modal-dialog modal-dialog-scrollabl"> -->
+<!-- 	    <div class="modal-content" style="width:700px"> -->
+<!-- 	      <div class="modal-header d-flex mb-3"> -->
+<!-- 	      	  <div class="me-auto p-2"> -->
+<!-- 	      	  	<span class="fs-3">채팅</span> -->
+<!-- 	      	  </div> -->
+<!-- 	      </div> -->
+<!-- 	      <div class="modal-body"> -->
+<!-- 	      	<div class="row"> -->
+<!-- 	      		<div class="col-3"> -->
+<!-- 	      			<ul class="list-group"> -->
+<!-- 					  <li class="list-group-item" id="1505001">1505001</li> -->
+<!-- 					  <li class="list-group-item">Second item</li> -->
+<!-- 					  <li class="list-group-item">Third item</li> -->
+<!-- 					</ul> -->
+<!-- 	      		</div> -->
+<!-- 	      		<div class="col-9"> -->
+<!-- 				 <div class="card"> -->
+<!-- 				 	<div class="card-title" id="targetEmpno">title</div> -->
+<!--   				 	<div class="card-body"> -->
+<!--   				 		<div id="chat_div"> -->
+<!-- 							<input type="text" id="chat" onkeypress="if((event.keyCode)==13){$('#chat_btn').click()}"> -->
+<!-- 							<input type="button" id="chat_btn" value="전송"> -->
+<!-- 						</div> -->
+<!--   				 	</div> -->
+<!--   				 </div> -->
+<!-- 	      		</div> -->
+<!-- 			</div> -->
+<!-- 	      </div> -->
+<!-- 	      <div class="modal-footer"> -->
+<!-- 	       	<button type="button" class="btn btn-danger modalBtn" data-bs-dismiss="modal">닫기</button> -->
+<!-- 	      </div> -->
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+<!-- 	  </div> -->
+	  <script type="text/javascript">
+// 	    var chatSocket = null;
+// 	    var targetEmpno = null;
+// 	    document.querySelectorAll(".list-group-item").forEach(item => {
+// 	        item.addEventListener("click", (event) => {
+// 	            console.log("클릭됨:", event.target.id);
+// 	            targetEmpno = event.target.id
+// 	            // 기존 WebSocket 닫기
+// 	            if (chatSocket !== null && chatSocket.readyState === WebSocket.OPEN) {
+// 	                chatSocket.close();
+// 	            }
+
+// 	            // 새로운 WebSocket 연결
+// 	            chatSocket = new WebSocket("ws://localhost:9999/GroupWare/wsChat.do");
+
+// 	            chatSocket.onopen = function () {
+// 	                console.log("🔗 [Chat] WebSocket 연결됨!");
+// 	            };
+
+// 	            chatSocket.onmessage = function (event) {
+// 	                console.log("📩 [Chat] 서버 응답:", event.data);
+// 	                const chatBox = document.getElementById("chat-box");
+// 	                const messageElement = document.createElement("div");
+// 	                messageElement.textContent = event.data;
+// 	                chatBox.appendChild(messageElement);
+// 	            };
+
+// 	            chatSocket.onclose = function () {
+// 	                console.log("❌ [Chat] WebSocket 연결 종료됨");
+// 	            };
+
+// 	            chatSocket.onerror = function (error) {
+// 	                console.error("⚠ WebSocket 오류 발생:", error);
+// 	            };
+
+// 	            // 메시지 전송
+// 	            document.getElementById("chat_btn").addEventListener("click", () => {
+// 	                console.log("대화 내용 전달");
+// 	                let messageInput = document.getElementById("chat").value;
+
+// 	                if (messageInput.trim() === "" || targetEmpno.trim() === "") {
+// 	                    alert("받는 사람과 메시지를 입력해주세요.");
+// 	                    return;
+// 	                } else {
+// 	                    chatSocket.send("[" + targetEmpno + "]:" + messageInput);
+// 	                    document.getElementById("chat").value = "";
+// 	                    document.getElementById("chat").focus();
+// 	                }
+// 	            });
+// 	        });
+// 	    });
+</script>
   <!-- 서명 모달 -->
   <div class="modal" id="signatureModal" data-bs-backdrop="static" data-bs-keyboard="false">
 	  <div class="modal-dialog modal-dialog-scrollabl">
@@ -280,6 +369,10 @@
 	  </div>
 </body>
 <script type="text/javascript">
+	
+	$("#floatingBtn").on('click',() => {
+		$("#floatingModal").show();
+	})
 	var contextUrl = "${pageContext.request.contextPath}";
 	var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
 		  backgroundColor: 'rgba(255, 255, 255, 0)', // 배경
@@ -350,6 +443,7 @@
 
 	$(".modalBtn").on('click', () => {
 		$("#signatureModal").hide();
+		$("#floatingModal").hide();
 	})
 	
 	async function signatureSave(data) {
@@ -367,10 +461,10 @@
 		}
 	
 	
-	var dept = document.getElementById("dept");
-	var job = (document.getElementById("job");
+// 	var dept = document.getElementById("dept");
+// 	var job = (document.getElementById("job");
 	
-	if(lo)
+// 	if(lo)
 	
 	
 	</script>

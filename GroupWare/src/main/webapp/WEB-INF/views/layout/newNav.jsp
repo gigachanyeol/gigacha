@@ -73,7 +73,7 @@
             <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalList.do"> 
 				<span>결재요청함</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
-            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/approvalFormList.do"> 
+            <li><a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/approval/managerFormList.do"> 
 				<span>문서양식관리(관리자)</span></a></li>
             <li> <hr class="dropdown-divider"> </li>
           </ul>

@@ -46,10 +46,10 @@
         		<div class="card">
 					<div class="card-body row">
 		        		<h5 class="card-title">결재현황</h5>
-		        		<div class="col-6">
+		        		<div class="col-lg-6">
 		        			<canvas id="approvalLineChart"></canvas>
 		        		</div>
-		        		<div class="col-6">
+		        		<div class="col-lg-6">
 				        	<canvas id="approvalChart"></canvas>
 		        		</div>
 		        	</div>
@@ -57,7 +57,7 @@
         	</div>
         	
         	<div class="row">
-        		<div class="col">
+        		<div class="col-lg-12">
         			<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">
@@ -85,7 +85,7 @@
        			</div>
         	</div>
         	<div class="row">
-        		<div class="col">
+        		<div class="col-lg-12">
         			<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">
@@ -107,7 +107,7 @@
        			</div>
         	</div>
         	<div class="row">
-        		<div class="col">
+        		<div class="col-lg-12">
         			<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">

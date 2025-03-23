@@ -35,4 +35,12 @@
     
 <!-- 	transaction 설정  -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<mvc:interceptors>
+		<!-- 관리자 인터셉터 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/manager*.do"/>
+			<bean class="com.giga.gw.intercepter.AdminIntercepter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

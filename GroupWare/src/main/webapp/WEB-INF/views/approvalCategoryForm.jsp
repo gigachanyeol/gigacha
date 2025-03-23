@@ -83,7 +83,7 @@
 					return;
 				}
 				
-				fetch('./categoryCheckAjax.do?yname='+yname)
+				fetch('./managerCategoryCheckAjax.do?yname='+yname)
 				.then(resp => resp.json())
 				.then(data => {
 					if(data === false){
@@ -95,7 +95,7 @@
 						formData.forEach((value, key) => {
 							jsonData[key] = value;
 						});
-						fetch("./categorySaveAjax.do",{
+						fetch("./managerCategorySaveAjax.do",{
 							method:'post',
 							headers:{
 								'Content-Type':'application/json'
@@ -105,8 +105,8 @@
 						.then(resp => resp.json())
 						.then(data => {
 							if(data === true) {
-								Swal.fire("가입 성공").then(()=>{
-									location.href = '${pageContext.request.contextPath}/approval/category.do';
+								Swal.fire("성공").then(()=>{
+									location.href = '${pageContext.request.contextPath}/approval/managerCategory.do';
 								})
 								
 							}

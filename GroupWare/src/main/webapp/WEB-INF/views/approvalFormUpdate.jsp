@@ -51,7 +51,7 @@
 				});
 				jsonData["form_content"] = editor.getData();
 				console.log(jsonData);
-				fetch("./approvalFormUpdateAjax.do",{
+				fetch("./managerFormUpdateAjax.do",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -63,7 +63,7 @@
 					console.log(data);
 					if(data == true) {
 						Swal.fire("수정에 성공했습니다.").then(()=>{
-							location.href="./approvalFormUpdate.do?id="+jsonData["form_id"];
+							location.href="./managerFormDetail.do?id="+jsonData["form_id"];
 						})
 					} else {
 						Swal.fire("수정에 실패했습니다.<br> 해당 양식으로 작성된 <br>글이 존재합니다.");
