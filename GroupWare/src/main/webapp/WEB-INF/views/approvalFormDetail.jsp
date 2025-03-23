@@ -29,28 +29,19 @@
 		</nav>
 	</div>
 	<div class="row">
-		<div id="content" class="col">
-			<h3 class="content_title">${form.form_name}</h3>
-			<button class="btn btn-info" onclick="location.href='./managerFormUpdate.do?id=${form.form_id}'">수정</button>
-			<button class="btn btn-danger" id="deleteBtn">삭제</button>
-			<div id="viewer" class="toastui-editor-contents">${form.form_content}</div>
+		<div class="card">
+	        <div class="card-body">
+				<div id="content" class="col">
+					<h3 class="content_title">${form.form_name} 
+						<c:if test="${loginDto.auth eq 'A'}">
+							<button class="btn btn-secondary mb-3 btn-sm" onclick="location.href='./managerFormUpdate.do?id=${form.form_id}'">수정</button>
+						</c:if>
+					</h3>
+					<div id="viewer" class="toastui-editor-contents">${form.form_content}</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </main>
 </body>
-	<script type="text/javascript">
-		document.querySelector("#deleteBtn").addEventListener('click', () => {
-			fetch("./managerFormDeleteAjax.do?id=${form.form_id}")
-			.then(resp => resp.json())
-			.then(data => {
-				if(data == true) {
-					Swal.fire("삭제 성공").then(() => {
-						location.href="./managerFormList.do";
-					})
-				} else {
-					Swal.fire("삭제 실패");
-				}
-			})
-		})	
-	</script>
 </html>

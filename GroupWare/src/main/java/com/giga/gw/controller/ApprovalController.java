@@ -160,6 +160,14 @@ public class ApprovalController {
 		model.addAttribute("form", form);
 		return "approvalFormDetail";
 	}
+	
+	@GetMapping("/formDetailAjax.do")
+	@ResponseBody
+	public ResponseEntity<ApprovalFormDto> formDetailAjax(@RequestParam String id, Model model) {
+		System.out.println(id);
+		ApprovalFormDto form = approvalFormService.formSelectDetail(id);
+		return ResponseEntity.ok(form);
+	}
 
 	// 문서양식 등록 페이지로 이동
 	@GetMapping("/managerFormCreate.do")
