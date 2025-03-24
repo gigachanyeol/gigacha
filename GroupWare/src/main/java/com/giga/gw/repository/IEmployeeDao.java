@@ -12,6 +12,10 @@ public interface IEmployeeDao {
 	
 	// empno 값 가져오기
 	String getNextEmpno(String empno);
+	
 	// 사원 등록
 	int insertEmployee(Map<String, Object> map);
+	
+	// 사원 리스트
+	List<EmployeeDto> employeeList();
 }
