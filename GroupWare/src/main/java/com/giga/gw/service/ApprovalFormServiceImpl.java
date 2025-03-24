@@ -33,9 +33,9 @@ public class ApprovalFormServiceImpl implements IApprovalFormService {
 	}
 
 	@Override
-	public int formDelete(String form_id) {
-		int cnt = approvalDao.countApproval(form_id);
-		return cnt == 0 ? approvalFormDao.formDelete(form_id) : 0;
+	public int formUpdateUseYN(Map<String, Object> map) {
+
+		return approvalFormDao.formUpdateUseYN(map);
 	}
 
 	@Override

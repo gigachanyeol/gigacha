@@ -44,6 +44,11 @@ public class ApprovalServiceImpl implements IApprovalService {
 	public List<Map<String, Object>> getOrganizationTree() {
 		return approvalDao.getOrganizationTree();
 	}
+	
+	@Override
+	public List<Map<String, Object>> getOrganizationTree(String empno) {
+		return approvalDao.getOrganizationTree(empno);
+	}
 
 	@Override
 	public int countApproval(String form_id) {
@@ -232,6 +237,16 @@ public class ApprovalServiceImpl implements IApprovalService {
 	@Override
 	public List<Map<String, Object>> selectApprovalReference(String empno) {
 		return approvalDao.selectApprovalReference(empno);
+	}
+
+	@Override
+	public Map<String, Object> selectApprovalLineStats(String empno) {
+		return approvalDao.selectApprovalLineStats(empno);
+	}
+
+	@Override
+	public Map<String, Object> selectApprovalStats(String empno) {
+		return approvalDao.selectApprovalStats(empno);
 	}
 
 }

@@ -34,7 +34,7 @@ document.querySelector("#saveBtn").addEventListener('click', async () => {
 
     if(data == true) {
         Swal.fire("작성성공").then(()=>{
-            location.href="./approvalDetail.do?id="+jsonData["approval_id"];
+            location.href="./approvalListTemp.do];
         });
     } else{
         Swal.fire("작성실패");

@@ -20,10 +20,10 @@
 		WHERE FORM_ID = #{form_id}
 	</update>
 	
-	<update id="formDelete" parameterType="String">
+	<update id="formUpdateUseYN">
 		UPDATE APPROVAL_FORM 
-			SET USE_YN = 'N'
-			WHERE FORM_ID = #{form_id}
+			SET USE_YN = #{use_yn}
+			WHERE FORM_ID = #{id}
 	</update>
 	
 	<resultMap type="approvalFormDto" id="formJoinCategory">
@@ -35,10 +35,18 @@
 	</resultMap>
 	
 	<select id="formSelectAll" resultMap="formJoinCategory">
-		SELECT CATEGORY_ID, CATEGORY_NAME , FORM_ID, FORM_NAME, t1.CREATE_DATE 
-		FROM APPROVAL_FORM t1 JOIN APPROVAL_CATEGORY t2
-		USING(CATEGORY_ID)
-		WHERE t2.USE_YN = 'Y' AND t1.USE_YN = 'Y'
+		SELECT 
+		CATEGORY_ID, 
+		CATEGORY_NAME ,
+		FORM_ID, 
+		FORM_NAME,
+		NVL(TO_CHAR(t1.CREATE_DATE,'YYYY-MM-DD'),'-') CREATE_DATE, 
+		NVL(TO_CHAR(t1.UPDATE_DATE,'YYYY-MM-DD'),'-') UPDATE_DATE,
+		t1.USE_YN
+		FROM APPROVAL_FORM t1 
+			JOIN APPROVAL_CATEGORY t2
+			USING(CATEGORY_ID)
+		ORDER BY t1.CREATE_DATE DESC
 	</select>
 	
 	<select id="formSelectDetail" resultType="approvalFormDto">

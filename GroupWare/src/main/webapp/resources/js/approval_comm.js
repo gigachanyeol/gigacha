@@ -1,4 +1,3 @@
-
 var approvalForm = [];
 
 $(".modalBtn").on('click',()=>{
@@ -124,6 +123,9 @@ async function selForm(){
 //				document.querySelector("#dateRange").style.display = 'table-row';
  			$("#dateRange input[type=date]").val(setDate());
 			$("#dateRange").show();
+		}
+		if(data.FORM_ID.startsWith("EC")){
+			$("#ocrDiv").show();
 		}
 //			editor.setHTML(data.FORM_CONTENT);
 		editor.setData(data.FORM_CONTENT);

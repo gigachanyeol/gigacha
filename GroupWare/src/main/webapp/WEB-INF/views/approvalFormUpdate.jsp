@@ -19,7 +19,16 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">${form.form_name}</h3>
+			<div class="pagetitle">
+				<h1>${form.form_name}</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Home</a></li>
+						<li class="breadcrumb-item active">문서양식관리</li>
+						<li class="breadcrumb-item active">문서양식수정</li>
+					</ol>
+				</nav>
+			</div>
 			<form>
 				<label for="inputText" class="col-sm-2 col-form-label">양식이름</label>
 				<div class="col-sm-10">
@@ -51,7 +60,7 @@
 				});
 				jsonData["form_content"] = editor.getData();
 				console.log(jsonData);
-				fetch("./approvalFormUpdateAjax.do",{
+				fetch("./managerFormUpdateAjax.do",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -63,7 +72,7 @@
 					console.log(data);
 					if(data == true) {
 						Swal.fire("수정에 성공했습니다.").then(()=>{
-							location.href="./approvalFormUpdate.do?id="+jsonData["form_id"];
+							location.href="./formList.do";
 						})
 					} else {
 						Swal.fire("수정에 실패했습니다.<br> 해당 양식으로 작성된 <br>글이 존재합니다.");
@@ -72,5 +81,6 @@
 				.catch(err => console.log(err));
 			})
 		}
+		
 	</script>
 </html>

@@ -33,6 +33,10 @@ public class ApprovalDaoImpl implements IApprovalDao {
 	public List<Map<String, Object>> getOrganizationTree() {
 		return sql.selectList(NS+"getOrganizationTree");
 	}
+	@Override
+	public List<Map<String, Object>> getOrganizationTree(String empno) {
+		return sql.selectList(NS+"getOrganizationTree",empno);
+	}
 
 	@Override
 	public int editorSave(String content) {
@@ -138,5 +142,16 @@ public class ApprovalDaoImpl implements IApprovalDao {
 	public int insertApprovalReferences(Map<String, Object> references) {
 		return sql.insert(NS+"insertApprovalReferences",references);
 	}
+
+	@Override
+	public Map<String, Object> selectApprovalLineStats(String empno) {
+		return sql.selectOne(NS+"selectApprovalLineStats",empno);
+	}
+
+	@Override
+	public Map<String, Object> selectApprovalStats(String empno) {
+		return sql.selectOne(NS+"selectApprovalStats",empno);
+	}
+
 
 }

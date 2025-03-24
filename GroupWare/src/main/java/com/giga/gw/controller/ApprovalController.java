@@ -78,8 +78,9 @@ public class ApprovalController {
 
 	@ResponseBody
 	@GetMapping("/treeAjax.do")
-	public List<Map<String, Object>> tree() {
-		return approvalDao.getOrganizationTree();
+	public List<Map<String, Object>> tree(HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		return approvalService.getOrganizationTree(loginDto.getEmpno());
 	}
 
 	@GetMapping("/signature.do")
@@ -105,20 +106,20 @@ public class ApprovalController {
 	}
 
 	// TODO 00100 전자결재 - 카테고리 Controller
-	@GetMapping("/categoryForm.do")
+	@GetMapping("/managerCategoryForm.do")
 	public String categoryForm() {
 		return "approvalCategoryForm";
 	}
 
 	// 카테고리 중복체크
-	@GetMapping("/categoryCheckAjax.do")
+	@GetMapping("/managerCategoryCheckAjax.do")
 	@ResponseBody
 	public boolean categoryCheck(String yname) {
 		return approvalCategoryService.categoryCheck(yname.toUpperCase()) == 0 ? true : false;
 	}
 
 	// 카테고리 저장
-	@PostMapping("/categorySaveAjax.do")
+	@PostMapping("/managerCategorySaveAjax.do")
 	@ResponseBody
 	public boolean categorySave(@RequestBody ApprovalCategoryDto categoryDto) {
 		System.out.println(categoryDto);
@@ -127,15 +128,15 @@ public class ApprovalController {
 	}
 	
 	// 카테고리 전체 조회 리스트 이동
-	@GetMapping("/category.do")
+	@GetMapping("/managerCategoryList.do")
 	public String categoryList(Model model) {
-		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelect();
+		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelectAll();
 		model.addAttribute("categoryList", categoryList);
 		return "approvalCategoryList";
 	}
 
 	// 문서양식 등록시 카테고리 선택을 위한 팝업창
-	@GetMapping("/categoryPop.do")
+	@GetMapping("/managerCategoryPop.do")
 	public String categoryPop(Model model) {
 		List<ApprovalCategoryDto> categoryList = approvalCategoryService.categorySelect();
 		model.addAttribute("categoryList", categoryList);
@@ -144,14 +145,14 @@ public class ApprovalController {
 
 	// TODO 00101 전자결재 문서양식 Controller
 	// 문서양식 리스트 조회
-	@GetMapping("/approvalFormList.do")
+	@GetMapping("/formList.do")
 	public String approvalForm(Model model) {
 		List<ApprovalFormDto> formList = approvalFormService.formSelectAll();
 		model.addAttribute("formList", formList);
 		return "approvalFormList";
 	}
 
-	@GetMapping("/approvalFormDetail.do")
+	@GetMapping("/managerFormDetail.do")
 	// 문서상세 페이지 이동 
 	public String approvalFormDetail(@RequestParam String id, Model model) {
 		System.out.println(id);
@@ -159,15 +160,23 @@ public class ApprovalController {
 		model.addAttribute("form", form);
 		return "approvalFormDetail";
 	}
+	
+	@GetMapping("/formDetailAjax.do")
+	@ResponseBody
+	public ResponseEntity<ApprovalFormDto> formDetailAjax(@RequestParam String id, Model model) {
+		System.out.println(id);
+		ApprovalFormDto form = approvalFormService.formSelectDetail(id);
+		return ResponseEntity.ok(form);
+	}
 
 	// 문서양식 등록 페이지로 이동
-	@GetMapping("/approvalFormCreate.do")
+	@GetMapping("/managerFormCreate.do")
 	public String approvalFormCarete() {
 		return "approvalFormCreate";
 	}
 	
 	// 문서양식등록
-	@PostMapping("/approvalFormSaveAjax.do")
+	@PostMapping("/managerFormSaveAjax.do")
 	@ResponseBody
 	public boolean approvalFormSave(@RequestBody ApprovalFormDto approvalFormDto) {
 		System.out.println(approvalFormDto);
@@ -197,7 +206,7 @@ public class ApprovalController {
 	}
 	
 	// 문서양식 수정페이지 이동
-	@GetMapping("/approvalFormUpdate.do")
+	@GetMapping("/managerFormUpdate.do")
 	public String approvalFormUpdate(@RequestParam String id, Model model, HttpSession session) {
 		ApprovalFormDto dto = approvalFormService.formSelectDetail(id);
 		model.addAttribute("form",dto);
@@ -205,24 +214,25 @@ public class ApprovalController {
 	}
 	
 	// 문서양식 수정
-	@PostMapping("/approvalFormUpdateAjax.do")
+	@PostMapping("/managerFormUpdateAjax.do")
 	@ResponseBody
 	public boolean formUpdate(@RequestBody ApprovalFormDto approvalFormDto) {
 		return approvalFormService.formUpdate(approvalFormDto) == 1?true:false;
 	}
 	
 	// 문서양식 삭제
-	@GetMapping("/approvalFormDeleteAjax.do")
+	@PostMapping("/managerFormDeleteAjax.do")
 	@ResponseBody
-	public boolean formDelete(@RequestParam String id) {
-		return approvalFormService.formDelete(id) == 1 ? true : false;
+	public boolean formUpdateUseYN(@RequestBody Map<String, Object> map) {
+		return approvalFormService.formUpdateUseYN(map) == 1 ? true : false;
 	}
 	
 	// TODO 00102 전자결재 문서
 	// 전자결재 문서 작성 페이지 이동
 	@GetMapping("/approvalDocument.do")
-	public String approvalDocument(HttpSession session) {
+	public String approvalDocument(HttpSession session, Model model) {
 		EmployeeDto loginDto = (EmployeeDto) session.getAttribute("loginDto");
+		model.addAttribute("loginDto",loginDto);
 		return "approvalDocumentCreateForm";
 	}
 	
@@ -563,5 +573,17 @@ public class ApprovalController {
 		response.setContentType("application/octet-stream"); // meword로 정송 application/msword
 		
 		return bytes;
+	}
+	
+	@PostMapping("/categoryUseChange.do")
+	@ResponseBody
+	public ResponseEntity<Boolean> categoryUseChange(@RequestBody Map<String, Object> map) {
+		return ResponseEntity.ok(approvalCategoryService.categoryUpdateUseYN(map));
+	}
+	@PostMapping("/ocrUpload.do")
+	@ResponseBody
+	public ResponseEntity<?> ocrUpload(@RequestParam MultipartFile ocrFile) {
+		log.info("업로드 파일 {}",ocrFile);
+		return null;
 	}
 }

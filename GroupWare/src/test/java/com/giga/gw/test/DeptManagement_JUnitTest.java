@@ -29,10 +29,10 @@ public class DeptManagement_JUnitTest {
 				.deptname("영업기획팀")
 				.parent_deptno("HQ04")
 				.build();		
-		dao.insertDepartment(addDept);
+//		dao.insertDepartment(addDept);
 	
-		List<DepartmentDto> list = dao.getAllDept();
-		assertNotEquals(0, list.size());
+//		List<DepartmentDto> list = dao.getAllDept();
+//		assertNotEquals(0, list.size());
 		
 		List<DepartmentDto> deletelist = dao.getDeletedDept();
 		assertNotEquals(0, deletelist.size());

@@ -1,6 +1,7 @@
 package com.giga.gw.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,16 @@ public class ApprovalCategoryServiceImpl implements IApprovalCategoryService{
 	@Override
 	public int categoryCheck(String category_yname) {
 		return approvalCategoryDao.categoryCheck(category_yname);
+	}
+
+	@Override
+	public boolean categoryUpdateUseYN(Map<String, Object> map) {
+		return approvalCategoryDao.categoryUpdateUseYN(map) == 1;
+	}
+
+	@Override
+	public List<ApprovalCategoryDto> categorySelectAll() {
+		return approvalCategoryDao.categorySelectAll();
 	}
 	
 }

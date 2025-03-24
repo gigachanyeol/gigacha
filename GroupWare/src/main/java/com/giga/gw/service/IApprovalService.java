@@ -9,6 +9,7 @@ import com.giga.gw.dto.ApprovalDto;
 
 public interface IApprovalService {
 	List<Map<String, Object>> getOrganizationTree();
+	List<Map<String, Object>> getOrganizationTree(String empno);
 	int countApproval(String form_id);
 	boolean insertApproval(ApprovalDto approvalDto, List<MultipartFile> files, String path);
 	boolean insertApprovalTemp(ApprovalDto approvalDto, List<MultipartFile> files);
@@ -25,4 +26,6 @@ public interface IApprovalService {
     List<ApprovalDto> selectApprovalRejected(String empno);
     List<Map<String, Object>> selectApprovalMyDocuments(String empno);
     List<Map<String, Object>> selectApprovalReference(String empno);
+    Map<String, Object> selectApprovalLineStats (String empno);
+    Map<String, Object> selectApprovalStats (String empno);
 }
