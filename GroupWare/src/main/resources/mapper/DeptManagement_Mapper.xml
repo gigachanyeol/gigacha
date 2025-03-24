@@ -56,19 +56,21 @@
   </select>
   
   <!-- 부서 수정 -->
-  <update id="updateDepartment">
-  	UPDATE DEPARTMENTS
-  	<set>
-  		<if test="deptname != null and deptname != ''">
-  			DEPTNAME = #{deptname}
-  		</if>
-  		<if test="parent_deptno != null and parent_deptno != ''">
-  			PARENT_DEPTNO = #{parent_deptno}
-  		</if>
-  		UPDATE_DATE=TO_DATE(TO_CHAR(SYSDATE, 'YY-MM-DD')), UPDATE_EMP=#{update_emp}
-  	</set>
-		WHERE DEPTNO=#{deptno}
-  </update>
+<update id="updateDept">
+    UPDATE DEPARTMENTS
+    <set>
+        <if test="deptname != null and deptname != ''">
+            DEPTNAME = #{deptname},
+        </if>
+        <if test="parent_deptno != null and parent_deptno != ''">
+            PARENT_DEPTNO = #{parent_deptno},
+        </if>
+        UPDATE_DATE = SYSDATE,
+        UPDATE_EMP = #{update_emp}
+    </set>
+    WHERE DEPTNO = #{deptno}
+</update>
+
   
   <!-- 부서 삭제 -->
   <update id="deleteDepartment">

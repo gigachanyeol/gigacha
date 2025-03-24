@@ -135,7 +135,7 @@ td {
               <div class="tab-content pt-2">
                   <h5 class="card-title">부서 정보</h5>
                   <button id="modifyDept" class="btn btn-primary btn-sm">부서 수정</button>
-                  <button id="deleteDept" class="btn btn-secondary btn-sm">부서 삭제</button>
+                  <!--  <button id="deleteDept" class="btn btn-secondary btn-sm">부서 삭제</button>-->
                   <div class = "departmentInfo">
                   	<table class="table table-bordered text-center">
                   		<tr>
@@ -390,6 +390,7 @@ td {
         
         // 수정 버튼 숨기기
         document.getElementById('modifyDept').style.display = "none";
+        document.getElementById('deleteDept').style.display = "none";
         
         // 저장 버튼 클릭 이벤트
         saveButton.addEventListener('click', function() {
@@ -422,22 +423,11 @@ td {
                 })
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('서버 응답이 올바르지 않습니다.');
-                }
-                return response.json();
+            	return response.text();
             })
             .then(data => {
-                console.log("저장 성공:", data);
-                
-                // 서버에서 반환된 데이터로 UI 업데이트
-                if (data.deptname) document.getElementById("getDeptname").textContent = data.deptname;
-                if (data.parent_deptname) document.getElementById("getParent_deptname").textContent = data.parent_deptname;
-                if (data.update_date) document.getElementById("getUpdate_date").textContent = data.update_date;
-                if (data.update_emp) document.getElementById("getUpdate_emp").textContent = data.update_emp;
-                if (data.create_date && !document.getElementById("getCreate_date").textContent) {
-                    document.getElementById("getCreate_date").textContent = data.create_date;
-                }
+            	 console.log("저장 성공:", data);
+                $('#organizationTree').jstree(true).refresh();
                 
                 // 버튼 컨테이너 제거
                 var buttonContainer = document.getElementById("editButtons");
@@ -452,7 +442,6 @@ td {
                 if (typeof addToApprovalLine === 'function') {
                     addToApprovalLine(deptNo, data.deptname || newDeptName);
                 }
-                
                 // 성공 메시지 표시
                 alert("부서 정보가 성공적으로 수정되었습니다.");
             })
@@ -489,7 +478,16 @@ td {
             // 수정 버튼 다시 표시
             document.getElementById('modifyDept').style.display = "";
         }
+        
     });
+ 
+ 
+    document.getElementById('deleteDept').addEventListener('click', function(){
+    	console.log("삭제버튼");
+    	
+    });
+ 
+
    
    // 부서 등록
     function savedept() {
