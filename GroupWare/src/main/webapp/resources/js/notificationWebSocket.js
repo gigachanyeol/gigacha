@@ -26,7 +26,7 @@ window.onload = function () {
         	var parseData = JSON.parse(event.data); // JSON 파싱
  			console.log("이벤트 수신 데이터:", parseData);
         if (parseData.type === "notification") {
-            // 📌 알림 메시지 처리
+            // 알림 메시지 처리
             var toastContainer = document.getElementById("toast-container");
             var toastId = "toast-" + new Date().getTime(); // 고유 ID 생성
             var toastHTML = `
@@ -47,7 +47,7 @@ window.onload = function () {
             newToast.show();
 
         } else if (parseData.type === "userList") {
-            // 📌 접속자 목록 업데이트
+            // 접속자 목록 업데이트
             console.log("현재 접속 중인 사용자:", parseData.users);
 
             var userListContainer = document.getElementById("connectedUsers");
