@@ -180,6 +180,12 @@
               <span>부서관리</span>
             </a>
           </li>
+          </li> 
+          <li>
+            <a href="${pageContext.request.contextPath}/hrManagement/hrManagement.do">
+              <span>인사관리</span>
+            </a>
+          </li>
         </ul>
       </li>
       

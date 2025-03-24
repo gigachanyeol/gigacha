@@ -1,5 +1,6 @@
 package com.giga.gw.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.giga.gw.dto.EmployeeDto;
+import com.giga.gw.repository.IApprovalDao;
 import com.giga.gw.repository.IEmployeeDao;
 import com.giga.gw.service.IEmployeeService;
 
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/hrManagement")
 public class HRManagementController {
 	
+	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
 	
 	// 마이페이지
@@ -32,7 +35,6 @@ public class HRManagementController {
 //	@ResponseBody
 	public String Mypage() {
 //		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
-		
 		
 		return "mypage";
 	}
@@ -69,7 +71,17 @@ public class HRManagementController {
 		return employeeDao.insertEmployee(map)==1 ? "true":"false";
 	}
 	
+	@ResponseBody
+	@GetMapping("/treeAjax.do")
+	public List<Map<String, Object>> tree() {
+		return approvalDao.getOrganizationTree();
+	}
+	
 	// 사원 리스트
+	@GetMapping("/employeeList.do")
+	public List<EmployeeDto> hrManagerment() {
+		return employeeDao.employeeList();
+	}
 	
 	
 	// 발령 등록

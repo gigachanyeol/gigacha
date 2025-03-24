@@ -11,7 +11,7 @@
 /* 예약 관련 섹션 */
 .reservation-section {
 	width: 80%;
-	background-color: #003366;
+	background-color: skyblue;
 	color: white;
 	padding: 20px;
 	border-radius: 10px;
@@ -34,11 +34,12 @@
 			<a href="./logout.do" class="btn btn-danger">로그아웃</a>
 	<div class="row">
 		<div class="col-6">
-	        <div class="reservation-section">
-	            <div class="reservation-title">나의 예약현황</div>
-	            <p>현재 예약된 일정이 없습니다.</p>
-	            <button class="btn reservation-btn">예약하기</button>
-	        </div>
+	       <div class="reservation-section">
+            <div class="reservation-title">나의 예약현황</div>
+            <p>현재 예약된 일정이 없습니다.</p>
+            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservation.do'">예약하기</button>
+            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservationList.do'">예약내역조회</button>
+        </div>
         </div>
         <div class="col-6">
         	
@@ -128,7 +129,6 @@
 					</div>
         		</div>
         	</div>
-        </div>
     </div>
 </main>
 <!-- 			<h3 class="content_title">제목trestest</h3> -->
