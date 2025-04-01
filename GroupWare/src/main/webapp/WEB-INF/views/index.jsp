@@ -23,7 +23,15 @@
 	font-size: 24px;
 	font-weight: bold;
 }
-
+.dt-paging {
+    font-size: 10px !important; /* 폰트 크기를 10px로 설정 */
+}
+.dataTables_wrapper td, .dataTables_wrapper th {
+    text-align: center;
+}
+.dt-container .dt-empty-footer .dt-layout-row:first-child {
+    display: none !important;
+}
 </style>
 </head> 
 <body>
@@ -65,7 +73,7 @@
 								<a href="./approval/myApproval.do">내문서함</a>
 							</h5>
 							<div class="col-4">
-			        			<canvas id="approvalChart"></canvas>
+			        			<canvas id="approvalChart" width="80px" height="80px"></canvas>
 			        		</div>
 <!-- 							<div> -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label>  -->
@@ -139,6 +147,7 @@
 					</div>
         		</div>
         	</div>
+   	 </div>
     </div>
 </main>
 <!-- 			<h3 class="content_title">제목trestest</h3> -->
@@ -202,7 +211,8 @@ $(document).ready(function() {
             { data: 'APPROVAL_DEADLINE' }  // 마감기한
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' } // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -227,7 +237,7 @@ $(document).ready(function() {
                 "next": ">",
                 "previous": "<"
             }
-        }
+       }
     });
     
     let requestDocument = $('#requestDocument').DataTable({
@@ -238,6 +248,7 @@ $(document).ready(function() {
             dataSrc:""
         },
         searching: false,
+        
         columns: [
         	{ data: 'name' },
             { data: 'approval_title' },
@@ -245,7 +256,8 @@ $(document).ready(function() {
             { data: 'approval_deadline' }
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' }   // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -291,7 +303,8 @@ $(document).ready(function() {
             { data: 'APPROVAL_DEADLINE' },
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' }   // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -336,7 +349,7 @@ $(document).ready(function() {
         new Chart(ctx, {
             type: 'pie', 
             data: {
-                labels: ['대기', '진행', '반려'
+                labels: ['대기', '진행' ,'반려'
 //                 	'완료', '반려'
                 	],
                 datasets: [{
@@ -355,7 +368,7 @@ $(document).ready(function() {
                 plugins: {
                     legend: { 
                     	display: true,
-                        position: 'top',  
+                        //position: 'top',  
                         labels: {
                             boxWidth: 15,   
                             usePointStyle: true, 
