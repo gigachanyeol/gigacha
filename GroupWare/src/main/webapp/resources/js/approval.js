@@ -115,19 +115,21 @@
 		
         let data = await fetchJsonPost('./approvalDocumentSaveTempAjax.do',jsonData);
         if(data == true){
-            Swal.fire("작성성공");
+            Swal.fire("작성성공").then(()=> {
+				location.href='./approvalListTemp.do'
+			});
         } else{
             Swal.fire("작성실패");
         }
 	})
 
-	document.querySelector("#getContent").addEventListener('click',() => {
-		$(".ck-editor").hide();
-		$("#fileDiv").show();
-		let contentDiv = document.querySelector("#editor")
-		contentDiv.style.display = 'block';
-		contentDiv.innerHTML = editor.getData();
-		let content = document.querySelector("#contentHtml");
-		document.querySelector(".modal-body").innerHTML = content.innerHTML;
-	});
+//	document.querySelector("#getContent").addEventListener('click',() => {
+//		$(".ck-editor").hide();
+//		$("#fileDiv").show();
+//		let contentDiv = document.querySelector("#editor")
+//		contentDiv.style.display = 'block';
+//		contentDiv.innerHTML = editor.getData();
+//		let content = document.querySelector("#contentHtml");
+//		document.querySelector(".modal-body").innerHTML = content.innerHTML;
+//	});
 	

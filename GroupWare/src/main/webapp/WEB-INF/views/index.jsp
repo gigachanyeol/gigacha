@@ -41,28 +41,31 @@
 	        </div>
         </div>
         <div class="col-6">
-        	
-        	<div class="row mb-3">
-        		<div class="card">
-					<div class="card-body row">
-		        		<h5 class="card-title">결재현황[최근 3일]</h5>
-		        		<div class="col-lg-6">
-		        			<canvas id="approvalLineChart"></canvas>
-		        		</div>
-		        		<div class="col-lg-6">
-				        	<canvas id="approvalChart"></canvas>
-		        		</div>
-		        	</div>
-		        </div>
-        	</div>
+<!--         	<div class="row"> -->
+<!--         		<div class="col-xxl-12"> -->
+<!-- 	        		<div class="card"> -->
+<!-- 						<div class="card-body row" style="margin-bottom:10px;"> -->
+<!-- 			        		<div class="col-lg-2"> -->
+<!-- 			        			<canvas id="approvalLineChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        		<div class="col-xxl-6"> -->
+<!-- 					        	<canvas id="approvalChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        	</div> -->
+<!-- 			        </div> -->
+<!-- 			    </div> -->
+<!--         	</div> -->
         	
         	<div class="row">
         		<div class="col-lg-12">
         			<div class="card">
-						<div class="card-body">
+						<div class="card-body row">
 							<h5 class="card-title">
 								<a href="./approval/myApproval.do">내문서함</a>
 							</h5>
+							<div class="col-4">
+			        			<canvas id="approvalChart"></canvas>
+			        		</div>
 <!-- 							<div> -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label>  -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재대기" checked> 결재대기</label>  -->
@@ -70,16 +73,18 @@
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재완료" checked> 결재완료</label>  -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재반려" checked> 결재반려</label> -->
 <!-- 							</div> -->
-							<table id="myDocument" class="table text-center">
-								<thead>
-									<tr>
-										<th>제목</th>
-										<th>상태</th>
-										<th>작성일</th>
-										<th>마감기한</th>
-									</tr>
-								</thead>
-							</table>
+							<div class="col-8">
+								<table id="myDocument" class="table text-center">
+									<thead>
+										<tr>
+											<th>제목</th>
+											<th>상태</th>
+											<th>작성일</th>
+											<th>마감기한</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
        			</div>
@@ -87,21 +92,26 @@
         	<div class="row">
         		<div class="col-lg-12">
         			<div class="card">
-						<div class="card-body">
+						<div class="card-body row">
 							<h5 class="card-title">
 								<a href="./approval/approvalRequestList.do">결재대기함</a>
 							</h5>
-							<table id="requestDocument"
-								class="table text-center">
-								<thead>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-										<th>마감기한</th>
-									</tr>
-								</thead>
-							</table>
+							<div class="col-4">
+			        			<canvas id="approvalLineChart"></canvas>
+			        		</div>
+			        		<div class="col-8">
+								<table id="requestDocument"
+									class="table text-center">
+									<thead>
+										<tr>
+											<th>작성자</th>
+											<th>제목</th>
+											<th>작성일</th>
+											<th>마감기한</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
        			</div>
@@ -349,10 +359,10 @@ $(document).ready(function() {
                         labels: {
                             boxWidth: 15,   
                             usePointStyle: true, 
-                            padding: 15,    
-                            font: {
-                                size: 12    
-                            }
+//                            padding: 15,    
+//                             font: {
+//                                 size: 12    
+//                             }
                         } },
                     title: { display: true, text: label },
                     datalabels: {  

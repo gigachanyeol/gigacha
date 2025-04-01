@@ -31,7 +31,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
             treeData.add(emp);
         }
-        treeData.addAll(departmentList); // 부서 추가
+//        treeData.addAll(departmentList); // 부서 추가
         // treeData.addAll(employeeList);   // 사원 추가
         System.out.println(treeData);
 		return treeData;

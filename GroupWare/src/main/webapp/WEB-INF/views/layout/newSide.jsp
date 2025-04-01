@@ -356,14 +356,7 @@
 						</ol>
 					</nav>
 				</div>
-			  <div>
-				  <div class="p-2">
-				  	<button id="save" class="btn btn-sm btn-success">저장</button>
-				  </div>
-				  <div class="p-2">
-				  	<button id="clear" class="btn btn-sm btn-danger">Clear</button>
-				  </div>
-			 </div>
+			 
 	      </div>
 	      <div class="modal-body">
 	      	<div class="row border-bottom">
@@ -371,6 +364,10 @@
 					<h5>서명을 그리세요</h5>					
 					<div class="wrapper" >
 						<canvas id="signature-pad" class="signature-pad" width=200 height=200></canvas>
+						 <div>
+						  	<button id="save" class="btn btn-sm btn-success">저장</button>
+						  	<button id="clear" class="btn btn-sm btn-danger">초기화</button>
+						 </div>
 					</div>
 				</div>
 				<div class="col">
