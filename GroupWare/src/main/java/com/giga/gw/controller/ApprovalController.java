@@ -280,7 +280,7 @@ public class ApprovalController {
 					webSocketHandler.sendMessageToUser(approvalDto.
 								getApprovalLineDtos()
 								.get(0)
-								.getApprover_empno(), "긴급문서 도착");
+								.getApprover_empno(), "<span style='color:red'>[긴급]</span>결재 문서가 도착했습니다.");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

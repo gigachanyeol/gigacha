@@ -40,7 +40,7 @@ public class ApprovalLineServiceImpl implements IApprovalLineService{
 				if (approvalDao.finalApprovalStatus(paramMap) == 1) {
 					try {
 						ApprovalDto approvalDto = approvalDao.selectApprovalById(map.get("approval_id").toString());
-						webSocketHandler.sendMessageToUser(approvalDto.getEmpno(),approvalDto.getApproval_title()+"문서에 대한 결재가 승인되었습니다.");
+						webSocketHandler.sendMessageToUser(approvalDto.getEmpno(),approvalDto.getApproval_title()+"<br>결재문서에 대한 결재가 승인되었습니다.");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -69,7 +69,7 @@ public class ApprovalLineServiceImpl implements IApprovalLineService{
 
 				ApprovalDto approvalDto = approvalDao.selectApprovalById(map.get("approval_id").toString());
 				try {
-					webSocketHandler.sendMessageToUser(approvalDto.getEmpno(),approvalDto.getApproval_title()+"문서에 대한 결재가 반려되었습니다. <br> 반려사유 : " + map.get("reject_reason").toString());
+					webSocketHandler.sendMessageToUser(approvalDto.getEmpno(),approvalDto.getApproval_title()+"<br>결재문서에 대한 결재가 반려되었습니다. <br> 반려사유 : " + map.get("reject_reason").toString());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
