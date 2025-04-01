@@ -45,6 +45,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		return sql.insert(NS+"insertEmployee", map);
 	}
 
+	@Override
+	public List<EmployeeDto> employeeList() {
+		return sql.selectList(NS+"employeeList");
+	}
+
 	
 
 
