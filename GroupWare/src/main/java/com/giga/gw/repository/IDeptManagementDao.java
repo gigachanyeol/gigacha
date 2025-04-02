@@ -15,10 +15,10 @@ public interface IDeptManagementDao {
 	public int duplicateCheck(String dto);
 	// 상위부서 조회
 	public List<DepartmentDto> hqSelect();
+	// 하위부서 조회
+	public List<DepartmentDto> deptSelect();
 	// 부서 수정
 	public int updateDept(Map<String, Object> map);
-	// 부서 삭제
-	public int deleteDept(Map<String, Object> map);
 	// 부서 전체 조회
 	public List<Map<String, Object>> getAllDept();
 	// 부서 상세 조회

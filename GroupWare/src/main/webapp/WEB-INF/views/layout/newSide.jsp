@@ -75,7 +75,7 @@
 			src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj"
 			alt="Card image cap">
 		<div class="sidecard-body" >
-  			<span class="employee-name">${loginDto.name}</span>
+  			<span class="employee-name" style='color: black;'><a href="${pageContext.request.contextPath}/hrManagement/mypage.do" style="color: black;">${loginDto.name}</a></span>
   			<span class="employee-id">사원번호 | ${loginDto.empno}</span>
 <!--   			<div class="employee-info-row"> -->
     			<span class="department" id="dept">${loginDto.deptname}</span>
@@ -165,29 +165,28 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+        <a class="nav-link collapsed" data-bs-target="#emp-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
           <i class="bi bi-calendar2-plus"></i>
           <span>인사</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="res-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
-         <li>
-            <a href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do">
-              <span>사원등록</span>
-            </a>
+        <ul id="emp-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
+          <li>
+           		<a href="${pageContext.request.contextPath}/hrManagement/employeeAdd.do">
+              		<span>사원등록</span>
+            	</a>
           </li> 
           <li>
-            <a href="${pageContext.request.contextPath}/deptManagement/deptManagement.do">
-              <span>부서관리</span>
-            </a>
+            	<a href="${pageContext.request.contextPath}/deptManagement/deptManagement.do">
+              		<span>부서관리</span>
+            	</a>
           </li>
-          </li> 
           <li>
-            <a href="${pageContext.request.contextPath}/hrManagement/hrManagement.do">
-              <span>인사관리</span>
-            </a>
+            	<a href="${pageContext.request.contextPath}/hrManagement/hrManagement.do">
+              		<span>인사관리</span>
+            	</a>
           </li>
         </ul>
-      </li>
+	</li> 
       
      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#res-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">

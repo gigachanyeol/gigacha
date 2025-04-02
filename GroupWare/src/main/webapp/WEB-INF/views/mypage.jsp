@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,14 +25,21 @@
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h3 class="content_title">마이페이지</h3>
-			
+			<div class="pagetitle">
+			<h1 class="content_title">마이페이지</h1>
+			<nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>  
+                    <li class="breadcrumb-item active">Mypage</li>
+                </ol>
+            </nav>
+			</div>
 			<div class="row">
 		        <div class="col-xl-4">
 		          <div class="card">
 		          	<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-		            <img id="profile-img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="기본이미지">
-		              <h4>이름</h4>
+		          	<img id="profile-img" src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj" alt="기본이미지">
+		              <h4>${employee.name}</h4>
 		            </div>
 		          </div>
 		        </div>
@@ -41,18 +49,17 @@
 		            <div class="card-body pt-3">
 		              <!-- Bordered Tabs -->
 		              <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
-		
 		                <li class="nav-item" role="presentation">
 		                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" aria-selected="true" role="tab">내 정보</button>
 		                </li>
 		
-		                <li class="nav-item" role="presentation">
-		                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" aria-selected="false" tabindex="-1" role="tab">개인정보 수정하기</button>
-		                </li>
+<!-- 		                <li class="nav-item" role="presentation"> -->
+<!-- 		                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" aria-selected="false" tabindex="-1" role="tab">개인정보 수정하기</button> -->
+<!-- 		                </li> -->
 		
-		                <li class="nav-item" role="presentation">
-		                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" aria-selected="false" tabindex="-1" role="tab">비밀번호 변경하기</button>
-		                </li>
+<!-- 		                <li class="nav-item" role="presentation"> -->
+<!-- 		                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" aria-selected="false" tabindex="-1" role="tab">비밀번호 변경하기</button> -->
+<!-- 		                </li> -->
 		
 		              </ul>
 		              <div class="tab-content pt-2">
@@ -62,37 +69,34 @@
 		
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label ">사번</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">${employee.empno}</div>
 		                  </div>
 		
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label">직급</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">${employee.job_title}</div>
 		                  </div>
 		
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label">부서</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">${employee.deptname}</div>
 		                  </div>
 		                  
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label">입사일</div>
-		                    <div class="col-lg-9 col-md-8"></div>
-		                  </div>
-		                  
-		                  <div class="row">
-		                    <div class="col-lg-3 col-md-4 label">재직상태</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">
+		                    	<div class="col-lg-9 col-md-8">${employee.hiredate}</div>
+		                    </div>
 		                  </div>
 		
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label">내선번호</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">${employee.tel}</div>
 		                  </div>
 		
 		                  <div class="row">
 		                    <div class="col-lg-3 col-md-4 label">이메일</div>
-		                    <div class="col-lg-9 col-md-8"></div>
+		                    <div class="col-lg-9 col-md-8">${employee.email}</div>
 		                  </div>
 		
 		                </div>
@@ -196,7 +200,6 @@
 		                <div class="tab-pane fade pt-3" id="profile-change-password" role="tabpanel">
 		                  <!-- Change Password Form -->
 		                  <form>
-		
 		                    <div class="row mb-3">
 		                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">현재 비밀번호</label>
 		                      <div class="col-md-8 col-lg-9">

@@ -1,6 +1,7 @@
 package com.giga.gw.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,20 +12,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class NoticeDto {
+@Builder
+public class EmpImagesDto {
 
-	private String notice_id;
+	private String signature_id;
 	private int empno;
-	private String name;
-	private String title;
-	private String board_code;
-	private String create_date;
+	private String file_name;
+	private String file_path;
+	private String file_base;
 	private String update_date;
-	private int view_count;
-	private int update_emp;
-	private String content;
-	private String important;
-	private String board_status;
+	private String create_date;
+	private int gubun;
 	private String use_yn;
 
 }

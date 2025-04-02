@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EmployeeServiceImpl implements IEmployeeService {
 	
 	private final IEmployeeDao employeeDao;
-	 private final ILoginDao loginDao;
+	private final ILoginDao loginDao;
 	
 	@Override
 	public boolean saveSignature(Map<String, Object> map) {
@@ -37,6 +37,23 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public String getNextEmpno(String hiredate) {
 		return employeeDao.getNextEmpno(hiredate);
 	}
+
+	@Override
+	public List<EmployeeDto> employeeList() {
+		return employeeDao.employeeList();
+	}
+	
+	@Override
+	public EmployeeDto getEmpno(String empno) {
+		return employeeDao.getEmpno(empno);
+	}
+
+	@Override
+	public EmployeeDto getMypage(String empno) {
+		return employeeDao.getMypage(empno);
+	}
+
+	
 
 	
 

@@ -42,6 +42,26 @@
 			<a href="./logout.do" class="btn btn-danger">로그아웃</a>
 	<div class="row">
 		<div class="col-6">
+		
+		<div class="row">
+        		<div class="col-lg-12">
+        			<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">공지사항</h5>
+							<table id="boardList" class="table text-center">
+								<thead>
+			                        <tr>
+			                            <th>번호</th>
+			                            <th>작성자</th>
+			                            <th>제목</th>
+			                            <th>작성일</th>
+			                        </tr>
+			                    </thead>
+							</table>
+						</div>
+					</div>
+       			</div>
+        	</div>
 	       <div class="reservation-section">
             <div class="reservation-title">나의 예약현황</div>
             <p>현재 예약된 일정이 없습니다.</p>
@@ -49,6 +69,7 @@
             <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservationList.do'">예약내역조회</button>
         </div>
         </div>
+       
         <div class="col-6">
 <!--         	<div class="row"> -->
 <!--         		<div class="col-xxl-12"> -->
@@ -149,6 +170,7 @@
         	</div>
    	 </div>
     </div>
+</div>
 </main>
 <!-- 			<h3 class="content_title">제목trestest</h3> -->
 <!-- 			<table class="table table-hover"> -->
@@ -403,6 +425,39 @@ $(document).ready(function() {
             drawPieChart('approvalChart', chartData.approval, '기안문서');
         }
     })();
+});
+
+//공지사항
+$(document).ready(function() {
+    $('#boardList').DataTable({
+        ajax: {
+            url: './notice/boardList.do',
+            dataSrc: ''
+        },
+        columns: [
+            { 
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1; // 1부터 시작하는 순차 번호
+                }
+            },
+            { data: 'name' },
+            { data: 'title' },
+            { 
+                data: 'create_date',
+                // 날짜 포맷팅 옵션 추가 가능
+                render: function(data) {
+                    return new Date(data).toLocaleDateString(); // 날짜 형식 지정
+                }
+            }
+        ],
+        order: [[3, 'desc']], // 작성일 열(인덱스 3)을 내림차순으로 정렬 (최근 날짜 먼저)
+        pageLength: 4, 
+        searching: false,
+        info: false,
+        lengthChange: false
+
+    });
 });
 
 </script>

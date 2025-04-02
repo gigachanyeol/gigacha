@@ -6,15 +6,19 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.giga.gw.dto.DepartmentDto;
 import com.giga.gw.dto.EmployeeDto;
 import com.giga.gw.repository.IApprovalDao;
+import com.giga.gw.repository.IDeptManagementDao;
 import com.giga.gw.repository.IEmployeeDao;
 import com.giga.gw.service.IEmployeeService;
 
@@ -29,19 +33,31 @@ public class HRManagementController {
 	
 	private final IApprovalDao approvalDao;
 	private final IEmployeeDao employeeDao;
+	private final IDeptManagementDao deptManagementDao;
 	
-	// 마이페이지
+	// 마이페이지 - 사원 값 가져오기
 	@GetMapping("/mypage.do")
-//	@ResponseBody
-	public String Mypage() {
-//		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
-		
+	public String mypage(Model model, HttpSession session) {
+		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
+		log.info("로그인 사번 : {}", loginDto);
+		model.addAttribute("employee", loginDto);
 		return "mypage";
 	}
 	
 	// 사원 등록 - 페이지 요청
 	@GetMapping("/employeeAdd.do")
-	public String DeptManagement() {
+	public String DeptManagement(Model model) {
+		List<DepartmentDto> deptList = deptManagementDao.deptSelect();
+		if (deptList != null && !deptList.isEmpty()) {
+	        DepartmentDto firstDept = deptList.get(0);
+	        log.info("첫번째 부서 정보 - deptno: {}, deptname: {}", 
+	                firstDept.getDeptno(), firstDept.getDeptname());
+	    } else {
+	        log.info("조회된 부서 정보가 없습니다.");
+	    }
+		
+		model.addAttribute("deptList", deptList);
+		log.info("모델에 'deptList' 속성 추가 완료");
 		return "employeeAdd";
 	}
 	
@@ -49,9 +65,9 @@ public class HRManagementController {
 	@GetMapping("/nextEmpno.do")
 	@ResponseBody
 	public String getNextEmpno(@RequestParam String hiredate) {
-	    log.info("사원번호 불러오나요?????????????????????????");
+	    log.info("HRManagementController getNextEmpno Get 호출");
 	    String employee = employeeDao.getNextEmpno(hiredate);
-	    log.info("입사일자 불러오기!!! {}",hiredate);
+	    log.info("입사일자 불러오기{}",hiredate);
 	    return employee != null ? employee : "";
 	}
 	
@@ -66,24 +82,37 @@ public class HRManagementController {
 		map.put("password", empno);
 		System.out.println("hiredate: " + map.get("hiredate"));
 		System.out.println("birthday: " + map.get("birthday"));
-		log.info("비밀번호는??{}", empno);
-		
+		log.info("비밀번호{}", empno);
 		return employeeDao.insertEmployee(map)==1 ? "true":"false";
 	}
 	
+	//조직도
 	@ResponseBody
-	@GetMapping("/treeAjax.do")
+	@GetMapping("/tree.do")
 	public List<Map<String, Object>> tree() {
 		return approvalDao.getOrganizationTree();
 	}
 	
+	@GetMapping("/hrManagement.do")
+	public String hrManagerment() {
+		return "hrManagement";
+	}
+	
 	// 사원 리스트
 	@GetMapping("/employeeList.do")
-	public List<EmployeeDto> hrManagerment() {
+	@ResponseBody
+	public List<EmployeeDto> employeeList() {
+		log.info("사원 리스트 조회");
 		return employeeDao.employeeList();
 	}
 	
-	
-	// 발령 등록
+	// 사원 조회
+	@GetMapping("/empGet.do")
+	@ResponseBody
+	public EmployeeDto getOneEmp(@RequestParam("seq") String seq){
+		log.info("HRManagementController getOneEmp GET 요청");
+		EmployeeDto emp = employeeDao.getEmpno(seq);
+		return emp;
+	}
 
 }
