@@ -8,9 +8,9 @@ import com.giga.gw.dto.RoomDto;
 public interface IRoomDao {
 
 	int insertRoom(RoomDto roomDto);
-	List<RoomDto> selectAllRooms();
+	List<RoomDto> selectRooms();
 	RoomDto selectRoomById(String room_id);
 	int updateRoom(RoomDto roomDto);
-	List<RoomDto> selectUseAllRooms();
+//	List<RoomDto> selectUseAllRooms();
 
 }

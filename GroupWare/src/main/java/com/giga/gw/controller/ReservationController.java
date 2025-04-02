@@ -44,7 +44,7 @@ public class ReservationController {
 	@GetMapping("/reservation.do")
 	public String reservation(Model model , @RequestParam (value = "date", required = false) String date ) {
 //		List<String> rooms = List.of("회의실 1","회의실 2","회의실 3","회의실 4");
-		List<RoomDto> rooms = roomService.selectUseAllRooms();
+		List<RoomDto> rooms = roomService.selectRooms();
 		String[] timeSlots = { "08:00-10:00", "10:00-12:00", "13:00-15:00", "15:00-17:00" };
 		
 		List<ReservationDto> reservation = reservationDao.selectrooms(date);
@@ -58,7 +58,9 @@ public class ReservationController {
 	//예약 설정
 	@PostMapping("/api/reservation.do") //예약 데이터 처리
 	@ResponseBody
-	public ResponseEntity insertreservation(HttpSession session, @RequestBody ReservationDto reservationDto,HttpServletRequest request){
+	public ResponseEntity insertreservation(HttpSession session, 
+											@RequestBody ReservationDto reservationDto,
+											HttpServletRequest request){
 		System.out.println(reservationDto);
 
 		if (reservationDto.getReserver() == null) {
@@ -85,10 +87,8 @@ public class ReservationController {
 			map.put("isc", false);
 			return ResponseEntity.status(400).body(map); // 실패 시 응답			
 		}
-		
-	
-
 	}
+	
 	//전체예약내역
 	@GetMapping("/reservationList.do")
 	public String reservationList(Model model,@RequestParam (required = false) String date, HttpSession session) {
@@ -101,11 +101,7 @@ public class ReservationController {
 		}else {
 			reservationList = reservationService.getReservationList(loginDto.getEmpno());			
 		}
-		
-
-//		model.addAttribute("reservationList", reservationList);
-
-		
+	
 		model.addAttribute("reservationList", reservationList);
 		
 		
