@@ -24,8 +24,8 @@ public class RoomDaoImpl implements IRoomDao {
 	}
 
 	@Override
-	public List<RoomDto> selectAllRooms() {
-		return sessionTemplate.selectList(NS+"selectAllRooms");
+	public List<RoomDto> selectRooms() {
+		return sessionTemplate.selectList(NS+"selectRooms");
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class RoomDaoImpl implements IRoomDao {
 		return sessionTemplate.update(NS+"updateRoom",roomDto);
 	}
 
-	@Override
-	public List<RoomDto> selectUseAllRooms() {
-		return sessionTemplate.selectList(NS+"selectUseAllRooms");
-	}
+//	@Override
+//	public List<RoomDto> selectUseAllRooms() {
+//		return sessionTemplate.selectList(NS+"selectUseAllRooms");
+//	}
 
 
 

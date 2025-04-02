@@ -134,10 +134,10 @@ public class RoomController {
 		 }
 	
 	
-	//회의실 리스트 조회(관리자)
+	//회의실 리스트 조회
 	@GetMapping("/roomList.do")
 	public String roomList(Model model) {
-		List<RoomDto> roomList = roomService.selectAllRooms();
+		List<RoomDto> roomList = roomService.selectRooms();
 		model.addAttribute("roomList", roomList);
 		return "roomList";	
 	}

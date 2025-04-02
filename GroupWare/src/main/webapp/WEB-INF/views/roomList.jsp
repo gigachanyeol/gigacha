@@ -274,16 +274,13 @@
         			var room_id = document.getElementById("room_id");
         			var room_name = document.getElementById("room_name");
         			var capacity = document.getElementById("capacity");
-        			var image_url = document.getElementById("image_url");
-//         			var created_at= document.getElementById("created_at");       			
-        			
-        			
+        			var image_url = document.getElementById("image_url");      			
+       			
         			console.log("현재정보 : " , room_id_p , room_name_p, capacity_p, created_at_p, updated_at_p);
         			
         			room_id.value = room_id_p;
         			room_name.value = room_name_p;
         			capacity.value = capacity_p;
-//         			image_url.value = image_url_p;
         			
         			updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
         	        updateModal.show();
@@ -394,7 +391,6 @@
         	    
         	}
         	
-
 
         }
     </script>
