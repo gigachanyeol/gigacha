@@ -29,7 +29,7 @@
 			<h1 class="content_title">마이페이지</h1>
 			<nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>  
                     <li class="breadcrumb-item active">Mypage</li>
                 </ol>
             </nav>
