@@ -36,15 +36,15 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	public List<DepartmentDto> hqSelect() {
 		return session.selectList(NS+"hqSelect");
 	}
+	
+	@Override
+	public List<DepartmentDto> deptSelect() {
+		return session.selectList(NS+"deptSelect");
+	}
 
 	@Override
 	public int updateDept(Map<String, Object> map) {
 		return session.update(NS+"updateDept",map);
-	}
-
-	@Override
-	public int deleteDept(Map<String, Object> map) {
-		return session.update(NS+"deleteDept", map);
 	}
 	
 	@Override
@@ -66,6 +66,8 @@ public class DeptManagementImpl implements IDeptManagementDao {
 	public List<DepartmentDto> getDeletedDept() {
 		return session.selectList(NS+"getDeletedDept");
 	}
+
+
 
 
 

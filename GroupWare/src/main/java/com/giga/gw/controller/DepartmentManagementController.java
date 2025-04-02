@@ -69,22 +69,23 @@ public class DepartmentManagementController {
 		System.out.println();
 		System.out.println();
 		System.out.println();
-		log.info("♧♣♧♣♧♣♧♣ DepartmentManagementController updateDepartment POST 요청");
+		log.info("DepartmentManagementController updateDepartment POST 요청");
 		System.out.println("\n\n"+map+"\n\n");
 		return deptManagementDao.updateDept(map)==1 ?"true":"false";
 	}
 	
-	// 삭제
-	@PostMapping("/deptDelete.do")
-	@ResponseBody
-	public String deleteDepartment(
-		@RequestBody Map<String, Object> map, HttpSession session) {
-		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
-		map.put("update_emp", loginDto.getUpdate_emp());
-		log.info("♧♣♧♣♧♣♧♣ DepartmentManagementController deleteDepartment POST 요청");
-		System.out.println("\n\n"+map+"\n\n");
-		return deptManagementDao.deleteDept(map)==1 ?"true":"false";
-	}
+//	// 삭제
+//	@PostMapping("/deptDelete.do")
+//	@ResponseBody
+//	public String deleteDepartment(
+//		@RequestBody Map<String, Object> map, HttpSession session) {
+//		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
+//		map.put("update_emp", loginDto.getUpdate_emp());
+//		log.info("♧♣♧♣♧♣♧♣ DepartmentManagementController deleteDepartment POST 요청");
+//		System.out.println("\n\n"+map+"\n\n");
+//		return deptManagementDao.deleteDept(map)==1 ?"true":"false";
+//	}
+	
 	
 	// 중복검사
 	@GetMapping("/deptCheck.do")
@@ -98,7 +99,7 @@ public class DepartmentManagementController {
 	public String hqSelct(Model model) {
 		List<DepartmentDto> hqList = deptManagementDao.hqSelect();
 		
-		log.info("♧♣♧♣♧♣♧♣DepartmentManagementController hqSelct GET 요청");
+		log.info("hqSelct GET 요청");
 		
 		log.info("DAO 호출 후 결과 확인: hqList 널 여부: {}", (hqList == null));
 	    log.info("조회된 본부 개수: {}", hqList != null ? hqList.size() : "null");
@@ -126,7 +127,7 @@ public class DepartmentManagementController {
 	@GetMapping("/deptGet.do")
 	@ResponseBody
 	public DepartmentDto getOneDept(@RequestParam("seq") String seq){
-		log.info("♧♣♧♣♧♣♧♣DepartmentManagementController getOneDept GET 요청");
+		log.info("DepartmentManagementController getOneDept GET 요청");
 		DepartmentDto dept = deptManagementDao.getOneDept(seq);
 		return dept;
 	}

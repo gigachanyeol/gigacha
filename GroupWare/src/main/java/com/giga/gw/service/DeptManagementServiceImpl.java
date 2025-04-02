@@ -27,16 +27,10 @@ public class DeptManagementServiceImpl implements IDeptManagementService{
 	public int duplicateCheck(String dto) {
 		return deptManagementDao.duplicateCheck(dto);
 	}
-
-
+	
 	@Override
-	public int updateDept(DepartmentDto dto) {
-		return deptManagementDao.updateDept(dto);
-	}
-
-	@Override
-	public int deleteDept(List<String> dto) {
-		return deptManagementDao.deleteDept(dto);
+	public int updateDept(Map<String, Object> map) {
+		return deptManagementDao.updateDept(map);
 	}
 
 	@Override
@@ -58,6 +52,7 @@ public class DeptManagementServiceImpl implements IDeptManagementService{
 	public List<DepartmentDto> getDeletedDept() {
 		return deptManagementDao.getDeletedDept();
 	}
+
 
 
 }

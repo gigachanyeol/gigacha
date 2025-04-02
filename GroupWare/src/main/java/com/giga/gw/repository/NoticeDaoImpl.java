@@ -15,44 +15,10 @@ public class NoticeDaoImpl implements INoticeDao {
 	
 	private final SqlSessionTemplate session;
 	private final String NS = "com.giga.gw.repository.NoticeDaoImpl.";
-	@Override
-	public int saveToInsert(NoticeDto dto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int insertPost(NoticeDto dto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int updatePost(NoticeDto dto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int updateImportant(String seq) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int deletePost(List<String> seq) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	@Override
 	public List<NoticeDto> getBoardList() {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectList(NS+"getBoardList");
 	}
-	@Override
-	public NoticeDto getOneBoard(String seq) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
-	
 
 }

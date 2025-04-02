@@ -49,6 +49,18 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	public List<EmployeeDto> employeeList() {
 		return sql.selectList(NS+"employeeList");
 	}
+	
+	@Override
+	public EmployeeDto getEmpno(String empno) {
+		return sql.selectOne(NS+"getEmpno", empno);
+	}
+
+	@Override
+	public EmployeeDto getMypage(String empno) {
+		return sql.selectOne(NS+"getMypage", empno);
+	}
+
+	
 
 	
 

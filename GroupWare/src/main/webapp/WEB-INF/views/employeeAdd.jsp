@@ -16,6 +16,84 @@
     margin: 0 auto; /* 가운데 정렬 */
     object-fit: cover; /* 이미지 비율 유지 및 영역에 맞춤 */
 }
+.main {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* 페이지 제목 스타일 */
+.pagetitle {
+    margin-bottom: 20px;
+}
+
+.pagetitle h1 {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+/* 프로필 이미지 스타일 */
+/* #profile-img { */
+/*     border-radius: 50%; */
+/*     border: 3px solid #ddd; */
+/*     padding: 5px; */
+/* } */
+
+/* 폼 그룹 스타일 */
+.row.mb-3 {
+    align-items: center;
+}
+
+.col-form-label {
+    font-weight: bold;
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+/* 드롭다운 스타일 */
+select.box {
+/*     width: 100%; */
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+/* 버튼 스타일 */
+.text-center .btn {
+    width: 120px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-bottom: 20px;
+    }
+
+    .text-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .text-center .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
 </style>
 </head> 
 <body>
@@ -29,8 +107,8 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item">Users</li>
-                    <li class="breadcrumb-item active">Profile</li>
+                    <li class="breadcrumb-item">Management</li>
+                    <li class="breadcrumb-item active">Employee Registration</li>
                 </ol>
             </nav>
         </div>
@@ -41,7 +119,6 @@
                        <img id="profile-img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="기본이미지">
                         <div class="pt-2">
                             <input class="form-control" type="file" id="formFile">
-                            <button class="btn btn-danger btn-sm">기본사진으로 되돌리기</button>
                         </div>
                     </div>
                 </div>
@@ -131,6 +208,32 @@
                             <label for="school" class="col-md-4 col-lg-3 col-form-label">학교</label>
                             <div class="col-md-8 col-lg-9">
                                 <input name="school" type="text" class="form-control" id="school">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="deptno" class="col-md-4 col-lg-3 col-form-label">부서</label>
+                            <div class="col-md-8 col-lg-9">
+                                <select name="deptno">
+	    							<option value="">부서</option>
+	    							<c:forEach var="dto" items = "${deptList}">
+       									  <option value="${dto.deptno}"><c:out value="${dto.deptname}"/></option>
+							    	</c:forEach>
+								</select>
+                            </div>
+                        </div>
+              			<div class="row mb-3">
+                            <label for="job_id" class="col-md-4 col-lg-3 col-form-label">직급</label>
+                            <div class="col-md-8 col-lg-9">
+                                <select class="box" id="job_id" name="job_id">
+                                    <option disabled selected>직급</option>
+                                    <option value="J01">사장</option>
+                                    <option value="J02">부장</option>
+                                    <option value="J03">차장</option>
+                                    <option value="J04">과장</option>
+                                    <option value="J05">대리</option>
+                                    <option value="J06">사원</option>
+                                    <option value="J07">인턴</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -314,8 +417,8 @@ function saveEmployee() {
     const email = document.getElementById('email').value;
     const school = document.getElementById('school').value;
     const hiredate = document.getElementById('hiredate').value;
-    
-    
+    const deptno = document.querySelector('select[name="deptno"]').value;
+    const job_id = document.getElementById("job_id").value;
     
     // 유효성 검사
 //     if (!name) {
@@ -332,8 +435,8 @@ function saveEmployee() {
     	empno : empno,
         name: name,
         email: email || '',
-        deptno: '',
-        job_id: '',
+        deptno: deptno,
+        job_id: job_id,
         password: '', 
         phone: phone || '',
         tel: tel || '',

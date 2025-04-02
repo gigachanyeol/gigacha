@@ -23,7 +23,7 @@
 		WHERE EMPNO = #{empno} AND GUBUN = '1' AND USE_YN = 'Y'
 	</select>
 	
-	 <!-- 다음 사번 미리보기 조회 -->
+	 <!-- 다음 사번 가져오기 -->
     <select id="getNextEmpno" parameterType="String" resultType="string">
         SELECT 
 		TO_CHAR(TO_DATE(#{hiredate}, 'YYYY-MM-DD'), 'YYMM') || 
@@ -49,8 +49,34 @@
         'HS02', 'Y')
     </insert>
     
-    <!-- 마이페이지 조회 -->
-    
+    <!-- 사원리스트 조회 -->
+    <select id="employeeList" resultType="EmployeeDto">
+    SELECT EMPNO, NAME, d.DEPTNAME, j.JOB_TITLE , TEL,  EMAIL, HIREDATE
+		FROM EMPLOYEES e JOIN DEPARTMENTS d 
+		ON e.DEPTNO = d.DEPTNO
+		JOIN JOBS j 
+		ON e.JOB_ID = j.JOB_ID
+	</select>
+	
+	<!-- 사원 조회 -->
+	<select id="getEmpno" resultType="EmployeeDto">
+	SELECT EMPNO, NAME, d.DEPTNAME, j.JOB_TITLE , TEL,  EMAIL, HIREDATE
+		FROM EMPLOYEES e JOIN DEPARTMENTS d 
+		ON e.DEPTNO = d.DEPTNO
+		JOIN JOBS j
+		ON e.JOB_ID = j.JOB_ID
+		WHERE EMPNO = #{empno}
+	</select>
+	
+	<!-- 마이페이지 조회 -->
+	<select id="getMypage" resultType="EmployeeDto">
+	SELECT EMPNO, d.DEPTNAME , j.JOB_TITLE , NAME, HIREDATE , TEL, EMAIL
+		FROM EMPLOYEES e JOIN DEPARTMENTS d 
+		ON e.DEPTNO = d.DEPTNO
+		JOIN JOBS j 
+		ON e.JOB_ID = j.JOB_ID
+		WHERE EMPNO = #{empno}
+	</select>
     
     
 </mapper>

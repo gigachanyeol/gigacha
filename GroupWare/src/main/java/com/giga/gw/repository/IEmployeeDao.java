@@ -18,4 +18,15 @@ public interface IEmployeeDao {
 	
 	// 사원 리스트
 	List<EmployeeDto> employeeList();
+	
+	// 사원 조회
+	EmployeeDto getEmpno(String empno);
+	
+	// 마이페이지 조회
+	EmployeeDto getMypage(String empno); 
+	
+	// 프로필 업로드
+	
+	
+	// 프로필 업데이트
 }

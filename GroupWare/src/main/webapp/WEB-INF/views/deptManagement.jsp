@@ -71,7 +71,6 @@ td {
     display: none; /* 초기에는 숨김 */
   }
   
- 
 </style>
 
 
@@ -83,8 +82,16 @@ td {
 <main id="main" class="main">
 	<div class="row">
 		<div id="content" class="col">
-			<h2 class="content_title">부서관리</h2>
-		
+			<div class="pagetitle">
+			<h1 class="content_title">부서관리</h1>
+			<nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item">Management</li>
+                    <li class="breadcrumb-item active">Department</li>
+                </ol>
+            </nav>
+            </div>
       <div class="row">
         <div class="col-4">
           <div class="card">
@@ -481,14 +488,11 @@ td {
         
     });
  
- 
     document.getElementById('deleteDept').addEventListener('click', function(){
     	console.log("삭제버튼");
     	
     });
  
-
-   
    // 부서 등록
     function savedept() {
     	const deptType = document.getElementById('deptType').value;
