@@ -23,7 +23,15 @@
 	font-size: 24px;
 	font-weight: bold;
 }
-
+.dt-paging {
+    font-size: 10px !important; /* 폰트 크기를 10px로 설정 */
+}
+.dataTables_wrapper td, .dataTables_wrapper th {
+    text-align: center;
+}
+.dt-container .dt-empty-footer .dt-layout-row:first-child {
+    display: none !important;
+}
 </style>
 </head> 
 <body>
@@ -42,28 +50,31 @@
         </div>
         </div>
         <div class="col-6">
-        	
-        	<div class="row mb-3">
-        		<div class="card">
-					<div class="card-body row">
-		        		<h5 class="card-title">결재현황[최근 3일]</h5>
-		        		<div class="col-lg-6">
-		        			<canvas id="approvalLineChart"></canvas>
-		        		</div>
-		        		<div class="col-lg-6">
-				        	<canvas id="approvalChart"></canvas>
-		        		</div>
-		        	</div>
-		        </div>
-        	</div>
+<!--         	<div class="row"> -->
+<!--         		<div class="col-xxl-12"> -->
+<!-- 	        		<div class="card"> -->
+<!-- 						<div class="card-body row" style="margin-bottom:10px;"> -->
+<!-- 			        		<div class="col-lg-2"> -->
+<!-- 			        			<canvas id="approvalLineChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        		<div class="col-xxl-6"> -->
+<!-- 					        	<canvas id="approvalChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        	</div> -->
+<!-- 			        </div> -->
+<!-- 			    </div> -->
+<!--         	</div> -->
         	
         	<div class="row">
         		<div class="col-lg-12">
         			<div class="card">
-						<div class="card-body">
+						<div class="card-body row">
 							<h5 class="card-title">
 								<a href="./approval/myApproval.do">내문서함</a>
 							</h5>
+							<div class="col-4">
+			        			<canvas id="approvalChart" width="80px" height="80px"></canvas>
+			        		</div>
 <!-- 							<div> -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label>  -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재대기" checked> 결재대기</label>  -->
@@ -71,16 +82,18 @@
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재완료" checked> 결재완료</label>  -->
 <!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재반려" checked> 결재반려</label> -->
 <!-- 							</div> -->
-							<table id="myDocument" class="table text-center">
-								<thead>
-									<tr>
-										<th>제목</th>
-										<th>상태</th>
-										<th>작성일</th>
-										<th>마감기한</th>
-									</tr>
-								</thead>
-							</table>
+							<div class="col-8">
+								<table id="myDocument" class="table text-center">
+									<thead>
+										<tr>
+											<th>제목</th>
+											<th>상태</th>
+											<th>작성일</th>
+											<th>마감기한</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
        			</div>
@@ -88,21 +101,26 @@
         	<div class="row">
         		<div class="col-lg-12">
         			<div class="card">
-						<div class="card-body">
+						<div class="card-body row">
 							<h5 class="card-title">
 								<a href="./approval/approvalRequestList.do">결재대기함</a>
 							</h5>
-							<table id="requestDocument"
-								class="table text-center">
-								<thead>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-										<th>마감기한</th>
-									</tr>
-								</thead>
-							</table>
+							<div class="col-4">
+			        			<canvas id="approvalLineChart"></canvas>
+			        		</div>
+			        		<div class="col-8">
+								<table id="requestDocument"
+									class="table text-center">
+									<thead>
+										<tr>
+											<th>작성자</th>
+											<th>제목</th>
+											<th>작성일</th>
+											<th>마감기한</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
        			</div>
@@ -129,6 +147,7 @@
 					</div>
         		</div>
         	</div>
+   	 </div>
     </div>
 </main>
 <!-- 			<h3 class="content_title">제목trestest</h3> -->
@@ -192,7 +211,8 @@ $(document).ready(function() {
             { data: 'APPROVAL_DEADLINE' }  // 마감기한
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' } // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -217,7 +237,7 @@ $(document).ready(function() {
                 "next": ">",
                 "previous": "<"
             }
-        }
+       }
     });
     
     let requestDocument = $('#requestDocument').DataTable({
@@ -228,6 +248,7 @@ $(document).ready(function() {
             dataSrc:""
         },
         searching: false,
+        
         columns: [
         	{ data: 'name' },
             { data: 'approval_title' },
@@ -235,7 +256,8 @@ $(document).ready(function() {
             { data: 'approval_deadline' }
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' }   // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -281,7 +303,8 @@ $(document).ready(function() {
             { data: 'APPROVAL_DEADLINE' },
         ],
         columnDefs: [
-            { orderable: false, targets: [0, 1] }  // 제목, 상태 컬럼 정렬 비활성화
+            { orderable: false, targets: [0, 1] },
+            { targets: [0, 1, 2, 3], className: 'text-center' }   // 제목, 상태 컬럼 정렬 비활성화
         ],
         order: [[2, 'desc']], // 작성일 기준 내림차순 정렬
         pageLength: 4,
@@ -326,7 +349,7 @@ $(document).ready(function() {
         new Chart(ctx, {
             type: 'pie', 
             data: {
-                labels: ['대기', '진행', '반려'
+                labels: ['대기', '진행' ,'반려'
 //                 	'완료', '반려'
                 	],
                 datasets: [{
@@ -345,14 +368,14 @@ $(document).ready(function() {
                 plugins: {
                     legend: { 
                     	display: true,
-                        position: 'top',  
+                        //position: 'top',  
                         labels: {
                             boxWidth: 15,   
                             usePointStyle: true, 
-                            padding: 15,    
-                            font: {
-                                size: 12    
-                            }
+//                            padding: 15,    
+//                             font: {
+//                                 size: 12    
+//                             }
                         } },
                     title: { display: true, text: label },
                     datalabels: {  

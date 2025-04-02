@@ -12,4 +12,5 @@ public interface IApprovalCategoryDao {
 	ApprovalCategoryDto categorySelectById(String category_id);
 	int categoryCheck(String category_yname);
 	int categoryUpdateUseYN(Map<String, Object> map);
+	int cntCategoryAll();
 }

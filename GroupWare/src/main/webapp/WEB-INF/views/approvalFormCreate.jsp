@@ -71,7 +71,7 @@
 							</div>
 						</div>
 						<div class="mb-3">
-							<label class="col-form-label">Submit Button</label>
+<!-- 							<label class="col-form-label">Submit Button</label> -->
 							<div class="col-sm-10">
 								<button type="submit" class="btn btn-primary">저장</button>
 								<button type="reset" class="btn btn-light">리셋</button>
@@ -83,7 +83,29 @@
 			</div>
 		</div>
 	</div>	
+	
+	
 </main>
+
+	<div class="modal" id="cateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+	  <div class="modal-dialog modal-dialog-scrollabl">
+	    <div class="modal-content">
+	      <div class="modal-header d-flex mb-3">
+			<h5>카테고리 선택</h5>			 
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row border-bottom">
+				<div class="col">
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-success btn-sm modalBtn">선택</button>
+	       	<button type="button" class="btn btn-danger btn-sm modalBtn" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	      </div>
+	    </div>
+	  </div>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.2.1/ckeditor5.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
 	<script type="text/javascript">
@@ -97,8 +119,10 @@
 		document.querySelector("#cateBtn").addEventListener('click',(event)=>{
 			event.preventDefault();
 			console.log("cateBtn클릭");
-			window.open('./managerCategoryPop.do',"popupWindow","width=400,height=600,top=150,left=300");
+			window.open('./managerCategoryPop.do',"popupWindow","width=300,height=450,top=150,left=500");
 		});
+
+		
 		document.querySelector("button[type=submit]").addEventListener('click', (event) => {
 			event.preventDefault();
 			let editorHtml = editor.getData();

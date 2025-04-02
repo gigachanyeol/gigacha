@@ -89,11 +89,11 @@
 							<tr id="dateRange">
 								<th>시작날짜</th>
 								<td>
-									<input type="date" name="start_date">
+									<input type="date" name="start_date" value="${approval.start_date}">
 								</td>
 								<th>종료날짜</th>
 								<td>
-									<input type="date" name="end_date">
+									<input type="date" name="end_date" value="${approval.start_date}">
 								</td>
 							</tr>
 							<tr>

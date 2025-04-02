@@ -32,32 +32,34 @@ $(".modalBtn").on('click',()=>{
 	}); // search end
  
 // 양식 가져오기 
-document.querySelector("#formBtn").addEventListener('click', () => {
-	$('#documentTree').jstree({
-        'plugins': ["search"],
-        "search": {
-            "show_only_matches": true // 검색 결과만 표시
-        },
-        'core': {
-            'data': function (node, cb) {
-                $.ajax({
-                    url: "./formTreeAjax.do", // 데이터를 JSON 형태로 가져오는 API
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        console.log(data);
-                        cb(data);
-                    }
-                });
-            }
-        }
-    });
-//		window.open('./formTreeView.do',"popupWindow","width=400,height=600,top=150,left=300");	
-	$("#documentForm").show();
-	$("#formPickBtn").show();
-	$("#myModal").show();
-	
-});
+if(document.querySelector("#formBtn")) {
+	document.querySelector("#formBtn").addEventListener('click', () => {
+		$('#documentTree').jstree({
+	        'plugins': ["search"],
+	        "search": {
+	            "show_only_matches": true // 검색 결과만 표시
+	        },
+	        'core': {
+	            'data': function (node, cb) {
+	                $.ajax({
+	                    url: "./formTreeAjax.do", // 데이터를 JSON 형태로 가져오는 API
+	                    type: "GET",
+	                    dataType: "json",
+	                    success: function (data) {
+	                        console.log(data);
+	                        cb(data);
+	                    }
+	                });
+	            }
+	        }
+	    });
+	//		window.open('./formTreeView.do',"popupWindow","width=400,height=600,top=150,left=300");	
+		$("#documentForm").show();
+		$("#formPickBtn").show();
+		$("#myModal").show();
+		
+	});
+}
 
 function addToApprovalForm(formId, formName) {
 	console.log("aaaa")
@@ -243,6 +245,8 @@ function removeFromApprovalLine(empNo) {
 
 var selectSaveLines = [];
 var organizationData = [];
+if(document.getElementById("lineBtn")){
+	
 	document.getElementById("lineBtn").addEventListener('click', async () => {
 		try {
 			$('#organizationTree').jstree({
@@ -321,6 +325,7 @@ var organizationData = [];
 		
 	
 	});
+}
 	
 	
 	async function selectSaveLine(){

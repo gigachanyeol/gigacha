@@ -42,19 +42,19 @@ public class HomeController {
 	}
 	
 	 @GetMapping(value = "/approvalChartDataAjax.do", produces = "application/json")
-	    public ResponseEntity<Map<String, Object>> getApprovalChartData(HttpSession session) {
-		 	EmployeeDto loginDto =(EmployeeDto) session.getAttribute("loginDto");
-	        Map<String, Object> response = new HashMap<>();
+	 public ResponseEntity<Map<String, Object>> getApprovalChartData(HttpSession session) {
+	 	EmployeeDto loginDto =(EmployeeDto) session.getAttribute("loginDto");
+        Map<String, Object> response = new HashMap<>();
 
-	        // 내가 결재한 문서 상태 개수 조회
-	        Map<String, Object> approvalLineStats = approvalService.selectApprovalLineStats(loginDto.getEmpno());
+        // 내가 결재한 문서 상태 개수 조회
+        Map<String, Object> approvalLineStats = approvalService.selectApprovalLineStats(loginDto.getEmpno());
 
-	        // 내가 기안한 문서 상태 개수 조회
-	        Map<String, Object> approvalStats = approvalService.selectApprovalStats(loginDto.getEmpno());
+        // 내가 기안한 문서 상태 개수 조회
+        Map<String, Object> approvalStats = approvalService.selectApprovalStats(loginDto.getEmpno());
 
-	        response.put("approvalLine", approvalLineStats);
-	        response.put("approval", approvalStats);
+        response.put("approvalLine", approvalLineStats);
+        response.put("approval", approvalStats);
 
-	        return ResponseEntity.ok().body(response);
-	    }
+        return ResponseEntity.ok().body(response);
+    }
 }

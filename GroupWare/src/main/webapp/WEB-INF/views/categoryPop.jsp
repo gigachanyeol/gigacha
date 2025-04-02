@@ -16,21 +16,38 @@
 <%@ include file="./layout/header.jsp" %>
 </head>
 <body>
-<h2>카테고리</h2>
+<!-- <h2>카테고리</h2> -->
     
-    <input type="text" id="searchInput" placeholder="검색">
-    <br>
+<!--     <input type="text" id="searchInput" placeholder="검색"> -->
+<!--     <br> -->
 
-    <select id="category_id" class="form-select" size="3">
-        <c:forEach items="${categoryList}" var="cate" varStatus="status">
-            <option value="${cate.category_id}" ${status.index eq 0 ? 'selected' : ''}>
-                ${cate.category_name}
-            </option>
-        </c:forEach>
-    </select>
+<!--     <select id="category_id" class="form-select" size="3"> -->
+<%--         <c:forEach items="${categoryList}" var="cate" varStatus="status"> --%>
+<%--             <option value="${cate.category_id}" ${status.index eq 0 ? 'selected' : ''}> --%>
+<%--                 ${cate.category_name} --%>
+<!--             </option> -->
+<%--         </c:forEach> --%>
+<!--     </select> -->
     
-    <button id="ok">선택</button>
-    <button onclick="window.close()">취소</button>
+    <div class="mb-3">
+	    <label for="category_id" class="form-label">카테고리 선택</label>
+	    <div class="dropdown mb-3">
+	        <select id="category_id" class="form-select rounded-3 shadow-sm border-primary" aria-label="Category select">
+	            <c:forEach items="${categoryList}" var="cate" varStatus="status">
+	                <option value="${cate.category_id}" ${status.index eq 0 ? 'selected' : ''}>
+	                    ${cate.category_name}
+	                </option>
+	            </c:forEach>
+	        </select>
+	    </div>
+	    <div class="text-center">
+		    <button id="ok" class="btn btn-success btn-sm">선택</button>
+	    	<button class="btn btn-danger btn-sm" onclick="window.close()">취소</button>
+    	</div>
+	</div>
+    
+    
+    
 
     <script type="text/javascript">
     window.onload = function() {

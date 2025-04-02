@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.giga.gw.dto.ApprovalFormDto;
+import com.giga.gw.dto.EmployeeDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +33,8 @@ public class ApprovalFormDaoImpl implements IApprovalFormDao {
 	}
 
 	@Override
-	public List<ApprovalFormDto> formSelectAll() {
-		return sql.selectList(NS+"formSelectAll");
+	public List<ApprovalFormDto> formSelectAll(Map<String, Object> map) {
+		return sql.selectList(NS+"formSelectAll",map);
 	}
 
 	@Override
@@ -44,6 +45,16 @@ public class ApprovalFormDaoImpl implements IApprovalFormDao {
 	@Override
 	public Map<String, Object> formSelectById(String form_id) {
 		return sql.selectOne(NS+"formSelectById",form_id);
+	}
+
+	@Override
+	public int cntFormSelectAll() {
+		return sql.selectOne(NS+"cntFormSelectAll");
+	}
+
+	@Override
+	public int cntFormSelectUser() {
+		return sql.selectOne(NS+"cntFormSelectUser");
 	}
 
 }

@@ -46,5 +46,10 @@ public class ApprovalCategoryDaoImpl implements IApprovalCategoryDao {
 	public List<ApprovalCategoryDto> categorySelectAll() {
 		return sql.selectList(NS+"categorySelectAll");
 	}
+
+	@Override
+	public int cntCategoryAll() {
+		return sql.selectOne(NS+"cntCategoryAll");
+	}
 	
 }

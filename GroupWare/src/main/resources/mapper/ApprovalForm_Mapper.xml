@@ -35,18 +35,20 @@
 	</resultMap>
 	
 	<select id="formSelectAll" resultMap="formJoinCategory">
-		SELECT 
+		SELECT * FROM (SELECT 
 		CATEGORY_ID, 
 		CATEGORY_NAME ,
 		FORM_ID, 
 		FORM_NAME,
 		NVL(TO_CHAR(t1.CREATE_DATE,'YYYY-MM-DD'),'-') CREATE_DATE, 
 		NVL(TO_CHAR(t1.UPDATE_DATE,'YYYY-MM-DD'),'-') UPDATE_DATE,
-		t1.USE_YN
+		t1.USE_YN,
+		ROW_NUMBER () OVER(ORDER BY t1.USE_YN DESC, t1.CREATE_DATE DESC) RN
 		FROM APPROVAL_FORM t1 
 			JOIN APPROVAL_CATEGORY t2
 			USING(CATEGORY_ID)
-		ORDER BY t1.CREATE_DATE DESC
+		ORDER BY t1.USE_YN DESC, t1.CREATE_DATE DESC)
+		WHERE RN BETWEEN #{first} AND #{last}
 	</select>
 	
 	<select id="formSelectDetail" resultType="approvalFormDto">
@@ -66,6 +68,13 @@
 		WHERE FORM_ID = #{form_id}	
 	</select>
 	
-	
-	
+	<select id="cntFormSelectAll" resultType="int">
+		SELECT COUNT(*) 
+  		FROM APPROVAL_FORM t1
+	</select>
+	<select id="cntFormSelectUser" resultType="int">
+		SELECT COUNT(*) 
+  		FROM APPROVAL_FORM t1
+		WHERE t1.USE_YN = 'Y'
+	</select>
 </mapper>
