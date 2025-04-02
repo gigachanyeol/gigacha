@@ -221,17 +221,6 @@
               <span>나의 근태 현황</span>
             </a>
           </li>
-          <li class="nav-heading">부서 근태 관리</li>
-             <li>
-            <a href="${pageContext.request.contextPath}/attendance/attendance.do">
-              <span>부서 근태 현황</span>
-            </a>
-          </li>
-             <li>
-            <a href="${pageContext.request.contextPath}/attendance/leaveattendance.do">
-              <span>나의 연차 현황</span>
-            </a>
-          </li>
         </ul>
       </li>
       <!-- 관리자 메뉴 - 권란이 있는 경우에만 표시 -->
