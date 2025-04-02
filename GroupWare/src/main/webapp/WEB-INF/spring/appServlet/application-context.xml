@@ -19,10 +19,10 @@
  		<property name="username" value="ATPC_GIGA" /> 
  		<property name="password" value="giga12345GIGA" /> 
 		
- 	    <property name="maxActive" value="50"/>   최대 커넥션 개수 
- 	    <property name="maxIdle" value="10"/>     유휴 커넥션 최대 개수 
- 	    <property name="minIdle" value="5"/>      유휴 커넥션 최소 개수 
- 	    <property name="maxWait" value="60000"/>  최대 대기 시간 (60초) 
+ 	    <property name="maxActive" value="50"/>   
+ 	    <property name="maxIdle" value="10"/>     
+ 	    <property name="minIdle" value="5"/>      
+ 	    <property name="maxWait" value="60000"/>  
  	</bean> 
 <!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"> -->
 <!-- 		<property name="driverClassName" value="${driver}"/> -->
