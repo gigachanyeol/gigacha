@@ -13,17 +13,18 @@
 		</property>
 	</bean>
 	<!-- 배포 dataSource  -->
-<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"> -->
-<!-- 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> -->
-<!-- 		<property name="url" value="jdbc:oracle:thin:@n3pvs6lm6k85iam9_medium?TNS_ADMIN=/home/Wallet_N3PVS6LM6K85IAM9" /> -->
-<!-- 		<property name="username" value="ATPC_GIGA" /> -->
-<!-- 		<property name="password" value="giga12345GIGA" /> -->
+ 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"> 
+ 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
+ 		<property name="url" value="jdbc:oracle:thin:@n3pvs6lm6k85iam9_medium?TNS_ADMIN=/home/Wallet_N3PVS6LM6K85IAM9" /> 
+ 		<property name="username" value="ATPC_GIGA" /> 
+ 		<property name="password" value="giga12345GIGA" /> 
 		
-<!-- 	    <property name="maxActive" value="50"/>   최대 커넥션 개수 -->
-<!-- 	    <property name="maxIdle" value="10"/>     유휴 커넥션 최대 개수 -->
-<!-- 	    <property name="minIdle" value="5"/>      유휴 커넥션 최소 개수 -->
-<!-- 	    <property name="maxWait" value="60000"/>  최대 대기 시간 (60초) -->
-<!-- 	</bean> -->
+ 	    <property name="maxActive" value="50"/>   최대 커넥션 개수 
+ 	    <property name="maxIdle" value="10"/>     유휴 커넥션 최대 개수 
+ 	    <property name="minIdle" value="5"/>      유휴 커넥션 최소 개수 
+ 	    <property name="maxWait" value="60000"/>  최대 대기 시간 (60초) 
+ 	</bean> 
+    <!--
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${driver}"/>
 		<property name="url" value="${url}" />
@@ -35,7 +36,7 @@
 	    <property name="minIdle" value="5"/>      <!-- 유휴 커넥션 최소 개수 -->
 	    <property name="maxWait" value="60000"/>  <!-- 최대 대기 시간 (60초) -->
 	</bean>
-	
+	-->
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis/myBatisConfig.xml" />
