@@ -84,6 +84,7 @@
 										<td scope="col">${room.image_url}</td>
 										<td scope="col">
 											<div class="${room.use_yn eq 'Y' ? 'switch on':'switch'}">
+												
 												<div class="slider"></div>
 											</div>
 										</td>
@@ -181,24 +182,19 @@
 
         	var switchBtn =  document.querySelectorAll(".switch")
         	console.log("스위치 버튼 갯수 : ", switchBtn.length)
+        	
         	for(let i=0; i < switchBtn.length; i++ ){
         		switchBtn[i].onclick=function(){
         			this.classList.toggle("on");
-//         			console.log(this.className)
         			var parent = this.closest("tr");  // 현재 행 찾기
         			var room_id = parent.children[0].textContent; // 첫 번째 열에 room_id 있다고 가정
 					var use_yn = this.classList.contains("on") ? 'Y' : 'N'; // 스위치 상태 확인
 					    
 					console.log("room_id: ", room_id);
-					console.log("use_yn: ", use_yn);
-					
-        			if (this.classList.contains("on")) {
-					    console.log("스위치가 켜져 있습니다.");
-					    
-// 					    var room_id = document.getElementById("room_id").value;
-// 	        			var room_name = document.getElementById("room_name").value;
-// 	        			var capacity = document.getElementById("capacity").value;
-					    //AJAX 작업으로 update use_yn 을 Y
+					console.log("use_yn: ", use_yn);			
+
+					    //AJAX 작업으로 update use_yn 을 Y,N
+					    var that = this;
 					    $.ajax({
 					        url: './update.do',
 					        method: 'POST',
@@ -211,53 +207,19 @@
 					        	console.log(response);
 					            if(response) {
 					                console.log("사용 상태 업데이트 성공");
+					                location.reload();
 					            } else {
 					                console.error("업데이트 실패");
+					                this.classList.toggle("on"); //실패 시 원래 상태로 복구
 					            }
 					        },
 					        error: function(error) {
 					            console.error('Error:', error);
-					            //실패 시 원래 상태로 되돌리기
-// 					            this.classList.toggle("on");
+					            this.classList.toggle("on"); //실패 시 원래 상태로 복구
 					        }
 					    });
-					} else {
-					    console.log("스위치가 꺼져 있습니다.");
-// 					    this.classList.toggle("on");
-					    
-					    var parent = this.closest("tr");  // 현재 행 찾기
-						var room_id = parent.children[0].textContent; // 첫 번째 열에 room_id 있다고 가정
-						var use_yn = this.classList.contains("on") ? 'Y' : 'N'; // 스위치 상태 확인
-						    
-						console.log("room_id: ", room_id);
-						console.log("use_yn: ", use_yn);
-						
-// 						var room_id = document.getElementById("room_id").value;
-// 	        			var room_name = document.getElementById("room_name").value;
-// 	        			var capacity = document.getElementById("capacity").value;
-					  //AJAX 작업으로 update use_yn 을 N
-					    $.ajax({
-					        url: './update.do',
-					        method: 'POST',
-					        contentType: 'application/json',
-					        data: JSON.stringify({
-					        	room_id: room_id, // 실제 회의실 ID
-					        	use_yn: use_yn
-					        }),
-					        success: function(response) {
-					            if(response) {
-					                console.log("사용 상태 업데이트 성공");
-					            } else {
-					                console.error("업데이트 실패");
-					            }
-					        },
-					        error: function(error) {
-					            console.error('Error:', error);
-					        }
-					    });
-					}
-        		};
-        	} // switch 버튼 이벤트
+					};
+        		} // switch 버튼 이벤트
         	
         	var modifyBtn = document.getElementsByName("modifyBtn");
         	console.log("수정버튼 갯수 :", modifyBtn.length);

@@ -37,8 +37,9 @@
 	margin: 10px 20px;
 	line-height: 40px; /* 추가: 세로 가운데 정렬 */
 }
-#content > div {
-    display: inline-block;
+
+#content>div {
+	display: inline-block;
 }
 
 .nocheck:hover {
@@ -59,56 +60,65 @@
 #datepicker {
 	position: absolute;
 	top: 0px;
-	left: 100%; 
- 	margin-left:90px; 
-  	transform: translateX(110%); /* 오른쪽 정렬 보정 */
+	left: 100%;
+	margin-left: 90px;
+	transform: translateX(110%); /* 오른쪽 정렬 보정 */
 }
+
 .ui-datepicker {
-    width: 350px; /* 달력 너비 조정 */
-    height: 300px; /* 달력 높이 조정 */
-    font-size: 20px; /* 글꼴 크기 조정 */
-    padding: 0px; /* 패딩 조정 */
+	width: 350px; /* 달력 너비 조정 */
+	height: 300px; /* 달력 높이 조정 */
+	font-size: 20px; /* 글꼴 크기 조정 */
+	padding: 0px; /* 패딩 조정 */
 }
+
 .date-picker-container {
 	position: absolute;
 	top: 0; /* 달력의 상단 위치 조정 */
-    left: 50%; /* 달력의 왼쪽 위치 조정 (테이블 너비에 따라 조정 필요) */
-/* 	display: inline-block; */
-/* 	vertical-align: top; */
+	left: 50%; /* 달력의 왼쪽 위치 조정 (테이블 너비에 따라 조정 필요) */
+	/* 	display: inline-block; */
+	/* 	vertical-align: top; */
 	margin-left: 20px; /* 달력과 테이블 간 간격 조정 */
 }
+
 .modal-backdrop {
 	background-color: transparent !important; /* 배경 투명하게 설정 */
 	/* 또는 */
 	opacity: 0.5 !important; /* 배경 투명도 조절 */
 }
+
 .reservation-table {
 	width: auto; /* 테이블 너비 자동 조정 */
 	border-collapse: collapse;
 	margin-right: 20px; /* 테이블과 캘린더 간격 조정 */
 }
- .reservation-table th, .reservation-table td { 
- 	border: 1px solid #ddd; 
- 	padding: 8px; 
- 	text-align: center; 
- } 
+
+.reservation-table th, .reservation-table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+}
+
 .reservation-table th {
 	background-color: #f2f2f2;
 }
- .reservation-status { 
- 	display: inline-block; 
-	align-items: center;  
- 	margin: 10px; 
- } 
- .content_title { 
- 	margin-bottom: 20px; 
- } 
-.disableBtn{
+
+.reservation-status {
+	display: inline-block;
+	align-items: center;
+	margin: 10px;
+}
+
+.content_title {
+	margin-bottom: 20px;
+}
+
+.disableBtn {
 	background-color: #cccccc !important;
-    cursor: not-allowed !important;
-    opacity: 0.7 !important;
-    border-color: #cccccc !important;
-    color: #666666 !important;
+	cursor: not-allowed !important;
+	opacity: 0.7 !important;
+	border-color: #cccccc !important;
+	color: #666666 !important;
 }
 </style>
 </head>
@@ -134,13 +144,12 @@
 					</tr>
 				</thead>
 				<tbody>
-				
-				<!-- 회의실 목록과 시간대를 분리하여 구현 -->
-<!-- 				<div style="display: flex;"> -->
+
+					<!-- 회의실 목록과 시간대를 분리하여 구현 -->
 					<table class="reservation-table">
 						<thead>
 							<tr>
-							<th></th>
+								<th></th>
 								<th>회의실명</th>
 								<c:forEach var="timeSlot" items="${timeSlots}">
 									<th>${timeSlot}</th>
@@ -151,7 +160,9 @@
 
 							<c:forEach var="room" items="${rooms}" varStatus="roomStatus">
 								<tr>
-									<td><img src="/GroupWare/storage/${room.image_url}?v=${timestamp}" width="100px" height="100px"></td>
+									<td><img
+										src="/GroupWare/storage/${room.image_url}?v=${timestamp}"
+										width="100px" height="100px"></td>
 									<td class="room_name" data-room_id="${room.room_id}">${room.room_name}</td>
 									<c:forEach var="timeSlot" items="${timeSlots}"
 										varStatus="timeStatus">
@@ -163,7 +174,6 @@
 												<c:set var="isReserved" value="true" />
 											</c:if>
 										</c:forEach>
-
 										<td>
 											<div
 												class="btn_bg nocheck text-center ${isReserved ? 'disableBtn' : ''}"
@@ -179,11 +189,10 @@
 								</tr>
 							</c:forEach>
 						</tbody>
-
 					</table>
 				</tbody>
 			</table>
-			</div>
+		</div>
 		<!-- 예약 모달 창 -->
 		<!-- tabindex="-1": 키보드를 통해 모달을 닫을 수 없도록 -->
 		<!-- Modal -->
@@ -198,25 +207,26 @@
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<input type="hidden" id="room_id">
-						<input type="text" id="room_name">
-						<input type="text" id="reservation_date">
+						<input type="hidden" id="room_id"> <input type="text"
+							id="room_name"> <input type="text" id="reservation_date">
 						<input type="text" id="reservation_time">
 						<div class="mb-3">
-							<label for="reserver" class="form-label">예약자</label> 
-							<input type="text" class="form-control required" id="reserver" value="${loginDto.empno}" readonly>
+							<label for="reserver" class="form-label">예약자</label> <input
+								type="text" class="form-control required" id="reserver"
+								value="${loginDto.empno}" readonly>
 						</div>
 						<div class="mb-3">
-							<label for="capacity" class="form-label">예약인원수</label> 
-							<input type="number" class="form-control required" id="capacity" value="1" min="1" max="15">
+							<label for="capacity" class="form-label">예약인원수</label> <input
+								type="number" class="form-control required" id="capacity"
+								value="1" min="1" max="15">
 						</div>
 						<div class="mb-3">
-							<label for="member" class="form-label">참여자</label> 
+							<label for="member" class="form-label">참여자</label>
 							<div id="member" class="form-control required"></div>
 						</div>
 						<div class="mb-3">
-							<label for="purpose" class="form-label">회의 사유</label> 
-							<input type="text" class="form-control required" id="purpose">
+							<label for="purpose" class="form-label">회의 사유</label> <input
+								type="text" class="form-control required" id="purpose">
 						</div>
 						<div id="organization">
 							<h2>조직도</h2>
@@ -228,8 +238,7 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal" id="cancelBtn">취소</button>
-						<button type="button" id="reserSend" 
-							class="btn btn-primary">예약</button>
+						<button type="button" id="reserSend" class="btn btn-primary">예약</button>
 					</div>
 				</div>
 			</div>
@@ -280,7 +289,7 @@
 					console.log("선택한 날짜: " + dateText);
 					document.getElementById("reservation_date").value = dateText;
 					location.href="./reservation.do?date="+dateText;
-				}
+			    }
 			});
 			
 			//  예약 모달  show
@@ -340,10 +349,8 @@
 		   		console.log("send 작동");
 		   		//예약 버튼 비활성화
 		   		console.log(d);
-		   		
-// 		   		var room_id = document.getElementById("room_id").value;
+		   	
 		   		var room_name = document.getElementById("room_name").value;
-// 		   		var room_id = findRoomIdByName(room_name);
 		   		var reservation_date = document.getElementById("reservation_date").value;
 		   		var reservation_time = document.getElementById("reservation_time").value;
 		   		var reserver = document.getElementById("reserver").value;
@@ -356,13 +363,11 @@
 
 				console.log(ids)
 		   		var reservationDto = {
-// 		   			room_id:room_id,
 		   			room_name:room_name,
 		   			reservation_date:reservation_date,
 		   			reservation_time:reservation_time,
 		   			reserver:reserver,
 		   			capacity:capacity,
-// 		   			member:member.replace("✖","/") ,
 		   			member:ids,
 		   			purpose:purpose,
 		   		};
@@ -390,6 +395,7 @@
 	                        alert('예약이 완료되었습니다.');
 	                        reservationModal.hide();
 	                        location.reload();  // 페이지 새로고침 또는 수정된 데이터 표시
+	                        d.classList.add("disableBtn");
 	                        d.style.backgroundColor = "#ccc";
 	                        d.onclick = '';
 	                    }else{
