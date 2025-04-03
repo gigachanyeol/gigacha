@@ -5,8 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
-
-<%@ include file="./layout/header.jsp"%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<%-- <%@ include file="./layout/header.jsp"%> --%>
 <style type="text/css">
 #content {
 	margin-right: 30px;
@@ -25,60 +27,65 @@
     <div class="container">
 
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div
+							class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-              <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">GIGACHA</span>
-                </a>
-              </div><!-- End Logo -->
+							<div class="d-flex justify-content-center py-4">
+								<a href="index.html"
+									class="logo d-flex align-items-center w-auto"> <img
+									src="assets/img/logo.png" alt=""> <span
+									class="d-none d-lg-block">GIGACHA</span>
+								</a>
+							</div>
+							<!-- End Logo -->
 
-              <div class="card mb-3">
+							<div class="card mb-3">
 
-                <div class="card-body">
+								<div class="card-body">
 
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">GIGACHA</h5>
-                  </div>
+									<div class="pt-4 pb-2">
+										<h5 class="card-title text-center pb-0 fs-4">GIGACHA</h5>
+									</div>
 
-                  <form class="row g-3 needs-validation" action="./login.do" method="POST" novalidate="">
+									<form class="row g-3 needs-validation" action="./login.do"
+										method="POST">
 
-                    <div class="col-12">
-                      <label for="yourUsername" class="form-label">사원번호</label>
-                      <div class="input-group has-validation">
-                        <input type="text" name="empno"  class="form-control" id="yourUsername" required="">
-                        <div class="invalid-feedback">사원번호 입력해주세요</div>
-                      </div>
-                    </div>
+										<div class="col-12">
+											<label for="yourUsername" class="form-label">사원번호</label>
+											<div class="input-group has-validation">
+												<input type="text" name="empno" class="form-control"
+													id="yourUsername" required="">
+												<div class="invalid-feedback">사원번호 입력해주세요</div>
+											</div>
+										</div>
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">비밀번호</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required="">
-                      <div class="invalid-feedback">비밀번호 입력해주세요</div>
-                    </div>
+										<div class="col-12">
+											<label for="yourPassword" class="form-label">비밀번호</label> <input
+												type="password" name="password" class="form-control"
+												id="yourPassword" required="">
+											<div class="invalid-feedback">비밀번호 입력해주세요</div>
+										</div>
 
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
-                    </div>
-						<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
-						<button type="button" class="btn btn-link small mb-0" 
-							onclick="location.href=#">비밀번호 재설정</button>
-							<button type="button" class="btn btn-link small mb-0" id="findEmpnoBtn" data-bs-toggle="modal" data-bs-target="#findEmpno">사원번호 찾기
-              </button>
+										<div class="col-12">
+											<button class="btn btn-primary w-100" type="submit">Login</button>
+										</div>
+									</form>
+									<div class="col-12"
+										style="display: flex; justify-content: center; align-items: center;">
+										<button type="button" class="btn btn-link small mb-0"
+											onclick="location.href=#">비밀번호 재설정</button>
+										<button type="button" class="btn btn-link small mb-0"
+											id="findEmpnoBtn" data-bs-toggle="modal"
+											data-bs-target="#findEmpno">사원번호 찾기</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-                  </form>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
+				</div>
+			</section>
     </div>
   </main>
 	<!-- 사원번호 조회 -->
@@ -92,7 +99,7 @@
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="findForm" action="./findEmpno.do" method="POST">
+					<form id="findForm">
 						<div class="col-12">
 							<label for="yourUsername" class="form-label">이름</label>
 							<div class="input-group has-validation">
@@ -126,15 +133,19 @@
     });
 // });
 	   
-	$("#findBtn").on('click', function(){
+	$("#findBtn").on('click', function(event){
+		  $("form").submit(e => e.preventDefault());
+		  
 		 	var name = $("#name").val();
 		    var email = $("#email").val();
 			var msg = $('#empnoResult');
+			console.log("조회 버튼 클릭됨!");
 		    // 이메일 형식 체크
 		    const emailRegex = /^[a-zA-Z0-9,_%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 		    if (email.match(emailRegex)) {
 		        // AJAX 요청을 통해 사원번호를 찾기
+		        console.log("########")
 		        $.ajax({
 		            url: "./findEmpno.do",
 		            type: "POST",
@@ -156,12 +167,15 @@
 		    	msg.text("잘못된 이메일 형식입니다.");
 		    }
 		});
+	
+	
 		    // "닫기" 버튼 또는 모달 종료 시 입력값 & 결과 초기화
 		    $("#findEmpno").on("hidden.bs.modal", function() {
 		    	$("#findForm")[0].reset(); // 폼 전체 초기화
 		        $("#empnoResult").text(""); // 결과 메시지 초기화
 		    });
 	
+		  
 	</script>
 </body>
 
