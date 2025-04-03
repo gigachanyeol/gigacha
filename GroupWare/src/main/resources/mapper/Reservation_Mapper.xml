@@ -85,7 +85,7 @@ WHERE
 		#{reservation_id}
 		AND RESERVER = #{reserver}
 	</delete>
-	
+	<!-- 선택한 날짜의 예약된 회의실 정로 조회 -->
 	<select id="selectrooms" resultType="reservationDto">
 	    SELECT r2.RESERVATION_ID,
 	           r.ROOM_ID,

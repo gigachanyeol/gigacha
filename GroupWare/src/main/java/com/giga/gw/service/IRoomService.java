@@ -13,10 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 public interface IRoomService {
 	
 	int insertRoom(RoomDto roomDto);
-	List<RoomDto> selectRooms();
+	List<RoomDto> selectAllRooms();
 	RoomDto selectRoomById(String room_id);
 	int updateRoom(RoomDto roomDto);
-//	List<RoomDto> selectUseAllRooms();
+	List<RoomDto> selectUseAllRooms();
 	
 	
 
