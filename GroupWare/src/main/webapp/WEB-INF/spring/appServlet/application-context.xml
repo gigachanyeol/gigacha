@@ -35,7 +35,7 @@
 	    <property name="minIdle" value="5"/>      <!-- 유휴 커넥션 최소 개수 -->
 	    <property name="maxWait" value="60000"/>  <!-- 최대 대기 시간 (60초) -->
 	</bean>
-	
+
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis/myBatisConfig.xml" />

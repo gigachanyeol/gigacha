@@ -14,6 +14,11 @@
 <!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script> -->
 <style type="text/css">
 #fileForm {
+/*TODO 파일 div display:none*/
+display:none;
+}
+#fileForm {
+	
 	height: 100px;
 	border: 1px solid #ccc;
 }
@@ -117,12 +122,13 @@
 								</tr>
 							</tbody>
 						</table>
+						<input class="btn btn-secondary btn-sm mb-3" type="file" name="files" multiple id="formFile">
 						<input type="hidden" name="form_id">
 						<div id="editor"></div>
-						<div id="fileDiv">
-							<input class="btn" type="file" name="files" multiple id="formFile">
-							<div id="fileForm">파일업로드목록</div>
-						</div>
+<!-- 						<div id="fileDiv"> -->
+<!-- 							<input class="btn" type="file" name="files" multiple id="formFile"> -->
+<!-- 							<div id="fileForm">파일업로드목록</div> -->
+<!-- 						</div> -->
 					</form>
 				</div>
 			</div>
