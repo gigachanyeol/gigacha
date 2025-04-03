@@ -65,7 +65,7 @@
                     </div>
 						<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
 						<button type="button" class="btn btn-link small mb-0" 
-							onclick="location.href=#">비밀번호 재설정</button>
+							onclick="location.href='#'">비밀번호 재설정</button>
 							<button type="button" class="btn btn-link small mb-0" id="findEmpnoBtn" data-bs-toggle="modal" data-bs-target="#findEmpno">사원번호 찾기
               </button>
 					</div>
@@ -101,7 +101,7 @@
 							</div>
 						</div>
 						<div class="col-12">
-							<label for="inputEmail" class="form-label">Email</label>
+							<label for="email" class="form-label">Email</label>
 							<div class="input-group has-validation">
 								<span class="input-group-text" id="inputGroupPrepend">@</span> <input
 									type="text" name="email" class="form-control"
