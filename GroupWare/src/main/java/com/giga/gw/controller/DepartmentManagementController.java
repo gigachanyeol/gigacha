@@ -63,12 +63,7 @@ public class DepartmentManagementController {
 		EmployeeDto loginDto = (EmployeeDto)session.getAttribute("loginDto");
 		map.put("update_emp", loginDto.getUpdate_emp());
 //		map.put("update_date", loginDto.getUpdate_date());
-		System.out.println();
-		System.out.println();
 		System.out.println(map.toString());
-		System.out.println();
-		System.out.println();
-		System.out.println();
 		log.info("DepartmentManagementController updateDepartment POST 요청");
 		System.out.println("\n\n"+map+"\n\n");
 		return deptManagementDao.updateDept(map)==1 ?"true":"false";
