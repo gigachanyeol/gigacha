@@ -298,7 +298,7 @@ td {
     });
    
  // 수정하기
-    document.getElementById('modifyDept').addEventListener('click', function(){
+     document.getElementById('modifyDept').addEventListener('click', function(){
         console.log("수정하기", tableData);
         
         // 부서명 입력 필드로 변경
@@ -397,7 +397,13 @@ td {
         
         // 수정 버튼 숨기기
         document.getElementById('modifyDept').style.display = "none";
-        document.getElementById('deleteDept').style.display = "none";
+        
+        // 삭제 버튼이 존재하는 경우에만 숨기기
+        // HTML에 삭제 버튼이 주석 처리되어 있음을 확인했으므로 조건부 체크 추가
+        var deleteButton = document.getElementById('deleteDept');
+        if (deleteButton) {
+            deleteButton.style.display = "none";
+        }
         
         // 저장 버튼 클릭 이벤트
         saveButton.addEventListener('click', function() {
@@ -430,25 +436,22 @@ td {
                 })
             })
             .then(response => {
-            	return response.text();
+                if (!response.ok) {
+                    throw new Error('서버 응답이 올바르지 않습니다.');
+                }
+                return response.text(); // 또는 response.json()
             })
             .then(data => {
-            	 console.log("저장 성공:", data);
-                $('#organizationTree').jstree(true).refresh();
+                console.log("저장 성공:", data);
                 
-                // 버튼 컨테이너 제거
-                var buttonContainer = document.getElementById("editButtons");
-                if (buttonContainer) {
-                    buttonContainer.parentNode.removeChild(buttonContainer);
+                // jstree 갱신
+                if ($('#organizationTree').jstree) {
+                    $('#organizationTree').jstree(true).refresh();
                 }
                 
-                // 수정 버튼 다시 표시
-                document.getElementById('modifyDept').style.display = "";
+                // UI 복원
+                restoreOriginalUI(newDeptName);
                 
-                // 상세 정보 다시 조회 (필요한 경우)
-                if (typeof addToApprovalLine === 'function') {
-                    addToApprovalLine(deptNo, data.deptname || newDeptName);
-                }
                 // 성공 메시지 표시
                 alert("부서 정보가 성공적으로 수정되었습니다.");
             })
@@ -464,12 +467,14 @@ td {
             restoreOriginalUI();
         });
         
-        // 원래 UI로 되돌리는 함수
-        function restoreOriginalUI() {
+        // 원래 UI로 되돌리는 함수 - 매개변수 추가하여 필요시 새 부서명 사용
+        function restoreOriginalUI(newDeptName) {
             // 부서명 원래대로 되돌리기
             var deptname = document.getElementById("getDeptname");
-            var originalDeptName = document.getElementById("editDeptName").value;
-            deptname.textContent = originalDeptName;
+            
+            // 새 부서명이 제공되면 그것을 사용, 아니면 input의 현재 값 사용
+            var displayDeptName = newDeptName || document.getElementById("editDeptName").value;
+            deptname.textContent = displayDeptName;
             
             // 본부명 원래대로 되돌리기
             var tdElement = document.getElementById("getParent_deptname");
@@ -484,8 +489,13 @@ td {
             
             // 수정 버튼 다시 표시
             document.getElementById('modifyDept').style.display = "";
+            
+            // 삭제 버튼이 존재하는 경우에만 표시
+            var deleteButton = document.getElementById('deleteDept');
+            if (deleteButton) {
+                deleteButton.style.display = "";
+            }
         }
-        
     });
  
     document.getElementById('deleteDept').addEventListener('click', function(){
