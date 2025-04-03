@@ -1,6 +1,10 @@
 package com.giga.gw.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +23,26 @@ public class Approval_JUnitTest {
 	@Autowired
 	private IApprovalDao approvalDao;
 	
+	// 조직도 Select 
+//	@Test
+	public void getOrganizationTree_Test() {
+		List<Map<String, Object>> tree = approvalDao.getOrganizationTree();
+		assertNotEquals(0, tree.size());
+	}
+	
+	// 문서양식별 작성된 결재문서 갯수
+//	@Test
+	public void countApproval() {
+		assertNotEquals(0, approvalDao.countApproval("HR001"));
+	}
+	
 	// 결재문서 select id
 //	@Test
 	public void selectApprovalById_Test() {
 		assertNotNull(approvalDao.selectApprovalById("HR005DOC0001"));
 	}
+	
+	
 	
 	// 결재문서 INSERT
 //	@Test
@@ -32,12 +51,13 @@ public class Approval_JUnitTest {
 				.builder()
 				.form_id("HR005")
 				.empno("2501001")
-				.approval_title("title~~~~~")
-				.approval_content("문서InsertTest~~~~~!~")
+				.approval_title("문서제목")
+				.approval_content("문서작성테스트")
 				.approval_deadline("2025-03-01")
 				.build();
 		assertNotEquals(0, approvalDao.insertApproval(dto));
 	}
+	
 	// 결재문서 수정 update
 //	@Test
 	public void updateApproval_Test() {

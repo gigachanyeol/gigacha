@@ -68,8 +68,9 @@
 </head>
 <body>
 	<aside id="sidebar" class="sidebar">
-	출근사원
-	<div id="connectedUsers"></div>
+<!-- TODO 출근사원 주석처리 	
+출근사원 -->
+<!-- 	<div id="connectedUsers"></div> -->
    	<div class="card mb-3 mt-3">
 		<img class="card-img-top"
 			src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj"
@@ -78,8 +79,10 @@
   			<span class="employee-name" style='color: black;'><a href="${pageContext.request.contextPath}/hrManagement/mypage.do" style="color: black;">${loginDto.name}</a></span>
   			<span class="employee-id">사원번호 | ${loginDto.empno}</span>
 <!--   			<div class="employee-info-row"> -->
-    			<span class="department" id="dept">${loginDto.deptname}</span>
-    			<span class="job-title" id="job">${loginDto.job_title}</span>
+<%--     			<span class="department" id="dept">${loginDto.deptname}</span> --%>
+<%--     			<span class="job-title" id="job">${loginDto.job_title}</span> --%>
+    			
+    			<span class="department mb-3">${loginDto.deptname} | ${loginDto.job_title}</span>
 <!--  			 </div> -->
 		</div>
 	</div>

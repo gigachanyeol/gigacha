@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	
 	private final ILoginService loginService;
+	
  	@GetMapping("/login.do")
 	public String login() {
 		return "login";
