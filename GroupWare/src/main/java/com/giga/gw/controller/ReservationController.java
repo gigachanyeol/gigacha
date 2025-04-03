@@ -43,8 +43,7 @@ public class ReservationController {
 	
 	@GetMapping("/reservation.do")
 	public String reservation(Model model , @RequestParam (value = "date", required = false) String date ) {
-//		List<String> rooms = List.of("회의실 1","회의실 2","회의실 3","회의실 4");
-		List<RoomDto> rooms = roomService.selectRooms();
+		List<RoomDto> rooms = roomService.selectUseAllRooms();
 		String[] timeSlots = { "08:00-10:00", "10:00-12:00", "13:00-15:00", "15:00-17:00" };
 		
 		List<ReservationDto> reservation = reservationDao.selectrooms(date);
@@ -66,7 +65,7 @@ public class ReservationController {
 		if (reservationDto.getReserver() == null) {
 		    return ResponseEntity.status(401).body("로그인 실패");
 		}
-
+		
 		int result = reservationService.insertreservation(reservationDto);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -77,7 +76,6 @@ public class ReservationController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 		
 		if(result > 0) {

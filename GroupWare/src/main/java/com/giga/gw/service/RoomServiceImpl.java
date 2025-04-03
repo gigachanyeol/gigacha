@@ -24,8 +24,8 @@ public class RoomServiceImpl implements IRoomService {
 	}
 
 	@Override
-	public List<RoomDto> selectRooms() {
-		return roomDao.selectRooms();
+	public List<RoomDto> selectAllRooms() {
+		return roomDao.selectAllRooms();
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class RoomServiceImpl implements IRoomService {
 		return roomDao.updateRoom(roomDto);
 	}
 
-//	@Override
-//	public List<RoomDto> selectUseAllRooms() {
-//		return roomDao.selectUseAllRooms();
-//	}
+	@Override
+	public List<RoomDto> selectUseAllRooms() {
+		return roomDao.selectUseAllRooms();
+	}
 
 
 	

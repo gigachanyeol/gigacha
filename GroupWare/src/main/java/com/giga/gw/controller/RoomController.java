@@ -137,7 +137,7 @@ public class RoomController {
 	//회의실 리스트 조회
 	@GetMapping("/roomList.do")
 	public String roomList(Model model) {
-		List<RoomDto> roomList = roomService.selectRooms();
+		List<RoomDto> roomList = roomService.selectAllRooms();
 		model.addAttribute("roomList", roomList);
 		return "roomList";	
 	}
