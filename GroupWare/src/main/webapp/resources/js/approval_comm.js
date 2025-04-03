@@ -235,8 +235,13 @@ function removeFromApprovalLine(empNo) {
 	            headers: { 'Content-Type': 'application/json' },
 	            body: JSON.stringify(approvalJson)
 	        });
-	
+			
 	        const result = await response.text();
+	        if(result === 'true'){
+				// TODO 저장 완료 후 html append lineName
+				let index = $("#line>li").length;
+				$("#line").append('<li class="line-item" data-index="'+index+'">'+lineName+"</li>")
+			}
 	        console.log(result);
 	    } catch (error) {
 	        console.error("결재선 저장 오류:", error);
@@ -274,10 +279,10 @@ if(document.getElementById("lineBtn")){
 			console.log("저장된 결재선 데이타 값 ",data);
 			selectSaveLines = data;
 			console.log("selectSaveLines", selectSaveLines);
-			let lineHtml = '저장된 결재선 <ul>';
+			let lineHtml = '저장된 결재선 <ul id="line">';
 			data.map((line,index) => {
 				console.log(line);
-				lineHtml += '<li class="line-item" data-index="'+index+'">'+line.LINE_NAME+"</li>"	
+				lineHtml += '<li class="line-item" data-index="'+index+'">'+line.LINE_NAME+"</li>"
 //				lineHtml += line.LINE_DATA+"<br>"	
 			})		
 			lineHtml += '</ul>';
