@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="col-12">
-                      <button class="btn btn-secondary w-100" type="submit">Login</button>
+                      <button class="btn btn-secondary w-100" type="submit">배포를 위한 텍스트 수정</button>
                     </div>
 						<div class="col-12" style="display: flex;justify-content: center; align-items: center;">
 						<button type="button" class="btn btn-link small mb-0" 
