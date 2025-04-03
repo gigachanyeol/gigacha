@@ -31,6 +31,7 @@ public class ApprovalDto {
 	end_date,
 	empno,
 	name,
+	dname,
 	rejectEmpName,
 	update_empno;
 	List<ApprovalLineDto> approvalLineDtos;

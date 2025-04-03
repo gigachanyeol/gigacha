@@ -144,9 +144,9 @@
                         </tr>
                         <tr>
                             <th>기안자</th>
-                            <td>{{empno}}</td>
+                            <td>{{name}}</td>
                             <th>부서</th>
-                            <td>{{deptno}}</td>
+                            <td>{{dname}}</td>
                         </tr>
                         <tr>
                             <th>참조자</th>
@@ -341,6 +341,8 @@ $(document).ready(function() {
                     start_date: data1.start_date,
                     end_date: data1.end_date,
                      empno: data1.empno,
+                     dname: data1.dname,
+                     name: data1.name,
                      deptno: data1.deptno,
                      showDateRange: data1.form_id?.startsWith('BC'),
                      approvalLineDtos: data1.approvalLineDtos,

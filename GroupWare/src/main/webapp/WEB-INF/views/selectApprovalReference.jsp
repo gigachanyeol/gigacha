@@ -42,7 +42,7 @@
 				                <thead>
 				                    <tr>
 				                        <th>문서번호</th>
-				                        <th>작성자</th>
+				                        <th>사원번호</th>
 				                        <th>제목</th>
 				                        <th>상태</th>
 				                        <th>작성일</th> 
@@ -193,7 +193,8 @@
 		            $("#update_date").text(data1.update_date); // 수정 날짜
 		            $("#start_date").text(data1.start_date); // 시작 날짜
 		            $("#end_date").text(data1.end_date); // 종료 날짜
-		            $("#empno").text(data1.empno); // 작성자 사번
+		            $("#empno").text(data1.anme); // 작성자 사번
+		            $("#deptno").text(data.dname)
 		            $("#update_empno").text(data1.update_empno); // 수정한 사번
 					$("#modal-content").html(data1.approval_content);
 //						$(".modal-body").html(data.approval_content);

@@ -425,10 +425,7 @@ $(document).ready(function() {
             drawPieChart('approvalChart', chartData.approval, '기안문서');
         }
     })();
-});
-
-//공지사항
-$(document).ready(function() {
+    
     $('#boardList').DataTable({
         ajax: {
             url: './notice/boardList.do',
@@ -459,6 +456,11 @@ $(document).ready(function() {
 
     });
 });
+
+// //공지사항
+// $(document).ready(function() {
+    
+// });
 
 </script>
 </html>
