@@ -72,9 +72,24 @@
 출근사원 -->
 <!-- 	<div id="connectedUsers"></div> -->
    	<div class="card mb-3 mt-3">
-		<img class="card-img-top"
+   		<c:choose>
+   			<c:when test="${loginDto.empno eq '2504011'}">
+   				<img class="card-img-top"
+			src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThwNhcnmyw7fy6Ec5P2F62BolMYqalilE9GQ&s"
+			alt="Card image cap" width="249" height="249">
+   			</c:when>
+   			<c:when test="${loginDto.empno eq '2504012'}">
+	   			<img class="card-img-top"
+				src="https://cphoto.asiae.co.kr/listimglink/1/2017101714512891728_2.jpg"
+				alt="Card image cap" width="249" height="249">
+   			</c:when>
+   			<c:otherwise>
+   				<img class="card-img-top"
 			src="https://yt3.googleusercontent.com/xydasbAktJl4OMRQGV2mEy1Rvf5Y9miqlmVsdIR0Y14rm3fHCOstsYmMlD8MLm7PletRrJr_FiI=s160-c-k-c0x00ffffff-no-rj"
-			alt="Card image cap">
+			alt="Card image cap" width="249" height="249">
+   			</c:otherwise>
+   		</c:choose>
+		
 		<div class="sidecard-body" >
   			<span class="employee-name" style='color: black;'><a href="${pageContext.request.contextPath}/hrManagement/mypage.do" style="color: black;">${loginDto.name}</a></span>
   			<span class="employee-id">사원번호 | ${loginDto.empno}</span>
@@ -90,7 +105,7 @@
       <li class="nav-item">
         <a class="nav-link " href="${pageContext.request.contextPath}">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>Home</span>
         </a>
       </li>
       <li class="nav-item">

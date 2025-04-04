@@ -44,7 +44,7 @@
 									<tr>
 										<th>문서번호</th>
 										<th>양식번호</th>
-										<th>작성자</th>
+										<th>사원번호</th>
 										<th>제목</th>
 										<th>상태</th>
 										<th>작성일</th>
@@ -145,9 +145,9 @@
                         </tr>
                         <tr>
                             <th>기안자</th>
-                            <td>{{empno}}</td>
+                            <td>{{name}}</td>
                             <th>부서</th>
-                            <td>{{deptno}}</td>
+                            <td>{{dname}}</td>
                         </tr>
                         <tr>
                             <th>참조자</th>
@@ -276,6 +276,8 @@
 		                    end_date: data1.end_date,
 		                    empno: data1.empno,
 		                    deptno: data1.deptno,
+		                    dname: data1.dname,
+		                    name: data1.name,
 		                    showDateRange: data1.form_id?.startsWith('BC'),
 		                    approvalLineDtos: data1.approvalLineDtos,
 		                    fileData: fileData,

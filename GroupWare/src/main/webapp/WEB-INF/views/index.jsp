@@ -41,112 +41,34 @@
 			<a href="./login.do" class="btn btn-info">로그인</a><br>
 			<a href="./logout.do" class="btn btn-danger">로그아웃</a>
 	<div class="row">
+		<div class="col-12">
+			  <div class="reservation-section card">
+	            <div class="reservation-title">나의 예약현황</div>
+	            <p>현재 예약된 일정이 없습니다.</p>
+	            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservation.do'">예약하기</button>
+	            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservationList.do'">예약내역조회</button>
+	        </div>
+		</div>
 		<div class="col-6">
-		
-		<div class="row">
-        		<div class="col-lg-12">
-        			<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">공지사항</h5>
-							<table id="boardList" class="table text-center">
-								<thead>
-			                        <tr>
-			                            <th>번호</th>
-			                            <th>작성자</th>
-			                            <th>제목</th>
-			                            <th>작성일</th>
-			                        </tr>
-			                    </thead>
-							</table>
-						</div>
-					</div>
-       			</div>
-        	</div>
-	       <div class="reservation-section card">
-            <div class="reservation-title">나의 예약현황</div>
-            <p>현재 예약된 일정이 없습니다.</p>
-            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservation.do'">예약하기</button>
-            <button class="btn btn-reservation" onclick="window.location.href='${pageContext.request.contextPath}/rooms/reservationList.do'">예약내역조회</button>
-        </div>
-        </div>
-       
-        <div class="col-6">
-<!--         	<div class="row"> -->
-<!--         		<div class="col-xxl-12"> -->
-<!-- 	        		<div class="card"> -->
-<!-- 						<div class="card-body row" style="margin-bottom:10px;"> -->
-<!-- 			        		<div class="col-lg-2"> -->
-<!-- 			        			<canvas id="approvalLineChart"></canvas> -->
-<!-- 			        		</div> -->
-<!-- 			        		<div class="col-xxl-6"> -->
-<!-- 					        	<canvas id="approvalChart"></canvas> -->
-<!-- 			        		</div> -->
-<!-- 			        	</div> -->
-<!-- 			        </div> -->
-<!-- 			    </div> -->
-<!--         	</div> -->
-        	
-        	<div class="row">
-        		<div class="col-lg-12">
-        			<div class="card">
-						<div class="card-body row">
-							<h5 class="card-title">
-								<a href="./approval/myApproval.do">내문서함</a>
-							</h5>
-							<div class="col-4">
-			        			<canvas id="approvalChart" width="80px" height="80px"></canvas>
-			        		</div>
-<!-- 							<div> -->
-<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label>  -->
-<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재대기" checked> 결재대기</label>  -->
-<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="진행중" checked> 진행중</label> -->
-<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재완료" checked> 결재완료</label>  -->
-<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재반려" checked> 결재반려</label> -->
-<!-- 							</div> -->
-							<div class="col-8">
-								<table id="myDocument" class="table text-center">
+			<div class="row">
+	        		<div class="col-lg-12">
+	        			<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">공지사항</h5>
+								<table id="boardList" class="table text-center">
 									<thead>
-										<tr>
-											<th>제목</th>
-											<th>상태</th>
-											<th>작성일</th>
-											<th>마감기한</th>
-										</tr>
-									</thead>
+				                        <tr>
+				                            <th>번호</th>
+				                            <th>작성자</th>
+				                            <th>제목</th>
+				                            <th>작성일</th>
+				                        </tr>
+				                    </thead>
 								</table>
 							</div>
 						</div>
-					</div>
-       			</div>
-        	</div>
-        	<div class="row">
-        		<div class="col-lg-12">
-        			<div class="card">
-						<div class="card-body row">
-							<h5 class="card-title">
-								<a href="./approval/approvalRequestList.do">결재대기함</a>
-							</h5>
-							<div class="col-4">
-			        			<canvas id="approvalLineChart"></canvas>
-			        		</div>
-			        		<div class="col-8">
-								<table id="requestDocument"
-									class="table text-center">
-									<thead>
-										<tr>
-											<th>작성자</th>
-											<th>제목</th>
-											<th>작성일</th>
-											<th>마감기한</th>
-										</tr>
-									</thead>
-								</table>
-							</div>
-						</div>
-					</div>
-       			</div>
-        	</div>
-        	<div class="row">
+	       			</div>
+	        	</div>
         		<div class="col-lg-12">
         			<div class="card">
 						<div class="card-body">
@@ -167,10 +89,88 @@
 						</div>
 					</div>
         		</div>
+      	  </div>	
+       
+        <div class="col-6">
+<!--         	<div class="row"> -->
+<!--         		<div class="col-xxl-12"> -->
+<!-- 	        		<div class="card"> -->
+<!-- 						<div class="card-body row" style="margin-bottom:10px;"> -->
+<!-- 			        		<div class="col-lg-2"> -->
+<!-- 			        			<canvas id="approvalLineChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        		<div class="col-xxl-6"> -->
+<!-- 					        	<canvas id="approvalChart"></canvas> -->
+<!-- 			        		</div> -->
+<!-- 			        	</div> -->
+<!-- 			        </div> -->
+<!-- 			    </div> -->
+<!--         	</div> -->
+        	
+        	<div class="row">
+        		<div class="col-lg-12">
+        			<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<h5 class="card-title">
+									<a href="./approval/myApproval.do">내문서함</a>
+								</h5>
+								<div class="col-lg-4">
+				        			<canvas id="approvalChart" width="80px" height="80px"></canvas>
+				        		</div>
+<!-- 							<div> -->
+<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="임시저장" checked> 임시저장</label>  -->
+<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재대기" checked> 결재대기</label>  -->
+<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="진행중" checked> 진행중</label> -->
+<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재완료" checked> 결재완료</label>  -->
+<!-- 								<label><input type="checkbox" class="filter-status form-check-input" value="결재반려" checked> 결재반려</label> -->
+<!-- 							</div> -->
+			        			<div class="col-lg-8">
+									<table id="myDocument" class="table text-center">
+										<thead>
+											<tr>
+												<th>제목</th>
+												<th>상태</th>
+												<th>작성일</th>
+												<th>마감기한</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								</div>
+						</div>
+					</div>
+       			</div>
         	</div>
-   	 </div>
-    </div>
-</div>
+        		<div class="col-lg-12">
+        			<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">
+								<a href="./approval/approvalRequestList.do">결재대기함</a>
+							</h5>
+							<div class="row">
+								<div class="col-lg-4">
+				        			<canvas id="approvalLineChart"></canvas>
+				        		</div>
+				        		<div class="col-lg-8">
+									<table id="requestDocument"
+										class="table text-center">
+										<thead>
+											<tr>
+												<th>작성자</th>
+												<th>제목</th>
+												<th>작성일</th>
+												<th>마감기한</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+       			</div>
+        	</div>
+   		 </div>
 </main>
 <!-- 			<h3 class="content_title">제목trestest</h3> -->
 <!-- 			<table class="table table-hover"> -->
@@ -369,7 +369,7 @@ $(document).ready(function() {
     function drawPieChart(canvasId, chartData, label) {
         const ctx = document.getElementById(canvasId).getContext('2d');
         new Chart(ctx, {
-            type: 'pie', 
+            type: 'doughnut', 
             data: {
                 labels: ['대기', '진행' ,'반려'
 //                 	'완료', '반려'
@@ -386,14 +386,14 @@ $(document).ready(function() {
                 }]
             },
             options: {
-                responsive: true,
+//                 responsive: true,
                 plugins: {
                     legend: { 
                     	display: true,
-                        //position: 'top',  
+                        position: 'middle',  
                         labels: {
-                            boxWidth: 15,   
-                            usePointStyle: true, 
+//                             boxWidth: 15,   
+//                             usePointStyle: true, 
 //                            padding: 15,    
 //                             font: {
 //                                 size: 12    
@@ -425,10 +425,7 @@ $(document).ready(function() {
             drawPieChart('approvalChart', chartData.approval, '기안문서');
         }
     })();
-});
-
-//공지사항
-$(document).ready(function() {
+    
     $('#boardList').DataTable({
         ajax: {
             url: './notice/boardList.do',
@@ -459,6 +456,11 @@ $(document).ready(function() {
 
     });
 });
+
+// //공지사항
+// $(document).ready(function() {
+    
+// });
 
 </script>
 </html>
